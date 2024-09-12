@@ -1,0 +1,153 @@
+$('#tab-nav .nav-link').on('click', function(e) {
+    e.preventDefault();
+    $('#tab-nav .nav-link').removeClass('active');
+    $(this).addClass('active');
+    $('.tab-content').hide();
+
+    var tabId = $(this).attr('id');
+    switch(tabId) {
+        case 'master-tab':
+            $('#master-content').show();
+            break;
+        case 'pembayaran-tab':
+            $('#pembayaran-content').show();
+            break;
+        case 'ekspedisi-tab':
+            $('#ekspedisi-content').show();
+            break;
+    }
+});
+$(document).ready(function() {
+    // Initialize flatpickr on the date input
+    flatpickr("#tgl_request", {
+        dateFormat: "Y-m-d",
+        disableMobile: true
+    });
+
+    // Initialize DataTable
+    var table = $('#table-tambah-comercial-invoice').DataTable({
+        dom: 'lrtip', // Customize the DataTable DOM
+        responsive: true, // Enable responsive mode
+        columnDefs: [
+            { 
+                targets: [3], // Example: Hide the Supplier column on small screens
+                className: 'none'
+            }
+        ]
+    });
+
+    // Custom search box
+    $('#search-box').on('keyup', function() {
+        table.search(this.value).draw();
+    });
+
+    // Checkbox logic to ensure only one checkbox is selected
+    $('.kubik-checkbox-tambah').on('change', function() {
+        if (this.checked) {
+            // Uncheck all other checkboxes
+            $('.kubik-checkbox-tambah').not(this).prop('checked', false);
+        }
+    });
+});
+$(document).ready(function() {
+    // Initialize Choices.js for each select element
+    $('.item-barang').each(function() {
+        // Initialize Choices.js on the select elements
+        const choices = new Choices(this, {
+            searchEnabled: true, // search functionality
+            itemSelectText: '', // Text for item select prompt
+            removeItemButton: true, // Optionally enable remove item button
+            shouldSort: false, // Prevent sorting of options
+            shouldSortItems: false, // Prevent sorting of items within Choices.js
+        });
+    
+        // Handle the change event of the select element
+        $(this).on('change', function(event) {
+            const selectedValue = event.target.value;
+            const inputElement = document.getElementById('select_barang'); // Replace with the correct ID
+    
+            if (inputElement) {
+                inputElement.value = selectedValue;
+            }
+        });
+    });
+    
+    
+    $('.pilih-db').each(function() {
+        const choices = new Choices(this, {
+            searchEnabled: true,
+            itemSelectText: '',
+        });
+  
+        // Handle change event of select element
+        $(this).on('change', function(event) {
+            const selectedValue = event.target.value;
+            const inputElement = document.getElementById('select_db'); // Ganti dengan ID yang sesuai
+            if (inputElement) {
+                inputElement.value = selectedValue;
+            }
+        });
+    });
+    $('.pilih-supplier').each(function() {
+        const choices = new Choices(this, {
+            searchEnabled: true,
+            itemSelectText: '',
+        });
+  
+        // Handle change event of select element
+        $(this).on('change', function(event) {
+            const selectedValue = event.target.value;
+            const inputElement = document.getElementById('select_supplier'); // Ganti dengan ID yang sesuai
+            if (inputElement) {
+                inputElement.value = selectedValue;
+            }
+        });
+    });
+    $('.pilih-cabang').each(function() {
+        const choices = new Choices(this, {
+            searchEnabled: true,
+            itemSelectText: '',
+        });
+  
+        // Handle change event of select element
+        $(this).on('change', function(event) {
+            const selectedValue = event.target.value;
+            const inputElement = document.getElementById('select_cabang'); // Ganti dengan ID yang sesuai
+            if (inputElement) {
+                inputElement.value = selectedValue;
+            }
+        });
+    });
+    $('.pilih-matauang').each(function() {
+        const choices = new Choices(this, {
+            searchEnabled: true,
+            itemSelectText: '',
+        });
+  
+        // Handle change event of select element
+        $(this).on('change', function(event) {
+            const selectedValue = event.target.value;
+            const inputElement = document.getElementById('select_matauang'); // Ganti dengan ID yang sesuai
+            if (inputElement) {
+                inputElement.value = selectedValue;
+            }
+        });
+    });
+
+    
+  });
+  
+  $(document).ready(function() {
+    // Function to handle the change event
+    $('#select_category_convert').on('change', function() {
+        var selectedValue = $(this).val(); // Get the selected value
+
+        if (selectedValue === 'default') {
+            // Disable the input field if "Default" is selected
+            $('#input_nominal').prop('disabled', true);
+        } else {
+            // Enable the input field if "Custom" is selected
+            $('#input_nominal').prop('disabled', false);
+        }
+    });
+});

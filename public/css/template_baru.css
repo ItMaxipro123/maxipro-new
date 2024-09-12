@@ -1,0 +1,12 @@
+.nav-link-text:after {
+    content: "\00a0";
+ 
+  }
+
+  .rounded-image {
+    border-radius: 50%;
+    
+    
+    
+    
+  }

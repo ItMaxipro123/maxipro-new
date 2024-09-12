@@ -1,0 +1,246 @@
+    /* Gaya untuk elemen overlay */
+    #overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Hitam dengan opacity 0.5 */
+        z-index: 9999; /* Pastikan lebih tinggi dari elemen lain */
+    }
+    
+        .flatpickr-input {
+            border: 1px solid #ccc;
+            padding: 5px;
+            border-radius: 4px;
+        }
+    
+        .dataTables_wrapper .dataTables_paginate .paginate_button.previous {
+            width: auto;
+            /* Atur lebar tombol menjadi otomatis */
+            padding-right: 0px;
+            /* Berikan padding di sisi kanan tombol */
+    
+        }
+    
+        /* Ganti warna latar belakang tabel */
+        #tabe-stok {
+            background-color: #f0f0f0;
+            /* Ganti dengan warna yang Anda inginkan */
+    
+        }
+        #tabe-stok {
+            border-collapse: collapse; /* Ensure borders collapse */
+            width: 100%; /* Set table width to fill its container */
+        }
+    
+        #tabe-stok th,
+        #tabe-stok td {
+            padding: 5px; /* Adjust padding as needed */
+            border: 1px solid #ddd; /* Add border */
+            overflow: auto; /* Enable overflow */
+            word-wrap: break-word; /* Wrap long words */
+        }
+    
+    
+         #tabe-stok-hitung-kubik {
+            background-color: #f0f0f0;
+            /* Ganti dengan warna yang Anda inginkan */
+    
+        }
+        #tabe-stok-hitung-kubik {
+            border-collapse: collapse; /* Ensure borders collapse */
+            width: 100%; /* Set table width to fill its container */
+        }
+    
+        #tabe-stok-hitung-kubik th,
+        #tabe-stok-hitung-kubik td {
+            padding: 5px; /* Adjust padding as needed */
+            border: 1px solid #ddd; /* Add border */
+            overflow: auto; /* Enable overflow */
+            word-wrap: break-word; /* Wrap long words */
+        }
+    
+    
+        .dataTables_filter input[type="search"] {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            /* Opsional: untuk membuat sudut border melengkung */
+            padding: 5px;
+            /* Opsional: untuk memberi jarak antara border dan teks */
+        }
+    
+        
+    
+     
+    
+        /* Style untuk tombol Delete */
+        .btn-delete {
+            width: 15%;
+            /* Lebar default */
+        }
+    
+        /* Mengatur lebar tombol saat layar berukuran kecil (misalnya pada perangkat mobile) */
+        @media only screen and (max-width: 600px) {
+            .btn-delete {
+                width: 40%;
+                /* Mengisi lebar penuh */
+            }
+        }
+    
+           .color-box {
+                display: inline-block;
+                width: 20px;
+                height: 20px;
+                margin-left: 5px;
+                margin-bottom: 10px;
+                vertical-align: middle;
+            }
+    
+            .bg-light-yellow {
+                background-color:#fff17a; /* Light yellow color */
+            }
+             .bg-light-blue {
+                background-color:#97ebfb; /* Light blue color */
+            }
+               .bg-light-green {
+                background-color: #6cf670; /* Light green color */
+            }
+              .bg-light-red {
+                background-color: #feb3aa; /* Light red color */
+            }
+             .bg-light-grey {
+                background-color: #f4f7f7; /* Light grey color */
+            }
+    
+            .tooltip-container {
+                 position: relative;
+                 display: inline-block;
+             }
+    
+             .tooltip-container .tooltip-text {
+                 visibility: hidden;
+                 width: 120px;
+                 background-color: black;
+                 color: #fff;
+                 text-align: center;
+                 border-radius: 6px;
+                 padding: 5px 0;
+                 position: absolute;
+                 z-index: 1;
+                 bottom: 125%; /* Position the tooltip above the button */
+                 left: 50%;
+                 margin-left: -60px; /* Center the tooltip */
+                 opacity: 0;
+                 transition: opacity 0.3s;
+             }
+    
+             .tooltip-container:hover .tooltip-text {
+                 visibility: visible;
+                 opacity: 1;
+             }
+             #judul {
+                margin-top: 40px;
+                margin-bottom: 40px;
+             }
+             .subjudul {
+                position: absolute; 
+                top: 70px; 
+                left: 50px;
+             }
+             .content-class{
+                height: auto; 
+                min-height: 360px;
+             }
+             #btn-filter {
+                width: 10%; 
+                margin-right: 5px;
+             }
+             #clearFliterBtn{
+                width: 10%;
+                margin-right: 5px;
+             }
+             #kode_barang {
+                border: 1px solid #ced4da; 
+                width: 100%; 
+                padding-left:22px;
+             }
+             #id_nama_barang {
+                border: 1px solid #ced4da; 
+                width: 100%; 
+                padding-left:22px;
+             }
+             #id_jenis {
+                background-color:  #f0f0f0"
+             }
+             #reload-icon {
+                display: none;
+                text-align: center; 
+                font-size: 30px;
+             }
+             #td-table {
+                border: 1px solid #d7d7d7; 
+                color: black;
+             }
+             #td2-table {
+                border: 1px solid #d7d7d7;
+             }
+             #td3-table {
+                border: 1px solid #d7d7d7; 
+                color: black;
+                max-width: 150px; 
+                text-overflow: ellipsis;
+             }
+             .td4-table {
+                border: 1px solid #d7d7d7; 
+                color: black;
+                max-width: 120px; 
+                text-overflow: ellipsis;
+             }
+             #barang-image {
+                width: 250px; 
+                height: auto;
+             }
+             #id-edit-button {
+                width: 35px; 
+                height: 38px; 
+                padding: 9px 10px;
+             }
+             #id-edit-button-failed {
+               width: 35px; 
+               height: 38px; 
+               padding: 9px 10px;
+            }
+             #id-reject-button {
+                width: 35px; 
+                height: 38px; 
+                padding: 9px 10px;
+             }
+             #id-delete-button {
+                width: 35px; 
+                height: 38px; 
+                padding: 9px 10px;
+             }
+             #div-kubikasi {
+                margin-top: 15px;
+             }
+             .modal-header {
+                padding-top: 30px;
+             }
+             .modal-title {
+                margin-right: 70px;
+             }
+             #div-select {
+                display: flex;
+                padding-top:30px; 
+                text-align:end;
+             }
+             #selecttambahButton {
+                margin-left: auto;
+             }
+             #div-edit-restok {
+                margin-top: 15px;
+             }
+             .overlay-class {
+                display: none;
+             }
