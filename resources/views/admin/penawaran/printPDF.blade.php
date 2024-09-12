@@ -267,7 +267,7 @@
                             <td  style="padding: 10px;color: #fff;"><b style="color: #fff;">No</b></td>
                             <td  style="padding: 10px;color: #fff;"><b style="color: #fff;">Kode</b></td>                  
                             <td  style="padding: 10px;color: #fff;"><b style="color: #fff;">Nama Barang</b></td>                  
-                            <td  style="padding: 10px;color: #fff;"><b style="color: #fff;">Price</b></td>                  
+                            <td  style="padding: 10px;color: #fff;"><b style="color: #fff;">Harga</b></td>                  
                         </tr>
                     </thead>
                     <tbody>

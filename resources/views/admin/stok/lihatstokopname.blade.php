@@ -1,4 +1,4 @@
-@extends('admin.templates')
+@extends('admin.templates_baru')
 @section('title')
 
 Opname Stok | PT. Maxipro Group Indonesia

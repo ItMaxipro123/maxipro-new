@@ -1,10 +1,12 @@
-@extends('admin.templates')
+@extends('admin.templates_baru')
 
 
 @section('title')
 FCL Container    | PT. Maxipro Group Indonesia
 @endsection
 @section('link')
+
+<link href="{{ asset('css/fcl.css') }}" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
 
@@ -181,13 +183,13 @@ FCL Container    | PT. Maxipro Group Indonesia
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-12">
-                               <a href="javascript:void(0)" onclick="tambahRestok(this)" name="tambahButton" class="btn btn-large btn-primary btn-tambah">Add FCL Container</a>
-
+                               <a href="javascript:void(0)" onclick="tambahFcl(this)" name="tambahButton" class="btn btn-large btn-primary btn-tambah">Add FCL Container</a>
+         
                                 <div class="d-flex justify-content-end">
 
                                   
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-info" style="width: 10%; margin-right: 5px;" id="openModalBtn">Filter</button>
+                                        <button type="button" class="btn btn-info" style="width: 10%; margin-right: 5px;" id="FilterBtn">Filter</button>
 
                                     </div>
                                     <div class="btn-group">
@@ -342,346 +344,10 @@ FCL Container    | PT. Maxipro Group Indonesia
                         </tbody>
                     </table>
                     
-                    <!-- modal tambah fcl -->
-                     <div class="col-sm-12" style="margin-top: 15px;">
-                        
-                        <div id="tabe-stok"></div>
-
-                        <div class="modal fade" id="tambahModal" tabindex="-1" role="dialog" aria-labelledby="tambahModal" aria-hidden="true">
-                           <div class="modal-dialog" role="document" style="max-width: 2200px;padding-left: 250px;">
-
-                                <div class="modal-content">
-                                    
-                                    <div class="modal-header">
-                                        
-                                       <h5 class="modal-title" id="exampleModalLabel">Tambah FCL Container</h5>
-
-                                    </div>
-                                    
-                                    <div class="modal-body">
-                                        
-                                        <form id="FormTambah">
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div style="position: relative; width: 100%;">
-                                                    <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Custom Kode</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div style="position: relative; width: 100%;">
-                                                        <input type="checkbox" id="customCodeCheckbox" class="styled customcode">
-                                                        <input type="hidden" name="modeadmin_tambah" value="0">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4" style="text-align: right;">
-                                                <a href="javascript:void(0)" onclick="importData(event)" name="importButton" class="btn btn-large btn-info btn-edit" style="width: 140px; height: 38px; padding: 9px 10px;">Import Data </a>
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div style="position: relative; width: 100%;">
-                                                    <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Invoice Number</label>
-                                                    <input type="number" class="form-control" name="invoice_no_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;" placeholder="AUTO" disabled>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div style="position: relative; width: 100%;">
-                                                    <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Contract Number</label>
-                                                    <input type="number" class="form-control" name="contract_no_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;" placeholder="AUTO" disabled>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div style="position: relative; width: 100%;">
-                                                    <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Packing Number</label>
-                                                    <input type="number" class="form-control" name="packing_no_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;" placeholder="AUTO" disabled>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-2">
-                                                    <div style="position: relative; width: 100%; margin-top:10px;">
-                                                        <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Database <span style="color: red;">(Wajib Diisi)</span></label>
-                                                        
-                                                        <select style="border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control database-tambah" id="database_tambah_id" name="database_tambah_name" required>
-                                                            <option value="">Database</option>
-                                                            <option value="PT">PT</option>
-                                                            <option value="UD">UD</option>
-                                                        </select>
-
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-10">
-                                                    <div class="form-group" style="margin-top:10px;">
-                                                        <label for="startDateTglRequest">Tanggal Request <span style="color: red;">(Wajib Diisi)</span></label>
-                                                        <input type="text" style="height:55px;" class="form-control custom-border" id="tgl_request_tambah" name="tgl_request" placeholder= "Pilih Tanggal" required >
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group" style="margin-bottom: 20px;margin-top: 10px;">
-                                                    <label class="col-lg-3 control-label" style="font-size: 15px;width: 100%">Supplier <span style="color: red;">(Wajib Diisi)</span></label>
-
-                                                    <select class="select select2 select-search form-control" id="supplier-tambah" name="tambah_supplier">
-                                                    <option value="">Supplier</option>
-                                                   
-                                                    
-                                                </select>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                        <div style="position: relative; width: 100%;">
-                                                            <label class="col-lg-3 control-label" style="font-size: 15px;width: 100%;width: 100%" for="">Nama Perusahaan <span style="color: red;">(Wajib Diisi)</span></label>
-                                                            <input type="text" class="form-control" name="company_name" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;" placeholder="Nama Perusahaan">
-                                                        </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div style="position: relative; width: 100%;">
-                                                        <label class="col-lg-3 control-label" style="font-size: 15px;width: 100%" for="">Alamat Perusahaan</label>
-                                                        <textarea type="text" class="form-control" name="address_company" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;" placeholder="Alamat Perusahaan"></textarea>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div style="position: relative; width: 100%;">
-                                                        <label class="col-lg-3 control-label" style="font-size: 15px;width: 100%" for="">Kota Perusahaan</label>
-                                                        <input type="text" class="form-control" name="city_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;" placeholder="Kota Perusahaan">
-                                                    </div>
-                                                </div>
-                                            </div>
+                    <div id="addFclContainer" style="display: none;" class="col-sm-12" style="margin-top: 15px;">
+                            
+                            <form action=""id="Formtambah"></form>
                     
-                                            <div style="position: relative; width: 100%;">
-                                                <label class="col-lg-3 control-label" style="font-size: 15px;" for="">No. Telp</label>
-                                                <input type="number" class="form-control" name="telp_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;width: 32%" placeholder="Telp. Perusahaan">
-                                            </div>
-
-                                            
-
-                                           
-
-
-                                        </form>
-
-                                        <form action="" class="form-horizontal" id="sendImportForm" method="get">
-                                            @csrf
-                                            <div style="margin-top:20px;position: relative; width: 100%;">
-                                                 <div id="content-container2"></div>
-                                                 <div id="content-container3"></div>
-                                             </div>
-                                        </form>
-
-                                        <form action="" class="form-horizontal" id="FormTambah2" method="get">
-                                            @csrf
-                                           
-
-                                            
-                                            
-                                            <div class="form-group" style="padding-top: 100px; padding-left: 20px;">
-                                                <h4>NOTES</h4>
-                                                <hr style="border: none; border-top: 1px solid #000; margin-top: 20px;">
-                                            </div>
-
-                                            <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                
-                                                <div class="row">
-                                                    <div style="padding-top: 15px;" class="col-md-1">
-                                                        <label for="kodebaranglabel">Incoterms</label>
-                                            
-                                                    </div>
-                                                    <div class="col-md-11" style="padding-right: 600px;">
-                                                        <select style="border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control incoterms-tambah" id="incoterms-tambah-id" name="incoterms_tambah">
-                                                            <option value="">Select Incoterms</option>
-                                                                <option value="FOB">FOB </option>
-                                                                <option value="CIF">CIF </option>
-                                                                <option value="EXWORK">EXWORK </option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                
-                                            </div>
-
-                                            <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                
-                                                <div class="row">
-                                                    <div style="padding-top: 10px;" class="col-md-1">
-                                                        <label for="kodebaranglabel">Location</label>
-                                            
-                                                    </div>
-                                                    <div class="col-md-11" style="padding-right: 600px;">
-                                                        <input type="text" class="form-control custom-border" style="border: 1px solid #ced4da;padding-left:10px;" id="location_id_tab" name="location_name_tab" placeholder="Location">
-                                                    </div>
-                                                </div>
-                                                
-                                            </div>
-
-                                            <div class="form-group" style="padding-top: 100px; padding-left: 20px;">
-                                                <h4>PAYMENT</h4>
-                                                <hr style="border: none; border-top: 1px solid #000; margin-top: 20px;">
-                                            </div>
-
-                                            <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                
-                                                <div class="row">
-                                                    <div style="padding-top: 15px;" class="col-md-1">
-                                                        <label for="kodebaranglabel">Bank Supplier</label>
-                                            
-                                                    </div>
-                                                    <div class="col-md-11" style="padding-right: 600px;">
-                                                        <select style="border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control banksupplier-tambah" id="banksupplier-tambah-id" name="banksupplier_edit">
-                                                                <option value="0">Pilih Bank Supplier</option>
-                                                            
-
-                                                                <option value=""></option>
-
-                                                            
-
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                
-                                            </div>
-
-                                            <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                
-                                                <div class="row">
-                                                    <div style="padding-top: 15px;" class="col-md-1">
-                                                        <label for="kodebaranglabel">Currency</label>
-                                            
-                                                    </div>
-                                                    <div class="col-md-11" style="padding-right: 600px;">
-                                                        <select style="border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control currency-tambah" id="currency-tambah-id" name="currency_tambah">
-                                                                <option value="0">Pilih Currency</option>
-                                                                 
-                                                                @foreach($Data['msg']['matauang'] as $index => $mt_uang)    
-                                                                <option value="{{ $mt_uang['id'] }}"> ({{ $mt_uang['simbol'] }}) {{ $mt_uang['kode'] }} - {{ $mt_uang['name'] }} </option>
-                                                                @endforeach
-                                                              
-                                                                
-                                                            
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                
-                                            </div>
-                
-                                            <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                
-                                                <div class="row">
-                                                    <div style="padding-top: 10px;" class="col-md-1">
-                                                        <label for="kodebaranglabel">Bank Name</label>
-                                            
-                                                    </div>
-                                                    <div class="col-md-11" style="padding-right: 600px;">
-
-
-                                                        <input type="text" class="form-control custom-border" id="bank_name_id_tab" name="bank_name_name_tab" style="border: 1px solid #ced4da; width: 100%; padding-left:10px;" placeholder="Bank Name">
-
-                                                    </div>
-                                                </div>
-                                                
-                                            </div>
-
-                                            <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                
-                                                <div class="row">
-                                                    <div style="padding-top: 10px;" class="col-md-1">
-                                                        <label for="kodebaranglabel">Bank Address</label>
-                                            
-                                                    </div>
-                                                    <div class="col-md-11" style="padding-right: 600px;">
-
-
-                                                        <input type="text" class="form-control custom-border" style="border: 1px solid #ced4da; width: 100%; padding-left:10px;" id="bankAddress_id_tab_tambah" name="bankAddress_name_tab_tambah" placeholder="Bank Address">
-
-                                                    </div>
-                                                </div>
-                                                
-                                            </div>
-
-                                            <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                
-                                                <div class="row">
-                                                    <div style="padding-top: 10px;" class="col-md-1">
-                                                        <label for="kodebaranglabel">Swift Code</label>
-                                            
-                                                    </div>
-                                                    <div class="col-md-11" style="padding-right: 600px;">
-
-
-                                                        <input type="text" class="form-control custom-border" style="border: 1px solid #ced4da; width: 100%; padding-left:10px;" id="swiftCode_id_tab_tambah" name="swiftCode_name_tab_tambah" placeholder="Swift Code">
-
-                                                    </div>
-                                                </div>
-                                                
-                                            </div>
-
-                                            <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                
-                                                <div class="row">
-                                                    <div style="padding-top: 10px;" class="col-md-1">
-                                                        <label for="kodebaranglabel">Account No</label>
-                                            
-                                                    </div>
-                                                    <div class="col-md-11" style="padding-right: 600px;">
-
-
-                                                        <input type="text" class="form-control custom-border" id="accountNo_id_tab_tambah" name="accountNo_name_tab_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left:10px;" placeholder="Account No">
-
-                                                    </div>
-                                                </div>
-                                                
-                                            </div>
-
-                                            <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                
-                                                <div class="row">
-                                                    <div style="padding-top: 10px;" class="col-md-1">
-                                                        <label for="kodebaranglabel">Beneficiary Name</label>
-                                            
-                                                    </div>
-                                                    <div class="col-md-11" style="padding-right: 600px;">
-
-
-                                                        <input type="text" class="form-control custom-border" id="beneficiaryName_id_tab_tambah" name="beneficiaryName_name_tab_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left:10px;"placeholder="Beneficiary Name">
-
-                                                    </div>
-                                                </div>
-                                                
-                                            </div>
-
-                                            <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                
-                                                <div class="row">
-                                                    <div style="padding-top: 10px;" class="col-md-1">
-                                                        <label for="kodebaranglabel" style="width: 100%;">Beneficiary Address</label>
-                                            
-                                                    </div>
-                                                    <div class="col-md-11" style="padding-right: 600px;">
-
-
-                                                        <input type="text" class="form-control custom-border" id="beneficiaryAddress_id_tab_tambah" name="beneficiaryAddress_name_tab_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left:10px;" placeholder="Beneficiary Address">
-
-                                                    </div>
-                                                </div>
-                                                
-                                            </div>
-
-                                            <div class="form-group" style="display: flex;padding-top:30px; text-align:end;">
-                                                <button type="button" id="submitButtonForm2" class="btn btn-primary" style="margin-left: auto;">Simpan</button>
-                                            </div>
-                                        </form>
-
-                                    </div>
-                                    <div class="modal-footer">
-                                        <!-- Tombol untuk menutup modal -->
-                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="window.location.href = '{{ route('admin.pembelian_fcl') }}'">Close</button>
-
-                                    </div>
-
-
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
                   
@@ -723,6 +389,7 @@ FCL Container    | PT. Maxipro Group Indonesia
             </div>
         </div>
     </div>
+
 </main>
 
 @endsection
@@ -757,7 +424,7 @@ FCL Container    | PT. Maxipro Group Indonesia
 
     //untuk membuat datatable
     $(document).ready(function() {
-        $('#tabe-stok').DataTable({
+        var table= $('#tabe-stok').DataTable({
 
             "dom": '<"top"lf>rt<"bottom"ip><"clear">', // Mengatur posisi elemen filter/search
             "language": { // Menyesuaikan teks placeholder
@@ -812,6 +479,7 @@ FCL Container    | PT. Maxipro Group Indonesia
                 $('.dataTables_filter input[type="search"]').attr('placeholder', 'Cari ...'); // Menyesuaikan placeholder
             }
         });
+        window.dataTableInstance = table;
     });
 
 </script>
@@ -1059,14 +727,14 @@ FCL Container    | PT. Maxipro Group Indonesia
 </script>
 <script>
     // Menangani peristiwa klik pada tombol "Filter"
-    document.getElementById('openModalBtn').addEventListener('click', function() {
+    document.getElementById('FilterBtn').addEventListener('click', function() {
         $('#exampleModal').modal('show'); // Menampilkan modal Filter
     });
 
 
    
     // Menangani klik pada tombol tambah
-    function tambahRestok(element) {
+    function tambahFcl(element) {
         event.preventDefault();
 
         $('#product-restok-tambah-filter').val('');
@@ -1076,35 +744,47 @@ FCL Container    | PT. Maxipro Group Indonesia
 
           }
 
-        $('#tambahModal').modal('show'); // Tampilkan modal
+          
+          var url = "{{ route('admin.pembelian_fcl') }}";
 
+          $.ajax({
+            url: url,
+            type: 'GET', // Menggunakan metode GET
+            data: {
+                menu: 'create',
+
+            },
+            success: function(response) {
+    
+                $('.btn-tambah').remove()
+          
+                if (window.dataTableInstance) {
+                        window.dataTableInstance.destroy();
+                    }
+                    $('#tabe-stok').remove()
+                    $('.radio-button-container').remove()
+                    $('#clearFilterBtn').remove()
+                    $('#FilterBtn').remove()
+                // Insert the response into the form
+                $('#Formtambah').html(response);
+
+                // Show the container that holds the form
+                $('#addFclContainer').show(); // Display the form container
+                
+            },
+            error: function(xhr, status, error) {
+                // Sembunyikan elemen overlay dengan efek fade-out jika terjadi kesalahan
+
+                // Handle error jika terjadi kesalahan
+                console.error(xhr.responseText);
+                return;
+            }
+        });
 
     }
     
-    //Untuk Menjumlahkan total kubik yang telah dicentang
-    function calculateTotalKubik() {
-        var checkboxes = document.querySelectorAll('.kubik-checkbox');
-        var totalKubik = 0;
-
-        checkboxes.forEach(function(checkbox) {
-            if (checkbox.checked) {
-                var kubikValue = parseFloat(checkbox.closest('tr').querySelector('.kubik-value').textContent);
-                totalKubik += kubikValue;
-
-            }
-        });
-        
-        document.getElementById('total-kubik').textContent = totalKubik;
-    }
-
-    //Untuk Mereset data input checkbox dan total kubik di modal hitung kubk
-    document.getElementById('tambahModal').addEventListener('hidden.bs.modal', function () {
-        var checkboxes = document.querySelectorAll('.kubik-checkbox'); //Inisiasi variabel yang mengambil value select dari class kubik-checkbox
-        checkboxes.forEach(function(checkbox) { //Untuk mengambil input checkbox sesuai urutan berdasarkan array
-            checkbox.checked = false; //Untuk menonaktifkan input checkbox
-        });
-        document.getElementById('total-kubik').textContent = 0; //menset nilai total-kubik menjadi 0
-    });
+  
+    
 
     //Membuka modal update
     function updateRestok(element) {

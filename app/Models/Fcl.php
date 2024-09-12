@@ -29,6 +29,30 @@ class Fcl extends Model
             return ['error' => $e->getMessage()];
         }
     }
+    public static function getimportBarang($teknisi_cookie,$id)
+    {
+        try {
+            $client = new Client(['verify' => false]);
+
+            $headers = [
+                'Cookie' => $teknisi_cookie
+            ];
+
+            $response = $client->request('POST', 'https://maxipro.id/TeknisiAPI/fcl_importbarang', [
+                'headers' => $headers,
+                'form_params' =>[
+                    'id_commercial'=>$id
+                ],
+            ]);
+            
+            $data = $response->getBody()->getContents();
+            // dd('data model',$data);
+            return json_decode($data, true);
+        } catch (\Exception $e) {
+            // Handle exception
+            return ['error' => $e->getMessage()];
+        }
+    }
 
     public static function getFclPembelianFilter($teknisi_cookie, $status, $tgl_awal, $tgl_akhir, $checkdatevalue,$nama_perusahaan)
     {

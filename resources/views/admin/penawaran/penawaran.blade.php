@@ -224,16 +224,48 @@ Penawaran    | PT. Maxipro Group Indonesia
                         <tbody>
                             @php
                             $num =1;
+                            
                             @endphp
+                          
                             <!-- Table data will be populated here -->
                             @foreach($Data['msg']['penawaran'] as $index => $data)
 
+                              
+
+                                @php
+                                    // Initialize the array to hold the IDs
+                                    $id_barang = [];
+                                    $barang_name =[];
+                                    $iddd=[];
+                                    // Collect all IDs from the detail array
+                                    foreach($data['detail'] as $detail) {
+                                        $id_barang[] = $detail['id'];
+                                        
+                                       
+                                    }
+                                    
+                                    
+                                    
+                                    
+                                    
+                                @endphp
+                                
                             <tr>
+                               
+                               
                                 <td>{{ $num }}</td>
                                 <td>{{ $data['code'] }}</td>
                                 <td>{{ $data['name'] }}</td>
                                 <td>{{ $data['company'] }}</td>
                                 <td>{{ $data['handphone'] }}</td>
+                            
+                                <td>
+                                @foreach($Data['msg']['detail_penawaran'] as $data2)
+                                    @if($data2['id_penawaran'] == $data['id'])
+                                        {{ $data2['name'] }} <br>
+                                    @endif
+                                @endforeach
+                                </td>
                                   <td>{{ $data['email'] }}</td>
                                 @if($data['id_account']===1)
                                 <td>Rekening UD</td>
@@ -245,7 +277,7 @@ Penawaran    | PT. Maxipro Group Indonesia
                                 
                                 <td>
                                     <a href="javascript:void(0)" onclick="updatePenawaran(this)" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-secondary btn-edit">Edit</a>
-                                     <a href="{{ route('admin.detailview_penawaran_filter', ['id' => $data['id']]) }}" class="btn btn-large btn-info btn-detail">View</a>
+                                     <a href="{{ route('admin.printPDF_filter', ['id' => $data['id']]) }}" class="btn btn-large btn-info btn-detail">View</a>
                                      <a href="{{ route('admin.printPDF_filter', ['id' => $data['id']]) }}" class="btn btn-large btn-danger btn-pdf">Export PDF</a>
                                    <a href="javascript:void(0)" onclick="deletePenawaran(this)" data-id="{{ $data['id'] }}" name="{{ $data['name'] }}" class="btn btn-large btn-primary btn-delete">Delete</a>
                                 
@@ -350,7 +382,7 @@ Penawaran    | PT. Maxipro Group Indonesia
                                                     <div class="form-group" style="display: flex; align-items: center; margin-top:50px; margin-bottom: 20px;">
                                                                 <label class="col-lg-3 control-label" style="font-size: 15px;">Status PPN:</label>
                                                                 <div style="position: relative; width: 100%;">
-                                                                  <input type="checkbox" id="checkppn_tambah" name="ppn_tambah" value="1" style="transform: scale(1.5);">
+                                                                  <input type="checkbox" id="checkppn_tambah" name="ppn_tambah" value="1" style="transform: scale(1.5);"checked>
 
 
                                                               </div>
@@ -377,7 +409,7 @@ Penawaran    | PT. Maxipro Group Indonesia
                                                         <div style="position: relative; width: 100%;">
 
                                                            
-                                                            <textarea id="keteranganTextAreaTambah" name="text_bottom_tambah" class="form-control" placeholder="Keterangan:&#10;Pembayaran Maxipro ke Rekening:&#10;&#10;Bank BCA&#10;0104 300 100&#10;&#10;Stephen Santoso" name="text_bottom"style="border: 1px solid #ced4da; width: 100%; padding-left:20px; height: 190px;"></textarea>
+                                                            <textarea id="keteranganTextAreaTambah" name="text_bottom_tambah" class="form-control" placeholder="Keterangan:&#10;Pembayaran Maxipro ke Rekening:&#10;Bank BCA&#10;0104 300 100&#10;Stephen Santoso" name="text_bottom"style="border: 1px solid #ced4da; width: 100%; padding-left:20px; height: 9em ;" disabled></textarea>
 
 
                                                         </div>
@@ -483,13 +515,13 @@ Penawaran    | PT. Maxipro Group Indonesia
             var selectedValue = this.value;
             switch (selectedValue) {
                 case '1':
-                    keteranganTextAreaTambah.placeholder = 'Keterangan:\n\nPembayaran Maxipro ke Rekening:\n\nBank BCA\n0104 300 100\n\nStephen Santoso';
+                    keteranganTextAreaTambah.placeholder = 'Keterangan:\nPembayaran Maxipro ke Rekening:\nBank BCA\n0104 300 100\nStephen Santoso';
                     break;
                 case '2':
-                    keteranganTextAreaTambah.placeholder = 'Keterangan:\n\nPembayaran Maxipro ke Rekening:\n\nBank BCA\n0103 800 100\n\nPT Maxipro Group Indonesia';
+                    keteranganTextAreaTambah.placeholder = 'Keterangan:\nPembayaran ke Rekening:\nBank BCA\n0103 800 100\nPT Maxipro Group Indonesia';
                     break;
                 case '3':
-                    keteranganTextAreaTambah.placeholder = 'Keterangan:\n\nPembayaran Maxipro ke Rekening:\n\nBank BCA\n0108 800 600\n\nStephen Santoso';
+                    keteranganTextAreaTambah.placeholder = 'Keterangan:\nPembayaran Maxipro ke Rekening:\nBank BCA\n0108 800 600\nStephen Santoso';
                     break;
                
             }
@@ -725,6 +757,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 {
                     data: 'handphone',
                     title: 'No Handphone'
+                },
+                {
+                    data: 'barang',
+                    title: 'Barang'
                 },
                 {
                     data: 'email',

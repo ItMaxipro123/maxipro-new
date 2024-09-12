@@ -9,8 +9,8 @@
 <body>
     <div class="container">
         <h1>Access Denied</h1>
-        <p>{{ $message ?? 'You do not have permission to access this page.' }}</p>
-        <a href="{{ route('admin.dashboard') }}">Go to Dashboard</a>
+        <p>{{ $message ?? 'Halaman Tidak Diizinkan, Anda Masih Belum Login.' }}</p>
+        <a href="{{ route('admin.dashboard') }}">Go to Log In</a>
     </div>
 </body>
 

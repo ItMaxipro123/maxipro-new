@@ -66,7 +66,7 @@
         <label class="col-lg-3 control-label" style="font-size: 15px;">Supplier</label>
      
         <select class="select select2 select-search form-control" id="product-supplier-edit-filter" name="edit_supplier">
-            
+            <option value="">Pilih Supplier</option>
             @foreach($Data['msg']['supplier'] as $index => $supplier)
             <option value="{{ $supplier['id'] }}" {{ $Data['msg']['restok']['id_supplier'] == $supplier['id'] ? 'selected' : ''}} >{{ $supplier['name'] }}</option>
             @endforeach

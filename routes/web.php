@@ -126,6 +126,10 @@ Route::prefix('admin')->group(function () {
 
     //Feature Pembelian Order Pembelian
     Route::get('data_orderpembelian', [AdminController::class, 'pembelian_order_pembelian'])->name('admin.pembeliaan_orderpembelian');
+    
+    Route::get('data_orderpembelian_printpdf', [AdminController::class, 'pembelian_print_pdfpo_order_pembelian'])->name('admin.pembelian_print_pdfpo_order_pembelian');
+    
+    Route::get('data_vieworderpembelian_printpdf', [AdminController::class, 'processData'])->name('admin.processData');
 
     Route::get('data_orderpembelian_filter', [AdminController::class, 'pembelian_order_pembelian_filter'])->name('admin.pembeliaan_orderpembelian_filter');
 
@@ -161,6 +165,8 @@ Route::prefix('admin')->group(function () {
     
     Route::get('data_addcomercialinvoice', [AdminController::class, 'pembelian_add_comercial_invoice'])->name('admin.pembelian_add_comercial_invoice');
     
+    Route::get('data_selectcategorycomercialinvoice', [AdminController::class, 'pembelian_selectcategory_comercial_invoice'])->name('admin.pembelian_selectcategory_comercial_invoice');
+    
    
     //Feature Pembelian LCL
     Route::get('data_lclpembelian', [AdminController::class, 'pembelian_lcl'])->name('admin.pembelian_lcl');
@@ -170,7 +176,8 @@ Route::prefix('admin')->group(function () {
     Route::get('data_lclpembelianimportdata', [AdminController::class, 'pembelian_lclimport'])->name('admin.pembelian_lclimport');
     
     Route::get('data_lclimportbarang',[AdminController::class,'pembelian_lclimportbarang'])->name('admin.pembelian_lclimportbarang');
-
+    
+    Route::get('data_tambahlclpembelian', [AdminController::class, 'pembelian_tambah_lcl'])->name('admin.pembelian_tambah_lcl');
     // Route::get('data_lclbarang', [AdminController::class, 'pembelian_lclbarang'])->name('admin.pembelian_lclbarang');
 
 

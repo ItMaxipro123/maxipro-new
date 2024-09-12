@@ -41,11 +41,11 @@
         padding-left:22px;
         
     }
-    #reload-icon{
-        display: none; 
+    #reload-icon {
+        display: none;
         text-align: center; 
         font-size: 30px;
-    }
+     }
 
     #td-1{
         border: 1px solid #d7d7d7; 
@@ -54,7 +54,7 @@
     #td-2{
        border: 1px solid #d7d7d7;
         color: black;
-        max-width: 70px; 
+        max-width: 7em; 
        text-overflow: ellipsis;
        
        
@@ -63,7 +63,7 @@
         border: 1px solid #d7d7d7; 
         color: black; 
         text-align: center;
-        max-width: 70px;
+        max-width: 7em;
         text-overflow: ellipsis;
     }
     #span-on-td{

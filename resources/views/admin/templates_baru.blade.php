@@ -34,7 +34,7 @@
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap4.min.css">
   @yield('link')
 
-  <script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script>
+  
   <script src="../assets/js/jquery.3.5.1.min.js"></script>
   @yield('scriptatas')
   <link href="{{ asset('css/template_baru.css') }}" rel="stylesheet">
@@ -497,11 +497,20 @@
                 </div>
               </a>
             </li>
+          
             <li class="nav-item">
                <a href="{{ route('admin.pembelian_comercial_invoice') }}" class="nav-link text-white {{ Request::is('admin/data_comercialinvoice') || Request::is('admin/data_comercialinvoice_filter') ? 'active bg-gradient-primary' : '' }}">
                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i style="color:black" class="fas fa-columns"></i>
                   <span class="nav-link-text ms-1" style="color:black;">Commercial Invoice</span>
+                </div>
+              </a>
+            </li>
+            <li class="nav-item">
+               <a href="{{ route('admin.pembelian_lcl') }}" class="nav-link text-white { Request::is('admin/data_lclpembelian') ? 'active bg-gradient-primary' : '' }}">
+                <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                  <i style="color:black" class="fas fa-wallet"></i>
+                  <span class="nav-link-text ms-1" style="color:black;">Local</span>
                 </div>
               </a>
             </li>

@@ -29,6 +29,56 @@ class ComercialInvoice extends Model
             return ['error' => $e->getMessage()];
         }
     }
+    public static function getSelectCategoryComercialInvoice($teknisi_cookie,$id,$selected_value)
+    {
+        try {
+            $client = new Client(['verify' => false]);
+
+            $headers = [
+                'Cookie' => $teknisi_cookie
+            ];
+
+            $response = $client->request('POST', 'https://maxipro.id/TeknisiAPI/comercial_invoice_select_category' , [
+                'form_params' => [
+                    'id_commercial' =>$id,
+                    'selected_value'=>$selected_value
+                ],
+                'headers' => $headers,
+            ]);
+            
+            $data = $response->getBody()->getContents();
+            // dd($data);
+         
+            return json_decode($data, true);
+        } catch (\Exception $e) {
+            // Handle exception
+            return ['error' => $e->getMessage()];
+        }
+    }
+    public static function getComercialInvoiceAdd($teknisi_cookie,$id)
+    {
+        // dd($id,'a');
+        try {
+            $client = new Client(['verify' => false]);
+
+            $headers = [
+                'Cookie' => $teknisi_cookie
+            ];
+
+            $response = $client->request('GET', 'https://maxipro.id/TeknisiAPI/comercial_invoice', [
+                'headers' => $headers,
+
+            ]);
+
+            $data = $response->getBody()->getContents();
+            
+            
+            return json_decode($data, true);
+        } catch (\Exception $e) {
+            // Handle exception
+            return ['error' => $e->getMessage()];
+        }
+    }
 
     public static function getComercialInvoiceFilter($teknisi_cookie, $status, $tgl_awal, $tgl_akhir, $checkdatevalue, $nama_perusahaan)
     {
@@ -779,8 +829,7 @@ class ComercialInvoice extends Model
             }
 
             $formParams = array_merge($formParams, $newEnglishNames);
-
-      
+ 
             $response = $client->request('POST', 'https://maxipro.id/TeknisiAPI/comercial_invoice_tambah', [
                 'form_params' => $formParams,
                 'headers' => $headers,

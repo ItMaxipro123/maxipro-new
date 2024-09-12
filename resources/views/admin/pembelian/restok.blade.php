@@ -187,7 +187,8 @@ Pembeliaan    | PT. Maxipro Group Indonesia
                             <td style="border: 1px solid #d7d7d7; color: black;">{{ $formattedDate }}</td>
                         
                             <td style="border: 1px solid #d7d7d7; color: black;"><a href="javascript:void(0)" onclick="gambarRestok(this, '{{ $gambar }}')" data-id="{{ $data['id'] }}" name="gambarButton">{{ $data['new_kode'] }}</a></td>
-                            <td style="border: 1px solid #d7d7d7; color: black;">{{ $data['nama_barang'] }}</td>
+                            <td style="border: 1px solid #d7d7d7; color: black;" id="data-nama-barang">{{ $data['nama_barang'] }}</td>
+                          
                             <td style="border: 1px solid #d7d7d7; color: black;">{{ $data['jml_permintaan'] }}</td>
                             <td id="td-table"> <a href="javascript:void(0)" onclick="modalRestok(this)" data-new-code="{{ $data['new_kode'] }}" data-nama-barang="{{ $data['nama_barang'] }}"> {{ $data['last_stok'] }} </a> </td>
                             @php
@@ -323,7 +324,7 @@ Pembeliaan    | PT. Maxipro Group Indonesia
                             <div class="modal-dialog modal-xl" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="mutasistokModallabel">Mutasi Stok</h5>
+                                        <h5 class="modal-title" id="mutasistokModallabelCode">Mutasi Stok </h5>
                                         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -858,11 +859,15 @@ Pembeliaan    | PT. Maxipro Group Indonesia
     }
     function modalRestok(element){
         event.preventDefault();
-        console.log('masuk modal');
+        // console.log('masuk modal');
 
+        //mengambil nama barang menggunakan class di datatabel
         var nama_barang = element.getAttribute('data-nama-barang');
+
+        //mengambil new code menggunakan class di datatabel
         var new_code = element.getAttribute('data-new-code');
         
+        //mengirim nama barang dan new code untuk mengambil response
         $.ajax({
             url: '{{ route('admin.pembelian_orderpembelian_stokproduct') }}',
             type: 'GET',
@@ -871,7 +876,7 @@ Pembeliaan    | PT. Maxipro Group Indonesia
                 name_product: nama_barang 
             },
             success: function(response) {
-                console.log('response', response);
+                // console.log('response', response);
 
                 var detailPenjualan = response.msg.detailProduct;
                 var detailPenerimaan = response.msg.penerimaandetail;
@@ -963,7 +968,7 @@ Pembeliaan    | PT. Maxipro Group Indonesia
                     '</select>' +
                     '</div>' +
                     '<div class="col-md-2">' +
-                    '<button type="button" class="btn btn-info" id="filterMutasi">Save</button>' +
+                    '<button type="button" class="btn btn-info" id="filterMutasi">Filter</button>' +
                     '</div>';
                 divTahunFilter.html(divCol);
 
@@ -998,7 +1003,8 @@ Pembeliaan    | PT. Maxipro Group Indonesia
                 }
 
                 $('#mutasistokModal').modal('show');
-
+              
+                $('#mutasistokModallabelCode').text('Mutasi Stok ' +'('+new_code+ ') '+nama_barang)
                 $('#filterMutasi').on('click', function() {
                     var bulanSelect = $('#bulanSelect').val();
                     var tahunSelect = $('#tahunSelect').val();

@@ -20,6 +20,10 @@ document.getElementById('customCodeCheckbox').addEventListener('click', function
  });
 
 $(document).ready(function() {
+    $('#importData').on('click', function() {
+        console.log('modal impor data');
+        $('#importDataModal').modal('show');
+    });
     // Initialize Choices.js for each select element
     $('.database-tambah').each(function() {
         const choices = new Choices(this, {

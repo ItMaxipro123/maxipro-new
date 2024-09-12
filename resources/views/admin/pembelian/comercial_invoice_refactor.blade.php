@@ -7,6 +7,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
 @section('link')
 <link href="{{ asset('css/comercialinvoice.css') }}" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" />
 @endsection
 @section('style')
 
@@ -32,7 +33,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-12">
-              
+                                <a href="javascript:void(0)" id="tambahComercialLocal" name="tambahButton" class="btn btn-large btn-primary btn-tambah">Add Commercial Invoice</a>
                                 <div class="d-flex justify-content-end">
 
                                   
@@ -132,21 +133,47 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                     <div id="reload-icon">
                         <i class="fas fa-sync-alt"></i> Reloading...
                     </div>
-                    @if($Data['msg']['total_rows_penjualan'] >$Data['msg']['total_rows']  && $Data['msg']['requested_check'] =='requested') 
-                        <!-- <p>Masuk</p>     -->
-                        @php
-                            $num = 1;
-                            $listorderData = $Data['msg']['listorder'];
-                            $penjualanData = $Data['msg']['penjualan'];
-                            $maxLength = max(count($listorderData), count($penjualanData));
-                        @endphp
-
+                  
                         <table id="tabe-stok">
                             <thead>
-                                <!-- Add table headers if needed -->
+                            
                             </thead>
                             <tbody>
-                                @for ($i = 0; $i < $maxLength; $i++)
+                                @php
+                                $num =1;
+                                $maxLengthSupplier = $Data['msg']['row_counts_supplier'];
+                                $maxLengthPenjualan = $Data['msg']['total_rows_penjualan'];
+                                $sumTot = $maxLengthSupplier + $maxLengthPenjualan;
+                                $listSupplier = $Data['msg']['grouped_by_supplier'];
+                                $penjualanData = $Data['msg']['penjualan'];
+                                @endphp
+                            @if($Data['msg']['requested_check'] == 'requested')    
+                                  @for ($i = 0; $i < $sumTot; $i++)
+                                    @php
+                                        // Ambil nama supplier berdasarkan indeks
+                                        $supplierName = array_keys($listSupplier)[$i] ?? null;
+                                        $details = $supplierName ? $listSupplier[$supplierName] : [];
+                                    @endphp
+
+                                    @if ($supplierName)
+                                        <tr id="color-list-order">
+                                            <td>{{ $num }}</td>
+                                            <td id="td-2"></td>
+                                            <td id="td-2"></td>
+                                            <td id="td-2">{{ $supplierName }}</td>
+                                            <td id="td-2"></td>
+                                            <td id="td-2">{{ $details[0]['supplier_telp'] }}</td>
+                                            <td id="td-2"></td>
+                                            <td id="td-2"></td>
+                                            <td id="td-2"></td>
+                                            <td>
+                                                <a href="{{ route('admin.pembelian_add_comercial_invoice', ['name' => $supplierName]) }}" class="btn btn-info" style="width: 35px; height: 38px; padding: 9px 10px;" title="Add Comercial">+</a>
+                                            </td>
+                                        </tr>
+                                        @php
+                                            $num++;
+                                        @endphp
+                                    @endif
                                     @if (isset($penjualanData[$i]))
                                         @php
                                         $data = $penjualanData[$i];
@@ -180,7 +207,17 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                             @endphp
                                             <td id="td-1">{{ $data['supplier']['telp'] }}</td>
                                             <td id="td-1">{{ $data['matauang']['simbol'] }} {{ $data['matauang']['kode'] == 'USD' ? ($total_usd + $data['freight_cost'] + $data['insurance']) : ($total + $data['freight_cost'] + $data['insurance']) }}</td>
-                                            <td id="td-3"><span id="span-on-td">{{ $data['category'] }}</span></td>
+                                            
+                                            
+                                            <td id="td-3">   
+                                                <select id="select_category_{{ $i }}" class="form-control select_select_category" data-id_commercial="{{ $data['id'] }}" style="background-color: white">
+                                                    <option value="">Pilih Kategori</option>
+                                                    <option value="fcl" {{ $data['category_comercial_invoice'] == 'fcl' ? 'selected' : '' }}>FCL</option>
+                                                    <option value="lcl" {{ $data['category_comercial_invoice'] == 'lcl' ? 'selected' : '' }}>LCL</option>
+                                                    
+                                                </select>
+                                            </td>
+                                           
                                             <td id="td-2">
                                                 @if ($data['status'] == 'requested')
                                                 <a href="javascript:void(0)" onclick="updateComercialInvoice(this)" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-info btn-edit" style="width: 35px; height: 38px; padding: 9px 10px;" title="Edit"><i class="fas fa-edit"></i></a>
@@ -190,233 +227,84 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                                 <a href="javascript:void(0)" onclick="rejectOrderPembelian(this)" data-id="{{ $data['id'] }}" name="{{ $data['invoice_no'] }}" class="btn btn-large btn-info btn-danger" style="width: 35px; height: 38px; padding: 9px 10px;" title="Reject Order"><i class="fas fa-times"></i></a>
                                                 <a href="javascript:void(0)" onclick="deleteOrderPembelian(this)" data-id="{{ $data['id'] }}" name="{{ $data['invoice_no'] }}" class="btn btn-large btn-info btn-danger" style="width: 35px; height: 38px; padding: 9px 10px;" title="Delete"><i class="fas fa-trash-alt"></i></a>
                                             </td>
-                                        </tr>
-                                        @php
-                                        $num++;
-                                        @endphp
-                                    @endif
-
-                                    @if (isset($listorderData[$i]))
-                                        @php
-                                        $data_listorder = $listorderData[$i];
-                                        \Carbon\Carbon::setLocale('id'); // Set locale ke Bahasa Indonesia
-                                        $formattedDateListOrder = \Carbon\Carbon::parse($data_listorder['tgl_request'])->translatedFormat('d F Y');
-                                        @endphp
-                                        <tr id="color-list-order">
-                                            <td id="td-1">{{ $num }}</td>
-                                            <td id="td-2">{{ $formattedDateListOrder }}</td>
-                                            <td id="td-2"></td>
-                                            <td id="td-2">{{ $data_listorder['supplier_name'] }}</td>
-                                            <td id="td-2">{{ $data_listorder['supplier_company'] }}</td>
-                                            <td id="td-2">{{ $data_listorder['supplier_telp'] }}</td>
-                                            
-                                            
-                                            <td id="td-1"></td>
-                                            <td id="td-3"></td>
-                                            <td id="td-2">
-                                                <a href="javascript:void(0)" onclick="updateComercialInvoice(this)" name="editButton" class="btn btn-large btn-info btn-edit" style="width: 35px; height: 38px; padding: 9px 10px;" title="Edit"><i class="fas fa-edit"></i></a>
+                                            <td>
                                             </td>
                                         </tr>
                                         @php
                                         $num++;
                                         @endphp
                                     @endif
-                                @endfor
-                            </tbody>
-                        </table>
-                    @elseif($Data['msg']['total_rows_penjualan'] < $Data['msg']['total_rows'] && $Data['msg']['requested_check'] =='requested')      
-                     
-                        @php
-                            $num = 1;
-                            $listorderData = $Data['msg']['listorder'];
-                            $penjualanData = $Data['msg']['penjualan'];
-                            $maxLength = max(count($listorderData), count($penjualanData));
-                        @endphp
-
-                        <table id="tabe-stok">
-                            <thead>
-                     
-                            </thead>
-                            <tbody>
-                                @for ($i = 0; $i < $maxLength; $i++)
-                                    @if (isset($listorderData[$i]))
-                                        @php
-                                        $data_listorder = $listorderData[$i];
-                                        \Carbon\Carbon::setLocale('id'); // Set locale ke Bahasa Indonesia
-                                        $formattedDateListOrder = \Carbon\Carbon::parse($data_listorder['tgl_request'])->translatedFormat('d F Y');
-                                        @endphp
-                                        <tr id="color-list-order">
-                                            <td id="td-1">{{ $num }}</td>
-                                            <td id="td-2">{{ $formattedDateListOrder }}</td>
-                                            <td id="td-2"></td>
-                                            <td id="td-2">{{ $data_listorder['supplier_name'] }}</td>
-                                            <td id="td-2">{{ $data_listorder['supplier_company'] }}</td>
-                                            <td id="td-2">{{ $data_listorder['supplier_telp'] }}</td>
-                                            
-                                            
-                                            <td id="td-1"></td>
-                                            <td id="td-3"></td>
-                                            <td id="td-2"></td>
-                                                
-                                            <td id="td-2">
-                                                <a href="{{ route('admin.pembelian_add_comercial_invoice', ['id' => $data_listorder['id']]) }}" class="btn btn-info" style="width: 35px; height: 38px; padding: 9px 10px;" title="Add Comercial">
-                                                 
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        @php
-                                        $num++;
-                                        @endphp
-                                    @endif
-
+                                  @endfor
+                            @else
+                                @for ($i = 0; $i < $maxLengthPenjualan; $i++)
                                     @if (isset($penjualanData[$i]))
-                                        @php
-                                        $data = $penjualanData[$i];
-                                        \Carbon\Carbon::setLocale('id'); // Set locale ke Bahasa Indonesia
-                                        $formattedDate = \Carbon\Carbon::parse($data['date'])->translatedFormat('d F Y');
-                                        $rowStyle = '';
-                                        if ($data['status'] == 'requested') {
-                                            $rowStyle = 'background-color: #fff17a;';
-                                        } elseif ($data['status'] == 'process') {
-                                            $rowStyle = 'background-color: #97ebfb;';
-                                        } elseif ($data['status'] == 'complete') {
-                                            $rowStyle = 'background-color: #6cf670;';
-                                        } elseif ($data['status'] == 'reject') {
-                                            $rowStyle = 'background-color: #feb3aa;';
-                                        }
-                                        @endphp
-                                        
-                                        <tr style="{{ $rowStyle }}">
-                                            <td id="td-1">{{ $num }}</td>
-                                            <td id="td-2">{{ $formattedDate }}</td>
-                                            <td id="td-2">INV-{{ $data['invoice_no'] }}</td>
-                                            <td id="td-2">{{ $data['supplier']['name'] }}</td>
-                                            <td id="td-2">{{ $data['supplier']['company'] }}</td>
                                             @php
-                                            $total = 0;
-                                            $total_usd = 0;
-                                            foreach ($data['detail'] as $index_detail => $result) {
-                                                $total += $result['total_price_without_tax'];
-                                                $total_usd += $result['total_price_usd'];
+                                            $data = $penjualanData[$i];
+                                            \Carbon\Carbon::setLocale('id'); // Set locale ke Bahasa Indonesia
+                                            $formattedDate = \Carbon\Carbon::parse($data['date'])->translatedFormat('d F Y');
+                                            $rowStyle = '';
+                                            if ($data['status'] == 'requested') {
+                                                $rowStyle = 'background-color: #fff17a;';
+                                            } elseif ($data['status'] == 'process') {
+                                                $rowStyle = 'background-color: #97ebfb;';
+                                            } elseif ($data['status'] == 'complete') {
+                                                $rowStyle = 'background-color: #6cf670;';
+                                            } elseif ($data['status'] == 'reject') {
+                                                $rowStyle = 'background-color: #feb3aa;';
                                             }
                                             @endphp
-                                            <td id="td-1">{{ $data['supplier']['telp'] }}</td>
-                                            <td id="td-1">{{ $data['matauang']['simbol'] }} {{ $data['matauang']['kode'] == 'USD' ? ($total_usd + $data['freight_cost'] + $data['insurance']) : ($total + $data['freight_cost'] + $data['insurance']) }}</td>
-                                            <td id="td-3"><span id="span-on-td">{{ $data['category'] }}</span></td>
-                                            <td id="td-2">
-                                                @if ($data['status'] == 'requested')
-                                                <a href="javascript:void(0)" onclick="updateComercialInvoice(this)" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-info btn-edit" style="width: 35px; height: 38px; padding: 9px 10px;" title="Edit"><i class="fas fa-edit"></i></a>
-                                                @else
-                                                <a href="javascript:void(0)" onclick="updateRestokFailed(this); return false;" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-info btn-edit" style="width: 35px; height: 38px; padding: 9px 10px;" title="Edit"><i class="fas fa-edit"></i></a>
-                                                @endif
-                                                <a href="javascript:void(0)" onclick="rejectOrderPembelian(this)" data-id="{{ $data['id'] }}" name="{{ $data['invoice_no'] }}" class="btn btn-large btn-info btn-danger" style="width: 35px; height: 38px; padding: 9px 10px;" title="Reject Order"><i class="fas fa-times"></i></a>
-                                                <a href="javascript:void(0)" onclick="deleteOrderPembelian(this)" data-id="{{ $data['id'] }}" name="{{ $data['invoice_no'] }}" class="btn btn-large btn-info btn-danger" style="width: 35px; height: 38px; padding: 9px 10px;" title="Delete"><i class="fas fa-trash-alt"></i></a>
-                                            </td>
-                                            <td id="td-2"></td>
-                                        </tr>
-                                        @php
-                                        $num++;
-                                        @endphp
-                                    @endif
-                                @endfor
-                            </tbody>
-                        </table>
-
-                    @else
-                         
-                        <table id="tabe-stok">
-                            <thead>
-                                <!-- Add table headers if needed -->
-                            </thead>
-                            <tbody>
-                                @php
-                                $num = 1;
-                                @endphp
-                                <!-- Table data will be populated here -->
-                                @foreach($Data['msg']['penjualan'] as $index => $data)
-                                @php
-                                \Carbon\Carbon::setLocale('id'); // Set locale ke Bahasa Indonesia
-                                $formattedDate = \Carbon\Carbon::parse($data['date'])->translatedFormat('d F Y');
-                                $rowStyle = '';
-                                if ($data['status'] == 'requested') {
-                                    $rowStyle = 'background-color: #fff17a;';
-                                } elseif ($data['status'] == 'process') {
-                                    $rowStyle = 'background-color: #97ebfb;';
-                                }
-                                elseif ($data['status'] == 'complete') {
-                                    $rowStyle = 'background-color: #6cf670;';
-                                }
-                                elseif ($data['status'] == 'reject') {
-                                    $rowStyle = 'background-color: #feb3aa;';
-                                }                              
-                                @endphp
-                                    <tr style="{{ $rowStyle }}">
-                                        
-                                        <td id="td-1">{{ $num }}</td>
-                                        <td id="td-2">{{ $formattedDate }}</td>
-                                        
-                                        <td id="td-2">INV-{{ $data['invoice_no'] }}</td>
-                                        <td id="td-2">{{ $data['supplier']['name'] }}</td>
-                                        <td id="td-2">{{ $data['supplier']['company'] }}</td>
-                                        @php
-                                            $total        = 0;
-
-                                            $total_usd    = 0;
-
-                                            foreach($data['detail'] as $index_detail => $result)
-                                            {
-                                                $total      = $total + $result['total_price_without_tax'];
-
                                             
-                                                $total_usd  = $total_usd + $result['total_price_usd'];
-                                            }
-                                        @endphp
-                                        <td id="td-1">{{ $data['supplier']['telp'] }}</td>
-                                        <td id="td-1">{{ $data['matauang']['simbol'] }} {{$data['matauang']['kode'] == 'USD' ? ($total_usd + $data['freight_cost'] + $data['insurance']) : ($total + $data['freight_cost'] + $data['insurance'])}}</td>
-                                        
-                                    
-                                        
-                                        <td id="td-3">
-                                            <span id="span-on-td">{{ $data['category'] }}</span>
-                                        </td>
-
-
-                                        <td id="td-2">
-                                            @if($data['status'] == 'requested')
-                                            <a href="javascript:void(0)" onclick="updateComercialInvoice(this)" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-info btn-edit" style="width: 35px; height: 38px; padding: 9px 10px;"title="Edit"> <i class="fas fa-edit"></i></a>
+                                            <tr style="{{ $rowStyle }}">
+                                                <td id="td-1">{{ $num }}</td>
+                                                <td id="td-2">{{ $formattedDate }}</td>
+                                                <td id="td-2">INV-{{ $data['invoice_no'] }}</td>
+                                                <td id="td-2">{{ $data['supplier']['name'] }}</td>
+                                                <td id="td-2">{{ $data['supplier']['company'] }}</td>
+                                                @php
+                                                $total = 0;
+                                                $total_usd = 0;
+                                                foreach ($data['detail'] as $index_detail => $result) {
+                                                    $total += $result['total_price_without_tax'];
+                                                    $total_usd += $result['total_price_usd'];
+                                                }
+                                                @endphp
+                                                <td id="td-1">{{ $data['supplier']['telp'] }}</td>
+                                                <td id="td-1">{{ $data['matauang']['simbol'] }} {{ $data['matauang']['kode'] == 'USD' ? ($total_usd + $data['freight_cost'] + $data['insurance']) : ($total + $data['freight_cost'] + $data['insurance']) }}</td>
+                                                   
+                                            @if(!$data['fcl'])
+                                            <td id="td-3">LCL</td>
                                             @else
-                                            <a href="javascript:void(0)" onclick="updateRestokFailed(this); return false;" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-info btn-edit"style="width: 35px; height: 38px; padding: 9px 10px;"title="Edit"><i class="fas fa-edit"></i></a>
+                                            <td id="td-3">FCL</td>
                                             @endif
-                                            <a href="javascript:void(0)" 
-                                            onclick="rejectOrderPembelian(this)" 
-                                            data-id="{{ $data['id'] }}" 
-                                            name="{{ $data['invoice_no'] }}" 
-                                            class="btn btn-large btn-info btn-danger" 
-                                            style="width: 35px; height: 38px; padding: 9px 10px;" 
-                                            title="Reject Order">
-                                            <i class="fas fa-times"></i>
-                                            </a>
-                                            <a href="javascript:void(0)" onclick="deleteOrderPembelian(this)" data-id="{{ $data['id'] }}" name="{{ $data['invoice_no'] }}" class="btn btn-large btn-info btn-danger" style="width: 35px; height: 38px; padding: 9px 10px;" 
-                                            title="Delete"><i class="fas fa-trash-alt"></i></a>
-
-                                        </td>
-                                    </tr>
-                             
-
-                                @php
-                                $num++;
-                                @endphp
-                                @endforeach
+                                                
+                                                <td id="td-2">
+                                                    @if ($data['status'] == 'requested')
+                                                    <a href="javascript:void(0)" onclick="updateComercialInvoice(this)" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-info btn-edit" style="width: 35px; height: 38px; padding: 9px 10px;" title="Edit"><i class="fas fa-edit"></i></a>
+                                                    @else
+                                                    <a href="javascript:void(0)" onclick="updateRestokFailed(this); return false;" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-info btn-edit" style="width: 35px; height: 38px; padding: 9px 10px;" title="Edit"><i class="fas fa-edit"></i></a>
+                                                    @endif
+                                                    <a href="javascript:void(0)" onclick="rejectOrderPembelian(this)" data-id="{{ $data['id'] }}" name="{{ $data['invoice_no'] }}" class="btn btn-large btn-info btn-danger" style="width: 35px; height: 38px; padding: 9px 10px;" title="Reject Order"><i class="fas fa-times"></i></a>
+                                                    <a href="javascript:void(0)" onclick="deleteOrderPembelian(this)" data-id="{{ $data['id'] }}" name="{{ $data['invoice_no'] }}" class="btn btn-large btn-info btn-danger" style="width: 35px; height: 38px; padding: 9px 10px;" title="Delete"><i class="fas fa-trash-alt"></i></a>
+                                                </td>
+                                                <td>
+                                                </td>
+                                            </tr>
+                                            @php
+                                            $num++;
+                                            @endphp
+                                    @endif
+                                @endfor
+                            @endif
                             </tbody>
-                        </table>           
-                   
-                    @endif
+                        </table>
+
+
                   
                     
                     <!-- modal tambah commercial invoice -->
                     <div class="col-sm-12" style="margin-top: 15px;">
                         
-                        <div id="tabe-stok"></div>
+                        <!-- <div id="tabe-stok"></div> -->
 
                         <div class="modal fade" id="tambahModal" tabindex="-1" role="dialog" aria-labelledby="tambahModal" aria-hidden="true">
                            <div class="modal-dialog" role="document" style="max-width: 2200px;padding-left: 250px;">
@@ -757,9 +645,9 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                     </div>
 
                     <!-- modal edit commercial invoice -->
-                    <div class="col-sm-12" style="margin-top: 15px;">
+                    <div id="editcomercial" class="col-sm-12" style="margin-top: 15px;">
                         <div id="overlay" style="display: none;"></div>
-                        <div id="tabe-stok"></div>
+                        <!-- <div id="tabe-stok"></div> -->
 
                         <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
                            <div class="modal-dialog" role="document" style="max-width: 2200px;padding-left: 250px;">
@@ -789,94 +677,399 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                             </div>
                         </div>
                     </div>
+                    
+                    <div id="addcomerialinvoicelocal" style="display: none;" class="col-sm-12" style="margin-top: 15px;">
 
+                                                <form id="FormTambah">
+                                                                    <div class="row">
+                                                                        <div class="col-md-4">
+                                                                            <div style="position: relative; width: 100%;">
+                                                                            <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Custom Kode</label>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            <div style="position: relative; width: 100%;">
+                                                                                <input type="checkbox" id="customCodeCheckbox" class="styled customcode">
+                                                                                <input type="hidden" name="modeadmin_tambah" value="0">
+                                                                            </div>
+                                                                        </div>
+                                                                    
+                                                                    </div>
+
+                                                                    <div class="row">
+                                                                        <div class="col-md-4">
+                                                                            <div style="position: relative; width: 100%;">
+                                                                            <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Invoice Number</label>
+                                                                            <input type="number" class="form-control" name="invoice_no_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;" placeholder="AUTO" disabled>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            <div style="position: relative; width: 100%;">
+                                                                            <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Contract Number</label>
+                                                                            <input type="number" class="form-control" name="contract_no_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;" placeholder="AUTO" disabled>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            <div style="position: relative; width: 100%;">
+                                                                            <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Packing Number</label>
+                                                                            <input type="number" class="form-control" name="packing_no_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;" placeholder="AUTO" disabled>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-md-2">
+                                                                            <div style="position: relative; width: 100%; margin-top:10px;">
+                                                                                <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Database <span style="color: red;">(Wajib Diisi)</span></label>
+                                                                                
+                                                                                <select style="border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control database-tambah" id="database_tambah_id" name="database_tambah_name" required>
+                                                                                    <option value="">Database</option>
+                                                                                    <option value="PT">PT</option>
+                                                                                    <option value="UD">UD</option>
+                                                                                </select>
+
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-10">
+                                                                            <div class="form-group" style="margin-top:10px;">
+                                                                                <label for="startDateTglRequest">Tanggal Request <span style="color: red;">(Wajib Diisi)</span></label>
+                                                                                <input type="text" style="height:55px;" class="form-control custom-border" id="tgl_request_tambah" name="tgl_request" placeholder= "Pilih Tanggal" required >
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                            
+                                                                    <div class="form-group" style="margin-bottom: 20px;margin-top: 10px;">
+                                                                            <label class="col-lg-3 control-label" style="font-size: 15px;width: 100%">Supplier <span style="color: red;">(Wajib Diisi)</span></label>
+
+                                                                            <select class="form-control supplier-supplier" id="product-supplier-edit-filter" name="tambah_supplier">
+                                                                            
+                                                                            <option value="">Supplier</option>
+                                                                               
+                                                                        </select>
+                                                                    </div>
+
+                                                                    <div class="row">
+                                                                        <div class="col-md-4">
+                                                                                <div style="position: relative; width: 100%;">
+                                                                                    <label class="col-lg-3 control-label" style="font-size: 15px;width: 100%;width: 100%" for="">Nama Perusahaan <span style="color: red;">(Wajib Diisi) </span></label>
+                                                                                    <input type="text" class="form-control" id="company-name" name="company_name" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;" value="">
+                                                                                </div>
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            <div style="position: relative; width: 100%;">
+                                                                                <label class="col-lg-3 control-label" style="font-size: 15px;width: 100%" for="">Alamat Perusahaan</label>
+                                                                                <textarea type="text" class="form-control" name="address_company" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;" ></textarea>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            <div style="position: relative; width: 100%;">
+                                                                                <label class="col-lg-3 control-label" style="font-size: 15px;width: 100%" for="">Kota Perusahaan</label>
+                                                                                <input type="text" class="form-control" name="city_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;" value="">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                            
+                                                                    <div style="position: relative; width: 100%;">
+                                                                        <label class="col-lg-3 control-label" style="font-size: 15px;" for="">No. Telp</label>
+                                                                        <input type="number" class="form-control" name="telp_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;width: 32%" value="" >
+                                                                    </div>
+
+                                                </form>
+
+                                                <form action="" class="form-horizontal" id="sendImportForm" method="get">
+                                                                    @csrf
+                                                                    <div style="margin-top:20px;position: relative; width: 100%;">
+                                                                        <div id="content-container2"></div>
+                                                                        <div id="content-container3"></div>
+                                                                    </div>
+                                                </form>
+
+                                                <form action="" class="form-horizontal" id="FormTambah2" method="get">
+                                                                    @csrf
+                                                                
+
+                                                                    
+                                                                    
+                                                                    <div class="form-group" style="padding-top: 100px; padding-left: 20px;">
+                                                                        <h4>NOTES</h4>
+                                                                        <hr style="border: none; border-top: 1px solid #000; margin-top: 20px;">
+                                                                    </div>
+
+                                                                    <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
+                                                                        
+                                                                        <div class="row">
+                                                                            <div style="padding-top: 15px;" class="col-md-1">
+                                                                                <label for="kodebaranglabel">Incoterms</label>
+                                                                    
+                                                                            </div>
+                                                                            <div class="col-md-11" style="padding-right: 600px;">
+                                                                                <select style="border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control incoterms-tambah" id="incoterms-tambah-id" name="incoterms_tambah">
+                                                                                    <option value="">Select Incoterms</option>
+                                                                                        <option value="FOB">FOB </option>
+                                                                                        <option value="CIF">CIF </option>
+                                                                                        <option value="EXWORK">EXWORK </option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+                                                                        
+                                                                    </div>
+
+                                                                    <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
+                                                                        
+                                                                        <div class="row">
+                                                                            <div style="padding-top: 10px;" class="col-md-1">
+                                                                                <label for="kodebaranglabel">Location</label>
+                                                                    
+                                                                            </div>
+                                                                            <div class="col-md-11" style="padding-right: 600px;">
+                                                                                <input type="text" class="form-control custom-border" style="border: 1px solid #ced4da;padding-left:10px;" id="location_id_tab" name="location_name_tab" placeholder="Location">
+                                                                            </div>
+                                                                        </div>
+                                                                        
+                                                                    </div>
+
+                                                                    <div class="form-group" style="padding-top: 100px; padding-left: 20px;">
+                                                                        <h4>PAYMENT</h4>
+                                                                        <hr style="border: none; border-top: 1px solid #000; margin-top: 20px;">
+                                                                    </div>
+
+                                                                    <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
+                                                                        
+                                                                        <div class="row">
+                                                                            <div style="padding-top: 15px;" class="col-md-1">
+                                                                                <label for="kodebaranglabel">Bank Supplier</label>
+                                                                    
+                                                                            </div>
+                                                                            <div class="col-md-11" style="padding-right: 600px;">
+                                                                                <select style="border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control banksupplier-tambah" id="banksupplier-tambah-id" name="banksupplier_edit">
+                                                                                        <option value="0">Pilih Bank Supplier</option>
+                                                                                    
+                                                                                        
+                                                                                        <option value=""></option>
+                                                                                        
+
+                                                                                    
+
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+                                                                        
+                                                                    </div>
+
+                                                                    <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
+                                                                        
+                                                                        <div class="row">
+                                                                            <div style="padding-top: 15px;" class="col-md-1">
+                                                                                <label for="kodebaranglabel">Currency</label>
+                                                                    
+                                                                            </div>
+                                                                            <div class="col-md-11" style="padding-right: 600px;">
+                                                                                <select style="border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control currency-tambah" id="currency-tambah-id" name="currency_tambah">
+                                                                                        <option value="0">Pilih Currency</option>
+                                                                                        
+                                                                                        @foreach($Data['msg']['matauang'] as $index => $mt_uang)    
+                                                                                        <option value="{{ $mt_uang['id'] }}"> ({{ $mt_uang['simbol'] }}) {{ $mt_uang['kode'] }} - {{ $mt_uang['name'] }} </option>
+                                                                                        @endforeach
+                                                                                        
+                                                                                    
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+                                                                        
+                                                                    </div>
+                                        
+                                                                    <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
+                                                                        
+                                                                        <div class="row">
+                                                                            <div style="padding-top: 10px;" class="col-md-1">
+                                                                                <label for="kodebaranglabel">Bank Name</label>
+                                                                    
+                                                                            </div>
+                                                                            <div class="col-md-11" style="padding-right: 600px;">
+
+
+                                                                                <input type="text" class="form-control custom-border" id="bank_name_id_tab" name="bank_name_name_tab" style="border: 1px solid #ced4da; width: 100%; padding-left:10px;" placeholder="Bank Name">
+
+                                                                            </div>
+                                                                        </div>
+                                                                        
+                                                                    </div>
+
+                                                                    <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
+                                                                        
+                                                                        <div class="row">
+                                                                            <div style="padding-top: 10px;" class="col-md-1">
+                                                                                <label for="kodebaranglabel">Bank Address</label>
+                                                                    
+                                                                            </div>
+                                                                            <div class="col-md-11" style="padding-right: 600px;">
+
+
+                                                                                <input type="text" class="form-control custom-border" style="border: 1px solid #ced4da; width: 100%; padding-left:10px;" id="bankAddress_id_tab_tambah" name="bankAddress_name_tab_tambah" placeholder="Bank Address">
+
+                                                                            </div>
+                                                                        </div>
+                                                                        
+                                                                    </div>
+
+                                                                    <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
+                                                                        
+                                                                        <div class="row">
+                                                                            <div style="padding-top: 10px;" class="col-md-1">
+                                                                                <label for="kodebaranglabel">Swift Code</label>
+                                                                    
+                                                                            </div>
+                                                                            <div class="col-md-11" style="padding-right: 600px;">
+
+
+                                                                                <input type="text" class="form-control custom-border" style="border: 1px solid #ced4da; width: 100%; padding-left:10px;" id="swiftCode_id_tab_tambah" name="swiftCode_name_tab_tambah" placeholder="Swift Code">
+
+                                                                            </div>
+                                                                        </div>
+                                                                        
+                                                                    </div>
+
+                                                                    <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
+                                                                        
+                                                                        <div class="row">
+                                                                            <div style="padding-top: 10px;" class="col-md-1">
+                                                                                <label for="kodebaranglabel">Account No</label>
+                                                                    
+                                                                            </div>
+                                                                            <div class="col-md-11" style="padding-right: 600px;">
+
+
+                                                                                <input type="text" class="form-control custom-border" id="accountNo_id_tab_tambah" name="accountNo_name_tab_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left:10px;" placeholder="Account No">
+
+                                                                            </div>
+                                                                        </div>
+                                                                        
+                                                                    </div>
+
+                                                                    <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
+                                                                        
+                                                                        <div class="row">
+                                                                            <div style="padding-top: 10px;" class="col-md-1">
+                                                                                <label for="kodebaranglabel">Beneficiary Name</label>
+                                                                    
+                                                                            </div>
+                                                                            <div class="col-md-11" style="padding-right: 600px;">
+
+
+                                                                                <input type="text" class="form-control custom-border" id="beneficiaryName_id_tab_tambah" name="beneficiaryName_name_tab_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left:10px;"placeholder="Beneficiary Name">
+
+                                                                            </div>
+                                                                        </div>
+                                                                        
+                                                                    </div>
+
+                                                                    <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
+                                                                        
+                                                                        <div class="row">
+                                                                            <div style="padding-top: 10px;" class="col-md-1">
+                                                                                <label for="kodebaranglabel" style="width: 100%;">Beneficiary Address</label>
+                                                                    
+                                                                            </div>
+                                                                            <div class="col-md-11" style="padding-right: 600px;">
+
+
+                                                                                <input type="text" class="form-control custom-border" id="beneficiaryAddress_id_tab_tambah" name="beneficiaryAddress_name_tab_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left:10px;" placeholder="Beneficiary Address">
+
+                                                                            </div>
+                                                                        </div>
+                                                                        
+                                                                    </div>
+
+                                                                    <div class="form-group" style="display: flex;padding-top:30px; text-align:end;">
+                                                                        <button type="button" id="submitButtonForm2" class="btn btn-primary" style="margin-left: auto;">Simpan</button>
+                                                                    </div>
+                                                </form>       
+                    </div>
 
                 </div>
             </div>
         </div>
     </div>
+
     <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalLabel">Import From Order Pembelian</h5>
-                    <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button> -->
+                    <h5 class="modal-title" id="modalLabel">Import From2 Order Pembelian</h5>
+                    
                 </div>
                 <div class="modal-body">
-                <table id="table-tambah-comercial-invoice" class="table table-striped">
-                        <thead>
-                            <div class="row mb-2">
-                                <div class="col-md-3">
-                                    <label>
-                                        <input type="checkbox" id="filterChecked"> Show only checked
-                                    </label>
-                                </div>
-                                <div class="col-md-3">
-                                    <select id="filter-select" class="form-control select-supplier-tambah">
-                                        <option value="">Supplier</option>
-                                        @foreach(array_unique(array_column($Data['msg']['supplier'], 'name')) as $supplier)
-                                        <option value="{{ $supplier }}">{{ $supplier }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                            <table id="table-tambah-comercial-invoice" class="table table-striped">
+                                    <thead>
+                                        <div class="row mb-2">
+                                            <div class="col-md-3">
+                                                <label>
+                                                    <input type="checkbox" id="filterChecked"> Show only checked
+                                                </label>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <select id="filter-select" class="form-control select-supplier-tambah">
+                                                    <option value="">Supplier</option>
+                                                    @foreach(array_unique(array_column($Data['msg']['supplier'], 'name')) as $supplier)
+                                                    <option value="{{ $supplier }}">{{ $supplier }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
 
-                                <div class="col-md-3" id="id-search">
-                                    <label>
-                                        Search:
-                                    </label>
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="text" id="search-box" class="form-control d-inline-block w-round" placeholder="Supplier...">
-                                </div>
-                            </div>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Image</th>
-                                <th scope="col">Kode</th>
-                                <th scope="col">Nama</th>
-                                <th scope="col">Jml Permintaan</th>
-                                <th scope="col">Supplier</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @php
-                            $number =0;
-                            $number2 =0;
-                            @endphp
-                         
-
-                            @foreach($Data['msg']['listorder'] as $index => $result)
-                            @php
-                            $number2++;
-
-                            @endphp
-                            <form action="" class="form-horizontal" id="importBarang" method="get">
-                                @csrf
-                                
-                                <tr>
-                                    <td style="border: 1px solid #d7d7d7; color: black; text-align: center;">
+                                            <div class="col-md-3" id="id-search">
+                                                <label>
+                                                    Search:
+                                                </label>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <input type="text" id="search-box" class="form-control d-inline-block w-round" placeholder="Supplier...">
+                                            </div>
+                                        </div>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Image</th>
+                                            <th scope="col">Kode</th>
+                                            <th scope="col">Nama</th>
+                                            <th scope="col">Jml Permintaan</th>
+                                            <th scope="col">Supplier</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @php
+                                        $number =0;
+                                        $number2 =0;
+                                        @endphp
                                     
-                                
-                                    <input type="checkbox" class="kubik-checkbox-tambah" name="checkbox_{{ $number2 }}">
-                                    <input type="hidden" class="form-control restok-input-tambah"  name="id_restok_{{ $number2 }}" value="{{ $result['restok_id'] }}">
-                                    
+
+                                        @foreach($Data['msg']['listorder'] as $index => $result)
+                                        @php
+                                        $number2++;
+
+                                        @endphp
+                                        <form action="" class="form-horizontal" id="importBarang" method="get">
+                                            @csrf
                                             
-                                    </td>
-                                    <td style="max-width: 200px;white-space: normal; word-wrap: break-word;"><img src="{{ $Data['msg']['directory_gambar'] }}{{ $result['image'] }}" style="width:200px; height:200px;"></td>
-                                    <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $result['new_kode'] }}</td>
-                                    <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $result['name'] }}</td>
-                                    <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $result['jml_permintaan'] }}</td>
-                                    <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $result['supplier_name'] }}</td>
+                                            <tr>
+                                                <td style="border: 1px solid #d7d7d7; color: black; text-align: center;">
+                                                
+                                            
+                                                <input type="checkbox" class="kubik-checkbox-tambah" name="checkbox_{{ $number2 }}">
+                                                <input type="hidden" class="form-control restok-input-tambah"  name="id_restok_{{ $number2 }}" value="{{ $result['restok_id'] }}">
+                                                
+                                                        
+                                                </td>
+                                                <td style="max-width: 200px;white-space: normal; word-wrap: break-word;"><img src="{{ $Data['msg']['directory_gambar'] }}{{ $result['image'] }}" style="width:200px; height:200px;"></td>
+                                                <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $result['new_kode'] }}</td>
+                                                <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $result['name'] }}</td>
+                                                <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $result['jml_permintaan'] }}</td>
+                                                <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $result['supplier_name'] }}</td>
+                                                
+                                            </tr>
+                                            
+                                        </form>
+                                    @endforeach
                                     
-                                </tr>
-                                
-                            </form>
-                           @endforeach
-                          
-                        </tbody>
-                </table>
+                                    </tbody>
+                            </table>
                             <div style="text-align:right; margin-top: 30px;">
                                     
                                     <button type="button" id="sendImportBarang" class="btn btn-primary" style="margin-left: auto;">Simpan</button>
@@ -898,6 +1091,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 <script src="../assets/js/commercial-invoice/select_choices.js"></script> 
 <script src="../assets/js/commercial-invoice/import_barang.js"></script> 
 <!-- DataTables JavaScript -->
@@ -935,93 +1129,146 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
 
     //untuk membuat datatable
     $(document).ready(function() {
-        $('#tabe-stok').DataTable({
+    var lastSelectedValue = $('input[type=radio][name=filter]:checked').val();
 
-            "dom": '<"top"lf>rt<"bottom"ip><"clear">', // Mengatur posisi elemen filter/search
-            "language": { // Menyesuaikan teks placeholder
-                "searchPlaceholder": "Cari...",
-                "search": "Cari:",
-                "paginate": {
-                    "previous": "back", // Ganti teks untuk tombol "previous"
-                    "next": "next" // Ganti teks untuk tombol "next"
-                }
-            },
+    var table = $('#tabe-stok').DataTable({
+        "dom": '<"top"lf>rt<"bottom"ip><"clear">',
+        "language": {
+            "searchPlaceholder": "Cari...",
+            "search": "Cari:",
+            "paginate": {
+                "previous": "back",
+                "next": "next"
+            }
+        },
+        columns: [
+            { data: 'num', title: 'No' },
+            { data: 'date', title: 'Tanggal' },
+            { data: 'invoice', title: 'Invoice' },
+            { data: 'supplier', title: 'Supplier' },
+            { data: 'company', title: 'Nama Perusahaan' },
+            { data: 'telp', title: 'No. Telp' },
+            { data: 'total', title: 'Total' },
+            { data: 'category', title: 'Kategori' },
+            { data: 'link2', title: 'Action' },
+            { data: 'link', title: 'Action Add' }
+        ],
+        "initComplete": function(settings, json) {
+            $('.dataTables_filter input[type="search"]').attr('placeholder', 'Cari ...');
+            initializeSelect2();
+        }
+    });
+    $('#tambahComercialLocal').on('click', function() {
+        // Alert as an example action (optional)
+        // alert('Commercial Invoice button clicked!');
 
-            columns: [{
-                    data: 'num',
-                    title: 'No'
-                },
-                {
-                    data: 'date',
-                    title: 'Tanggal'
-                },
-                
-                {
-                    data: 'invoice',
-                    title: 'Invoice'
-                },
-                {
-                    data: 'supplier',
-                    title: 'Supplier'
-                },
-                
-                {
-                    data: 'company',
-                    title: 'Nama Perusahaan'
-                },
-                 {
-                    data: 'telp',
-                    title: 'No. Telp'
-                },
-                 {
-                    data: 'total',
-                    title: 'Total'
-                },
-                 {
-                    data: 'category',
-                    title: 'Kategori'
-                },
+        // Destroy the existing DataTable instance
+        table.destroy();
+        $('#tabe-stok').remove();
+        $('.radio-button-container').remove()
+        $('.filter').remove()
+        $('#tambahComercialLocal').remove()
+        $('#judulRestok').html('<i class="fas fa-database"></i> &nbsp Add Commercial Invoice Kategori Local');
+        $('#addcomerialinvoicelocal').css('display','block')
+        // Optional: Remove the table element if desired
+        // $('#tabe-stok').remove();
 
-                {
-                    data: 'link2',
-                    title: 'Action ',
-                    render: function(data, type, full, meta) {
-                 
-                        return '<a href="' + data + '</a>';
+        // You can add additional actions here if needed
+    });
+    function initializeSelect2() {
+        $('.select_select_category').select2({
+            placeholder: '-',
+            allowClear: true,
+            width: 'resolve' // Adjust width as needed
+        });
+
+        //proses mengirim memilih kategory
+        $('.select_select_category').on('change', function() {
+            var selectedValue = $(this).val();
+            var idCommercial = $(this).data('id_commercial');
+            
+            $('#reload-icon').show(); //icon reload ditampilkan
+          
+            if (selectedValue) {
+                $.ajax({
+                    url: '{{ route('admin.pembelian_selectcategory_comercial_invoice') }}',
+                    method: 'GET',
+                    data: {
+                        selected_value: selectedValue,
+                        id_commercial: idCommercial
+                    },
+                    success: function(response) {
+                        console.log('Response from server:', response);
+                        $('#reload-icon').hide();
+                    },
+                    error: function(error) {
+                        console.error('Error:', error);
                     }
-                },
-                 
-                {
-                    data: 'link',
-                    title: 'Action Add',
-                    render: function(data, type, full, meta) {
-                       if (full.invoice) {
-                            invoiceNumber = full.invoice;
-
-                            return '<span style="cursor: pointer;" title="No Add" ></span>';
-                        } else {
-                           // Extract the URL from the 'link' field
-                    var url = $(data).attr('href'); // Assuming 'data' is the HTML string
-
-                    // Log the URL for debugging
-                    console.log('URL:', url);
-
-                    // Return the button with an onclick event that redirects to the URL
-                    return '<button type="button" title="Add Commercial Invoice" class="btn btn-info" onclick="window.location.href=\'' + url + '\'">' +
-                           '<i class="fas fa-plus"></i>' +
-                           '</button>';
-                        }
-
-                    }
-                }
-
-            ],
-            "initComplete": function(settings, json) {
-
-                $('.dataTables_filter input[type="search"]').attr('placeholder', 'Cari ...'); // Menyesuaikan placeholder
+                });
             }
         });
+    }
+
+    // initialize Select2 setelah tiap membuat datatable (e.g., page change)
+    table.on('draw', function() {
+        initializeSelect2();
     });
+
+    if (lastSelectedValue == 'requested') {
+        console.log('lastselect', lastSelectedValue);
+
+        function sendFilterData(selectedValue) {
+            $.ajax({
+                url: '{{ route('admin.pembelian_comercial_invoice_filter') }}',
+                method: 'GET',
+                data: { 
+                    filterValue: selectedValue 
+                },
+                success: function(response) {
+                    var newRoute = "{{ route('admin.pembelian_comercial_invoice_filter') }}?filterValue=" + selectedValue;
+                    window.location.href = newRoute;
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+
+        $('input[type=radio][name=filter]').change(function() {
+            var selectedValue = $(this).val();
+            if (selectedValue !== lastSelectedValue) {
+                sendFilterData(selectedValue);
+                lastSelectedValue = selectedValue;
+            }
+        });
+    }
+    var currentPage = table.page.info().page; // inisiasi halaman pertama
+    var previousPage = currentPage; // inisiasi halaman sebelumnya dari halaman sekarang
+
+    // Reload the page when the "previous" button or an earlier page index is clicked
+    $(document).on('click', '.paginate_button', function() {
+        previousPage = currentPage;
+
+        // Get the new current page
+        currentPage = table.page.info().page;
+
+        console.log('previous', previousPage);
+        console.log('current', currentPage);
+
+        // Get the target page from button text
+        var targetPage = $(this).text().trim();
+        console.log('target', targetPage);
+
+        // Check if the "previous" button was clicked or if we're previous page same with targetpage
+        if ($(this).hasClass('previous') || currentPage == 0 || previousPage==targetPage) {
+            location.reload(); // Reload the page
+        }
+        
+ 
+    });
+});
+
+
 
    
 
@@ -1225,44 +1472,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
         });
     });
     
-    //filter untuk status
-    $(document).ready(function(){
-       
-        var lastSelectedValue = $('input[type=radio][name=filter]:checked').val();
-        
-        // Function to handle AJAX request
-        function sendFilterData(selectedValue) {
-            $.ajax({
-                url: '{{ route('admin.pembelian_comercial_invoice_filter') }}', // Replace with your server endpoint
-                method: 'GET',
-                data: { 
-                    filterValue: selectedValue 
-                },
-                success: function(response) {
-                    // Handle success response
-                    // console.log(response);
-            var newRoute = "{{ route('admin.pembelian_comercial_invoice_filter') }}?filterValue="+lastSelectedValue;
-
-                    window.location.href = newRoute;
-
-
-                },
-                error: function(xhr, status, error) {
-                    // Handle error
-                    console.error(xhr.responseText);
-                }
-            });
-        }
-
-        // Listen for changes in radio buttons
-        $('input[type=radio][name=filter]').change(function() {
-            var selectedValue = $(this).val();
-            if (selectedValue !== lastSelectedValue) {
-                sendFilterData(selectedValue);
-                lastSelectedValue = selectedValue;
-            }
-        });
-    });
+  
 
 
 </script>
@@ -1634,6 +1844,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
     var tot_price_without_tax_usd_import =[];
 
     $(document).ready(function() {
+      
         // Menangkap perubahan pada elemen select
         $('.select').change(function() {
             // Mendapatkan nilai dari elemen select yang dipilih

@@ -8,7 +8,18 @@
 #select_db {
     border: 1px solid #ced4da;
     padding: 10px;
-     
+    
+}
+#label-lcl{
+    text-align: center;
+    margin-top: 5em;
+}
+#label-lcl-ekspedisi{
+    text-align: center;
+    margin-top: 5em;
+}
+#required-star{
+    color: red;
 }
 #border {
     border: 1px solid #ced4da;
@@ -73,7 +84,13 @@
     border: 1px solid #ced4da;
     padding: 10px;
 }
-#select_termin {
+#select_termin_cash {
+    
+    border: 1px solid #ced4da;
+    padding: 10px;
+    
+}
+#select_termin_rekening {
     
     border: 1px solid #ced4da;
     padding: 10px;
@@ -83,6 +100,13 @@
     
     border: 1px solid #000000;
     padding: 10px;
+    
+}
+#matauang_pembayaran {
+    
+    border: 1px solid #000000;
+    padding: 10px;
+    height: 2em;
     
 }
 #select_matauang_choices {
@@ -95,7 +119,7 @@
     
     border: 1px solid #ced4da;
     padding: 10px;
-    
+  
 }
 #select_cabang {
     
@@ -281,3 +305,50 @@
                  visibility: visible;
                  opacity: 1;
              }
+             .icon-box-check {
+                display: inline-flex; 
+                align-items: center; 
+                justify-content: center; 
+                padding: 5px; 
+                
+                border-radius: 4px; 
+                width:auto;
+                background-color: green;
+
+            }
+             .icon-box-times {
+                display: inline-flex;
+                align-items: center; 
+                justify-content: center; 
+                padding: 5px; 
+                border: 2px solid red; 
+                border-radius: 4px; 
+                width: auto;
+                background-color: red;
+                
+            }
+            
+            .select2-container .select2-selection--single {
+                height: 40px; /* Adjust this value as needed */
+                line-height: 40px; /* Center the text vertically */
+                padding-top: 5px;
+                font-size: 15px;
+            }
+            
+            /* Adjust the height of the dropdown items */
+            .select2-container .select2-results__option {
+                height: 40px; /* Adjust this value as needed */
+                line-height: 40px; /* Center the text vertically */
+                
+            }
+            .tabel-pembayaran{
+                margin-top: 0.5em;
+                margin-bottom: 1.5em;
+            }
+            .tabel-ekspedisi{
+                margin-top: 0.5em;
+                margin-bottom: 1.5em;
+            }
+            #element-button-tambah{
+               text-align: right;
+            }

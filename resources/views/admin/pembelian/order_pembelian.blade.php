@@ -6,19 +6,27 @@ Order Pembeliaan    | PT. Maxipro Group Indonesia
 @endsection
 @section('link')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-
-
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
-    <!-- Choices.js CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" />
 
 @endsection
 @section('style')
 <link href="{{ asset('css/orderpembelian.css') }}" rel="stylesheet">
-
-
+<style>
+     .select2-container--default .select2-selection--single {
+            width: 100% !important; /* Force full width */
+            box-sizing: border-box;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            padding: 0;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 100%;
+        }
+</style>
 @endsection
+
 @section('content')
 
 <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg wider">
@@ -205,10 +213,10 @@ Order Pembeliaan    | PT. Maxipro Group Indonesia
                                 <td id="td-table">
 
 
-                                    <select name="supplier_name_select" id="edit_supplier"  data-id="{{ $data['id'] }}" class="select select2 supplier-search form-control"  style="background-color: white">
-                                            <option value="" ></option>
+                                    <select name="supplier_name_select" id="edit_supplier_{{ $index }}" data-id="{{ $data['id'] }}" class="select_supplier form-control" style="background-color: white">
+                                        <option value="0">-</option>
                                         @foreach($Data['msg']['supplier'] as $index => $supplier)
-                                            <option value="{{ $supplier['id'] }}" {{ $data['supplier_id'] == $supplier['id'] ? 'selected' : ''}} >{{ $supplier['name'] }}</option>
+                                            <option value="{{ $supplier['id'] }}" {{ $data['supplier_id'] == $supplier['id'] ? 'selected' : ''}}>{{ $supplier['name'] }}</option>
                                         @endforeach
                                     </select>
                                 
@@ -218,7 +226,7 @@ Order Pembeliaan    | PT. Maxipro Group Indonesia
                                     @if($data['status'] == 'requested' || $data['status'] == 'reject')
                                     <a href="javascript:void(0)" onclick="updateRestok(this)" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-info btn-edit" id="id-edit-button" title="Edit"> <i class="fas fa-edit"></i></a>
                                     @else
-                                    <a href="javascript:void(0)" onclick="updateRestokFailed(this); return false;" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-secondary btn-edit"><i class="bi bi-pencil"></i></a>
+                                    <a href="javascript:void(0)" onclick="updateRestokFailed(this); return false;" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-info btn-edit"id="id-edit-button" title="Edit"><i class="fas fa-edit"></i></a>
                                     @endif
                                     <a href="javascript:void(0)" 
                                     onclick="rejectOrderPembelian(this)" 
@@ -285,9 +293,37 @@ Order Pembeliaan    | PT. Maxipro Group Indonesia
                                     <div class="modal-body">
 
                                       <form action="" class="form-horizontal" id="hitungkubikasiForm" method="get">
-                                       <table id="tabe-stok-hitung-kubik">
+                                       <table id="tabe-stok-hitung-kubik2">
                                         <thead>
-                                            <!-- Add table headers if needed -->
+                                            <div class="row mb-2">
+                                                <div class="col-md-3">
+
+                                                    <label>
+                                                    <input type="checkbox" id="filterCheckedToggle" style="accent-color: red;"> Filter Barang <span style="color: red;">*</span>
+
+                                                    </label>
+                                                </div>
+                                                <div class="col-md-6" id="id-search">
+                                                    <label>
+                                                        Search:
+                                                    </label>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <input type="text" id="search-box" class="form-control d-inline-block w-round" placeholder="Cari...">
+                                                </div>
+                                           </div>
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Image</th>
+                                                    <th scope="col">Nama Barang</th>
+                                                    <th scope="col">Jml Permintaan</th>
+                                                    <th scope="col">Sisa Stok</th>
+                                                    <th scope="col">Kubik</th>
+                                                    <th scope="col">Tanggal Request</th>
+                                                    <th scope="col">User</th>
+                                                    <th scope="col">Supplier</th>
+                                                
+                                                </tr>
                                         </thead>
                                         <tbody>
                                               
@@ -315,10 +351,12 @@ Order Pembeliaan    | PT. Maxipro Group Indonesia
                                             @endphp
                                             <tr style="{{ $rowStyle }}">
                                                 <td style="border: 1px solid #d7d7d7; color: black; text-align: center;">
-                                                    <input type="checkbox" class="kubik-checkbox" name="checkbox_{{ $num }}" value="{{ $kubik }}" onchange="calculateTotalKubik()">
+                                                    
+                                                    <input type="checkbox" class="kubik-checkbox" name="checkbox_{{ $num }}" value="{{ $kubik }}" data-new_kode="{{ $data['new_kode'] }}" data-jml_permintaan="{{ $data['jml_permintaan'] }}" data-nama_barang_english="{{ $data['nama_barang_english'] }}" data-nama_barang_china="{{ $data['nama_barang_china'] }}" data-nama_barang="{{ $data['nama_barang'] }}" data-image="{{ $data['image'] }}" data-nama_supplier="{{ $data['name_supplier'] }}"
+                                                    onchange="calculateTotalKubik()">
                                                 </td>
                                                 <td id="td-table"><a href="javascript:void(0)" onclick="gambaFromrOrderPembelian(this, '{{ $gambar2 }}')" data-id="{{ $data['id'] }}" name="gambarButton">{{ $data['new_kode'] }}</a></td>
-                                                <td id="td-table">{{ $data['nama_barang'] }}</td>
+                                                <td class="nama_barang" id="td-table">{{ $data['nama_barang'] }}</td>
                                                 <td id="td-table">{{ $data['jml_permintaan'] }}</td>
                                                 <td id="td-table">{{ $data['last_stok'] }}</td>
                                                 @php
@@ -341,14 +379,15 @@ Order Pembeliaan    | PT. Maxipro Group Indonesia
                                             </table>
                                             
                                             <div class="form-group" id="div-select">
-                                              <button type="submit" id="selecttambahButton" class="btn btn-primary" >Select
+                                            
+                                              <button type="button" id="downloadpdfButton" class="btn btn-primary" >Download PDF
                                               </button>
                                           </div>
                                       </form>
                                         
                                     </div>
                                     <div class="modal-footer">
-                                        <!-- Tombol untuk menutup modal -->
+                                   
                                       
                                     </div>
 
@@ -364,7 +403,7 @@ Order Pembeliaan    | PT. Maxipro Group Indonesia
                             <div class="modal-dialog modal-xl" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="mutasistokModallabel">Mutasi Stok</h5>
+                                        <h5 class="modal-title" id="mutasistokModallabelCode">Mutasi Stok</h5>
                                         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -419,7 +458,7 @@ Order Pembeliaan    | PT. Maxipro Group Indonesia
                     <!-- modal edit order pembelian -->
                     <div class="col-sm-12" id="div-edit-restok">
                         <div id="overlay" class="overlay-class"></div>
-                        <div id="tabe-stok"></div>
+                        <!-- <div id="tabe-stok"></div> -->
 
                         <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-xl" role="document">
@@ -464,6 +503,7 @@ Order Pembeliaan    | PT. Maxipro Group Indonesia
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 <!-- DataTables JavaScript -->
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <!-- DataTables Bootstrap 4 Integration -->
@@ -484,8 +524,6 @@ Order Pembeliaan    | PT. Maxipro Group Indonesia
             searchEnabled: true,
             itemSelectText: '',
         });
-
-        // Enable/disable date inputs based on checkbox state
         
     });
 
@@ -495,81 +533,112 @@ Order Pembeliaan    | PT. Maxipro Group Indonesia
 
             window.location.href = '{{ route('admin.pembeliaan_orderpembelian') }}'; 
     })
-
+  
     //untuk membuat datatable
     $(document).ready(function() {
-        $('#tabe-stok').DataTable({
-
-            "dom": '<"top"lf>rt<"bottom"ip><"clear">', // Mengatur posisi elemen filter/search
-            "language": { // Menyesuaikan teks placeholder
-                "searchPlaceholder": "Cari...",
-                "search": "Cari:",
-                "paginate": {
-                    "previous": "back", // Ganti teks untuk tombol "previous"
-                    "next": "next" // Ganti teks untuk tombol "next"
+    // Initialize DataTable
+    var table = $('#tabe-stok').DataTable({
+        "dom": '<"top"lf>rt<"bottom"ip><"clear">', // Positioning of filter/search elements
+        "language": {
+            "searchPlaceholder": "Cari...",
+            "search": "Cari:",
+            "paginate": {
+                "previous": "back", // Custom text for "previous" button
+                "next": "next" // Custom text for "next" button
+            }
+        },
+        columns: [
+            { data: 'num', title: 'No' },
+            { data: 'tgl_request', title: 'Tanggal Request' },
+            { data: 'new_kode', title: 'Kode' },
+            { data: 'name', title: 'Nama Barang' },
+            { data: 'jml_permintaan', title: 'Jml Permintaan' },
+            { data: 'last_stok', title: 'Stok' },
+            { data: 'kubik', title: 'Kubik Value' },
+            { data: 'name_teknisi', title: 'User' },
+            { data: 'keterangan', title: 'Keterangan' },
+            { data: 'supplier', title: 'Supplier' },
+            { data: 'category', title: 'Kategori' },
+            {
+                data: 'link',
+                title: 'Action',
+                render: function(data, type, full, meta) {
+                    return '<a href="' + data + '</a>';
                 }
+            }
+        ],
+        "initComplete": function(settings, json) {
+            $('.dataTables_filter input[type="search"]').attr('placeholder', 'Cari ...');
+            initializeSelect2(); // Initialize Select2 after DataTable is fully initialized
+        }
+    });
+
+    // Function to initialize Select2
+    function initializeSelect2() {
+        $('.select_supplier').select2({
+            placeholder: '-',
+            allowClear: true,
+            width: 'resolve' // Adjust width as needed
+        });
+    }
+
+    // Re-initialize Select2 after every DataTable draw event (e.g., page change)
+    table.on('draw', function() {
+        initializeSelect2();
+    });
+
+    // Handle changes with Select2
+    $(document).on('change', '.select_supplier', function() {
+        var selectedValue = $(this).val();
+        var dataId = $(this).data('id');
+        
+        $('#reload-icon').show();
+
+        // Send data using AJAX
+        $.ajax({
+            url: "{{ route('admin.pembelian_select_supplier_order_pembelian') }}",
+            type: 'GET',
+            data: {
+                id: dataId,
+                supplier: selectedValue,
+                _token: $('meta[name="csrf-token"]').attr('content')
             },
-
-            columns: [{
-                    data: 'num',
-                    title: 'No'
-                },
-                {
-                    data: 'tgl_request',
-                    title: 'Tanggal Request'
-                },
-                {
-                    data: 'new_kode',
-                    title: 'Kode'
-                },
-                {
-                    data: 'name',
-                    title: 'Nama Barang'
-                },
-                
-                {
-                    data: 'jml_permintaan',
-                    title: 'Jml Permintaan'
-                },
-                 {
-                    data: 'last_stok',
-                    title: 'Stok'
-                },
-                 {
-                    data: 'kubik',
-                    title: 'Kubik Value'
-                },
-                 {
-                    data: 'name_teknisi',
-                    title: 'User'
-                },
-                 {
-                    data: 'keterangan',
-                    title: 'Keterangan'
-                },
-                 {
-                    data: 'supplier',
-                    title: 'Supplier'
-                },
-                  {
-                    data: 'category',
-                    title: 'Kategori'
-                },
-                {
-                    data: 'link',
-                    title: 'Action',
-                    render: function(data, type, full, meta) {
-                        return '<a href="' + data + '</a>';
-                    }
-                }
-
-            ],
-            "initComplete": function(settings, json) {
-
-                $('.dataTables_filter input[type="search"]').attr('placeholder', 'Cari ...'); // Menyesuaikan placeholder
+            success: function(response) {
+                console.log(response);
+                $('#reload-icon').hide();
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
             }
         });
     });
+    var currentPage = table.page.info().page; // Initialize with the first page
+    var previousPage = currentPage; // Initially, both current and previous are the same
+
+    // Reload the page when the "previous" button or an earlier page index is clicked
+    $(document).on('click', '.paginate_button', function() {
+        previousPage = currentPage;
+
+        // Get the new current page
+        currentPage = table.page.info().page;
+
+        console.log('previous', previousPage);
+        console.log('current', currentPage);
+
+        // Get the target page from button text
+        var targetPage = $(this).text().trim();
+        console.log('target', targetPage);
+
+        // Check if the "previous" button was clicked or if we're on the first page
+        if ($(this).hasClass('previous') || currentPage == 0 || previousPage==targetPage) {
+            location.reload(); // Reload the page
+        }
+        
+ 
+    });
+    
+});
+
 
     //untuk membuat datatable untuk  hitung kubikasi
     $(document).ready(function() {
@@ -634,6 +703,104 @@ Order Pembeliaan    | PT. Maxipro Group Indonesia
         });
     });
 
+    $(document).ready(function() {
+
+            
+        // Initialize DataTable
+        var table = $('#tabe-stok-hitung-kubik2').DataTable({
+            dom: 'lrtip', // Customize the DataTable DOM
+            responsive: true, // Enable responsive mode
+            
+        });
+        $('#search-box').on('keyup', function() {
+        table.search(this.value).draw();
+    });
+        $('#downloadpdfButton').click(function() {
+            if (!$('#filterCheckedToggle').is(':checked')) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Pilih barang, lalu centang filter',
+                confirmButtonText: 'OK'
+            });
+            return false; // Prevent any default action or further code execution
+        }
+        });
+            $('#filterCheckedToggle').on('change', function() {
+                
+                if (this.checked) {
+                    $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+                        return $(table.row(dataIndex).node()).find('.kubik-checkbox').is(':checked');
+                    });
+                    
+                } else {
+                    $.fn.dataTable.ext.search.pop();
+                }
+                table.draw();
+                $('#downloadpdfButton').click(function() {
+                    // Collect checked items
+                    
+                    var selectedItems = [];
+                    var selectedItemsEnglish = [];
+                    var selectedItemsChina = [];
+                    var new_kode = [];
+                    var jml_permintaan = [];
+                    var image =[];
+                    var nama_supplier=[];
+                    $('.kubik-checkbox:checked').each(function() {
+                        selectedItemsEnglish.push($(this).data('nama_barang_english'));
+                        selectedItemsChina.push($(this).data('nama_barang_china'));
+                        selectedItems.push($(this).data('nama_barang'));
+                        new_kode.push($(this).data('new_kode'));
+                        jml_permintaan.push($(this).data('jml_permintaan'));
+                        image.push($(this).data('image'));
+                        nama_supplier.push($(this).data('nama_supplier'));
+                    });
+                    console.log('image',image)
+                    // Perform an action with selectedItems, e.g., send them via AJAX
+                    if (selectedItems.length > 0) {
+                        function submitForm() {
+                            // Create a form element
+                            var form = document.createElement('form');
+                            form.method = 'GET'; // Use 'POST' if needed
+                            form.action = "{{ route('admin.pembelian_print_pdfpo_order_pembelian') }}"; // Replace with your actual route
+
+                            // Create input fields for each piece of data
+                            var data = {
+                                nama_barang_english: selectedItemsEnglish,
+                                nama_barang_china: selectedItemsChina,
+                                nama_barang: selectedItems,
+                                new_kode: new_kode,
+                                jml_permintaan: jml_permintaan,
+                                image: image,
+                                nama_supplier:nama_supplier
+                            };
+                            console.log('data',data)
+                            for (var key in data) {
+                                if (data.hasOwnProperty(key)) {
+                                    var input = document.createElement('input');
+                                    input.type = 'hidden';
+                                    input.name = key;
+                                    input.value = data[key];
+                                    form.appendChild(input);
+                                }
+                            }
+
+                            // Append the form to the body and submit
+                            document.body.appendChild(form);
+                            form.submit();
+                        }
+
+                        // Call the function to submit the form
+                        submitForm();
+                    } else {
+                        alert('Please select at least one item.');
+                    }
+                });
+            });
+
+    
+    });
 </script>
 
 
@@ -765,61 +932,7 @@ Order Pembeliaan    | PT. Maxipro Group Indonesia
                             countStokTotal = countstokPT + countstokUD;   
 
 
-                            $('#hitungkubikasiForm').submit(function(event) {
-                                    // Mencegah perilaku default formulir
-                                    event.preventDefault();
-                                      
-                                    // Mengumpulkan data formulir
-                                    var formData = {
-                                        
-                                         tgl_request: $('input[name=tgl_request_name]').val(), // Mengambil value dari elemen name_edit 
-                                                                                 // Note: dibawah Mengikuti name_edit
                            
-                                         laststok: countStokTotal,
-                                         jml_permintaan: $('input[name=jml_permintaan_name]').val(),
-                                         
-                                         keterangan: $('textarea[name=keterangan_name]').val(),
-                                        product: $('#product-restok-tambah-filter').val(),
-                                        
-                                        
-                                        // status: $('select[name=status]').val()
-                                    };
-                                  console.log(formData)
-                                    // Mengirim permintaan AJAX
-                                    $.ajax({
-                                        type: 'GET',
-                                        url: '{{ route('admin.pembelian_restok_tambah_filter') }}', // Ganti URL_TARGET dengan URL tujuan Anda
-                                        data: formData,
-                                        success: function(response) {
-                                            // Tanggapan berhasil, lakukan apa yang perlu dilakukan di sini
-                                           console.log(response);
-                                            if(response !== null){
-                                                 
-                                                 Swal.fire({
-                                                    icon: 'success',
-                                                    title: 'Success!',
-                                                    text: 'Restok berhasil ditambah!',
-                                                }).then((result) => {
-                                                    // Mengalihkan halaman ke halaman tertentu setelah mengklik OK pada SweetAlert
-                                                    window.location.reload();
-                                                });
-                                            }
-                                            else{
-                                                console.log(response);
-                                                 Swal.fire({
-                                                    icon: 'error',
-                                                    title: 'Error!',
-                                                    text: 'Restok Gagal ditamb!',
-                                                });
-                                            }
-                                             
-                                        },
-                                        error: function(xhr, status, error) {
-                                            // Penanganan kesalahan jika terjadi
-                                            console.error(error);
-                                        }
-                                    });
-                            });
 
                         }
                                        
@@ -872,19 +985,9 @@ Order Pembeliaan    | PT. Maxipro Group Indonesia
             }
         });
     });
-
-
-
-
 </script>
+
 <script>
-   
-
-
-   
-   
-    
-    
 
     //Untuk Mereset data input checkbox dan total kubik di modal hitung kubk
     document.getElementById('hitungkubikasiModal').addEventListener('hidden.bs.modal', function () {
@@ -1062,8 +1165,6 @@ Order Pembeliaan    | PT. Maxipro Group Indonesia
 
 
 <!-- untuk mengaktifkan input tanggal di modal filter -->
-
-
 <script src="../assets/js/order-pembelian/order-pembelian.js"></script> 
 
 
@@ -1124,37 +1225,16 @@ Order Pembeliaan    | PT. Maxipro Group Indonesia
     });
 </script>
 <script>
-    $(document).ready(function() {
-        // Menangkap perubahan pada elemen select
-        $('.select').change(function() {
-            // Mendapatkan nilai dari elemen select yang dipilih
-              var supplier = document.getElementById('edit_supplier').value;
-                       var id = $('#edit_supplier').data('id');
-                       $('#reload-icon').show();
+//    $(document).ready(function() {
+    // Initialize the DataTable
+    // var table = $('#tabe-stok').DataTable({
+    //     // Your DataTable options
+    // });
 
-            console.log(supplier,id);
-            // Kirim data menggunakan AJAX
-            $.ajax({
-                url: "{{ route('admin.pembelian_select_supplier_order_pembelian') }}",
-                type: 'GET',
-                data: {
-                    id: id,
-                    supplier: supplier,
-                    _token: $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function(response) {
-                    console.log(response);
-                     $('#reload-icon').hide();
-                       table.ajax.reload(null, false); // User paging is not reset on reload
-                },
-                error: function(xhr, status, error) {
-                    console.error(xhr.responseText);
-                }
-            });
-        });
+    // Function to initialize Select2
+    
+// });
 
-        
-    });
     
      // membuka modal gambar
     function gambarOrderPembelian(element, gambar) {
@@ -1212,7 +1292,6 @@ Order Pembeliaan    | PT. Maxipro Group Indonesia
   
     function modalOrderPembelian(element){
         event.preventDefault();
-        console.log('masuk modal');
 
         var nama_barang = element.getAttribute('data-nama-barang');
         var new_code = element.getAttribute('data-new-code');
@@ -1316,7 +1395,7 @@ Order Pembeliaan    | PT. Maxipro Group Indonesia
                     '</select>' +
                     '</div>' +
                     '<div class="col-md-2">' +
-                    '<button type="button" class="btn btn-info" id="filterMutasi">Save</button>' +
+                    '<button type="button" class="btn btn-info" id="filterMutasi">Filter</button>' +
                     '</div>';
                 divTahunFilter.html(divCol);
 
@@ -1351,7 +1430,7 @@ Order Pembeliaan    | PT. Maxipro Group Indonesia
                 }
 
                 $('#mutasistokModal').modal('show');
-
+                $('#mutasistokModallabelCode').text('Mutasi Stok ' +'('+new_code+ ') '+nama_barang)
                 $('#filterMutasi').on('click', function() {
                     var bulanSelect = $('#bulanSelect').val();
                     var tahunSelect = $('#tahunSelect').val();

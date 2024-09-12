@@ -235,7 +235,7 @@
                 padding-top:30px; 
                 text-align:end;
              }
-             #selecttambahButton {
+             #downloadpdfButton {
                 margin-left: auto;
              }
              #div-edit-restok {
@@ -244,3 +244,24 @@
              .overlay-class {
                 display: none;
              }
+             .choices {
+               z-index: 1000; /* Ensure dropdown is above other elements */
+           }
+
+           #tabe-stok-hitung-kubik2 {
+            width: 100% !important; /* Ensures the table takes full width */
+        }
+        
+        .table-responsive {
+            overflow-x: auto; /* Ensures horizontal scrolling on smaller screens */
+        }
+         #id-search {
+            text-align: right;
+            padding-top: 0.5em;
+
+         }
+         #search-box {
+            border: 1px solid #d7d7d7;
+            color:black;
+            padding-left: 1em;
+        }
