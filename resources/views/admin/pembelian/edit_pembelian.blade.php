@@ -89,7 +89,7 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 <script>
-     $(document).ready(function() {
+    $(document).ready(function() {
                     
                     // Initialize Choices.js on the select element
                     const element = document.getElementById('product-supplier-edit-filter');
@@ -99,7 +99,7 @@
                             itemSelectText: '',
                         });
                     }
-                });
+    });
 
      $('#submitButton').click(function(event) {
                         // Mencegah perilaku default tombol

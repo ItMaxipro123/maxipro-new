@@ -113,19 +113,19 @@
             <div class="col-md-4">
                 <div style="position: relative; width: 100%;">
                 <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Invoice Number</label>
-                <input type="number" class="form-control" name="invoice_no_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;" placeholder="AUTO" disabled>
+                <input type="number" class="form-control" id="invoice_no_tambah" name="invoice_no_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;" placeholder="AUTO" disabled>
                 </div>
             </div>
             <div class="col-md-4">
                 <div style="position: relative; width: 100%;">
                 <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Contract Number</label>
-                <input type="number" class="form-control" name="contract_no_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;" placeholder="AUTO" disabled>
+                <input type="number" class="form-control" id="contract_no_tambah" name="contract_no_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;" placeholder="AUTO" disabled>
                 </div>
             </div>
             <div class="col-md-4">
                 <div style="position: relative; width: 100%;">
                 <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Packing Number</label>
-                <input type="number" class="form-control" name="packing_no_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;" placeholder="AUTO" disabled>
+                <input type="number" class="form-control" id="packing_no_tambah" name="packing_no_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;" placeholder="AUTO" disabled>
                 </div>
             </div>
         </div>
@@ -153,38 +153,38 @@
         <div class="form-group" style="margin-bottom: 20px;margin-top: 10px;">
             <label class="col-lg-3 control-label" style="font-size: 15px;width: 100%">Supplier <span style="color: red;">(Wajib Diisi)</span></label>
 
-            <select class="form-control supplier-supplier" id="product-supplier-edit-filter" name="tambah_supplier">
+            <select class="form-control supplier-supplier" id="supplier-tambah" name="supplier-tambah-name">
                 
                 <option value="">Supplier</option>
-                
+                @foreach($Data['msg']['list_supplier'] as $index => $result)
+                    <option value="{{ $result['id'] }}">{{ $result['name'] }}</option>
+                @endforeach
             </select>
         </div>
 
         <div class="row">
-            <div class="col-md-4">
-                    <div style="position: relative; width: 100%;">
-                        <label class="col-lg-3 control-label" style="font-size: 15px;width: 100%;width: 100%" for="">Nama Perusahaan <span style="color: red;">(Wajib Diisi) </span></label>
-                        <input type="text" class="form-control" id="company-name" name="company_name" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;" value="">
-                    </div>
-            </div>
+           
             <div class="col-md-4">
                 <div style="position: relative; width: 100%;">
                     <label class="col-lg-3 control-label" style="font-size: 15px;width: 100%" for="">Alamat Perusahaan</label>
-                    <textarea type="text" class="form-control" name="address_company" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;" ></textarea>
+                    <textarea type="text" class="form-control" id="address_company" name="address_company" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;" ></textarea>
                 </div>
             </div>
             <div class="col-md-4">
                 <div style="position: relative; width: 100%;">
                     <label class="col-lg-3 control-label" style="font-size: 15px;width: 100%" for="">Kota Perusahaan</label>
-                    <input type="text" class="form-control" name="city_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;" value="">
+                    <input type="text" class="form-control" id="city"name="city" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div style="position: relative; width: 100%;">
+                    <label class="col-lg-3 control-label" style="font-size: 15px;width: 100%" for="">No. Telp</label>
+                    <input type="number" class="form-control" id="telp" name="telp" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;">
                 </div>
             </div>
         </div>
 
-        <div style="position: relative; width: 100%;">
-                <label class="col-lg-3 control-label" style="font-size: 15px;" for="">No. Telp</label>
-                <input type="number" class="form-control" name="telp_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;width: 32%" value="" >
-        </div>
+        
 
 </form>
 
@@ -193,6 +193,35 @@
                     <div style="margin-top:20px;position: relative; width: 100%;">
                         <div id="content-container2"></div>
                         <div id="content-container3"></div>
+                                <div id="myModal" class="modal fade" tabindex="-1" role="dialog">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="title_convert">Convert to USD</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    
+                                                    <div class="form-group" >
+                                                        <label for="">Rate <span style="color: red;">*</span></label>
+                                                        <input type="number" class="form-control border-input" id="input_nominal" value="{{ $Data['msg']['rmbtousd']['nominal'] }}">
+                                                    </div>
+
+                                                    <h5 style="margin-top:10px;">Convert By Google: </h5>
+                                                    <ul>
+
+                                                        <li style="font-weight:bold;">{{ $Data['msg']['rmbtousd']['to_money'] }} to {{ $Data['msg']['rmbtousd']['from_money'] }} : {{ $Data['msg']['rmbtousd']['nominal'] }}</li>
+                                                    </ul>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" id="saveConvert" class="btn btn-primary">Simpan</button>
+                                                </div>
+                                            </div>
+                                    </div>
+                                </div>
+
                     </div>
 </form>
 
@@ -245,14 +274,14 @@
 <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
 
     <div class="row">
-        <div style="padding-top: 15px;" class="col-md-1">
+        <div style="padding-top: 30px;" class="col-md-1">
             <label for="kodebaranglabel">Bank Supplier</label>
                         
         </div>
         <div class="col-md-11" style="padding-right: 600px;">
             <select style="border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control banksupplier-tambah" id="banksupplier-tambah-id" name="banksupplier_edit">
                     <option value="0">Pilih Bank Supplier</option>      
-                    <option value=""></option>
+
             
             </select>
         </div>
@@ -260,15 +289,16 @@
 
 </div>
 
-<div class="form-group" style="padding-top: 30px; padding-left: 20px;">
+<div class="form-group" style="padding-left: 20px;">
 
         <div class="row">
-            <div style="padding-top: 15px;" class="col-md-1">
+            <div style="padding-top: 30px;" class="col-md-1">
                 <label for="kodebaranglabel">Currency</label>
                             
             </div>
             <div class="col-md-11" style="padding-right: 600px;">
-                <select style="border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control currency-tambah" id="currency-tambah-id" name="currency_tambah">
+                
+                <select class="form-control select2 currency-tambah" id="currency-tambah-id" name="currency_tambah">
                         <option value="0">Pilih Currency</option>
                         
                         @foreach($Data['msg']['matauang'] as $index => $mt_uang)    
@@ -396,19 +426,222 @@
 <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
 <!-- Choices.js JS -->
-<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="../assets/js/fcl-container/fcl-container.js"></script> 
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
  $(document).ready(function() {
+    
+    $('#supplier-tambah').select2({
+        placeholder: 'Supplier',
+        allowClear: true,
+        width: '100%'
+    });
+    $('#incoterms-tambah-id').select2({
+        placeholder: 'Pilih Incoterms',
+        allowClear: true,
+        width: '100%'
+    });
+    $('#database_tambah_id').select2({
+        placeholder: 'Pilih Database',
+        allowClear: true,
+        width: '100%'
+    });
+    $('#currency-tambah-id').select2({
+        placeholder: 'Pilih Currency',
+        allowClear: true,
+        width: '100%'
+    });
+
+    // Apply margin-top after initializing Select2
+    $('#currency-tambah-id').next('.select2-container').css('margin-top', '20px'); // Adjust margin-top value as needed
+    
+    $('#banksupplier-tambah-id').select2({
+        placeholder: 'Pilih Bank Supplier',
+        allowClear: true,
+        width: '100%'
+    });
+
+    // Apply margin-top after initializing Select2
+    $('#banksupplier-tambah-id').next('.select2-container').css('margin-top', '20px'); // Adjust margin-top value as needed
+
+    var selectedSupplier = $('.supplier-supplier')
+  
+    selectedSupplier.on('change', function(event) {
+        const selectedValueSupplier = event.target.value;
+        const inputElementSelectedSupplier = document.getElementById('supplier-tambah'); // Ganti dengan ID yang sesuai
+        if (inputElementSelectedSupplier) {
+            inputElementSelectedSupplier.value = selectedValueSupplier;
+            console.log('selected_value',selectedValueSupplier)
+        }
+        $.ajax({
+            type:'GET',
+            url:'{{ route('admin.pembelian_fcl') }}',
+            data:{
+                menu:'select_supplier',
+                select_id_supplier:selectedValueSupplier
+            },
+            success: function(response){
+                console.log('response', response.filtered_supplier);
+
+                // Iterate over the keys of filtered_supplier
+                for (const key in response.filtered_supplier) { 
+                    
+                        const supplier = response.filtered_supplier[key];
+                        
+                        if (supplier && supplier.address) {
+                            $('#address_company').val(supplier.address);
+                            $('#city').val(supplier.city);
+                            $('#telp').val(supplier.telp);
+                        } else {
+                            // console.log(`Address not found for key ${key}`);
+                            $('#address_company').val(supplier.address);
+                            $('#city').val(supplier.city);
+                            $('#telp').val(supplier.telp);
+                        }
+                    
+                }
+                
+                $('#currency-tambah-id').select2({
+                    placeholder:'Pilih Currency',
+                    allowClear:true,
+                    width:'100%'
+                })
+                //select2
+                if (response.filtered_bank_supplier.length == 0) {
+                    var $select = $('#banksupplier-tambah-id'); // Get the raw DOM element
+                    
+                    // Clear existing options
+                    $select.empty();
+                    
+                    // Add default option
+                    $select.append('<option value="0">Pilih Bank Supplier</option>');
+
+                    // Reinitialize Select2
+                    $select.select2({
+                        placeholder: 'Pilih Bank Supplier',
+                        allowClear: true,
+                        width: '100%' // Adjust the width if needed
+                    });
+
+                    //mengisi value menjadi string kosong
+                    $('#bank_name_id_tab').val('');
+                    $('#bankAddress_id_tab_tambah').val('');
+                    $('#swiftCode_id_tab_tambah').val('');
+                    $('#accountNo_id_tab_tambah').val('');
+                    $('#beneficiaryName_id_tab_tambah').val('');
+                    $('#beneficiaryAddress_id_tab_tambah').val('');
+
+                    
+                    $('#banksupplier-tambah-id').next('.select2-container').css('margin-top', '20px'); //mengatur posisi element dari atas
+                    $('#currency-tambah-id').next('.select2-container').css('margin-top', '20px'); // mengatur posisi element dari atas
+
+                } else {
+                    var $select = $('#banksupplier-tambah-id'); // mengambil nilai dari id
+                    
+                    // menghapus nilai yang sudah ada
+                    $select.empty();
+                    
+                    // menambah default option
+                    $select.append('<option value="0">Pilih Bank Supplier</option>');
+
+                    
+                    // looping dari response filter bank ke option
+                    for (const key2 in response.filtered_bank_supplier) {
+                        var bank_supplier = response.filtered_bank_supplier[key2];
+                        if (bank_supplier) {
+                            console.log('select', bank_supplier.id);
+                            console.log('select', bank_supplier.bank_name);
+                            
+                            // Create new option element
+                            var newOption = $('<option></option>')
+                                .val(bank_supplier.id) // The value for the option
+                                .text(bank_supplier.bank_name); // The label for the option
+                            
+                            // Append the new option to the select element
+                            $select.append(newOption);
+                        }
+                    }
+                    
+                   
+             
+                    // Handle perubahan select pada bank supplier
+                    $select.on('change', function() {
+                        var selectedId = $(this).val();
+                        console.log('Selected ID:', selectedId);
+                        //bila id yang dipilih bank supplier !=0
+                        if(selectedId!=0){
+
+                            $.ajax({
+                                type: 'GET',
+                                url: '{{ route('admin.pembelian_fcl') }}',
+                                data: {
+                                    menu: 'select_bank_supplier',
+                                    select_id_banksupplier: selectedId
+                                },
+                                success: function(response) {
+                                    console.log('response', response);
+                                 
+                                        for (const key2 in response.filtered_bank_supplier) {
+                                            var bank_supplier2 = response.filtered_bank_supplier[key2];
+                                            console.log('bank_supplier2.name', bank_supplier2.bank_name);
+                                     
+                                            $('#bank_name_id_tab').val(bank_supplier2.bank_name);
+                                            $('#bankAddress_id_tab_tambah').val(bank_supplier2.bank_address);
+                                            $('#swiftCode_id_tab_tambah').val(bank_supplier2.swiftcode);
+                                            $('#accountNo_id_tab_tambah').val(bank_supplier2.account_number);
+                                            $('#beneficiaryName_id_tab_tambah').val(bank_supplier2.beneficiary_name);
+                                            $('#beneficiaryAddress_id_tab_tambah').val(bank_supplier2.beneficiary_address);
+                                            var $currencyDropdown = $('#currency-tambah-id');
+                                            
+                                            //mengganti dropdown dengan value id_matauang dari response filterd_bank_supplier
+                                            $currencyDropdown.val(bank_supplier2.id_matauang).trigger('change')
+                                        }
+                                    
+                                     
+                                },
+                            });
+                        }
+                        else{
+                            //mengisi value menjadi string kosong
+                            $('#bank_name_id_tab').val('');
+                            $('#bankAddress_id_tab_tambah').val('');
+                            $('#swiftCode_id_tab_tambah').val('');
+                            $('#accountNo_id_tab_tambah').val('');
+                            $('#beneficiaryName_id_tab_tambah').val('');
+                            $('#beneficiaryAddress_id_tab_tambah').val('');
+
+                            var $currencyDropdown = $('#currency-tambah-id')
+                            $currencyDropdown.val(0).trigger('change');
+                        }
+                    });
+                    
+                    $('#banksupplier-tambah-id').next('.select2-container').css('margin-top', '20px'); //mengatur posisi element dari atas
+                    $('#currency-tambah-id').next('.select2-container').css('margin-top', '20px'); // mengatur posisi element dari atas
+
+                }
+
+                
+                
+            }
+        })
+        
+    });      
+
+
 
     $('#importData').on('click', function() {
       $('#importModal').modal('show');
     });
-    
+    function convertFunction(){
+        // console.log('masuk')
+        $('#myModal').modal('show')
+    }
+    //memproses data ketika mengklik simpan di modal import data
     $('#sendImportBarang').on('click',function(){
+                        
                                     var qty_qty=[];
                                     var qty_qty2=[]
                                     var cbm1=0;
@@ -421,7 +654,7 @@
                                     var tot_price_rmb =[];
                                     var tot_price_usd =[];
                     
-                       var selectedIds = [];
+                        var selectedIds = [];
     
                         // Dapatkan semua checkbox yang dicentang
                         var selectedCheckboxes = $('.kubik-checkbox-tambah:checked');
@@ -444,7 +677,7 @@
                                 id_commercial:selectedIds
                             },
                             success: function(response){
-
+                                    console.log('response',response)
                                     var contentContainer = $('#content-container2');
                                     contentContainer.empty();
                                     var contentContainer2 = $('#content-container3');
@@ -460,24 +693,19 @@
                                     var qty_input7  =0;
                                     var tdElement =0;
 
-
-                                    console.log('response',response)
                                     var detail = response.msg.importlistlcl
-                                    // console.log('detail',detail)
                                     
-                                    
-
-
                                     var num_key=0;
                                     var tot_freight_cost=0
                                     var tot_insurance=0
                                     detail.forEach(function(item,itemindex){
                                         item.detail.forEach(function(order,index){
+                                            console.log('order',order)
                                             var id_barang = order
                                             var productName = response.msg.product[num_key].name || ' ';
                                             var gambarName ='https://maxipro.id/images/barang/'+response.msg.product[num_key].image;
                                             
-                                            
+                                            var title_import= $('<h2>').html(item.name+' - '+item.phone)
                                             var newTable1 = $('<table>');
                                             var inputDetailElement = $('<input />').attr({
                                                 'id': 'id_edit_import'+num_key,          
@@ -496,11 +724,25 @@
 
                                             var input_barangElement = $('<input />').attr({
                                                 'id': 'id_barang_import'+num_key,          // ID untuk elemen input
-                                                'name': 'inputName',      // Nama untuk elemen input
-                                                'class': 'form-control',    // Kelas CSS untuk elemen input
+                                                'name': 'inputComercial_'+(num_key),      // Nama untuk elemen input
+                                                'class': 'form-control comercial_import_tambah',    // Kelas CSS untuk elemen input
                                                 'placeholder': '',        // Placeholder untuk elemen input
                                                 'type': 'hidden',          // Tipe input
                                                 'value': order.id_penjualanfromchina
+                                            }).css({
+                                                'border': '1px solid #696868',
+                                                'color' : 'black',
+                                                'padding' : '10px',
+                                                'width': '100%'           // Sesuaikan dengan kebutuhan Anda
+                                            });
+
+                                            var input_idCommercialElement = $('<input />').attr({
+                                                'id': 'id_detail_barang_import'+num_key,          // ID untuk elemen input
+                                                'name': 'inputComercialDetail_'+(num_key),      // Nama untuk elemen input
+                                                'class': 'form-control comercial_detail_import_tambah',    // Kelas CSS untuk elemen input
+                                                'placeholder': '',        // Placeholder untuk elemen input
+                                                'type': 'hidden',          // Tipe input
+                                                'value': order.id
                                             }).css({
                                                 'border': '1px solid #696868',
                                                 'color' : 'black',
@@ -822,7 +1064,7 @@
                                             tot_price_rmb[num_key] = order.total_price_without_tax
                                             tot_price_usd[num_key] = order.total_price_usd
                                             console.log('totprice',tot_price_rmb)
-                                            console.log('tot_price_usd',tot_price_usd)
+                                           
                                             
                                             newTd7Tr3Table2.append(inputElement7);
                                         
@@ -1029,7 +1271,7 @@
                                             
                                             function updateTotalPriceUsd() {
                                                 
-
+                                                
                                                 // var qty_value = parseFloat(inputElement7.val()) || 0;
                                                 var qty_value = parseFloat(inputElement7.val()) || 0;
                                                 var unit_without_tax = parseFloat(inputElement11.val()) || 0;
@@ -1113,7 +1355,7 @@
                                             
                                             
                                             newTable1.append(inputDetailElement)
-                                            newTable1.append(input_barangElement)
+                                            newTable1.append(input_barangElement,input_idCommercialElement)
                                             newTable1.append(newTr1)
                                         
                                             
@@ -1130,69 +1372,56 @@
                                             });
 
                                             // Buat elemen <button> dengan atribut, kelas, dan gaya yang sesuai
-                                            var newButtonSaveItem = $('<button></button>', {
-                                                type: 'button',
-                                                id: 'submitButtonImportBarangComercialInvoice_'+num_key, // Gunakan variabel ascendingIndex sesuai kebutuhan Anda
+                                            // var newButtonSaveItem = $('<button></button>', {
+                                            //     type: 'button',
+                                            //     id: 'submitButtonImportBarangComercialInvoice_'+num_key, // Gunakan variabel ascendingIndex sesuai kebutuhan Anda
 
-                                                class: 'btn btn-primary',
+                                            //     class: 'btn btn-primary',
                                                 
-                                                text: 'Simpan Item',
-                                                css: {
-                                                    marginLeft: 'auto'
-                                                }
-                                            });
+                                            //     text: 'Simpan Item',
+                                            //     css: {
+                                            //         marginLeft: 'auto'
+                                            //     }
+                                            // });
                                             
-                                            // var currentIndex = index;
-                                            newButtonSaveItem.on('click', function() {
+                                            // // var currentIndex = index;
+                                            // newButtonSaveItem.on('click', function() {
                                                     
-                                                    var formData ={
+                                            //         var formData ={
                                                         
-                                                        longValue : $('#long_import' + num_key).val(),
-                                                        widthValue : $('#width_import' + num_key).val(),
-                                                        heightValue : $('#height_import' + num_key).val(),
-                                                        long_pValue : $('#long_p_import' + num_key).val(),
-                                                        width_pValue : $('#width_p_import' + num_key).val(),
-                                                        height_pValue : $('#height_p_import' + num_key).val(),
-                                                        qty_Value : $('#qty_import' + num_key).val(),
+                                            //             longValue : $('#long_import' + num_key).val(),
+                                            //             widthValue : $('#width_import' + num_key).val(),
+                                            //             heightValue : $('#height_import' + num_key).val(),
+                                            //             long_pValue : $('#long_p_import' + num_key).val(),
+                                            //             width_pValue : $('#width_p_import' + num_key).val(),
+                                            //             height_pValue : $('#height_p_import' + num_key).val(),
+                                            //             qty_Value : $('#qty_import' + num_key).val(),
                                                         
-                                                    };
-                                                    console.log('formData',formData);
-                                                    $.ajax({
-                                                        url: '', // Ganti dengan URL tujuan Anda
-                                                        type: 'GET',
-                                                        data: formData,
+                                            //         };
+                                            //         console.log('formData',formData);
+                                            //         $.ajax({
+                                            //             url: '', // Ganti dengan URL tujuan Anda
+                                            //             type: 'GET',
+                                            //             data: formData,
                                                         
-                                                        success: function(response) {
-                                                            alert('Data berhasil disimpan!');
-                                                        },
-                                                        error: function(xhr, status, error) {
-                                                            alert('Terjadi kesalahan: ' + error);
-                                                        }
-                                                    });
+                                            //             success: function(response) {
+                                            //                 alert('Data berhasil disimpan!');
+                                            //             },
+                                            //             error: function(xhr, status, error) {
+                                            //                 alert('Terjadi kesalahan: ' + error);
+                                            //             }
+                                            //         });
                                                     
-                                            });
+                                            // });
                                             
                                             var newTrLast2 = $('<tr>');
                                             var newTdLast2 = $('<td colspan="12"><br></td>'); // Menambahkan colspan dan <td> yang benar
                                             newTrLast2.append(newTdLast2);
-                                            contentContainer.append(newTable1); // Menggunakan newTrLast bukan newTr1
+                                            contentContainer.append(title_import,newTable1); // Menggunakan newTrLast bukan newTr1
 
 
                                             contentContainer.append(newTable2, newTrLast2)
-                                    
-                                            var selectElement = $('.hscode-import'); // Pilih elemen select
-                                            const choices = new Choices(selectElement[0], {
-                                                searchEnabled: true,
-                                                itemSelectText: '',
-                                            });
-
-                                            selectElement.on('change', function(event) {
-                                                const selectedValue = event.target.value;
-                                                const inputElement = document.getElementById('hscode-import-edit'); // Ganti dengan ID yang sesuai
-                                                if (inputElement) {
-                                                    inputElement.value = selectedValue;
-                                                }
-                                            });      
+                                
 
                                             //last
                                             num_key++;
@@ -1202,8 +1431,34 @@
                                     
                                     })
 
+                                    var buttonContainer = $('<div>')
+                                        .css({
+                                            'text-align': 'right',  // Align the content (button) to the right
+                                            'width': '100%',         // Optional, ensures full width of the container
+                                            'margin-left':'2%',
+                                            'margin-bottom':'5%'
+                                        });
+
+                                    // Create the button
+                                    var newButton = $('<button>')
+                                        .attr({
+                                            'id': 'customButtonId',     // Set an ID for the button
+                                            'type': 'button',           // Set the type attribute
+                                            'class': 'btn btn-primary'  // Add Bootstrap classes (optional)
+                                        })
+                                        .text('Convert to USD')         // Set the text for the button
+                                        .css({
+                                            'margin': '10px',           // Optional styling
+                                            'padding': '10px 20px'
+                                        });
+                                        newButton.on('click', function() {
+                                            convertFunction();
+                                        })
+                                    // Append the button to the container
+                                    buttonContainer.append(newButton);
+
                                     var newDivTable3 = $('<div>').css({
-                                        'padding-left': '1000px'
+                                        'margin-left': '70%'
                                     });
                                     var newTable3 = $('<table>')
                                     var newTr1Table3 = $('<tr>')
@@ -1262,11 +1517,11 @@
                                     newTd2Tr2Table3.append(inputTd2Tr2Table3)
                                     newTr2Table3.append(newTd1Tr2Table3,newTd2Tr2Table3)
                                     newTable3.append(newTr1Table3,newTr2Table3)
-                                    newDivTable3.append(newTable3)
+                                    newDivTable3.append(buttonContainer,newTable3)
                                     
                                     var newDiv2Table4 = $('<div>').css({
                                         
-                                        'padding-left': '1000px', 
+                                        'margin-left': '70%', 
                                         'padding-top': '30px',
                                     });
                                     
@@ -1284,8 +1539,14 @@
                                     
                                     var h5Tr1Table4 = $('<h5>').text('Total');
                                     
-                                    
+                                    //untuk menghitung total dari qty array
                                     var totalQty = Object.values(qty_qty2).reduce((acc, value) => acc + value, 0);
+                                    
+                                    //untuk menghitung total dari price usd array
+                                    var totalPriceUsd = Object.values(tot_price_usd).reduce((acc,value)=>acc+value,0)
+                                    
+                                    //untuk menghitung total dari rmb array
+                                    var totalPriceRmb = Object.values(tot_price_rmb).reduce((acc,value)=>acc+value,0)
                                     
                                     let totalCbm = cbm_cbm.reduce((acc, value) => acc + parseFloat(value), 0);
                                     var newTr2Table4 = $('<tr>');
@@ -1336,7 +1597,7 @@
                                         'border': '1px solid #696868', 
                                         'color': 'black',
                                         'padding-left': '20px'
-                                    }).text('0');
+                                    }).text(totalPriceRmb.toFixed(2));
                                     newTr4Table4.append(newTd1Tr4Table4,newTd2Tr4Table4)
 
                                     var newTr5Table4 = $('<tr>');
@@ -1351,7 +1612,7 @@
                                         'border': '1px solid #696868', 
                                         'color': 'black',
                                         'padding-left': '20px'
-                                    }).text('0');
+                                    }).text(totalPriceUsd.toFixed(2));
                                     newTr5Table4.append(newTd1Tr5Table4,newTd2Tr5Table4)
                                     newDiv2Table4.append(newTr1Table4,newTr2Table4,newTr3Table4,newTr4Table4,newTr5Table4)
                                 
@@ -1413,12 +1674,166 @@
                             }
                         })
 
-    })
+                            //memproses data dan mengirim data ke controller
+                            $('#submitButtonForm2').on('click',function(){
+                                console.log('simpan')
+                                console.log($('.database-tambah').val())
+                                console.log($('#tgl_request_tambah').val())
+                                console.log($('#supplier-tambah').val())
+                                console.log($('#address_company').val())
+                                console.log($('#city').val())
+                                console.log($('#telp').val())
+                                console.log($('#incoterms-tambah-id').val())
+                                console.log($('#location_id_tab').val())
+                                console.log($('#banksupplier-tambah-id').val())
+                                console.log($('#currency-tambah-id').val())
+                                console.log($('#bank_name_id_tab').val())
+                                console.log($('#bankAddress_id_tab_tambah').val())
+                                console.log($('#swiftCode_id_tab_tambah').val());
+                                console.log($('#accountNo_id_tab_tambah').val())
+                                console.log($('#beneficiaryName_id_tab_tambah').val())
+                                console.log($('#beneficiaryAddress_id_tab_tambah').val())
+
+                                console.log('invoice_no',$('#invoice_no_tambah').val())
+                                console.log('contract_no',$('#contract_no_tambah').val())
+                                console.log('packing_no',$('#packing_no_tambah').val()) 
+                                
+                                console.log('modeadmin',$('input[name="modeadmin_tambah"]').val())
+                                var totalPriceUsdTd = $('#custom-tot-price-without-tax-usd-td-tambah').text();
+                                console.log(totalPriceUsdTd);
+                                var totalPriceRmbTd = $('#custom-tot-price-without-tax-td-tambah').text();
+                                console.log(totalPriceRmbTd)
+                                var totalCbmTd = $('#total_cbm_tambah').text();
+                                console.log(totalCbmTd)
+                                var totalQtyTd = $('#qty-td-tambah').text()
+                                console.log(totalQtyTd)
+                                var totalInsuranceTd= $('#insurance_edit_id_tab_tambah').val()
+                                console.log(totalInsuranceTd)
+                                var totalFreightCostTd = $('#freight_cost_id_tab_tambah')
+                                                        
+                                var formData = {
+
+                                };
+                                $('.comercial_import_tambah').each(function() {
+                                    
+                                    var id = $(this).attr('name');
+                                    formData[id] = $(this).val();
+                                    
+                                });
+                                
+                                $('.comercial_detail_import_tambah').each(function() {
+                                    
+                                    var id = $(this).attr('name');
+                                    formData[id] = $(this).val();
+                                    
+                                });
+
+                                $('.chinese_import').each(function() {
+                                    
+                                    var id = $(this).attr('name');
+                                    formData[id] = $(this).val();
+                                    
+                                });
+                                $('.english_import').each(function() {
+                                    
+                                    var id = $(this).attr('name');
+                                    formData[id] = $(this).val();
+                                    
+                                });
+                                $('.model_import').each(function() {
+                                    
+                                    var id = $(this).attr('name');
+                                    formData[id] = $(this).val();
+                                    
+                                });
+                                $('.brand_import').each(function() {
+                                    
+                                    var id = $(this).attr('name');
+                                    formData[id] = $(this).val();
+                                    
+                                });
+                                $('.hscode_import').each(function() {
+                                    
+                                    var id = $(this).attr('name');
+                                    formData[id] = $(this).val();
+                                    
+                                });
+                                $('.long_import').each(function() {
+                                    
+                                    var id = $(this).attr('name');
+                                    formData[id] = $(this).val();
+                                    
+                                });
+                                $('.width_import').each(function() {
+                                    
+                                    var id = $(this).attr('name');
+                                    formData[id] = $(this).val();
+                                    
+                                });
+                                $('.height_import').each(function() {
+                                    
+                                    var id = $(this).attr('name');
+                                    formData[id] = $(this).val();
+                                    
+                                });
+                                $('.long_p_import').each(function() {
+                                    
+                                    var id = $(this).attr('name');
+                                    formData[id] = $(this).val();
+                                    
+                                });
+                                $('.width_p_import').each(function() {
+                                    
+                                    var id = $(this).attr('name');
+                                    formData[id] = $(this).val();
+                                    
+                                });
+                                $('.height_p_import').each(function() {
+                                    
+                                    var id = $(this).attr('name');
+                                    formData[id] = $(this).val();
+                                    
+                                });
+                                $('.qty_import').each(function() {
+                                    
+                                    var id = $(this).attr('name');
+                                    formData[id] = $(this).val();
+                                    
+                                });
+                                $('.nett_weight_import').each(function() {
+                                    
+                                    var id = $(this).attr('name');
+                                    formData[id] = $(this).val();
+                                    
+                                });
+                                $('.gross_weight_import').each(function() {
+                                    
+                                    var id = $(this).attr('name');
+                                    formData[id] = $(this).val();
+                                    
+                                });
+                                $('.cbm_import').each(function() {
+                                    
+                                    var id = $(this).attr('name');
+                                    formData[id] = $(this).val();
+                                    
+                                });
+                                
+                                
+                                
+                            })
+                    })
+    
+   
+    
 
     var table = $('#table-tambah-comercial-invoice').DataTable({
         dom: 'lrtip', // Customize the DataTable DOM
         responsive: true, // Enable responsive mode
     });
+        
+                 
+                
 
     // Custom search box
     $('#search-box').on('keyup', function() {

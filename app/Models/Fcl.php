@@ -53,6 +53,77 @@ class Fcl extends Model
             return ['error' => $e->getMessage()];
         }
     }
+    
+    public static function getSupplier($teknisi_cookie,$id)
+    {
+        try {
+            $client = new Client(['verify' => false]);
+
+            $headers = [
+                'Cookie' => $teknisi_cookie
+            ];
+
+            $response = $client->request('GET', 'https://maxipro.id/TeknisiAPI/fcl2', [
+                'headers' => $headers,
+                
+            ]);
+            
+            $data = $response->getBody()->getContents();
+            $decodedData = json_decode($data, true);
+            // dd($decodedData['msg']['bank_supplier']);
+            
+            $filteredDataSupplier = array_filter($decodedData['msg']['list_supplier'], function($item) use ($id) {
+                return $item['id'] == $id; // Pastikan 'id' sesuai dengan key pada data
+            });
+            $filteredDataBankSupplier = array_filter($decodedData['msg']['bank_supplier'], function($item) use ($id) {
+                return $item['id_supplier'] == $id; // Pastikan 'id' sesuai dengan key pada data
+            });
+            
+            // return $filteredDataSupplier;
+            return [
+                'filtered_supplier' => $filteredDataSupplier,
+                'filtered_bank_supplier' => $filteredDataBankSupplier
+            ];
+        } catch (\Exception $e) {
+            // Handle exception
+            return ['error' => $e->getMessage()];
+        }
+    }
+    public static function getBankSupplier($teknisi_cookie,$id)
+    {
+        try {
+            $client = new Client(['verify' => false]);
+
+            $headers = [
+                'Cookie' => $teknisi_cookie
+            ];
+
+            $response = $client->request('GET', 'https://maxipro.id/TeknisiAPI/fcl2', [
+                'headers' => $headers,
+                
+            ]);
+            
+            $data = $response->getBody()->getContents();
+            $decodedData = json_decode($data, true);
+            // dd($id,$decodedData['msg']['bank_supplier']);
+            
+            // $filteredDataSupplier = array_filter($decodedData['msg']['list_supplier'], function($item) use ($id) {
+            //     return $item['id'] == $id; // Pastikan 'id' sesuai dengan key pada data
+            // });
+            $filteredDataBankSupplier = array_filter($decodedData['msg']['bank_supplier'], function($item) use ($id) {
+                return $item['id'] == $id; // Pastikan 'id' sesuai dengan key pada data
+            });
+            // dd($filteredDataBankSupplier);
+            // return $filteredDataSupplier;
+            return [
+              
+                'filtered_bank_supplier' => $filteredDataBankSupplier
+            ];
+        } catch (\Exception $e) {
+            // Handle exception
+            return ['error' => $e->getMessage()];
+        }
+    }
 
     public static function getFclPembelianFilter($teknisi_cookie, $status, $tgl_awal, $tgl_akhir, $checkdatevalue,$nama_perusahaan)
     {

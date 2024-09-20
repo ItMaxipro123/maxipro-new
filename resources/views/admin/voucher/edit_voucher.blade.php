@@ -1,11 +1,4 @@
 @extends('admin.templates_asetjs')
-
-
-
-
-
-
-
                     <form action="" class="form-horizontal" id="form-input" method="get">
                         @csrf
                         <h4 style="margin-bottom: 10px;">Form Edit Voucher</h4>
@@ -26,26 +19,15 @@
                                     <option value="0" style="text-align: center;" {{ $Data['msg']['voucher']['status'] == 0 ? 'selected' : '' }}>Expired</option>
                                     <option value="0" style="text-align: center;" {{ $Data['msg']['voucher']['status'] != 0 && $Data['msg']['voucher']['status'] != 1 ? 'selected' : '' }}>Pilih Aktif</option>
 
-
-
-
-
-
                                 </select>
                                 <i class="fas fa-chevron-down" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%)"></i>
                             </div>
                         </div>
 
-
-
                         <div class="form-group" style="display: flex;padding-top:30px; text-align:end;">
                             <button type="submit" id="searchButton" class="btn btn-primary" style="margin-left: auto;">Select</button>
                         </div>
                     </form>
-            
-
-
-
 @section('script')
 
 

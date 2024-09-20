@@ -1142,9 +1142,9 @@ Dashboard | PT. Maxipro Group Indonesia
                                 "statusbar"=> "0",
                                 "created_at"=> "2018-12-11 16:14:49",
                                 "updated_at"=> "2022-08-05 21:18:58",
-                                "urlupdate"=> "https://maxipro.id/administrator/teknisi/update/28/elly-giatmoko",
-                                "urldelete"=> "https://maxipro.id/administrator/teknisi/delete/28",
-                                "imagedir"=> "https://maxipro.id/images/teknisi/elly-giatmoko.png"
+                                "urlupdate"=> "https://maxipro.id.test/administrator/teknisi/update/28/elly-giatmoko",
+                                "urldelete"=> "https://maxipro.id.test/administrator/teknisi/delete/28",
+                                "imagedir"=> "https://maxipro.id.test/images/teknisi/elly-giatmoko.png"
                         ]);
                       @endphp
                       @foreach ($Data['allteknisi'] as $teknisi) 

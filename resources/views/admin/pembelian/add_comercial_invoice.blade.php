@@ -531,6 +531,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
         //         allowClear: true
         //     });
         $('#sendImportBarang').click(function(event) {
+            
             event.preventDefault();
             var selectedCheckboxes = $('.kubik-checkbox-tambah:checked');
             var formData = {
@@ -553,7 +554,6 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                 url: '{{ route('admin.pembelian_importbarang_comercial_invoice') }}',
                 data: formData,
                 success: function(response) {
-                    console.log('response', response);
                   
                     var $select = $('#banksupplier-tambah-id').get(0); // Get the raw DOM element
                     var choices = new Choices($select, {
@@ -569,7 +569,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                         value: '0',
                         label: 'Pilih Bank Supplier',
                         selected: true,
-                        disabled: true
+                        
                     }], 'value', 'label', true);
                     
                     // Add new options
@@ -582,23 +582,75 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                     
                     choices.setChoices(choicesArray, 'value', 'label');
                     $select.addEventListener('change', function() {
-    var selectedValue = choices.getValue(true); // Get the selected value after change
-    console.log('Selected value:', selectedValue);
+                        var selectedValue = choices.getValue(true); // Get the selected value after change
+                        console.log('Selected value:', selectedValue);
 
-    // Find the selected object from the response array
-    var selectedSupplier = response.supplierbank.find(function(item) {
-        return item.id == selectedValue;
-    });
+                        // Find the selected object from the response array
+                        var selectedSupplier = response.supplierbank.find(function(item) {
+                            return item.id == selectedValue;
+                        });
 
-    // Log the selected object or use it in your code
-    if (selectedSupplier) {
-        console.log('Selected supplier details:', selectedSupplier);
-        $('#beneficiaryAddress_id_tab_tambah').val(selectedSupplier.bank_address)
-        // You can now access details like selectedSupplier.bank_name, selectedSupplier.id, etc.
-    } else {
-        console.log('No matching supplier found.');
-    }
-});
+                        // Log the selected object or use it in your code
+                        if (selectedSupplier) {
+                            console.log('Selected supplier details:', selectedSupplier);
+                            $('#beneficiaryAddress_id_tab_tambah').val(selectedSupplier.beneficiary_address)
+                            $('#beneficiaryName_id_tab_tambah').val(selectedSupplier.beneficiary_name)
+                            $('#accountNo_id_tab_tambah').val(selectedSupplier.account_number)
+                            $('#swiftCode_id_tab_tambah').val(selectedSupplier.swiftcode)
+                            $('#bankAddress_id_tab_tambah').val(selectedSupplier.bank_address)
+                            $('#bank_name_id_tab').val(selectedSupplier.bank_name)
+                            $('#currency-tambah-id').val(selectedSupplier.id_matauang).trigger('change');
+                            $('.currency-tambah').each(function() {
+                                const element = this;
+                                if (element.choices) { 
+                                    
+                                    element.choices.destroy(); // Hancurkan instance Choices.js yang ada
+                                }
+                            });
+
+                            // Inisialisasi ulang Choices.js
+                            const currencySelect = new Choices('#currency-tambah-id', {
+                                searchEnabled: true,
+                                itemSelectText: '', // Hilangkan teks "Press to select"
+                            });
+
+                            // Setelah inisialisasi ulang, set nilai dropdown ke selectedSupplier.id_matauang
+                            $('#currency-tambah-id').val(selectedSupplier.id_matauang).trigger('change');
+
+                            // Perbarui instance Choices.js dengan nilai baru
+                            currencySelect.setChoiceByValue(selectedSupplier.id_matauang);
+                        } else {
+       
+                            console.log('No matching supplier found.');
+                            $('#beneficiaryAddress_id_tab_tambah').val('')
+                            $('#beneficiaryName_id_tab_tambah').val('')
+                            $('#accountNo_id_tab_tambah').val('')
+                            $('#swiftCode_id_tab_tambah').val('')
+                            $('#bankAddress_id_tab_tambah').val('')
+                            $('#bank_name_id_tab').val('')
+                            $('#currency-tambah-id').val('0').trigger('change');
+                            $('.currency-tambah').each(function() {
+                                const element = this;
+                                if (element.choices) {
+                                    console.log('destroy') 
+                                    element.choices.destroy(); // Hancurkan instance Choices.js yang ada
+                                }
+                            });
+
+                            // Inisialisasi ulang Choices.js
+                            const currencySelect = new Choices('#currency-tambah-id', {
+                                searchEnabled: true,
+                                itemSelectText: '', // Hilangkan teks "Press to select"
+                            });
+
+                            // Setelah inisialisasi ulang, set nilai dropdown ke selectedSupplier.id_matauang
+                            $('#currency-tambah-id').val('0').trigger('change');
+
+                            // Perbarui instance Choices.js dengan nilai baru
+                            currencySelect.setChoiceByValue('0');
+
+                        }
+                    });
                     var contentContainer = $('#content-container2');
                     contentContainer.empty();
                     var contentContainer2 = $('#content-container3');

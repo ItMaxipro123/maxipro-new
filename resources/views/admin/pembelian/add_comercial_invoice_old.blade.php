@@ -1552,7 +1552,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
             };
             
             // import
-             $('.restok_import_tambah').each(function() {
+            $('.restok_import_tambah').each(function() {
                 console.log('masuk restok import')
                 var id = $(this).attr('name');
                 formData[id] = $(this).val();

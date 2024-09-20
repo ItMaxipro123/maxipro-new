@@ -12,157 +12,11 @@ FCL Container    | PT. Maxipro Group Indonesia
 
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
-    <!-- Choices.js CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+<!-- Choices.js CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
 
 @endsection
-@section('style')
 
-<style>
-    /* Gaya untuk elemen overlay */
-#overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Hitam dengan opacity 0.5 */
-    z-index: 9999; /* Pastikan lebih tinggi dari elemen lain */
-}
-
-    .flatpickr-input {
-        border: 1px solid #ccc;
-        padding: 5px;
-        border-radius: 4px;
-    }
-
-    .dataTables_wrapper .dataTables_paginate .paginate_button.previous {
-        width: auto;
-        /* Atur lebar tombol menjadi otomatis */
-        padding-right: 0px;
-        /* Berikan padding di sisi kanan tombol */
-
-    }
-
-    /* Ganti warna latar belakang tabel */
-    #tabe-stok {
-        background-color: #f0f0f0;
-        /* Ganti dengan warna yang Anda inginkan */
-
-    }
-    #tabe-stok {
-        border-collapse: collapse; /* Ensure borders collapse */
-        width: 100%; /* Set table width to fill its container */
-    }
-
-    #tabe-stok th,
-    #tabe-stok td {
-        padding: 5px; /* Adjust padding as needed */
-        border: 1px solid #ddd; /* Add border */
-        overflow: auto; /* Enable overflow */
-        word-wrap: break-word; /* Wrap long words */
-    }
-
-
-     #tabe-stok-hitung-kubik {
-        background-color: #f0f0f0;
-        /* Ganti dengan warna yang Anda inginkan */
-
-    }
-    #tabe-stok-hitung-kubik {
-        border-collapse: collapse; /* Ensure borders collapse */
-        width: 100%; /* Set table width to fill its container */
-    }
-
-    #tabe-stok-hitung-kubik th,
-    #tabe-stok-hitung-kubik td {
-        padding: 5px; /* Adjust padding as needed */
-        border: 1px solid #ddd; /* Add border */
-        overflow: auto; /* Enable overflow */
-        word-wrap: break-word; /* Wrap long words */
-    }
-
-
-    .dataTables_filter input[type="search"] {
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        /* Opsional: untuk membuat sudut border melengkung */
-        padding: 5px;
-        /* Opsional: untuk memberi jarak antara border dan teks */
-    }
-
-    
-
- 
-
-    /* Style untuk tombol Delete */
-    .btn-delete {
-        width: 15%;
-        /* Lebar default */
-    }
-
-    /* Mengatur lebar tombol saat layar berukuran kecil (misalnya pada perangkat mobile) */
-    @media only screen and (max-width: 600px) {
-        .btn-delete {
-            width: 40%;
-            /* Mengisi lebar penuh */
-        }
-    }
-
-       .color-box {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            margin-left: 5px;
-            margin-bottom: 10px;
-            vertical-align: middle;
-        }
-
-        .bg-light-yellow {
-            background-color:#fff17a; /* Light yellow color */
-        }
-         .bg-light-blue {
-            background-color:#97ebfb; /* Light blue color */
-        }
-           .bg-light-green {
-            background-color: #6cf670; /* Light green color */
-        }
-          .bg-pink {
-            background-color: #FFC0CB; /* Light red color */
-        }
-         .bg-light-grey {
-            background-color: #f4f7f7; /* Light grey color */
-        }
-
-        .tooltip-container {
-             position: relative;
-             display: inline-block;
-         }
-
-         .tooltip-container .tooltip-text {
-             visibility: hidden;
-             width: 120px;
-             background-color: black;
-             color: #fff;
-             text-align: center;
-             border-radius: 6px;
-             padding: 5px 0;
-             position: absolute;
-             z-index: 1;
-             bottom: 125%; /* Position the tooltip above the button */
-             left: 50%;
-             margin-left: -60px; /* Center the tooltip */
-             opacity: 0;
-             transition: opacity 0.3s;
-         }
-
-         .tooltip-container:hover .tooltip-text {
-             visibility: visible;
-             opacity: 1;
-         }
-</style>
-
-@endsection
 @section('content')
 
 <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg wider">
@@ -509,7 +363,7 @@ FCL Container    | PT. Maxipro Group Indonesia
                        
                         if ($.isEmptyObject(response)) {//bila response {}
                               function appendImage() {
-                                var img = $('<img>').attr('src', "https://maxipro.id/images/placeholder/basic.png").css('width', '70px').css('height', '70px');
+                                var img = $('<img>').attr('src', "https://maxipro.id.test/images/placeholder/basic.png").css('width', '70px').css('height', '70px');
                                 $('#new-input-container-gambar').empty().append(img);
                             }
                               appendImage(); 
@@ -837,7 +691,7 @@ FCL Container    | PT. Maxipro Group Indonesia
         return false;
     }
 
-  function deleteOrderPembelian(element) {
+    function deleteOrderPembelian(element) {
     event.preventDefault();
     var id = $(element).data('id');
     var restokName = $(element).attr('name');
@@ -892,7 +746,7 @@ FCL Container    | PT. Maxipro Group Indonesia
             });
         }
     });
-}
+    }
 
     function rejectOrderPembelian(element) {
         event.preventDefault();

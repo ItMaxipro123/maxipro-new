@@ -17,7 +17,28 @@ class ComercialInvoice extends Model
                 'Cookie' => $teknisi_cookie
             ];
 
-            $response = $client->request('GET', 'https://maxipro.id/TeknisiAPI/comercial_invoice', [
+            $response = $client->request('GET', 'https://maxipro.id.test/TeknisiAPI/comercial_invoice', [
+                'headers' => $headers,
+
+            ]);
+
+            $data = $response->getBody()->getContents();
+            return json_decode($data, true);
+        } catch (\Exception $e) {
+            // Handle exception
+            return ['error' => $e->getMessage()];
+        }
+    }
+    public static function getSupplierComercialInvoice($teknisi_cookie)
+    {
+        try {
+            $client = new Client(['verify' => false]);
+
+            $headers = [
+                'Cookie' => $teknisi_cookie
+            ];
+
+            $response = $client->request('GET', 'https://maxipro.id.test/TeknisiAPI/comercialInvoice_supplier', [
                 'headers' => $headers,
 
             ]);
@@ -38,7 +59,7 @@ class ComercialInvoice extends Model
                 'Cookie' => $teknisi_cookie
             ];
 
-            $response = $client->request('POST', 'https://maxipro.id/TeknisiAPI/comercial_invoice_select_category' , [
+            $response = $client->request('POST', 'https://maxipro.id.test/TeknisiAPI/comercial_invoice_select_category' , [
                 'form_params' => [
                     'id_commercial' =>$id,
                     'selected_value'=>$selected_value
@@ -47,7 +68,6 @@ class ComercialInvoice extends Model
             ]);
             
             $data = $response->getBody()->getContents();
-            // dd($data);
          
             return json_decode($data, true);
         } catch (\Exception $e) {
@@ -57,7 +77,7 @@ class ComercialInvoice extends Model
     }
     public static function getComercialInvoiceAdd($teknisi_cookie,$id)
     {
-        // dd($id,'a');
+        
         try {
             $client = new Client(['verify' => false]);
 
@@ -65,7 +85,7 @@ class ComercialInvoice extends Model
                 'Cookie' => $teknisi_cookie
             ];
 
-            $response = $client->request('GET', 'https://maxipro.id/TeknisiAPI/comercial_invoice', [
+            $response = $client->request('GET', 'https://maxipro.id.test/TeknisiAPI/comercial_invoice', [
                 'headers' => $headers,
 
             ]);
@@ -90,7 +110,7 @@ class ComercialInvoice extends Model
             ];
             // dd($id_no_invoice);
 
-            $response = $client->request('GET', 'https://maxipro.id/TeknisiAPI/comercial_invoice', [
+            $response = $client->request('GET', 'https://maxipro.id.test/TeknisiAPI/comercial_invoice', [
                 'headers' => $headers,
                 'query' => [
                     'requested_check' => $status,
@@ -123,7 +143,7 @@ class ComercialInvoice extends Model
                 'Cookie' => $teknisi_cookie
             ];
 
-            $response = $client->request('GET', 'https://maxipro.id/TeknisiAPI/comercial_invoice_editview/' . $id, [
+            $response = $client->request('GET', 'https://maxipro.id.test/TeknisiAPI/comercial_invoice_editview/' . $id, [
                 'headers' => $headers,
 
             ]);
@@ -146,7 +166,7 @@ class ComercialInvoice extends Model
                 'Cookie' => $teknisi_cookie
             ];
            
-            $response = $client->request('POST', 'https://maxipro.id/TeknisiAPI/commercial_invoice_importdata' , [
+            $response = $client->request('POST', 'https://maxipro.id.test/TeknisiAPI/commercial_invoice_importdata' , [
                 'form_params' => [
                     'idrestok' =>$restok,
                     'valuerestok'=>$valuerestok
@@ -173,7 +193,7 @@ class ComercialInvoice extends Model
                 'Cookie' => $teknisi_cookie
             ];
 
-            $response = $client->request('GET', 'https://maxipro.id/TeknisiAPI/order_pembelian_rejected/' . $id, [
+            $response = $client->request('GET', 'https://maxipro.id.test/TeknisiAPI/order_pembelian_rejected/' . $id, [
                 'headers' => $headers,
 
             ]);
@@ -197,7 +217,7 @@ class ComercialInvoice extends Model
                 'Cookie' => $teknisi_cookie
             ];
 
-            $response = $client->request('delete', 'https://maxipro.id/TeknisiAPI/order_pembelian_hapus/' . $id, [
+            $response = $client->request('delete', 'https://maxipro.id.test/TeknisiAPI/order_pembelian_hapus/' . $id, [
                 'headers' => $headers,
 
             ]);
@@ -212,146 +232,6 @@ class ComercialInvoice extends Model
         }
     }
 
-
-    // public static function updateComercialInvoice($teknisi_cookie, $data){
-       
-    //     dd($data);
-        
-    //     try {
-    //         $client = new Client(['verify' => false]);
-
-    //         $headers = [
-    //             'Cookie' => $teknisi_cookie
-    //         ];
-    //         if($data['modeadmin']==1){
-                
-    //             $response = $client->request('POST', 'https://maxipro.id/TeknisiAPI/comercial_invoice_edit2' , [
-    //                 'form_params' => [
-                        
-    //                     'freight_cost' => $data['freight_cost'],
-    //                     'insurance' => $data['insurance'],
-    //                     'incoterms'=> $data['incoterms'],
-    //                     'location'=> $data['location'],
-    //                     'supplierbank' => $data['supplierbank'],
-    //                     'currency' => $data['currency'],
-    //                     'bank_name' => $data['bank_name'],
-    //                     'bank_address' => $data['bank_address'],
-    //                     'swift_code' => $data['swift_code'],
-    //                     'account_no' => $data['account_no'],
-    //                     'modeadmin' => $data['modeadmin'],
-    //                     'date' => $data['date'],
-    //                     'invoicenumber' => $data['invoicenumber'],
-    //                     'contractnumber' => $data['contractnumber'],
-    //                     'packingnumber' => $data['packingnumber'],
-    //                     'beneficiary_name' =>  $data['beneficiary_name'],
-    //                     'beneficiary_address' => $data['beneficiary_address'],
-    //                     'name' => $data['name_perusahaan'],
-    //                     'address' => $data['address'],
-    //                     'city' => $data['city'],
-    //                     'id_supplier'=> $data['id_supplier'],
-    //                     'id' => $data['comercialId']
-                        
-    //                 ],
-    //                 'headers' => $headers,
-    //             ]);
-    //        }
-    //        else{
-            
-    //         $response = $client->request('POST', 'https://maxipro.id/TeknisiAPI/comercial_invoice_edit2' , [
-    //                 'form_params' => [
-                        
-    //                    'freight_cost' => $data['freight_cost'] ?? '',
-    //                 'insurance' => $data['insurance'] ?? '',
-    //                 'incoterms' => $data['incoterms'] ?? '',
-    //                 'location' => $data['location'] ?? '',
-    //                 'supplierbank' => $data['supplierbank'] ?? '',
-    //                 'currency' => $data['currency'] ?? '',
-    //                 'bank_name' => $data['bank_name'] ?? '',
-    //                 'bank_address' => $data['bank_address'] ?? '',
-    //                 'swift_code' => $data['swift_code'] ?? '',
-    //                 'account_no' => $data['account_no'] ?? '',
-    //                 'beneficiary_name' => $data['beneficiary_name'] ?? '',
-    //                 'beneficiary_address' => $data['beneficiary_address'] ?? '',
-    //                 'tgl_transaksi' => $data['date'] ?? '',
-    //                 'name_perusahaan' => $data['name_perusahaan'] ?? '',
-    //                 'address' => $data['address'] ?? '',
-    //                 'city' => $data['city'] ?? '',
-    //                 'supplier' => $data['id_supplier'] ?? '',
-    //                 'id' => $data['comercialId'] ?? '',
-    //                 'modeadmin' => $data['modeadmin'] ?? '',
-    //                 'database' => $data['database'] ?? '',
-    //                 'telephone' => $data['telephone'] ?? '',
-    //                 'brand[]' => $data['brand_name'] ?? '',
-    //                 'restok[]' => $data['restok'] ?? '',
-    //                 'english_name[]' => $data['english_name'] ?? '',
-    //                 'chinese_name[]' => $data['chinese_name'] ?? '',
-    //                 'model[]' => $data['model_name'] ?? '',
-    //                 'hs_code[]' => $data['hs_code'] ?? '',
-    //                 'length_m[]' => $data['long_m'] ?? '',
-    //                 'width_m[]' => $data['width_m'] ?? '',
-    //                 'height_m[]' => $data['height_m'] ?? '',
-    //                 'length_p[]' => $data['long_p'] ?? '',
-    //                 'width_p[]' => $data['width_p'] ?? '',
-    //                 'height_p[]' => $data['height_p'] ?? '',
-    //                 'qty[]' => $data['qty'] ?? '',
-    //                 'nett_weight[]' => $data['net_weight'] ?? '',
-    //                 'gross_weight[]' => $data['gross_weight'] ?? '',
-    //                 'cbm_volume[]' => $data['cbm'] ?? '',
-    //                 'price[]' => $data['unit_price_without_tax'] ?? '',
-    //                 'price_usd[]' => $data['unit_price_usd'] ?? '',
-    //                 'total[]' => $data['total_price_without_tax'] ?? '',
-    //                 'total_usd[]' => $data['total_price_usd'] ?? '',
-    //                 'use[]' => $data['use_name'] ?? '',
-
-
-                        
-    //                 ],
-    //                 'headers' => $headers,
-    //             ]);
-                
-    //         }
-    //         $data2 = $response->getBody()->getContents();
-    //         $Data = json_decode($data2, true);
-    //         dd($Data);
-    //         return json_decode($data, true);
-    //     } catch (\Exception $e) {
-            
-    //         return ['error' => $e->getMessage()];
-    //     }
-    // }
-
-      // $fieldsWithMultipleValues = [
-            //     'brand_name' => 'brand[]',
-            //     'restok' => 'restok[]',
-            //     'english_name' => 'english_name[]',
-            //     'chinese_name' => 'chinese_name[]',
-            //     'model_name' => 'model[]',
-            //     'hs_code' => 'hs_code[]',
-            //     'long_m' => 'length_m[]',
-            //     'width_m' => 'width_m[]',
-            //     'height_m' => 'height_m[]',
-            //     'long_p' => 'length_p[]',
-            //     'width_p' => 'width_p[]',
-            //     'height_p' => 'height_p[]',
-            //     'qty' => 'qty[]',
-            //     'net_weight' => 'nett_weight[]',
-            //     'gross_weight' => 'gross_weight[]',
-            //     'cbm' => 'cbm_volume[]',
-            //     'unit_price_without_tax' => 'price[]',
-            //     'unit_price_usd' => 'price_usd[]',
-            //     'total_price_without_tax' => 'total[]',
-            //     'total_price_usd' => 'total_usd[]',
-            //     'use_name' => 'use[]',
-            // ];
-            // foreach ($fieldsWithMultipleValues as $key => $field) {
-            //     if (isset($data[$key]) && is_array($data[$key])) {
-            //         foreach ($data[$key] as $index => $value) {
-            //             $lastChar = substr($index, -0);
-            //             $fieldsWithMultipleValues["[{$lastChar}]"][$lastChar] = $value ?? '';
-            //             $array2[]=$value;
-            //         }
-            //     }
-            // }
     public static function updateComercialInvoice($teknisi_cookie, $data)
     {
         $count = count(array_filter($data['english_name'], function ($value) {
@@ -584,7 +464,7 @@ class ComercialInvoice extends Model
             $formParams = array_merge($formParams, $newEnglishNames);
             // dd($data,$formParams);
       
-            $response = $client->request('POST', 'https://maxipro.id/TeknisiAPI/comercial_invoice_edit2', [
+            $response = $client->request('POST', 'https://maxipro.id.test/TeknisiAPI/comercial_invoice_edit2', [
                 'form_params' => $formParams,
                 'headers' => $headers,
             ]);
@@ -598,6 +478,7 @@ class ComercialInvoice extends Model
             return ['error' => $e->getMessage()];
         }
     }
+
     public static function tambahComercialInvoice($teknisi_cookie, $data)
     {
      
@@ -830,7 +711,7 @@ class ComercialInvoice extends Model
 
             $formParams = array_merge($formParams, $newEnglishNames);
  
-            $response = $client->request('POST', 'https://maxipro.id/TeknisiAPI/comercial_invoice_tambah', [
+            $response = $client->request('POST', 'https://maxipro.id.test/TeknisiAPI/comercial_invoice_tambah', [
                 'form_params' => $formParams,
                 'headers' => $headers,
             ]);
@@ -857,7 +738,7 @@ class ComercialInvoice extends Model
             ];
             
                 
-                $response = $client->request('POST', 'https://maxipro.id/TeknisiAPI/comercial_invoice_edit1' , [
+                $response = $client->request('POST', 'https://maxipro.id.test/TeknisiAPI/comercial_invoice_edit1' , [
                     'form_params' => [
                         
                         'brand' => $data['brand'],

@@ -6,6 +6,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
 @endsection
 @section('link')
 <link href="{{ asset('css/comercialinvoice.css') }}" rel="stylesheet">
+<!-- <link href="{{ asset('css/lcl.css') }}" rel="stylesheet"> -->
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" />
 @endsection
@@ -678,9 +679,10 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                         </div>
                     </div>
                     
+                    <!-- view tambah comercial invoice kategori local -->
                     <div id="addcomerialinvoicelocal" style="display: none;" class="col-sm-12" style="margin-top: 15px;">
 
-                                                <form id="FormTambah">
+                                                <!-- <form id="FormTambah">
                                                                     <div class="row">
                                                                         <div class="col-md-4">
                                                                             <div style="position: relative; width: 100%;">
@@ -982,7 +984,260 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                                                     <div class="form-group" style="display: flex;padding-top:30px; text-align:end;">
                                                                         <button type="button" id="submitButtonForm2" class="btn btn-primary" style="margin-left: auto;">Simpan</button>
                                                                     </div>
-                                                </form>       
+                                                </form>        -->
+
+                                                <div class="row" id="row-supplier">
+                                        <div class="col-md-6">
+                                            
+                                                <div class="row" id="padding-top">
+                                                    <div class="col-md-3">
+                                                        
+                                                        <label id="label" for="">Database <span style="color:red">*</span></label>
+                                                    </div>
+                                                    <div class="col-md-9">
+
+                                                        <select class="form-control pilih-db" style="width: 100%;" name="" id="select_db" required>
+                                                            <option value="">Pilih Database</option>
+                                                            <option value="PT">PT</option>
+                                                            <option value="UD">UD</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            
+                                        </div>
+                                        <div class="col-md-6" id="col-supplier">
+                                            <div class="row" id="padding-top">
+                                                <div class="col-md-3">
+                                                <label id="label" for="">Supplier</label>
+                                                </div>
+                                                <div class="col-md-9">
+
+                                                    <select class="form-control pilih-supplier" style="width: 100%;" name="supplier_select" id="select_supplier">
+                                                        <option value="">Pilih Supplier</option>
+                                                        
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row" id="row-select">
+                                        <div class="col-md-6">
+                                            
+                                                <div class="row" id="padding-top">
+                                                    <div class="col-md-3">
+                                                        
+                                                        <label id="label" for="">No. Referensi</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+
+                                                        <input class="form-control no-referensi"type="text" placeholder="No. Referensi" id="input-input">
+                                                    </div>
+                                                </div>
+                                            
+                                        </div>
+                                        <div class="col-md-6" id="col-select">
+                                            <div class="row" id="padding-top">
+                                                <div class="col-md-3">
+                                                <label id="label" for="">Mata Uang</label>
+                                                </div>
+                                                <div class="col-md-9">
+
+                                                    <select name="select_namematauang" class="form-control pilih-matauang" style="width:100%;" id="select_matauang">
+
+                                                            <option value="">Pilih Mata Uang</option>
+                                                        @foreach($Data['msg']['matauang'] as $index => $result)
+                                                            <option value="{{ $result['id'] }}">( {{ $result['simbol'] }} ) {{ $result['kode'] }} - {{ $result['name'] }}</option>
+
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            
+                                                <div class="row" id="padding-top">
+                                                    <div class="col-md-3">
+                                                        
+                                                        <label id="label" for="">Tanggal Transaksi <span style="color:red">*</span></label>
+                                                    </div>
+                                                    <div class="col-md-9">
+
+                                                        <input class="form-control" id="tgl_request" type="text" placeholder="Tanggal Transaksi" id="input-input">
+                                                    </div>
+                                                </div>
+                                            
+                                        </div>
+                                       
+                                    </div>
+                                    
+                                    <div class="row" >
+                                        <div class="col-md-9">
+                                                <div class="row" id="padding-top">
+                                                    <div class="col-md-2">
+                                                        
+                                                        <label id="label" for="">Termin <span style="color:red">*</span></label>
+                                                    </div>
+                                                    <div class="col-md-3">
+
+                                                        <select class="form-control select_termin_cash" style="width:100%" name="" id="select_termin_cash">
+                                                            @foreach($Data['msg']['termin'] as $index => $result)
+                                                                <option value="{{ $result['id'] }}">{{ $result['name'] }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    
+
+                                                        
+                                                    </div>
+                                                    <div class="col-md-3">
+
+                                                        <select class="form-control select_termin_rekening" style="width:100%" name="" id="select_termin_rekening">
+                                                            
+                                                        </select>
+                                                    
+
+                                                        
+                                                    </div>
+                                                </div>    
+
+                                        </div>
+                                    </div>
+
+                                    <div class="element">
+                                        <div class="table-wrapper">
+                                            <table class="responsive-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Image</th>
+                                                        <th>Nama Barang</th>
+                                                        <th id="harga-belum-ppn">Harga Belum PPN</th>
+                                                        <th>QTY</th>
+                                                        <th>DISC</th>
+                                                        <th>Subtotal</th>
+                                                        <th>PPN</th>
+                                                        <th>Gudang</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="container-import">
+                                                
+                                                 
+                                                </tbody>
+                                                <tbody class="container-import2">
+                                                
+                                                 
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <div class="row" id="padding-top">
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <label for="">Item</label>
+                                                </div>
+                                                <div class="col-md-9">
+                                                        <select class="form-control item-barang" style="width:100%;" name="" id="select_barang">
+                                                            <option value="">Pilih Item</option>
+                                                            
+                                                        </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group form-check text-start">
+                                                        <input class="form-check-input" type="checkbox" value="0" id="flexCheckDefault">
+                                                        <label for="">PPN</label>
+                                                    </div>
+                                                </div>
+                                                   
+                                               
+                                                <div class="col-md-6"id="harga_ppn">
+                                                    <div class="form-group form-check ">
+                                                        <input class="form-check-input " type="checkbox" value="0" id="flexCheckDefaultTermasukkPPN">
+                                               
+                                                            Harga Termasuk PPN
+                                                        </label>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="row"id="padding-top">
+                                        <div class="col-12 col-md-6">
+
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-12 col-md-3">
+                                                        <label for="text_area">Keterangan</label>
+                                                    </div>
+                                                    <div class="col-12 col-md-9">
+                                                        <textarea class="form-control" name="" id="text_area" rows="3"placeholder="Keterangan"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group" id="padding-top">
+                                                <div class="row">
+                                                    <div class="col-12 col-md-3">
+                                                        <label for="select_cabang">Cabang <span style="color:red">*</span></label>
+                                                    </div>
+                                                    <div class="col-12 col-md-9">
+                                                        <select class="form-control pilih-cabang" style="width:100%;" name="" id="select_cabang">
+                                                            <option value="">Pilih Cabang</option>
+                                                          
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <table class="table table-striped">
+                                                <tr id="border">
+                                                    <td id="border">Subtotal(Rp)</td>
+                                                    <td id="border" class="sutotal_element">0</td>
+                                                </tr>
+                                                <tr id="border">
+                                                    <td id="border">Discount Percent (Rp)</td>
+                                                    <td id="border">
+                                                        <div style="display: flex; align-items: center;">
+                                                            <input type="number" class="form-control" id="discount_percent" value="0">
+                                                            <span >%</span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr id="border">
+                                                    <td id="border">Discount Nominal(Rp)</td>
+                                                    <td id="border" ><input type="number" class="form-control" id="discount_nominal" value="0"></td>
+                                                </tr>
+                                                <tr id="border">
+                                                    <td id="border">PPN 11%(Rp)</td>
+                                                    <td id="border" class="ppn_element">0</td>
+                                                </tr>
+                                                <tr id="border">
+                                                    <td id="border">Total (Rp)</td>
+                                                    <td id="border" class="total_element">0</td>
+                                                </tr>
+                                           </table>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div style="text-align:right; margin-top: 30px;">
+                                    
+                                                <button type="button" id="sendSave" class="btn btn-primary" style="margin-left: auto;">Simpan</button>
+                                        </div>
+                                    </div>
                     </div>
 
                 </div>
@@ -1092,8 +1347,8 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
-<script src="../assets/js/commercial-invoice/select_choices.js"></script> 
-<script src="../assets/js/commercial-invoice/import_barang.js"></script> 
+<!-- <script src="../assets/js/commercial-invoice/select_choices.js"></script>  -->
+<script src="../assets/js/commercial-invoice/commercial_invoice.js"></script> 
 <!-- DataTables JavaScript -->
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <!-- DataTables Bootstrap 4 Integration -->
@@ -1129,6 +1384,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
 
     //untuk membuat datatable
     $(document).ready(function() {
+
     var lastSelectedValue = $('input[type=radio][name=filter]:checked').val();
 
     var table = $('#tabe-stok').DataTable({
@@ -1170,10 +1426,119 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
         $('#tambahComercialLocal').remove()
         $('#judulRestok').html('<i class="fas fa-database"></i> &nbsp Add Commercial Invoice Kategori Local');
         $('#addcomerialinvoicelocal').css('display','block')
+        
+        $.ajax({
+            url:'{{ route('admin.pembelian_comercial_invoice') }}',
+            type:'GET',
+            data:{
+                menu:'create_local'
+            },
+            success: function(response){
+            
+                const selectSupplier = $('#select_supplier');
+                selectSupplier.empty();
+
+                // Tambahkan opsi default
+                selectSupplier.append('<option value="">Pilih Supplier</option>');
+
+                // Loop melalui response.msg.new_supplier dan tambahkan opsi ke select
+                response.msg.new_supplier.forEach(function(supplier) {
+                    selectSupplier.append(
+                        `<option value="${supplier.id}">${supplier.name}</option>`
+                    );
+                });
+
+                // Inisialisasi Choices.js
+                const choices_supplier = new Choices(selectSupplier[0], {
+                    placeholderValue: 'Pilih Supplier',
+                    searchEnabled: true,
+                    removeItemButton: true,
+                    shouldSort: false,
+                });
+                //inisiasi Choices.js matauang
+                const choices_matauang = new Choices($('.pilih-matauang')[0], {
+                   
+                    itemSelectText: '',   // Removes "Press to select" text
+                    shouldSort: false     // Keeps the original order of options
+                });
+                
+                const select_termin_rekening = $('#select_termin_rekening');
+                select_termin_rekening.empty();
+
+ 
+                response.msg.account.forEach(function(rekening) {
+                    select_termin_rekening.append(
+                        `<option value="${rekening.id}">${rekening.name}</option>`
+                    );
+                });
+
+                // Inisialisasi Choices.js
+                const choices_rekening = new Choices(select_termin_rekening[0], {                   
+                    searchEnabled: true,
+                    removeItemButton: true,
+                    shouldSort: false,
+                });
+
+                const select_termin_cash = $('#select_termin_cash');
+                select_termin_cash.empty();
+
+ 
+                response.msg.termin.forEach(function(termin) {
+                    select_termin_cash.append(
+                        `<option value="${termin.id}">${termin.name}</option>`
+                    );
+                });
+
+                // Inisialisasi Choices.js
+                const choices_termin = new Choices(select_termin_cash[0], {                   
+                    searchEnabled: true,
+                    removeItemButton: true,
+                    shouldSort: false,
+                });
+               
+                const item_barang = $('.item-barang');
+                item_barang.empty();
+
+                item_barang.append('<option value="">Pilih Item</option>');
+                    response.msg.product.forEach(function(product) {
+                    item_barang.append(
+                            `<option value="${product.id}">${product.name}</option>`
+                        );
+                    });
+
+                    // Inisialisasi Choices.js
+                    const choices_item_barang = new Choices(item_barang[0], {                   
+                        searchEnabled: true,
+                        removeItemButton: true,
+                        shouldSort: false,
+                    });
+               
+                const pilih_cabang = $('.pilih-cabang');
+                pilih_cabang.empty();
+
+    
+                    response.msg.cabang.forEach(function(cabang) {
+                    pilih_cabang.append(
+                            `<option value="${cabang.id}">${cabang.name}</option>`
+                        );
+                    });
+
+                    // Inisialisasi Choices.js
+                    const choices_pilih_cabang = new Choices(pilih_cabang[0], {                   
+                        searchEnabled: true,
+                        removeItemButton: true,
+                        shouldSort: false,
+                    });
+
+                // pilih-cabang
+
+            },
+        });
+
         // Optional: Remove the table element if desired
         // $('#tabe-stok').remove();
 
-        // You can add additional actions here if needed
+    
     });
     function initializeSelect2() {
         $('.select_select_category').select2({

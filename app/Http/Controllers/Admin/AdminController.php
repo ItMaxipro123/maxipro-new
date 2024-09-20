@@ -1680,17 +1680,27 @@ class AdminController extends Controller
         $data = Session::get('teknisi_id');
         $responseData = json_decode($data, true);
         $comercialInvoiceModel = new \App\Models\ComercialInvoice();
-
+        $menu=$request->input('menu');
         if (isset($responseData)) {
-            $username = $responseData;
-            $teknisi_cookie = $responseData['cookie'];
-            $Data = $comercialInvoiceModel->getComercialInvoice($teknisi_cookie);
-            
-            if (isset($Data['error'])) {
-                return response()->view('errors.403', ['message' => $Data['error']], 403);
+            if($menu=='create_local'){
+                $username = $responseData;
+                $teknisi_cookie = $responseData['cookie'];
+                $Data = $comercialInvoiceModel->getSupplierComercialInvoice($teknisi_cookie);
+                
+                return response()->json($Data,200);
             }
+            else{
 
-            return view('admin.pembelian.comercial_invoice_refactor', compact('username', 'data', 'Data'));
+                $username = $responseData;
+                $teknisi_cookie = $responseData['cookie'];
+                $Data = $comercialInvoiceModel->getComercialInvoice($teknisi_cookie);
+                
+                if (isset($Data['error'])) {
+                    return response()->view('errors.403', ['message' => $Data['error']], 403);
+                }
+    
+                return view('admin.pembelian.comercial_invoice_refactor', compact('username', 'data', 'Data'));
+            }
         }
 
         // Handle case where $responseData is not set
@@ -2731,14 +2741,14 @@ class AdminController extends Controller
         
         $data = Session::get('teknisi_id');
         $responseData = json_decode($data, true);
-        $orderPembelianModel = new \App\Models\Fcl();
+        $fclPembelian = new \App\Models\Fcl();
         if (isset($responseData)) {
             $username = $responseData;
 
             $teknisi_cookie = $responseData['cookie'];
 
 
-            $Data = $orderPembelianModel->getFclPembelian($teknisi_cookie);
+            $Data = $fclPembelian->getFclPembelian($teknisi_cookie);
             
             if (isset($Data['error'])) {
                 return response()->json($Data, 500);
@@ -2751,13 +2761,26 @@ class AdminController extends Controller
                     $teknisi_cookie = $responseData['cookie'];
 
 
-                    $Data = $orderPembelianModel->getFclPembelian($teknisi_cookie);
+                    $Data = $fclPembelian->getFclPembelian($teknisi_cookie);
                     
                     return view('admin.pembelian.fcl_pembelian_create', compact('Data'));
                 }
                 elseif($menu=='importbarang'){
                     $id = $request->input('id_commercial');
-                    $Data = $orderPembelianModel->getimportBarang($teknisi_cookie,$id);
+                    $Data = $fclPembelian->getimportBarang($teknisi_cookie,$id);
+                    // dd($Data);
+                    return response()->json($Data);
+                }
+                elseif($menu=='select_supplier'){
+                    $select_id_supplier = $request->input('select_id_supplier');
+                    $Data = $fclPembelian->getSupplier($teknisi_cookie,$select_id_supplier);
+                 
+                    return response()->json($Data);
+                }
+                elseif($menu=='select_bank_supplier'){
+                    $select_id_banksupplier = $request->input('select_id_banksupplier');
+                    // dd($select_id_banksupplier);
+                    $Data = $fclPembelian->getBankSupplier($teknisi_cookie,$select_id_banksupplier);
                     // dd($Data);
                     return response()->json($Data);
                 }
@@ -3584,15 +3607,18 @@ class AdminController extends Controller
 
     public function logout()
     {
+        $data = Session::get('teknisi_id');
+        $responseData = json_decode($data, true);
+        // dd($responseData);
         try {
             // Create a new GuzzleHTTP client with verify option set to false
             $client = new Client([
                 'verify' => false
             ]);
-
+            $teknisi_cookie = $responseData['cookie'];
             // Define headers for the request
             $headers = [
-                'Cookie' => 'ci_session=mmef72tdgsgv79a57lt1qh8acal0t3kc'
+                'Cookie' => $teknisi_cookie
             ];
 
             // Make a GET request to the specified URL with headers

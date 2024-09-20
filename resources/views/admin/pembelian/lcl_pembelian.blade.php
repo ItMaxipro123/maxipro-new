@@ -14,10 +14,7 @@ LCL   | PT. Maxipro Group Indonesia
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
 
 @endsection
-@section('style')
 
-
-@endsection
 @section('content')
 
 <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg wider">
