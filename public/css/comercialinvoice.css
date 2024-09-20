@@ -257,3 +257,345 @@
         #color-list-order{
             background-color: #e1daf5;
         }
+        .text-end {
+            text-align: right;
+        }
+        .text-start {
+            text-align: left;
+            width: 300%;
+        }
+        #select_db {
+            border: 1px solid #ced4da;
+            padding: 10px;
+            
+        }
+        #label-lcl{
+            text-align: center;
+            margin-top: 5em;
+        }
+        #label-lcl-ekspedisi{
+            text-align: center;
+            margin-top: 5em;
+        }
+        #required-star{
+            color: red;
+        }
+        #border {
+            border: 1px solid #ced4da;
+            text-align: center;
+            font-weight: bold;
+        }
+        .element {
+            margin-top: 20px;
+            background-color: #ffffff;
+            padding: 10px;
+            
+        }
+        #discount_percent {
+            border: 1px solid #ced4da;
+            width:  50%;
+            text-align: center;
+            margin: 0 auto;
+            
+        }
+        #discount_nominal {
+            border: 1px solid #ced4da;
+            width: 50%;
+            text-align: center;
+            margin: 0 auto;
+            
+        }
+        #harga_ppn {
+            margin: 0 auto;
+        }
+        /* Styling tabel */
+        .responsive-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .responsive-table th,
+        .responsive-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        
+        .responsive-table th {
+            background-color: #f4f4f4;
+        }
+        
+        /* Media queries untuk membuat tabel scrollable pada layar kecil */
+        @media (max-width: 768px) {
+            .table-wrapper {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch; /* untuk smooth scrolling di iOS */
+            }
+        
+            .responsive-table {
+                min-width: 600px; /* Atur lebar minimum tabel agar scroll bisa bekerja */
+            }
+        }
+        #td {
+            border: 1px solid #000000;
+        }
+        #select_category_convert{
+            border: 1px solid #ced4da;
+            padding: 10px;
+        }
+        #select_termin_cash {
+            
+            border: 1px solid #ced4da;
+            padding: 10px;
+            
+        }
+        #select_termin_rekening {
+            
+            border: 1px solid #ced4da;
+            padding: 10px;
+            
+        }
+        #select_matauang {
+            
+            border: 1px solid #000000;
+            padding: 10px;
+            
+        }
+        #matauang_pembayaran {
+            
+            border: 1px solid #000000;
+            padding: 10px;
+            height: 2em;
+            
+        }
+        #select_matauang_choices {
+            
+            border: 1px solid #000000;
+            padding: 10px;
+            
+        }
+        #select_barang {
+            
+            border: 1px solid #ced4da;
+            padding: 10px;
+          
+        }
+        #select_cabang {
+            
+            border: 1px solid #ced4da;
+            padding: 10px;
+            
+        }
+        #select_supplier {
+            border: 1px solid #ced4da;
+            padding: 10px;
+             
+        }
+        #input_nominal {
+            border: 1px solid #ced4da;
+            padding: 10px;
+        }
+        #text_area {
+            border: 1px solid #ced4da;
+        
+            padding: 10px;
+        }
+        
+        #input-input {
+            border: 1px solid #ced4da; 
+            width: 100%; 
+            padding-left:22px;
+        }
+        #label {
+            font-size: 16px;
+        }
+        #convert_idr {
+            text-align: end;
+        }
+        #padding-top {
+            margin-top: 30px;
+        }
+        #supplier-importData {
+            margin-top:10px; 
+            margin-right:20px;
+        }
+        #search-box {
+            border: 1px solid #ced4da;
+            padding: 10px;
+        }
+            /* Gaya untuk elemen overlay */
+            #overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5); /* Hitam dengan opacity 0.5 */
+                z-index: 9999; /* Pastikan lebih tinggi dari elemen lain */
+            }
+            
+                .flatpickr-input {
+                    border: 1px solid #ccc;
+                    padding: 5px;
+                    border-radius: 4px;
+                }
+            
+                .dataTables_wrapper .dataTables_paginate .paginate_button.previous {
+                    width: auto;
+                    /* Atur lebar tombol menjadi otomatis */
+                    padding-right: 0px;
+                    /* Berikan padding di sisi kanan tombol */
+            
+                }
+            
+                /* Ganti warna latar belakang tabel */
+                #tabe-stok {
+                    background-color: #f0f0f0;
+                    /* Ganti dengan warna yang Anda inginkan */
+            
+                }
+                #tabe-stok {
+                    border-collapse: collapse; /* Ensure borders collapse */
+                    width: 100%; /* Set table width to fill its container */
+                }
+            
+                #tabe-stok th,
+                #tabe-stok td {
+                    padding: 5px; /* Adjust padding as needed */
+                    border: 1px solid #ddd; /* Add border */
+                    overflow: auto; /* Enable overflow */
+                    word-wrap: break-word; /* Wrap long words */
+                }
+            
+            
+                 #tabe-stok-hitung-kubik {
+                    background-color: #f0f0f0;
+                    /* Ganti dengan warna yang Anda inginkan */
+            
+                }
+                #tabe-stok-hitung-kubik {
+                    border-collapse: collapse; /* Ensure borders collapse */
+                    width: 100%; /* Set table width to fill its container */
+                }
+            
+                #tabe-stok-hitung-kubik th,
+                #tabe-stok-hitung-kubik td {
+                    padding: 5px; /* Adjust padding as needed */
+                    border: 1px solid #ddd; /* Add border */
+                    overflow: auto; /* Enable overflow */
+                    word-wrap: break-word; /* Wrap long words */
+                }
+            
+            
+                .dataTables_filter input[type="search"] {
+                    border: 1px solid #ccc;
+                    border-radius: 5px;
+                    /* Opsional: untuk membuat sudut border melengkung */
+                    padding: 5px;
+                    /* Opsional: untuk memberi jarak antara border dan teks */
+                }
+            
+                
+            
+             
+            
+                /* Style untuk tombol Delete */
+                .btn-delete {
+                    width: 15%;
+                    /* Lebar default */
+                }
+            
+                /* Mengatur lebar tombol saat layar berukuran kecil (misalnya pada perangkat mobile) */
+                @media only screen and (max-width: 600px) {
+                    .btn-delete {
+                        width: 40%;
+                        /* Mengisi lebar penuh */
+                    }
+                }
+            
+                   .color-box {
+                        display: inline-block;
+                        width: 20px;
+                        height: 20px;
+                        margin-left: 5px;
+                        margin-bottom: 10px;
+                        vertical-align: middle;
+                    }
+            
+                    .bg-light-yellow {
+                        background-color:#fff17a; /* Light yellow color */
+                    }
+                     .bg-light-blue {
+                        background-color:#97ebfb; /* Light blue color */
+                    }
+                       .bg-light-green {
+                        background-color: #6cf670; /* Light green color */
+                    }
+                      .bg-light-red {
+                        background-color: #feb3aa; /* Light red color */
+                    }
+                     .bg-light-grey {
+                        background-color: #f4f7f7; /* Light grey color */
+                    }
+            
+                    .tooltip-container {
+                         position: relative;
+                         display: inline-block;
+                     }
+            
+                     .tooltip-container .tooltip-text {
+                         visibility: hidden;
+                         width: 120px;
+                         background-color: black;
+                         color: #fff;
+                         text-align: center;
+                         border-radius: 6px;
+                         padding: 5px 0;
+                         position: absolute;
+                         z-index: 1;
+                         bottom: 125%; /* Position the tooltip above the button */
+                         left: 50%;
+                         margin-left: -60px; /* Center the tooltip */
+                         opacity: 0;
+                         transition: opacity 0.3s;
+                     }
+            
+                     .tooltip-container:hover .tooltip-text {
+                         visibility: visible;
+                         opacity: 1;
+                     }
+                     .icon-box-check {
+                        display: inline-flex; 
+                        align-items: center; 
+                        justify-content: center; 
+                        padding: 5px; 
+                        
+                        border-radius: 4px; 
+                        width:auto;
+                        background-color: green;
+        
+                    }
+                     .icon-box-times {
+                        display: inline-flex;
+                        align-items: center; 
+                        justify-content: center; 
+                        padding: 5px; 
+                        border: 2px solid red; 
+                        border-radius: 4px; 
+                        width: auto;
+                        background-color: red;
+                        
+                    }
+                    
+                   
+                    .tabel-pembayaran{
+                        margin-top: 0.5em;
+                        margin-bottom: 1.5em;
+                    }
+                    .tabel-ekspedisi{
+                        margin-top: 0.5em;
+                        margin-bottom: 1.5em;
+                    }
+                    #element-button-tambah{
+                       text-align: right;
+                    }

@@ -1,5 +1,5 @@
    // Initialize Choices.js on the select element
-$(document).ready(function() {
+   $(document).ready(function() {
                     
     // Initialize Choices.js on the select element
     const element = document.getElementById('product-supplier-edit-filter');
@@ -79,3 +79,58 @@ $(document).ready(function() {
         });
     });
   });
+
+
+$('#table-atas-response').hide(); //tidak menampilkan tabel import
+
+function importData(event) {
+        event.preventDefault();
+        
+        $('#importModal').modal('show'); // Tampilkan modal
+}
+
+
+$(document).ready(function() {
+
+    // initialize flatpickr di tanggal transaksi
+    flatpickr("#tgl_request", {
+        dateFormat: "Y-m-d",
+        disableMobile: true
+    });
+    // Initialize DataTable
+    var table = $('#table-tambah-comercial-invoice').DataTable({
+        dom: 'lrtip', // Customize the DataTable DOM
+        responsive: true, // Enable responsive mode
+    });
+
+    // Custom search box
+    $('#search-box').on('keyup', function() {
+        table.search(this.value).draw();
+    });
+
+    // Checkbox filter
+    $('#filterChecked').on('change', function() {
+        if (this.checked) {
+            $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+                return $(table.row(dataIndex).node()).find('.kubik-checkbox-tambah').is(':checked');
+            });
+        } else {
+            $.fn.dataTable.ext.search.pop();
+        }
+        table.draw();
+    });
+
+    // Supplier filter
+    $('#filter-select').on('change', function() {
+        var selectedSupplier = this.value;
+        $.fn.dataTable.ext.search.pop(); // Remove previous filter
+
+        if (selectedSupplier) {
+            $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+                return $(table.row(dataIndex).node()).find('td:eq(5)').text() === selectedSupplier;
+            });
+        }
+
+        table.draw();
+    });
+});

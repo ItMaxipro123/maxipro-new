@@ -257,3 +257,175 @@
         #color-list-order{
             background-color: #e1daf5;
         }
+
+        
+    /* Gaya untuk elemen overlay */
+    #overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Hitam dengan opacity 0.5 */
+        z-index: 9999; /* Pastikan lebih tinggi dari elemen lain */
+    }
+
+    .flatpickr-input {
+        border: 1px solid #ccc;
+        padding: 5px;
+        border-radius: 4px;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button.previous {
+        width: auto;
+        /* Atur lebar tombol menjadi otomatis */
+        padding-right: 0px;
+        /* Berikan padding di sisi kanan tombol */
+
+    }
+
+    /* Ganti warna latar belakang tabel */
+    #tabe-stok {
+        background-color: #f0f0f0;
+        /* Ganti dengan warna yang Anda inginkan */
+
+    }
+
+    #tabe-stok {
+        border-collapse: collapse; /* Ensure borders collapse */
+        width: 100%; /* Set table width to fill its container */
+    }
+
+    #tabe-stok th,
+    #tabe-stok td {
+        padding: 5px; /* Adjust padding as needed */
+        border: 1px solid #ddd; /* Add border */
+        overflow: auto; /* Enable overflow */
+        word-wrap: break-word; /* Wrap long words */
+    }
+
+
+     #tabe-stok-hitung-kubik {
+        background-color: #f0f0f0;
+        /* Ganti dengan warna yang Anda inginkan */
+
+    }
+    #tabe-stok-hitung-kubik {
+        border-collapse: collapse; /* Ensure borders collapse */
+        width: 100%; /* Set table width to fill its container */
+    }
+
+    #tabe-stok-hitung-kubik th,
+    #tabe-stok-hitung-kubik td {
+        padding: 5px; /* Adjust padding as needed */
+        border: 1px solid #ddd; /* Add border */
+        overflow: auto; /* Enable overflow */
+        word-wrap: break-word; /* Wrap long words */
+    }
+
+
+    .dataTables_filter input[type="search"] {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        /* Opsional: untuk membuat sudut border melengkung */
+        padding: 5px;
+        /* Opsional: untuk memberi jarak antara border dan teks */
+    }
+
+    
+
+ 
+
+    /* Style untuk tombol Delete */
+    .btn-delete {
+        width: 15%;
+        /* Lebar default */
+    }
+
+    /* Mengatur lebar tombol saat layar berukuran kecil (misalnya pada perangkat mobile) */
+    @media only screen and (max-width: 600px) {
+        .btn-delete {
+            width: 40%;
+            /* Mengisi lebar penuh */
+        }
+    }
+
+    .color-box {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        margin-left: 5px;
+        margin-bottom: 10px;
+        vertical-align: middle;
+    }
+
+    .bg-light-yellow {
+        background-color:#fff17a; /* Light yellow color */
+    }
+     .bg-light-blue {
+        background-color:#97ebfb; /* Light blue color */
+    }
+       .bg-light-green {
+        background-color: #6cf670; /* Light green color */
+    }
+      .bg-pink {
+        background-color: #FFC0CB; /* Light red color */
+    }
+     .bg-light-grey {
+        background-color: #f4f7f7; /* Light grey color */
+    }
+
+    .tooltip-container {
+         position: relative;
+         display: inline-block;
+    }
+
+    .tooltip-container .tooltip-text {
+         visibility: hidden;
+         width: 120px;
+         background-color: black;
+         color: #fff;
+         text-align: center;
+         border-radius: 6px;
+         padding: 5px 0;
+         position: absolute;
+         z-index: 1;
+         bottom: 125%; /* Position the tooltip above the button */
+         left: 50%;
+         margin-left: -60px; /* Center the tooltip */
+         opacity: 0;
+         transition: opacity 0.3s;
+    }
+
+    .tooltip-container:hover .tooltip-text {
+        visibility: visible;
+        opacity: 1;
+    }
+        /* Adjust the height of the Select2 input box */
+    .select2-selection--single {
+        height: 55px !important; /* Increase height */
+        display: flex;
+        align-items: center; /* Vertically center the text */
+        font-size: 14px; /* Increase font size for better scaling */
+    }
+
+    /* Adjust the padding and line-height for the Select2 input box */
+    .select2-selection__rendered {
+        padding-left: 12px; /* Increase padding if needed */
+        line-height: 60px; /* Ensure text is centered vertically */
+        margin-top:15px;
+    }
+    .select2-selection__arrow {
+        margin-top:15px;
+    }
+    /* Adjust the height of the dropdown list */
+    .select2-dropdown {
+        max-height: 300px; /* Increase maximum height for the dropdown */
+        overflow-y: auto;  /* Enable scrolling if the list is long */
+        width: auto;       /* Let the width adjust to fit content */
+    }
+    .select2-selection__rendered[placeholder] {
+        margin-top: 25px; /* Adjust top padding to move placeholder text */
+     
+    }
+

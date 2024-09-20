@@ -25,33 +25,33 @@ $(document).ready(function() {
             $('#judulLcl').html('<i class="fas fa-database"></i> &nbsp Buat LCL');
             document.title='Buat LCL   | PT. Maxipro Group Indonesia'
             const choices = new Choices($('#select_db')[0], {
-                searchEnabled: false, // Disable the search feature
+               
                 itemSelectText: '',   // Removes "Press to select" text
                 shouldSort: false     // Keeps the original order of options
             });
             const choices_selectsupplier = new Choices($('#select_supplier')[0], {
-                searchEnabled: false, // Disable the search feature
+              
                 itemSelectText: '',   // Removes "Press to select" text
                 shouldSort: false     // Keeps the original order of options
             });
             const choices_matauang = new Choices($('.pilih-matauang')[0], {
-                searchEnabled: false, // Disable the search feature
+              
                 itemSelectText: '',   // Removes "Press to select" text
                 shouldSort: false     // Keeps the original order of options
             });
             const choices_termincash = new Choices($('.select_termin_cash')[0], {
-                searchEnabled: false, // Disable the search feature
+              
                 itemSelectText: '',   // Removes "Press to select" text
                 shouldSort: false     // Keeps the original order of options
             });
 
             const choices_terminrekening = new Choices($('.select_termin_rekening')[0], {
-                searchEnabled: false, // Disable the search feature
+              
                 itemSelectText: '',   // Removes "Press to select" text
                 shouldSort: false     // Keeps the original order of options
             });
             const choices_cabang = new Choices($('.pilih-cabang')[0], {
-                searchEnabled: false, // Disable the search feature
+              
                 itemSelectText: '',   // Removes "Press to select" text
                 shouldSort: false     // Keeps the original order of options
             });

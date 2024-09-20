@@ -17,29 +17,14 @@ document.getElementById('customCodeCheckbox').addEventListener('click', function
       contractInput.disabled = true;
       packingInput.disabled = true;
     }
- });
+});
 
 $(document).ready(function() {
     $('#importData').on('click', function() {
         console.log('modal impor data');
         $('#importDataModal').modal('show');
     });
-    // Initialize Choices.js for each select element
-    $('.database-tambah').each(function() {
-        const choices = new Choices(this, {
-            searchEnabled: true,
-            itemSelectText: '',
-        });
-  
-        // Handle change event of select element
-        $(this).on('change', function(event) {
-            const selectedValue = event.target.value;
-            const inputElement = document.getElementById('database_id'); // Ganti dengan ID yang sesuai
-            if (inputElement) {
-                inputElement.value = selectedValue;
-            }
-        });
-    });
+    
 });
 
 $(document).ready(function() {
@@ -52,74 +37,3 @@ $(document).ready(function() {
     });
 });
 
-$(document).ready(function() {
-                    
-    // Initialize Choices.js on the select element
-    const element = document.getElementById('supplier-tambah');
-    if (element) {
-        const choices = new Choices(element, {
-            searchEnabled: true,
-            itemSelectText: '',
-        });
-    }
-});
-
-$(document).ready(function() {
-    // Initialize Choices.js for each select element
-    $('.incoterms-tambah').each(function() {
-        const choices = new Choices(this, {
-            searchEnabled: true,
-            itemSelectText: '',
-        });
-  
-        // Handle change event of select element
-        $(this).on('change', function(event) {
-            const selectedValue = event.target.value;
-            const inputElement = document.getElementById('incoterms-tambah-id'); // Ganti dengan ID yang sesuai
-            if (inputElement) {
-                inputElement.value = selectedValue;
-            }
-        });
-    });
-});
-
- // Initialize Choices.js on the select element
- $(document).ready(function() {
-    // Initialize Choices.js for each select element
-    $('.banksupplier-tambah').each(function() {
-        const choices = new Choices(this, {
-            searchEnabled: true,
-            itemSelectText: '',
-        });
-  
-        // Handle change event of select element
-        $(this).on('change', function(event) {
-            const selectedValue = event.target.value;
-            const inputElement = document.getElementById('banksupplier-tambah-id'); // Ganti dengan ID yang sesuai
-            if (inputElement) {
-                inputElement.value = selectedValue;
-            }
-        });
-    });
-});
-
-  // Initialize Choices.js on the select element
-  $(document).ready(function() {
-    // Initialize Choices.js for each select element
-    $('.currency-tambah').each(function() {
-        const choices = new Choices(this, {
-            searchEnabled: true,
-            itemSelectText: '',
-        });
-  
-        // Handle change event of select element
-        $(this).on('change', function(event) {
-            const selectedValue = event.target.value;
-            const inputElement = document.getElementById('currency-tambah-id'); // Ganti dengan ID yang sesuai
-            if (inputElement) {
-                inputElement.value = selectedValue;
-            }
-        });
-    });
-  });
-      
