@@ -17,7 +17,7 @@ class ComercialInvoice extends Model
                 'Cookie' => $teknisi_cookie
             ];
 
-            $response = $client->request('GET', 'https://maxipro.id.test/TeknisiAPI/comercial_invoice', [
+            $response = $client->request('GET', 'https://maxipro.id/TeknisiAPI/comercial_invoice', [
                 'headers' => $headers,
 
             ]);
@@ -38,7 +38,7 @@ class ComercialInvoice extends Model
                 'Cookie' => $teknisi_cookie
             ];
 
-            $response = $client->request('GET', 'https://maxipro.id.test/TeknisiAPI/comercialInvoice_supplier', [
+            $response = $client->request('GET', 'https://maxipro.id/TeknisiAPI/comercialInvoice_supplier', [
                 'headers' => $headers,
 
             ]);
@@ -59,7 +59,7 @@ class ComercialInvoice extends Model
                 'Cookie' => $teknisi_cookie
             ];
 
-            $response = $client->request('POST', 'https://maxipro.id.test/TeknisiAPI/comercial_invoice_select_category' , [
+            $response = $client->request('POST', 'https://maxipro.id/TeknisiAPI/comercial_invoice_select_category' , [
                 'form_params' => [
                     'id_commercial' =>$id,
                     'selected_value'=>$selected_value
@@ -85,7 +85,7 @@ class ComercialInvoice extends Model
                 'Cookie' => $teknisi_cookie
             ];
 
-            $response = $client->request('GET', 'https://maxipro.id.test/TeknisiAPI/comercial_invoice', [
+            $response = $client->request('GET', 'https://maxipro.id/TeknisiAPI/comercial_invoice', [
                 'headers' => $headers,
 
             ]);
@@ -110,7 +110,7 @@ class ComercialInvoice extends Model
             ];
             // dd($id_no_invoice);
 
-            $response = $client->request('GET', 'https://maxipro.id.test/TeknisiAPI/comercial_invoice', [
+            $response = $client->request('GET', 'https://maxipro.id/TeknisiAPI/comercial_invoice', [
                 'headers' => $headers,
                 'query' => [
                     'requested_check' => $status,
@@ -143,7 +143,7 @@ class ComercialInvoice extends Model
                 'Cookie' => $teknisi_cookie
             ];
 
-            $response = $client->request('GET', 'https://maxipro.id.test/TeknisiAPI/comercial_invoice_editview/' . $id, [
+            $response = $client->request('GET', 'https://maxipro.id/TeknisiAPI/comercial_invoice_editview/' . $id, [
                 'headers' => $headers,
 
             ]);
@@ -166,7 +166,7 @@ class ComercialInvoice extends Model
                 'Cookie' => $teknisi_cookie
             ];
            
-            $response = $client->request('POST', 'https://maxipro.id.test/TeknisiAPI/commercial_invoice_importdata' , [
+            $response = $client->request('POST', 'https://maxipro.id/TeknisiAPI/commercial_invoice_importdata' , [
                 'form_params' => [
                     'idrestok' =>$restok,
                     'valuerestok'=>$valuerestok
@@ -193,7 +193,7 @@ class ComercialInvoice extends Model
                 'Cookie' => $teknisi_cookie
             ];
 
-            $response = $client->request('GET', 'https://maxipro.id.test/TeknisiAPI/order_pembelian_rejected/' . $id, [
+            $response = $client->request('GET', 'https://maxipro.id/TeknisiAPI/order_pembelian_rejected/' . $id, [
                 'headers' => $headers,
 
             ]);
@@ -217,7 +217,7 @@ class ComercialInvoice extends Model
                 'Cookie' => $teknisi_cookie
             ];
 
-            $response = $client->request('delete', 'https://maxipro.id.test/TeknisiAPI/order_pembelian_hapus/' . $id, [
+            $response = $client->request('delete', 'https://maxipro.id/TeknisiAPI/order_pembelian_hapus/' . $id, [
                 'headers' => $headers,
 
             ]);
@@ -464,7 +464,7 @@ class ComercialInvoice extends Model
             $formParams = array_merge($formParams, $newEnglishNames);
             // dd($data,$formParams);
       
-            $response = $client->request('POST', 'https://maxipro.id.test/TeknisiAPI/comercial_invoice_edit2', [
+            $response = $client->request('POST', 'https://maxipro.id/TeknisiAPI/comercial_invoice_edit2', [
                 'form_params' => $formParams,
                 'headers' => $headers,
             ]);
@@ -711,7 +711,7 @@ class ComercialInvoice extends Model
 
             $formParams = array_merge($formParams, $newEnglishNames);
  
-            $response = $client->request('POST', 'https://maxipro.id.test/TeknisiAPI/comercial_invoice_tambah', [
+            $response = $client->request('POST', 'https://maxipro.id/TeknisiAPI/comercial_invoice_tambah', [
                 'form_params' => $formParams,
                 'headers' => $headers,
             ]);
@@ -738,7 +738,7 @@ class ComercialInvoice extends Model
             ];
             
                 
-                $response = $client->request('POST', 'https://maxipro.id.test/TeknisiAPI/comercial_invoice_edit1' , [
+                $response = $client->request('POST', 'https://maxipro.id/TeknisiAPI/comercial_invoice_edit1' , [
                     'form_params' => [
                         
                         'brand' => $data['brand'],
