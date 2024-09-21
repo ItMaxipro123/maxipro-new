@@ -20,7 +20,7 @@ class Voucher extends Model
                 'Cookie' => 'ci_session=le363ovbs3kpj51eh07fdh04j162eh66',
             ];
 
-            $response = $client->request('GET', 'https://maxipro.id.test/TeknisiAPI/voucher_formuliredit?id=' . $id, [
+            $response = $client->request('GET', 'https://maxipro.id/TeknisiAPI/voucher_formuliredit?id=' . $id, [
                 'headers' => $headers,
                 'query' => [
                     'id' => $id,

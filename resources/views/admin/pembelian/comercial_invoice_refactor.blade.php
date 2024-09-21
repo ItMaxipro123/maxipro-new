@@ -101,9 +101,9 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
 
                     <div class="radio-button-container">
                         <label>
-                            <div class="color-box bg-light-yellow"></div>
+                            <div class="color-box bg-light-yellow"></div>            <div class="color-box " id="color-list-order"></div>
                             <input type="radio" name="filter" value="requested" id="filter-status" {{ $Data['msg']['requested_check'] == 'requested' ? 'checked' : '' }}>
-                            Requested
+                            Requested & From Order Pembelian
                             
                         </label>
                         <label>
@@ -125,10 +125,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                             All
                         </label>
 
-                        <label for="">
-                        <div class="color-box " id="color-list-order"></div>
-                            From Order Pembelian
-                        </label>
+                       
                     </div>
                     
                     <div id="reload-icon">
@@ -148,8 +145,8 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                 $listSupplier = $Data['msg']['grouped_by_supplier'];
                                 $penjualanData = $Data['msg']['penjualan'];
                                 @endphp
-                            @if($Data['msg']['requested_check'] == 'requested')    
-                                  @for ($i = 0; $i < $sumTot; $i++)
+                                @if($Data['msg']['requested_check'] == 'requested')    
+                                  @for ($i = 0; $i < $maxLengthSupplier; $i++)
                                     @php
                                         // Ambil nama supplier berdasarkan indeks
                                         $supplierName = array_keys($listSupplier)[$i] ?? null;
@@ -175,6 +172,8 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                             $num++;
                                         @endphp
                                     @endif
+                                  @endfor
+                                  @for ($i = 0; $i < $maxLengthPenjualan; $i++)
                                     @if (isset($penjualanData[$i]))
                                         @php
                                         $data = $penjualanData[$i];
@@ -215,6 +214,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                                     <option value="">Pilih Kategori</option>
                                                     <option value="fcl" {{ $data['category_comercial_invoice'] == 'fcl' ? 'selected' : '' }}>FCL</option>
                                                     <option value="lcl" {{ $data['category_comercial_invoice'] == 'lcl' ? 'selected' : '' }}>LCL</option>
+                                                    <option value="local" {{ $data['category_comercial_invoice'] == 'local' ? 'selected' : '' }}>LOCAL</option>
                                                     
                                                 </select>
                                             </td>
@@ -236,6 +236,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                         @endphp
                                     @endif
                                   @endfor
+
                             @else
                                 @for ($i = 0; $i < $maxLengthPenjualan; $i++)
                                     @if (isset($penjualanData[$i]))
@@ -303,9 +304,9 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                   
                     
                     <!-- modal tambah commercial invoice -->
-                    <div class="col-sm-12" style="margin-top: 15px;">
+                    <!-- <div class="col-sm-12" style="margin-top: 15px;">
                         
-                        <!-- <div id="tabe-stok"></div> -->
+              
 
                         <div class="modal fade" id="tambahModal" tabindex="-1" role="dialog" aria-labelledby="tambahModal" aria-hidden="true">
                            <div class="modal-dialog" role="document" style="max-width: 2200px;padding-left: 250px;">
@@ -329,8 +330,8 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div style="position: relative; width: 100%;">
-                                                        <input type="checkbox" id="customCodeCheckbox" class="styled customcode">
-                                                        <input type="hidden" name="modeadmin_tambah" value="0">
+                                                        <input type="checkbox" id="customCodeCheckbox_modal" class="styled customcode_modal">
+                                                        <input type="hidden" name="modeadmin_tambah_modal" value="0">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4" style="text-align: right;">
@@ -342,19 +343,19 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                                 <div class="col-md-4">
                                                     <div style="position: relative; width: 100%;">
                                                     <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Invoice Number</label>
-                                                    <input type="number" class="form-control" name="invoice_no_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;" placeholder="AUTO" disabled>
+                                                    <input type="number" class="form-control" name="invoice_no_tambah_modal" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;" placeholder="AUTO" disabled>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div style="position: relative; width: 100%;">
                                                     <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Contract Number</label>
-                                                    <input type="number" class="form-control" name="contract_no_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;" placeholder="AUTO" disabled>
+                                                    <input type="number" class="form-control" name="contract_no_tambah_modal" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;" placeholder="AUTO" disabled>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div style="position: relative; width: 100%;">
                                                     <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Packing Number</label>
-                                                    <input type="number" class="form-control" name="packing_no_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;" placeholder="AUTO" disabled>
+                                                    <input type="number" class="form-control" name="packing_no_tambah_modal" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;" placeholder="AUTO" disabled>
                                                     </div>
                                                 </div>
                                             </div>
@@ -411,11 +412,8 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                                     </div>
                                                 </div>
                                             </div>
-                    
-                                            <div style="position: relative; width: 100%;">
-                                                <label class="col-lg-3 control-label" style="font-size: 15px;" for="">No. Telp</label>
-                                                <input type="number" class="form-control" name="telp_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;width: 32%" placeholder="Telp. Perusahaan">
-                                            </div>
+                                            
+                                            
 
                                             
 
@@ -634,7 +632,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
 
                                     </div>
                                     <div class="modal-footer">
-                                        <!-- Tombol untuk menutup modal -->
+                                        
                                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="window.location.href = '{{ route('admin.pembelian_comercial_invoice') }}'">Close</button>
 
                                     </div>
@@ -643,7 +641,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
                     <!-- modal edit commercial invoice -->
                     <div id="editcomercial" class="col-sm-12" style="margin-top: 15px;">
@@ -682,110 +680,17 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                     <!-- view tambah comercial invoice kategori local -->
                     <div id="addcomerialinvoicelocal" style="display: none;" class="col-sm-12" style="margin-top: 15px;">
 
-                                                <!-- <form id="FormTambah">
-                                                                    <div class="row">
-                                                                        <div class="col-md-4">
-                                                                            <div style="position: relative; width: 100%;">
-                                                                            <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Custom Kode</label>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-md-4">
-                                                                            <div style="position: relative; width: 100%;">
-                                                                                <input type="checkbox" id="customCodeCheckbox" class="styled customcode">
-                                                                                <input type="hidden" name="modeadmin_tambah" value="0">
-                                                                            </div>
-                                                                        </div>
-                                                                    
-                                                                    </div>
+                                              
 
-                                                                    <div class="row">
-                                                                        <div class="col-md-4">
-                                                                            <div style="position: relative; width: 100%;">
-                                                                            <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Invoice Number</label>
-                                                                            <input type="number" class="form-control" name="invoice_no_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;" placeholder="AUTO" disabled>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-md-4">
-                                                                            <div style="position: relative; width: 100%;">
-                                                                            <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Contract Number</label>
-                                                                            <input type="number" class="form-control" name="contract_no_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;" placeholder="AUTO" disabled>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-md-4">
-                                                                            <div style="position: relative; width: 100%;">
-                                                                            <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Packing Number</label>
-                                                                            <input type="number" class="form-control" name="packing_no_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;" placeholder="AUTO" disabled>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="row">
-                                                                        <div class="col-md-2">
-                                                                            <div style="position: relative; width: 100%; margin-top:10px;">
-                                                                                <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Database <span style="color: red;">(Wajib Diisi)</span></label>
-                                                                                
-                                                                                <select style="border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control database-tambah" id="database_tambah_id" name="database_tambah_name" required>
-                                                                                    <option value="">Database</option>
-                                                                                    <option value="PT">PT</option>
-                                                                                    <option value="UD">UD</option>
-                                                                                </select>
-
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-md-10">
-                                                                            <div class="form-group" style="margin-top:10px;">
-                                                                                <label for="startDateTglRequest">Tanggal Request <span style="color: red;">(Wajib Diisi)</span></label>
-                                                                                <input type="text" style="height:55px;" class="form-control custom-border" id="tgl_request_tambah" name="tgl_request" placeholder= "Pilih Tanggal" required >
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                            
-                                                                    <div class="form-group" style="margin-bottom: 20px;margin-top: 10px;">
-                                                                            <label class="col-lg-3 control-label" style="font-size: 15px;width: 100%">Supplier <span style="color: red;">(Wajib Diisi)</span></label>
-
-                                                                            <select class="form-control supplier-supplier" id="product-supplier-edit-filter" name="tambah_supplier">
-                                                                            
-                                                                            <option value="">Supplier</option>
-                                                                               
-                                                                        </select>
-                                                                    </div>
-
-                                                                    <div class="row">
-                                                                        <div class="col-md-4">
-                                                                                <div style="position: relative; width: 100%;">
-                                                                                    <label class="col-lg-3 control-label" style="font-size: 15px;width: 100%;width: 100%" for="">Nama Perusahaan <span style="color: red;">(Wajib Diisi) </span></label>
-                                                                                    <input type="text" class="form-control" id="company-name" name="company_name" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;" value="">
-                                                                                </div>
-                                                                        </div>
-                                                                        <div class="col-md-4">
-                                                                            <div style="position: relative; width: 100%;">
-                                                                                <label class="col-lg-3 control-label" style="font-size: 15px;width: 100%" for="">Alamat Perusahaan</label>
-                                                                                <textarea type="text" class="form-control" name="address_company" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;" ></textarea>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-md-4">
-                                                                            <div style="position: relative; width: 100%;">
-                                                                                <label class="col-lg-3 control-label" style="font-size: 15px;width: 100%" for="">Kota Perusahaan</label>
-                                                                                <input type="text" class="form-control" name="city_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;" value="">
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                            
-                                                                    <div style="position: relative; width: 100%;">
-                                                                        <label class="col-lg-3 control-label" style="font-size: 15px;" for="">No. Telp</label>
-                                                                        <input type="number" class="form-control" name="telp_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;width: 32%" value="" >
-                                                                    </div>
-
-                                                </form>
-
-                                                <form action="" class="form-horizontal" id="sendImportForm" method="get">
+                                    <!--<form action="" class="form-horizontal" id="sendImportForm" method="get">
                                                                     @csrf
                                                                     <div style="margin-top:20px;position: relative; width: 100%;">
                                                                         <div id="content-container2"></div>
                                                                         <div id="content-container3"></div>
                                                                     </div>
-                                                </form>
+                                    </form>
 
-                                                <form action="" class="form-horizontal" id="FormTambah2" method="get">
+                                    <form action="" class="form-horizontal" id="FormTambah2" method="get">
                                                                     @csrf
                                                                 
 
@@ -984,41 +889,144 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                                                     <div class="form-group" style="display: flex;padding-top:30px; text-align:end;">
                                                                         <button type="button" id="submitButtonForm2" class="btn btn-primary" style="margin-left: auto;">Simpan</button>
                                                                     </div>
-                                                </form>        -->
+                                    </form>        -->
 
-                                                <div class="row" id="row-supplier">
-                                        <div class="col-md-6">
-                                            
-                                                <div class="row" id="padding-top">
-                                                    <div class="col-md-3">
-                                                        
-                                                        <label id="label" for="">Database <span style="color:red">*</span></label>
-                                                    </div>
-                                                    <div class="col-md-9">
-
-                                                        <select class="form-control pilih-db" style="width: 100%;" name="" id="select_db" required>
-                                                            <option value="">Pilih Database</option>
-                                                            <option value="PT">PT</option>
-                                                            <option value="UD">UD</option>
-                                                        </select>
+                                    <div class="row" id="row-supplier">
+                                        <form id="FormTambah">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div style="position: relative; width: 100%;">
+                                                        <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Custom Kode</label>
                                                     </div>
                                                 </div>
-                                            
+                                                <div class="col-md-4">
+                                                    <div style="position: relative; width: 100%;">
+                                                        <input type="checkbox" id="customCodeCheckbox" class="styled customcode">
+                                                        <input type="hidden" name="modeadmin_tambah" value="0">
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div style="position: relative; width: 100%;">
+                                                        <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Invoice Number</label>
+                                                        <input type="number" class="form-control" name="invoice_no_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;" placeholder="AUTO" disabled>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div style="position: relative; width: 100%;">
+                                                        <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Contract Number</label>
+                                                        <input type="number" class="form-control" name="contract_no_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;" placeholder="AUTO" disabled>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div style="position: relative; width: 100%;">
+                                                        <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Packing Number</label>
+                                                        <input type="number" class="form-control" name="packing_no_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;" placeholder="AUTO" disabled>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+
+
+                                        </form>
+                                                
+                                        <div class="col-md-6">
+
+                                            <div class="row" id="padding-top">
+                                                <div class="col-md-3">
+
+                                                    <label id="label" for="">Database <span style="color:red">*</span></label>
+                                                </div>
+                                                <div class="col-md-9">
+
+                                                        <select style="border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control database-tambah" id="database_tambah_id" name="database_tambah_name" required>
+                                                                                    <option value="">Database</option>
+                                                                                    <option value="PT">PT</option>
+                                                                                    <option value="UD">UD</option>
+                                                        </select>
+                                                </div>
+                                            </div>
+
                                         </div>
+                                                
                                         <div class="col-md-6" id="col-supplier">
                                             <div class="row" id="padding-top">
                                                 <div class="col-md-3">
-                                                <label id="label" for="">Supplier</label>
+                                                    <label id="label" for="">Supplier <span style="color:red">*</span></label>
                                                 </div>
                                                 <div class="col-md-9">
 
                                                     <select class="form-control pilih-supplier" style="width: 100%;" name="supplier_select" id="select_supplier">
                                                         <option value="">Pilih Supplier</option>
-                                                        
+
                                                     </select>
                                                 </div>
                                             </div>
                                         </div>
+
+                                                
+
+                                    </div>
+
+                                    <div class="row" id="row-select">
+                                   
+                                                                        <div class="col-md-6">
+                                                                            <div class="row" id="padding-top">
+                                                                                <div class="col-md-3">
+                                                                                    <label class="col-lg-3 control-label" style="font-size: 15px;width: 100%;width: 100%" for="">Nama Perusahaan <span style="color:red">*</span></label>
+                                                                                </div>
+                                                                                <div class="col-md-9">
+
+                                                                                    <input type="text" class="form-control" id="company-name" name="company_name" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;" value="">
+                                                                                </div>
+                                                                                
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="row" id="padding-top">
+                                                                                <div class="col-md-3">
+
+                                                                                    <label class="col-lg-3 control-label" style="font-size: 15px;width: 100%" for="">Alamat Perusahaan</label>
+                                                                                </div>
+                                                                                <div class="col-md-9">
+
+                                                                                    <textarea type="text" class="form-control" id="address_company" name="address_company" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;" ></textarea>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                       
+                                    </div>
+                                    
+                                    <div class="row" id="row_select">
+                                                <div class="col-md-6">
+                                                    <div class="row" id="padding-top">
+                                                        <div class="col-md-3">
+                                                            <label class="col-lg-3 control-label" style="font-size: 15px;width: 100%" for="">Kota Perusahaan</label>
+                                                        </div>
+                                                        <div class="col-md-9">
+                                                            
+                                                            <input type="text" class="form-control" id="city" name="city" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;" placeholder="Kota Perusahaan">
+                                                        </div>                                                            
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="row" id="padding-top">
+                                                        <div class="col-md-3">
+
+                                                            <label class="col-lg-3 control-label" style="font-size: 15px;" for="">No. Telp</label>
+                                                        </div>
+                                                        <div class="col-md-9">
+
+                                                            <input type="number" class="form-control" id="telp" name="telp" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;width: 100%" placeholder="Telp. Perusahaan">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            
                                     </div>
 
                                     <div class="row" id="row-select">
@@ -1385,253 +1393,798 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
     //untuk membuat datatable
     $(document).ready(function() {
 
-    var lastSelectedValue = $('input[type=radio][name=filter]:checked').val();
+        var lastSelectedValue = $('input[type=radio][name=filter]:checked').val();
 
-    var table = $('#tabe-stok').DataTable({
-        "dom": '<"top"lf>rt<"bottom"ip><"clear">',
-        "language": {
-            "searchPlaceholder": "Cari...",
-            "search": "Cari:",
-            "paginate": {
-                "previous": "back",
-                "next": "next"
-            }
-        },
-        columns: [
-            { data: 'num', title: 'No' },
-            { data: 'date', title: 'Tanggal' },
-            { data: 'invoice', title: 'Invoice' },
-            { data: 'supplier', title: 'Supplier' },
-            { data: 'company', title: 'Nama Perusahaan' },
-            { data: 'telp', title: 'No. Telp' },
-            { data: 'total', title: 'Total' },
-            { data: 'category', title: 'Kategori' },
-            { data: 'link2', title: 'Action' },
-            { data: 'link', title: 'Action Add' }
-        ],
-        "initComplete": function(settings, json) {
-            $('.dataTables_filter input[type="search"]').attr('placeholder', 'Cari ...');
-            initializeSelect2();
-        }
-    });
-    $('#tambahComercialLocal').on('click', function() {
-        // Alert as an example action (optional)
-        // alert('Commercial Invoice button clicked!');
-
-        // Destroy the existing DataTable instance
-        table.destroy();
-        $('#tabe-stok').remove();
-        $('.radio-button-container').remove()
-        $('.filter').remove()
-        $('#tambahComercialLocal').remove()
-        $('#judulRestok').html('<i class="fas fa-database"></i> &nbsp Add Commercial Invoice Kategori Local');
-        $('#addcomerialinvoicelocal').css('display','block')
-        
-        $.ajax({
-            url:'{{ route('admin.pembelian_comercial_invoice') }}',
-            type:'GET',
-            data:{
-                menu:'create_local'
+        var table = $('#tabe-stok').DataTable({
+            "dom": '<"top"lf>rt<"bottom"ip><"clear">',
+            "language": {
+                "searchPlaceholder": "Cari...",
+                "search": "Cari:",
+                "paginate": {
+                    "previous": "back",
+                    "next": "next"
+                }
             },
-            success: function(response){
-            
-                const selectSupplier = $('#select_supplier');
-                selectSupplier.empty();
-
-                // Tambahkan opsi default
-                selectSupplier.append('<option value="">Pilih Supplier</option>');
-
-                // Loop melalui response.msg.new_supplier dan tambahkan opsi ke select
-                response.msg.new_supplier.forEach(function(supplier) {
-                    selectSupplier.append(
-                        `<option value="${supplier.id}">${supplier.name}</option>`
-                    );
-                });
-
-                // Inisialisasi Choices.js
-                const choices_supplier = new Choices(selectSupplier[0], {
-                    placeholderValue: 'Pilih Supplier',
-                    searchEnabled: true,
-                    removeItemButton: true,
-                    shouldSort: false,
-                });
-                //inisiasi Choices.js matauang
-                const choices_matauang = new Choices($('.pilih-matauang')[0], {
-                   
-                    itemSelectText: '',   // Removes "Press to select" text
-                    shouldSort: false     // Keeps the original order of options
-                });
-                
-                const select_termin_rekening = $('#select_termin_rekening');
-                select_termin_rekening.empty();
-
- 
-                response.msg.account.forEach(function(rekening) {
-                    select_termin_rekening.append(
-                        `<option value="${rekening.id}">${rekening.name}</option>`
-                    );
-                });
-
-                // Inisialisasi Choices.js
-                const choices_rekening = new Choices(select_termin_rekening[0], {                   
-                    searchEnabled: true,
-                    removeItemButton: true,
-                    shouldSort: false,
-                });
-
-                const select_termin_cash = $('#select_termin_cash');
-                select_termin_cash.empty();
-
- 
-                response.msg.termin.forEach(function(termin) {
-                    select_termin_cash.append(
-                        `<option value="${termin.id}">${termin.name}</option>`
-                    );
-                });
-
-                // Inisialisasi Choices.js
-                const choices_termin = new Choices(select_termin_cash[0], {                   
-                    searchEnabled: true,
-                    removeItemButton: true,
-                    shouldSort: false,
-                });
-               
-                const item_barang = $('.item-barang');
-                item_barang.empty();
-
-                item_barang.append('<option value="">Pilih Item</option>');
-                    response.msg.product.forEach(function(product) {
-                    item_barang.append(
-                            `<option value="${product.id}">${product.name}</option>`
-                        );
-                    });
-
-                    // Inisialisasi Choices.js
-                    const choices_item_barang = new Choices(item_barang[0], {                   
-                        searchEnabled: true,
-                        removeItemButton: true,
-                        shouldSort: false,
-                    });
-               
-                const pilih_cabang = $('.pilih-cabang');
-                pilih_cabang.empty();
-
-    
-                    response.msg.cabang.forEach(function(cabang) {
-                    pilih_cabang.append(
-                            `<option value="${cabang.id}">${cabang.name}</option>`
-                        );
-                    });
-
-                    // Inisialisasi Choices.js
-                    const choices_pilih_cabang = new Choices(pilih_cabang[0], {                   
-                        searchEnabled: true,
-                        removeItemButton: true,
-                        shouldSort: false,
-                    });
-
-                // pilih-cabang
-
-            },
-        });
-
-        // Optional: Remove the table element if desired
-        // $('#tabe-stok').remove();
-
-    
-    });
-    function initializeSelect2() {
-        $('.select_select_category').select2({
-            placeholder: '-',
-            allowClear: true,
-            width: 'resolve' // Adjust width as needed
-        });
-
-        //proses mengirim memilih kategory
-        $('.select_select_category').on('change', function() {
-            var selectedValue = $(this).val();
-            var idCommercial = $(this).data('id_commercial');
-            
-            $('#reload-icon').show(); //icon reload ditampilkan
-          
-            if (selectedValue) {
-                $.ajax({
-                    url: '{{ route('admin.pembelian_selectcategory_comercial_invoice') }}',
-                    method: 'GET',
-                    data: {
-                        selected_value: selectedValue,
-                        id_commercial: idCommercial
-                    },
-                    success: function(response) {
-                        console.log('Response from server:', response);
-                        $('#reload-icon').hide();
-                    },
-                    error: function(error) {
-                        console.error('Error:', error);
-                    }
-                });
+            columns: [
+                { data: 'num', title: 'No' },
+                { data: 'date', title: 'Tanggal' },
+                { data: 'invoice', title: 'Invoice' },
+                { data: 'supplier', title: 'Supplier' },
+                { data: 'company', title: 'Nama Perusahaan' },
+                { data: 'telp', title: 'No. Telp' },
+                { data: 'total', title: 'Total' },
+                { data: 'category', title: 'Kategori' },
+                { data: 'link2', title: 'Action' },
+                { data: 'link', title: 'Action Add' }
+            ],
+            "initComplete": function(settings, json) {
+                $('.dataTables_filter input[type="search"]').attr('placeholder', 'Cari ...');
+                initializeSelect2();
             }
         });
-    }
-
-    // initialize Select2 setelah tiap membuat datatable (e.g., page change)
-    table.on('draw', function() {
-        initializeSelect2();
-    });
-
-    if (lastSelectedValue == 'requested') {
-        console.log('lastselect', lastSelectedValue);
-
-        function sendFilterData(selectedValue) {
+        $('#tambahComercialLocal').on('click', function() {
+    
+            // Destroy the existing DataTable instance
+            table.destroy();
+            $('#tabe-stok').remove();
+            $('.radio-button-container').remove()
+            $('.filter').remove()
+            $('#tambahComercialLocal').remove()
+            $('#judulRestok').html('<i class="fas fa-database"></i> &nbsp Add Commercial Invoice Kategori Local');
+            $('#addcomerialinvoicelocal').css('display','block')
+            
             $.ajax({
-                url: '{{ route('admin.pembelian_comercial_invoice_filter') }}',
-                method: 'GET',
-                data: { 
-                    filterValue: selectedValue 
+                url:'{{ route('admin.pembelian_comercial_invoice') }}',
+                type:'GET',
+                data:{
+                    menu:'create_local'
                 },
-                success: function(response) {
-                    var newRoute = "{{ route('admin.pembelian_comercial_invoice_filter') }}?filterValue=" + selectedValue;
-                    window.location.href = newRoute;
+                success: function(response){
+                
+                    const selectSupplier = $('#select_supplier');
+                    selectSupplier.empty();
+
+                    // Tambahkan opsi default
+                    selectSupplier.append('<option value="">Pilih Supplier</option>');
+
+                    // Loop melalui response.msg.new_supplier dan tambahkan opsi ke select
+                    response.msg.new_supplier.forEach(function(supplier) {
+                        selectSupplier.append(
+                            `<option value="${supplier.id}">${supplier.name}</option>`
+                        );
+                    });
+                    
+  
+                    selectSupplier.on('change', function(event) {
+                        const selectedValueSupplier = event.target.value;
+                        const inputElementSelectedSupplier = document.getElementById('select_supplier'); // Ganti dengan ID yang sesuai
+                        if (inputElementSelectedSupplier) {
+                            inputElementSelectedSupplier.value = selectedValueSupplier;
+                            console.log('selected_value',selectedValueSupplier)
+                        }
+                        $.ajax({
+                            type:'GET',
+                            url:'{{ route('admin.pembelian_fcl') }}',
+                            data:{
+                                menu:'select_supplier',
+                                select_id_supplier:selectedValueSupplier
+                            },
+                            success: function(response){
+                                console.log('response', response.filtered_supplier);
+                                for (const key in response.filtered_supplier) { 
+                    
+                                        const supplier = response.filtered_supplier[key];
+                                        
+                                        if (supplier) {
+                                           console.log('supplier address',supplier)
+                                            $('#company-name').val(supplier.name)
+                                            $('#address_company').val(supplier.address);
+                                            $('#city').val(supplier.city);
+                                            $('#telp').val(supplier.telp);
+                                        }
+                                         else {
+                                            // console.log(`Address not found for key ${key}`);
+                                            $('#company-name').val('')
+                                            $('#address_company').val('');
+                                            $('#city').val('');
+                                            $('#telp').val('');
+                                        }
+                                    
+                                }
+                            },
+                        })
+                    })
+
+                    // Inisialisasi Choices.js
+                    const choices_supplier = new Choices(selectSupplier[0], {
+                        placeholderValue: 'Pilih Supplier',
+                        searchEnabled: true,
+                        removeItemButton: true,
+                        shouldSort: false,
+                    });
+                    //inisiasi Choices.js matauang
+                    const choices_matauang = new Choices($('.pilih-matauang')[0], {
+                    
+                        itemSelectText: '',   // Removes "Press to select" text
+                        shouldSort: false     // Keeps the original order of options
+                    });
+                    
+                    const select_termin_rekening = $('#select_termin_rekening');
+                    select_termin_rekening.empty();
+
+    
+                    response.msg.account.forEach(function(rekening) {
+                        select_termin_rekening.append(
+                            `<option value="${rekening.id}">${rekening.name}</option>`
+                        );
+                    });
+
+                    // Inisialisasi Choices.js
+                    const choices_rekening = new Choices(select_termin_rekening[0], {                   
+                        searchEnabled: true,
+                        removeItemButton: true,
+                        shouldSort: false,
+                    });
+
+                    const select_termin_cash = $('#select_termin_cash');
+                    select_termin_cash.empty();
+
+    
+                    response.msg.termin.forEach(function(termin) {
+                        select_termin_cash.append(
+                            `<option value="${termin.id}">${termin.name}</option>`
+                        );
+                    });
+
+                    // Inisialisasi Choices.js
+                    const choices_termin = new Choices(select_termin_cash[0], {                   
+                        searchEnabled: true,
+                        removeItemButton: true,
+                        shouldSort: false,
+                    });
+                
+                    const item_barang = $('.item-barang');
+                    item_barang.empty();
+
+                    item_barang.append('<option value="">Pilih Item</option>');
+                        response.msg.product.forEach(function(product) {
+                        item_barang.append(
+                                `<option value="${product.id}">${product.name}</option>`
+                            );
+                        });
+
+                        // Inisialisasi Choices.js
+                        const choices_item_barang = new Choices(item_barang[0], {                   
+                            searchEnabled: true,
+                            removeItemButton: true,
+                            shouldSort: false,
+                        });
+                
+                    const pilih_cabang = $('.pilih-cabang');
+                    pilih_cabang.empty();
+
+        
+                        response.msg.cabang.forEach(function(cabang) {
+                        pilih_cabang.append(
+                                `<option value="${cabang.id}">${cabang.name}</option>`
+                            );
+                        });
+
+                        // Inisialisasi Choices.js
+                        const choices_pilih_cabang = new Choices(pilih_cabang[0], {                   
+                            searchEnabled: true,
+                            removeItemButton: true,
+                            shouldSort: false,
+                        });
+
+                    // pilih-cabang
+
                 },
-                error: function(xhr, status, error) {
-                    console.error(xhr.responseText);
+            });
+
+            // Optional: Remove the table element if desired
+            // $('#tabe-stok').remove();
+                var clickConvert = false;
+                var selectBarang =[];
+                var selectBarangId =[];
+                var statusConvertRupiah = 0;
+                var tdHargaBelumPpnProduct;
+                var inputtdHargaBelumPpnProduct;
+                var nominalHargaInvoice;
+                var category_convert;
+                var convert_nominal_after_save;
+                var checkboxElementProduct;
+                var checkboxElement;
+                //element td dan input harga belum ppn
+                var td2Product
+                var inputtd2Product
+
+                
+                //element td dan input qty
+                var td3Product
+                var inputtd3Product 
+                
+
+                //element input discount
+                var inputtd4Product
+
+                // element td harga subtotal
+                var td5Product
+                
+                //element input harga subtotal
+                var inputtd5Product
+                // var price_asal =[];
+                var ppnitemList =[];
+                var ppnitemList2;
+                var mata_uang_disabled = false;
+                var changeHistory = [];
+                var changeHistory_arr = [];
+                var qty_arr=[]; 
+                var qty_arr_select=[]; // untuk array qty select barang
+                var harga_asal=[]
+                var harga_asal_select=[]
+                
+                var discount_arr=[]
+                var discount_arr_select=[]
+                var subtot_arr=[]
+                var subtot_arr_select = []
+                var selectedValuesArray = []; // Empty array for selected values
+                var selectedValuesArray_arr = []; // Empty array for selected values
+                var boolSendImportBarang=false;
+                var iditem_arr =[]
+                var iditem_select =[]
+                var price_invoice_arr =[]
+                var price_invoice_select =[]
+                var subtot_arr_select_global=[]
+                var editClick=false;
+                var contentImport = $('.container-import2');
+                
+                var newBoolHargaBelumPpn = false;
+                
+                var nominal_convert;
+                
+                var isHeaderCreated =false;
+                
+                var allIndexSelectBarang = [];
+                
+                var product_product=[];
+
+            document.getElementById('select_barang').addEventListener('change',function(){
+                var pilihBarang = this.value
+                console.log('pilihBarang',pilihBarang)
+                contentImport.empty()
+
+                $.ajax({
+                        url:"{{ route('admin.pembelian_lcl') }}",
+                        method:'GET',
+                        data:{
+                            menu:'select_item',
+                            id:pilihBarang
+                        },
+                        success: function(response){
+                            console.log('res',response)
+                            selectedValuesArray = []
+                            harga_asal2=[]
+                            changeHistory = []
+                            discount_arr_select=[]
+                            
+                            qty_arr_select=[]
+                        
+                            subtot_arr_select=[]
+                            iditem_select=[]
+                            product_product.push(response);
+                            selectBarang.push(response.product[0].name);
+                            selectBarangId.push(response.product[0].id)
+
+                            
+                        
+                            var index_select_barang = selectBarangId.indexOf(response.product[0].id);
+                            allIndexSelectBarang.push(index_select_barang);
+                            product_product.forEach((item, itemIndex) => {
+                                
+                                // Check if product array exists and is not empty
+                                if (item.product && item.product.length > 0) {
+
+                                    // Iterate over each product in the product array
+                                    item.product.forEach((productItem, productIndex) => {
+                                        
+                                    
+                                    var trProduct = $('<tr>');
+                                    var tdProduct = $('<td>').css({
+                                            'padding': 'auto',
+                                            'width': '10%'
+                                    });
+                                    iditem_select[itemIndex] = productItem.id;
+                                    // console.log('iditem_select',iditem_select)
+                                    var imgProduct = $('<img class="img-fluid" style="max-width: 20%%; height: auto;">');
+                                    imgProduct.attr('src',response.directory+productItem.image)
+                                    tdProduct.append(imgProduct);
+                                    var td1Product = $('<td>').css({
+                                            'padding': 'auto',
+                                            'width': '25%',  
+                                    });
+                                    var inputtd1Product = $('<input>', {
+                                            type: 'text', 
+                                            class: 'form-control', 
+                                            value:productItem.name,
+                                            id:'name'+itemIndex
+                                    });
+                                    inputtd1Product.css({
+                                            'border': '1px solid #696868', 
+                                            'color': 'black', 
+                                            'padding': '10px',
+                                            'width': '100%' 
+                                    });
+                                    
+                                    td2Product = $('<td>').css({
+                                            'padding': 'auto',
+                                            'width': '10%', 
+                                    });
+                                
+                                    inputtd2Product = $('<input>', {
+                                            type: 'number', 
+                                            class: 'form-control',
+                                            id:'price_asal'+itemIndex,
+                                            value: productItem.price_list 
+                                    }).css({
+                                        'border': '1px solid #696868', 
+                                            'color': 'black', 
+                                            'padding': '10px',
+                                            'width': '100%' 
+                                    });
+                                                            
+                                    nominalHargaInvoice =productItem.price_list 
+                            
+                                    tdHargaBelumPpnProduct = $('<td>').css({
+                                            'padding': 'auto',
+                                            'width': '10%', 
+                                            'display': 'none'
+                                    });
+                                    
+                                    inputtdHargaBelumPpnProduct = $('<input>', {
+                                            type: 'number', 
+                                            class: 'form-control',
+                                            value: '',
+                                            id:'harga_belumppn_convert'+itemIndex,
+                                            disabled:'true'
+                                    });
+                                    inputtdHargaBelumPpnProduct.css({
+                                            'border': '1px solid #696868', 
+                                            'color': 'black', 
+                                            'padding': '10px',
+                                            'width': '100%' 
+                                    });
+                                    tdHargaBelumPpnProduct.append(inputtdHargaBelumPpnProduct)
+                                
+                                    //row quantity
+                                    td3Product = $('<td>').css({
+                                            'padding': 'auto', 
+                                            'width': '7%',  
+                                    });
+                                    
+                                
+                            
+                                    inputtd3Product = $('<input>', {
+                                            type: 'number', 
+                                            class: 'form-control',
+                                            value: 1,
+                                            id: 'qty_qty'+itemIndex
+                                    }).css({
+                                        'border': '1px solid #696868', 
+                                            'color': 'black', 
+                                            'padding': '10px',
+                                            'width': '100%' 
+                                    });
+                                    
+                                    
+                                
+                                    var td4Product = $('<td>').css({
+                                            'padding': 'auto', 
+                                            'width': '7%',  
+                                    });
+                                    //row input disc
+                                    inputtd4Product = $('<input>', {
+                                            type: 'number', 
+                                            class: 'form-control', 
+                                            value: 0,
+                                            id: 'discount'+itemIndex
+                                    });
+                                    inputtd4Product.css({
+                                            'border': '1px solid #696868', 
+                                            'color': 'black', 
+                                            'padding': '10px', 
+                                            'width': '100%' 
+                                    });
+                                
+                                    td5Product = $('<td>').css({
+                                            'padding': 'auto', 
+                                            'width': '10%',  
+                                    });
+                                    inputtd5Product = $('<input>', {
+                                            type: 'text', 
+                                            class: 'form-control', 
+                                            value: productItem.price_list ,
+                                            id:'subtotal'+itemIndex
+                                    });
+                                    inputtd5Product.css({
+                                            'border': '1px solid #696868', 
+                                            'color': 'black', 
+                                            'padding': '10px', 
+                                            'width': '100%' 
+                                    });
+                                    if(clickConvert==true){
+                                        tdHargaBelumPpnProduct.css({
+                                            'display': 'table-cell'
+                                        });
+                                        inputtdHargaBelumPpnProduct.css({
+                                            'opacity': 1,
+                                                'visibility': 'visible'
+                                            });
+                                            // Calculate the value based on the item index
+                                            var productPrice = productItem.price_list; // Adjust to get price based on index
+                                            var calculatedValue = nominal_convert * productPrice;
+                                            // console.log('masuj',calculatedValue);
+                                            
+                                        // Update the value of the input field
+                                        inputtdHargaBelumPpnProduct.val(calculatedValue);
+                                        inputtd5Product.val(calculatedValue*(inputtd3Product.val()))
+                                    }   
+                                    var inputField = $(`#price_asal${itemIndex}`);
+                                    
+                                    var value_belumppn = parseFloat(inputField.val()) || 0;
+                        
+                                                                
+                                    var inputFieldqty = $(`#qty_qty${itemIndex}`);
+                                    var value_qty = parseFloat(inputFieldqty.val())||1;
+                                    
+                                    var input_discount = $(`#discount${itemIndex}`)
+                                    var value_discount = parseFloat(input_discount.val()) || 0;
+                                    
+                                    
+                                    var input_subtot = $(`#subtotal${itemIndex}`);
+                                    var value_subtot = parseFloat(input_subtot.val()) ||0;
+                                    
+                                
+                                    function updateCalculatedValue() {
+                                        
+                                        inputField = $(`#price_asal${itemIndex}`);
+
+                                        value_belumppn = parseFloat(inputField.val()) ||  productItem.price_list ;
+                                        harga_asal_select[itemIndex] = value_belumppn; 
+                                        console.log('harga_asal_select',harga_asal_select)
+                                        input_discount = $(`#discount${itemIndex}`);
+            
+                                        value_discount = parseFloat(input_discount.val()) || 0;
+                                        discount_arr_select[itemIndex]=value_discount
+                                        console.log('value discount',value_discount)
+                                        var value3 = value_discount
+
+                                        var value1 = value_belumppn;
+                                    
+                                        inputFieldqty = $(`#qty_qty${itemIndex}`);
+            
+                                
+                                        value_qty = parseFloat(inputFieldqty.val()) || 1;
+
+
+                                        qty_arr_select[itemIndex] = value_qty;
+                                        
+                                
+                                        harga_asal_select[itemIndex] = value_belumppn;
+                                            
+                                        
+                                        discount_arr_select[itemIndex] = value_discount;
+                                    
+                                        
+                                        var value2 = value_qty;
+
+                                        // Calculate the new value
+                                        var calculatedValue = (value1 * value2)-value3;
+                                    
+                                        
+                                        // menghitung dan menyetting value harga subtotal
+                                        if(clickConvert==false){
+
+                                            //inisiasi value subtotal
+                                            $(`#subtotal${itemIndex}`).val(calculatedValue);
+                                            
+                                            subtot_arr_select[itemIndex] = calculatedValue;
+                                            
+                                            async()
+                                            
+                                        }
+                                        else{
+
+                                            $(`#harga_belumppn_convert${itemIndex}`).val(nominal_convert*value1)
+                                            price_invoice_select[itemIndex] =nominal_convert*value1
+                                            $(`#subtotal${itemIndex}`).val(calculatedValue*nominal_convert);
+                                            subtot_arr_select[itemIndex]= calculatedValue*nominal_convert
+                                            async()
+                                        }
+                                        
+                                    }
+                                    updateCalculatedValue()
+                                
+
+                                    // Update calculation when values change
+                                    inputtd2Product.on('input', updateCalculatedValue);
+                                    inputtd3Product.on('input', updateCalculatedValue);
+                                    inputtd4Product.on('input',updateCalculatedValue)
+                                    td1Product.append(inputtd1Product)
+                                    td2Product.append(inputtd2Product)
+                                    td3Product.append(inputtd3Product)
+                                    td4Product.append(inputtd4Product)
+                                    td5Product.append(inputtd5Product)
+                                    var td6Product = $('<td>').css({
+                                            'padding': 'auto', 
+                                            'width': '5%',  
+                                    });
+                                    checkboxElementProduct = $('<input>', {
+                                        type: 'checkbox',
+                                        id: 'checkboxId_' + itemIndex,
+                                        value: 0
+                                    }).css({
+                                        'border': '1px solid #696868',
+                                    }).on('change', function() {
+                                        var newValue = this.checked ? 1 : 0;
+                                        $(this).val(newValue);
+
+                                        changeHistory[itemIndex] = newValue;
+                                
+                                    
+                                    });
+
+                                    changeHistory[itemIndex]=0;
+                                    console.log('change history',changeHistory)
+                                    // Append the checkbox and label to the table cell
+                                    td6Product.append(checkboxElementProduct)
+                                    
+                                    var td7Product = $('<td>')
+                                    var selectGudang = $('<select>', {
+                                        class: 'form-control choices-select-gudang', // class for styling
+                                        id:'gudang'+itemIndex
+                                    }).css({
+                                        'border': '1px solid #696868', // Border color and style
+                                        'color': 'black', // Text color
+                                        'padding': '10px', // Padding inside the select
+                                        'width': '100%', // Full width of the container
+                                        
+                                    });
+                                    // console.log('responseGudang',response.gudang)
+                                    var defaultOption = $('<option>', {
+                                        value: '',
+                                        text: 'Pilih Gudang' // Default text
+                                    }).attr('disabled', 'disabled').attr('selected', 'selected'); // Disabled and selected
+                                    selectGudang.append(defaultOption);
+                                    // Iterate over each item in gudangName to create options
+                                    response.gudang.forEach(function(item,index) {
+                                        var optionElement = $('<option>', {
+                                            // text: item, // Use id as the value
+                                            
+                                            value: item.id,
+                                            text: item.name
+
+                                        });
+                                        selectGudang.append(optionElement);
+                                    });
+                                    selectGudang.on('change', function() {
+
+
+                                        // Loop through all selected options
+                                        if(selectedValuesArray.length <itemIndex){
+
+                                            $(this).find('option:selected').each(function(index, option) {
+                                                selectedValuesArray.push($(option).val());
+                                            });
+                                        }else{
+                                            $(this).find('option:selected').each(function(index, option) {
+                                                
+                                                selectedValuesArray[itemIndex] =$(option).val();
+                                            });
+                                        }
+                                        
+                                        
+                                    });
+                                    
+                                    var td8Product = $('<td>')
+                                
+                                    var deleteButton = $('<button>',{
+                                        text: 'X',
+                                        class: 'btn btn-danger btn-sm'
+                                    }).css({
+                                        'border': 'none',
+                                        'color':'white',
+                                        'background-color': '#dc3545',
+                                        'padding': '5px 10px',
+                                        'cursor': 'pointer'
+                                    }).on('click',function(){
+                                        $(this).closest('tr').remove();
+                                    })
+                                    td8Product.append(deleteButton);
+                                    // Append the select element to the table cell
+                                    td7Product.append(selectGudang);
+                                
+                                    
+                                    trProduct.append(tdProduct,td1Product,td2Product,tdHargaBelumPpnProduct,td3Product,td4Product,td5Product,td6Product,td7Product,td8Product)
+                                    contentImport.append(trProduct)
+
+
+                                    });
+                                }
+                            });
+                            document.querySelectorAll('.choices-select-gudang').forEach(function(selectElement) {
+                                    new Choices(selectElement, {
+                                        searchEnabled: true,
+                                        removeItemButton: true,
+                                        itemSelectText: 'Select an option'
+                                    });
+                            });
+                            function async() {
+                                var val = 0;
+                                var val_select = 0;
+                                var ppnValue = 0;
+
+                                // Loop untuk subtotal yang dipilih
+                                for (var i = 0; i < subtot_arr_select.length; i++) {
+                                    var value = parseFloat(subtot_arr_select[i]) || 0; // Konversi ke angka atau anggap 0
+                                    val_select += value;
+                                }
+
+                                // Loop untuk subtotal
+                                for (var i = 0; i < subtot_arr.length; i++) {
+                                    var value = parseFloat(subtot_arr[i]) || 0; // Konversi ke angka atau anggap 0
+                                    val += value;
+                                }
+
+                                // console.log('Discount Value:', valueDiscount);
+
+                                // Menampilkan subtotal
+                                $('.sutotal_element').text(val + val_select);
+                                var subtotal_element= $('.sutotal_element').text()
+                                console.log('subtotal element',subtotal_element)
+                                
+                                // Menghitung dan menampilkan PPN dan total
+                                if ($('#flexCheckDefault').prop('checked')) {
+                                    
+                                    ppnValue = (val + val_select) * 0.11;
+                                    $('.ppn_element').text((ppnValue).toFixed(2));
+                                    $('.total_element').text(((((val + val_select)))+ppnValue).toFixed(2));
+
+                                } else {
+                                    $('.ppn_element').text(0);
+                                    $('.total_element').text((((val + val_select))).toFixed(2));
+                                }
+                            }
+
+
+                        }
+                })
+            })
+
+        
+        });
+
+        //initialize select2 category
+        function initializeSelect2() {
+            $('.select_select_category').select2({
+                placeholder: '-',
+                allowClear: true,
+                width: 'resolve' // Adjust width as needed
+            });
+
+            //proses mengirim memilih kategory
+            $('.select_select_category').on('change', function() {
+                var selectedValue = $(this).val();
+                var idCommercial = $(this).data('id_commercial');
+                
+                $('#reload-icon').show(); //icon reload ditampilkan
+            
+                if (selectedValue) {
+                    $.ajax({
+                        url: '{{ route('admin.pembelian_selectcategory_comercial_invoice') }}',
+                        method: 'GET',
+                        data: {
+                            selected_value: selectedValue,
+                            id_commercial: idCommercial
+                        },
+                        success: function(response) {
+                            console.log('Response from server:', response);
+                            $('#reload-icon').hide();
+                        },
+                        error: function(error) {
+                            console.error('Error:', error);
+                        }
+                    });
                 }
             });
         }
 
-        $('input[type=radio][name=filter]').change(function() {
-            var selectedValue = $(this).val();
-            if (selectedValue !== lastSelectedValue) {
-                sendFilterData(selectedValue);
-                lastSelectedValue = selectedValue;
-            }
+        // initialize Select2 setelah tiap membuat datatable (e.g., page change)
+        table.on('draw', function() {
+            initializeSelect2();
         });
-    }
-    var currentPage = table.page.info().page; // inisiasi halaman pertama
-    var previousPage = currentPage; // inisiasi halaman sebelumnya dari halaman sekarang
 
-    // Reload the page when the "previous" button or an earlier page index is clicked
-    $(document).on('click', '.paginate_button', function() {
-        previousPage = currentPage;
+        if (lastSelectedValue == 'requested') {
+            console.log('lastselect', lastSelectedValue);
 
-        // Get the new current page
-        currentPage = table.page.info().page;
+            function sendFilterData(selectedValue) {
+                $.ajax({
+                    url: '{{ route('admin.pembelian_comercial_invoice_filter') }}',
+                    method: 'GET',
+                    data: { 
+                        filterValue: selectedValue 
+                    },
+                    success: function(response) {
+                        var newRoute = "{{ route('admin.pembelian_comercial_invoice_filter') }}?filterValue=" + selectedValue;
+                        window.location.href = newRoute;
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            }
 
-        console.log('previous', previousPage);
-        console.log('current', currentPage);
-
-        // Get the target page from button text
-        var targetPage = $(this).text().trim();
-        console.log('target', targetPage);
-
-        // Check if the "previous" button was clicked or if we're previous page same with targetpage
-        if ($(this).hasClass('previous') || currentPage == 0 || previousPage==targetPage) {
-            location.reload(); // Reload the page
+            $('input[type=radio][name=filter]').change(function() {
+                var selectedValue = $(this).val();
+                if (selectedValue !== lastSelectedValue) {
+                    sendFilterData(selectedValue);
+                    lastSelectedValue = selectedValue;
+                }
+            });
         }
-        
- 
+        else{
+            console.log('lastselect', lastSelectedValue);
+
+            function sendFilterData(selectedValue) {
+                $.ajax({
+                    url: '{{ route('admin.pembelian_comercial_invoice_filter') }}',
+                    method: 'GET',
+                    data: { 
+                        filterValue: selectedValue 
+                    },
+                    success: function(response) {
+                        var newRoute = "{{ route('admin.pembelian_comercial_invoice_filter') }}?filterValue=" + selectedValue;
+                        window.location.href = newRoute;
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            }
+
+            $('input[type=radio][name=filter]').change(function() {
+                var selectedValue = $(this).val();
+                if (selectedValue !== lastSelectedValue) {
+                    sendFilterData(selectedValue);
+                    lastSelectedValue = selectedValue;
+                }
+            });
+        }
+        var currentPage = table.page.info().page; // inisiasi halaman pertama
+        var previousPage = currentPage; // inisiasi halaman sebelumnya dari halaman sekarang
+
+        // Reload the page when the "previous" button or an earlier page index is clicked
+        $(document).on('click', '.paginate_button', function() {
+            previousPage = currentPage;
+
+            // Get the new current page
+            currentPage = table.page.info().page;
+
+            console.log('previous', previousPage);
+            console.log('current', currentPage);
+
+            // Get the target page from button text
+            var targetPage = $(this).text().trim();
+            console.log('target', targetPage);
+
+            // Check if the "previous" button was clicked or if we're previous page same with targetpage
+            if ($(this).hasClass('previous') || currentPage == 0 || previousPage==targetPage) {
+                location.reload(); // Reload the page
+            }
+            
+    
+        });
     });
-});
 
 
 
@@ -1645,196 +2198,196 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
     $(document).ready(function() {
         
         // Event listener for dropdown change
-        $('#product-restok-tambah-filter').change(function() {
-            // Get selected value
+        // $('#product-restok-tambah-filter').change(function() {
+        //     // Get selected value
             
-             var selectedProductId = $(this).val();
+        //      var selectedProductId = $(this).val();
         
-            // Check if the selected value is not the default option
-            if (selectedProductId !== ""){
+        //     // Check if the selected value is not the default option
+        //     if (selectedProductId !== ""){
                        
-                // AJAX request
-                $.ajax({
-                    url: '{{ route('admin.pembelian_restok_getstok_filter') }}', // Replace with your server endpoint URL
-                    type: 'GET',
-                    data: { id_product: selectedProductId },
+        //         // AJAX request
+        //         $.ajax({
+        //             url: '{{ route('admin.pembelian_restok_getstok_filter') }}', // Replace with your server endpoint URL
+        //             type: 'GET',
+        //             data: { id_product: selectedProductId },
 
-                    success: function(response) {
+        //             success: function(response) {
                        
                        
-                        if ($.isEmptyObject(response)) {//bila response {}
-                              function appendImage() {
-                                var img = $('<img>').attr('src', "https://maxipro.id/images/placeholder/basic.png").css('width', '70px').css('height', '70px');
-                                $('#new-input-container-gambar').empty().append(img);
-                            }
-                              appendImage(); 
-                            var emptyTable = $('<table>').addClass('table').css('border', '1px solid black');
-                            var emptyRow = $('<tr>').append($('<td>').text('Stok Kosong'));
-                            emptyTable.append(emptyRow);
-                            $('#new-input-container').empty(); // Menghapus tabel dari #new-input-container
-                            $('#new-input-container2').empty();
-                             // $('#new-input-container-gambar').empty();
-                            $('#new-input-container-kosong').html(emptyTable);
-                          // Clear the second table as well
-                        }
-                        else {
-                            //bila response ! {}
-                           var countstokPT =0;
-                           var countstokUD =0;
-                           var countStokTotal=0;
-                            function appendImage() {
-                                var img = $('<img>').attr('src', response.msg.image).css('width', '270px').css('height', '270px');
-                                $('#new-input-container-gambar').empty().append(img);
-                            }
-                           // $('#new-input-container-gambar').append(img);
-                             if (response.msg.countStokPT !== 0 || response.msg.countStokUD !== 0) {
-                                appendImage(); 
-                            // Replace the new table with the container
-                            if (response.msg.countStokPT !== 0) {
+        //                 if ($.isEmptyObject(response)) {//bila response {}
+        //                       function appendImage() {
+        //                         var img = $('<img>').attr('src', "https://maxipro.id/images/placeholder/basic.png").css('width', '70px').css('height', '70px');
+        //                         $('#new-input-container-gambar').empty().append(img);
+        //                     }
+        //                       appendImage(); 
+        //                     var emptyTable = $('<table>').addClass('table').css('border', '1px solid black');
+        //                     var emptyRow = $('<tr>').append($('<td>').text('Stok Kosong'));
+        //                     emptyTable.append(emptyRow);
+        //                     $('#new-input-container').empty(); // Menghapus tabel dari #new-input-container
+        //                     $('#new-input-container2').empty();
+        //                      // $('#new-input-container-gambar').empty();
+        //                     $('#new-input-container-kosong').html(emptyTable);
+        //                   // Clear the second table as well
+        //                 }
+        //                 else {
+        //                     //bila response ! {}
+        //                    var countstokPT =0;
+        //                    var countstokUD =0;
+        //                    var countStokTotal=0;
+        //                     function appendImage() {
+        //                         var img = $('<img>').attr('src', response.msg.image).css('width', '270px').css('height', '270px');
+        //                         $('#new-input-container-gambar').empty().append(img);
+        //                     }
+        //                    // $('#new-input-container-gambar').append(img);
+        //                      if (response.msg.countStokPT !== 0 || response.msg.countStokUD !== 0) {
+        //                         appendImage(); 
+        //                     // Replace the new table with the container
+        //                     if (response.msg.countStokPT !== 0) {
 
-                                var newTable = $('<table>').addClass('table').css('border', '1px solid black');
+        //                         var newTable = $('<table>').addClass('table').css('border', '1px solid black');
 
-                                // Create table header
-                                var tableHeader = $('<thead>').append($('<tr>').append($('<th>').text('Database PT').addClass('header-class').attr('colspan', '2').css('border', '1px solid black')));
+        //                         // Create table header
+        //                         var tableHeader = $('<thead>').append($('<tr>').append($('<th>').text('Database PT').addClass('header-class').attr('colspan', '2').css('border', '1px solid black')));
 
-                                // Create table body
-                                var tableBody = $('<tbody>');
+        //                         // Create table body
+        //                         var tableBody = $('<tbody>');
 
-                                // Loop through each stok product UD and create table rows and cells for body
-                                    var rowtitle1 = $('<tr>');
-                                    rowtitle1.append($('<td>').text('Gudang').css('border', '1px solid black'));
-                                    rowtitle1.append($('<td>').text('Qty').css('border', '1px solid black'));
-                                    tableBody.append(rowtitle1);
-                                response.msg.stokproduct.forEach(function(item) {
+        //                         // Loop through each stok product UD and create table rows and cells for body
+        //                             var rowtitle1 = $('<tr>');
+        //                             rowtitle1.append($('<td>').text('Gudang').css('border', '1px solid black'));
+        //                             rowtitle1.append($('<td>').text('Qty').css('border', '1px solid black'));
+        //                             tableBody.append(rowtitle1);
+        //                         response.msg.stokproduct.forEach(function(item) {
                                 
-                                    var row = $('<tr>');
-                                    row.append($('<td>').text(item.name_gudang).css('border', '1px solid black'));
-                                    row.append($('<td>').text(item.stok_gudang).css('border', '1px solid black'));
-                                    tableBody.append(row);
+        //                             var row = $('<tr>');
+        //                             row.append($('<td>').text(item.name_gudang).css('border', '1px solid black'));
+        //                             row.append($('<td>').text(item.stok_gudang).css('border', '1px solid black'));
+        //                             tableBody.append(row);
 
-                                     countstokPT += parseInt(item.stok_gudang, 10);
+        //                              countstokPT += parseInt(item.stok_gudang, 10);
 
-                                });
-                                var rowtotalpt = $('<tr>');
-                                rowtotalpt.append($('<td>').html('<b>Total</b>').css('border', '1px solid black'));
-                                rowtotalpt.append($('<td>').html('<b>'+countstokPT+'</b>').css('border', '1px solid black'));
-                                tableBody.append(rowtotalpt)
-                                // Append header and body to the table
-                                newTable.append(tableHeader).append(tableBody);
-                                $('#new-input-container').html(newTable);
-                                    $('#new-input-container-kosong').empty();
-                            }
-                            else {
-                                $('#new-input-container').html(''); // Clear the table if countStokPT is 0
-                                    $('#new-input-container-kosong').empty();
-                            }
-                            if (response.msg.countStokUD !== 0) {
-                                var newTable2 = $('<table>').addClass('table').css('border', '1px solid black');
+        //                         });
+        //                         var rowtotalpt = $('<tr>');
+        //                         rowtotalpt.append($('<td>').html('<b>Total</b>').css('border', '1px solid black'));
+        //                         rowtotalpt.append($('<td>').html('<b>'+countstokPT+'</b>').css('border', '1px solid black'));
+        //                         tableBody.append(rowtotalpt)
+        //                         // Append header and body to the table
+        //                         newTable.append(tableHeader).append(tableBody);
+        //                         $('#new-input-container').html(newTable);
+        //                             $('#new-input-container-kosong').empty();
+        //                     }
+        //                     else {
+        //                         $('#new-input-container').html(''); // Clear the table if countStokPT is 0
+        //                             $('#new-input-container-kosong').empty();
+        //                     }
+        //                     if (response.msg.countStokUD !== 0) {
+        //                         var newTable2 = $('<table>').addClass('table').css('border', '1px solid black');
 
-                                // Create table header
-                                var tableHeader2 = $('<thead>').append($('<tr>').append($('<th>').text('Database UD').addClass('header-class').attr('colspan', '2').css('border', '1px solid')));
+        //                         // Create table header
+        //                         var tableHeader2 = $('<thead>').append($('<tr>').append($('<th>').text('Database UD').addClass('header-class').attr('colspan', '2').css('border', '1px solid')));
 
-                                // Create table body
-                                var tableBody2 = $('<tbody>');
+        //                         // Create table body
+        //                         var tableBody2 = $('<tbody>');
 
-                                var row2title = $('<tr>');
-                                row2title.append($('<td>').text('Gudang').css('border', '1px solid black'));
-                                row2title.append($('<td>').text('Qty').css('border', '1px solid black'));
-                                tableBody2.append(row2title);
+        //                         var row2title = $('<tr>');
+        //                         row2title.append($('<td>').text('Gudang').css('border', '1px solid black'));
+        //                         row2title.append($('<td>').text('Qty').css('border', '1px solid black'));
+        //                         tableBody2.append(row2title);
 
-                                // Loop through each stok product UD and create table rows and cells for body
-                                response.msg.stokproductUD.forEach(function(item) {
-                                    var row = $('<tr>');
-                                    row.append($('<td>').text(item.name_gudang).css('border', '1px solid black'));
-                                    row.append($('<td>').text(item.stok_gudang).css('border', '1px solid black'));
-                                    tableBody2.append(row);
+        //                         // Loop through each stok product UD and create table rows and cells for body
+        //                         response.msg.stokproductUD.forEach(function(item) {
+        //                             var row = $('<tr>');
+        //                             row.append($('<td>').text(item.name_gudang).css('border', '1px solid black'));
+        //                             row.append($('<td>').text(item.stok_gudang).css('border', '1px solid black'));
+        //                             tableBody2.append(row);
 
-                                    // countstok += item.stok_gudang;
-                                     countstokUD += parseInt(item.stok_gudang, 10);
-                                });
-                                 var rowtotalud = $('<tr>');
-                                rowtotalud.append($('<td>').html('<b>Total</b>').css('border', '1px solid black'));
-                                rowtotalud.append($('<td>').html('<b>' +countstokUD+'</b>').css('border', '1px solid black'));
-                                tableBody2.append(rowtotalud)
-                                // Append header and body to the table
-                                newTable2.append(tableHeader2).append(tableBody2);
-                                $('#new-input-container2').html(newTable2);
-                                    $('#new-input-container-kosong').empty();
-                            } else {
-                                $('#new-input-container2').html(''); // Clear the second table if countStokUD is 0
-                                $('#new-input-container-kosong').empty();
-                            }
-                       }     
-                            countStokTotal = countstokPT + countstokUD;   
+        //                             // countstok += item.stok_gudang;
+        //                              countstokUD += parseInt(item.stok_gudang, 10);
+        //                         });
+        //                          var rowtotalud = $('<tr>');
+        //                         rowtotalud.append($('<td>').html('<b>Total</b>').css('border', '1px solid black'));
+        //                         rowtotalud.append($('<td>').html('<b>' +countstokUD+'</b>').css('border', '1px solid black'));
+        //                         tableBody2.append(rowtotalud)
+        //                         // Append header and body to the table
+        //                         newTable2.append(tableHeader2).append(tableBody2);
+        //                         $('#new-input-container2').html(newTable2);
+        //                             $('#new-input-container-kosong').empty();
+        //                     } else {
+        //                         $('#new-input-container2').html(''); // Clear the second table if countStokUD is 0
+        //                         $('#new-input-container-kosong').empty();
+        //                     }
+        //                }     
+        //                     countStokTotal = countstokPT + countstokUD;   
 
 
-                            $('#tambahForm').submit(function(event) {
-                                    // Mencegah perilaku default formulir
-                                    event.preventDefault();
+        //                     $('#tambahForm').submit(function(event) {
+        //                             // Mencegah perilaku default formulir
+        //                             event.preventDefault();
                                       
-                                    // Mengumpulkan data formulir
-                                    var formData = {
+        //                             // Mengumpulkan data formulir
+        //                             var formData = {
                                         
-                                         tgl_request: $('input[name=tgl_request_name]').val(), // Mengambil value dari elemen name_edit 
-                                                                                 // Note: dibawah Mengikuti name_edit
+        //                                  tgl_request: $('input[name=tgl_request_name]').val(), // Mengambil value dari elemen name_edit 
+        //                                                                          // Note: dibawah Mengikuti name_edit
                            
-                                         laststok: countStokTotal,
-                                         jml_permintaan: $('input[name=jml_permintaan_name]').val(),
+        //                                  laststok: countStokTotal,
+        //                                  jml_permintaan: $('input[name=jml_permintaan_name]').val(),
                                          
-                                         keterangan: $('textarea[name=keterangan_name]').val(),
-                                        product: $('#product-restok-tambah-filter').val(),
+        //                                  keterangan: $('textarea[name=keterangan_name]').val(),
+        //                                 product: $('#product-restok-tambah-filter').val(),
                                         
                                         
-                                        // status: $('select[name=status]').val()
-                                    };
-                                  console.log(formData)
-                                    // Mengirim permintaan AJAX
-                                    $.ajax({
-                                        type: 'GET',
-                                        url: '{{ route('admin.pembelian_restok_tambah_filter') }}', // Ganti URL_TARGET dengan URL tujuan Anda
-                                        data: formData,
-                                        success: function(response) {
-                                            // Tanggapan berhasil, lakukan apa yang perlu dilakukan di sini
-                                           console.log(response);
-                                            if(response !== null){
+        //                                 // status: $('select[name=status]').val()
+        //                             };
+        //                           console.log(formData)
+        //                             // Mengirim permintaan AJAX
+        //                             $.ajax({
+        //                                 type: 'GET',
+        //                                 url: '{{ route('admin.pembelian_restok_tambah_filter') }}', // Ganti URL_TARGET dengan URL tujuan Anda
+        //                                 data: formData,
+        //                                 success: function(response) {
+        //                                     // Tanggapan berhasil, lakukan apa yang perlu dilakukan di sini
+        //                                    console.log(response);
+        //                                     if(response !== null){
                                                  
-                                                 Swal.fire({
-                                                    icon: 'success',
-                                                    title: 'Success!',
-                                                    text: 'Restok berhasil ditambah!',
-                                                }).then((result) => {
-                                                    // Mengalihkan halaman ke halaman tertentu setelah mengklik OK pada SweetAlert
-                                                    window.location.reload();
-                                                });
-                                            }
-                                            else{
-                                                console.log(response);
-                                                 Swal.fire({
-                                                    icon: 'error',
-                                                    title: 'Error!',
-                                                    text: 'Restok Gagal ditamb!',
-                                                });
-                                            }
+        //                                          Swal.fire({
+        //                                             icon: 'success',
+        //                                             title: 'Success!',
+        //                                             text: 'Restok berhasil ditambah!',
+        //                                         }).then((result) => {
+        //                                             // Mengalihkan halaman ke halaman tertentu setelah mengklik OK pada SweetAlert
+        //                                             window.location.reload();
+        //                                         });
+        //                                     }
+        //                                     else{
+        //                                         console.log(response);
+        //                                          Swal.fire({
+        //                                             icon: 'error',
+        //                                             title: 'Error!',
+        //                                             text: 'Restok Gagal ditamb!',
+        //                                         });
+        //                                     }
                                              
-                                        },
-                                        error: function(xhr, status, error) {
-                                            // Penanganan kesalahan jika terjadi
-                                            console.error(error);
-                                        }
-                                    });
-                            });
+        //                                 },
+        //                                 error: function(xhr, status, error) {
+        //                                     // Penanganan kesalahan jika terjadi
+        //                                     console.error(error);
+        //                                 }
+        //                             });
+        //                     });
 
-                        }
+        //                 }
                                        
                    
-                    },
-                    error: function(xhr, status, error) {
-                        // Handle error
-                        console.error('Error:', error);
-                    }
-                });
-            }
-        });
+        //             },
+        //             error: function(xhr, status, error) {
+        //                 // Handle error
+        //                 console.error('Error:', error);
+        //             }
+        //         });
+        //     }
+        // });
     });
     
   
@@ -1851,81 +2404,82 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
 
    
     // Menangani klik pada tombol tambah
-    function tambahRestok(element) {
-        event.preventDefault();
-        console.log('masuk modal tambah');
+    // function tambahRestok(element) {
+    //     event.preventDefault();
+    //     console.log('masuk modal tambah');
         
-        $('#tambahModal').modal('show'); // Tampilkan modal
+    //     $('#tambahModal').modal('show'); // Tampilkan modal
 
-    }
+    // }
 
 
     //Untuk Mereset data input checkbox dan total kubik di modal hitung kubk
-    document.getElementById('tambahModal').addEventListener('hidden.bs.modal', function () {
-        var checkboxes = document.querySelectorAll('.kubik-checkbox-tambah'); //Inisiasi variabel yang mengambil value select dari class kubik-checkbox-tambah
-        checkboxes.forEach(function(checkbox) { //Untuk mengambil input checkbox sesuai urutan berdasarkan array
-            checkbox.checked = false; //Untuk menonaktifkan input checkbox
-        });
-        document.getElementById('total-kubik').textContent = 0; //menset nilai total-kubik menjadi 0
-    });
+    // document.getElementById('tambahModal').addEventListener('hidden.bs.modal', function () {
+    //     var checkboxes = document.querySelectorAll('.kubik-checkbox-tambah'); //Inisiasi variabel yang mengambil value select dari class kubik-checkbox-tambah
+    //     checkboxes.forEach(function(checkbox) { //Untuk mengambil input checkbox sesuai urutan berdasarkan array
+    //         checkbox.checked = false; //Untuk menonaktifkan input checkbox
+    //     });
+    //     document.getElementById('total-kubik').textContent = 0; //menset nilai total-kubik menjadi 0
+    // });
+    
      //untuk mengaktifkan checkbox agar dapat mencustom nomor invoice
-   document.getElementById('customCodeCheckbox').addEventListener('click', function() {
-      const modeadminInput = document.querySelector('input[name="modeadmin_tambah"]');
-      
-      const invoiceInput = document.querySelector('input[name="invoice_no_tambah"]');
-      const contractInput = document.querySelector('input[name="contract_no_tambah"]');
-      const packingInput = document.querySelector('input[name="packing_no_tambah"]');
-
-      if (this.checked) {
+    document.getElementById('customCodeCheckbox').addEventListener('click', function() {
+        const modeadminInput = document.querySelector('input[name="modeadmin_tambah"]');
         
-        modeadminInput.value = 1;
-        invoiceInput.disabled = false;
-        contractInput.disabled = false;
-        packingInput.disabled = false;
-      } else {
-        modeadminInput.value = 0;
-        invoiceInput.disabled = true;
-        contractInput.disabled = true;
-        packingInput.disabled = true;
-      }
-   });
+        const invoiceInput = document.querySelector('input[name="invoice_no_tambah"]');
+        const contractInput = document.querySelector('input[name="contract_no_tambah"]');
+        const packingInput = document.querySelector('input[name="packing_no_tambah"]');
 
-   function updateComercialInvoice(element) {
-        //Membuka modal update
-        event.preventDefault();
-        var id = $(element).data('id');
-        
+        if (this.checked) {
+            
+            modeadminInput.value = 1;
+            invoiceInput.disabled = false;
+            contractInput.disabled = false;
+            packingInput.disabled = false;
+        } else {
+            modeadminInput.value = 0;
+            invoiceInput.disabled = true;
+            contractInput.disabled = true;
+            packingInput.disabled = true;
+        }
+    });
 
-        // Tampilkan elemen overlay dengan efek fade-in sebelum mengirim permintaan AJAX
-        $('#overlay').fadeIn();
+    function updateComercialInvoice(element) {
+            //Membuka modal update
+            event.preventDefault();
+            var id = $(element).data('id');
+            
 
-        var url = "{{ route('admin.pembelian_editview_comercial_invoice') }}";
+            // Tampilkan elemen overlay dengan efek fade-in sebelum mengirim permintaan AJAX
+            $('#overlay').fadeIn();
 
-        $.ajax({
-            url: url,
-            type: 'GET', // Menggunakan metode GET
-            data: {
-                id_product: id
-            },
-            success: function(response) {
-                // Sembunyikan elemen overlay dengan efek fade-out setelah mendapatkan respons
-                $('#overlay').fadeOut();
+            var url = "{{ route('admin.pembelian_editview_comercial_invoice') }}";
 
-                // Handle response jika sukses
-                $('#Formedit').html(response);
-                // Tampilkan modal
-                $('#editModal').modal('show');
-            },
-            error: function(xhr, status, error) {
-                // Sembunyikan elemen overlay dengan efek fade-out jika terjadi kesalahan
-                $('#overlay').fadeOut();
+            $.ajax({
+                url: url,
+                type: 'GET', // Menggunakan metode GET
+                data: {
+                    id_product: id
+                },
+                success: function(response) {
+                    // Sembunyikan elemen overlay dengan efek fade-out setelah mendapatkan respons
+                    $('#overlay').fadeOut();
 
-                // Handle error jika terjadi kesalahan
-                console.error(xhr.responseText);
-                return;
-            }
-        });
-    }
+                    // Handle response jika sukses
+                    $('#Formedit').html(response);
+                    // Tampilkan modal
+                    $('#editModal').modal('show');
+                },
+                error: function(xhr, status, error) {
+                    // Sembunyikan elemen overlay dengan efek fade-out jika terjadi kesalahan
+                    $('#overlay').fadeOut();
+
+                    // Handle error jika terjadi kesalahan
+                    console.error(xhr.responseText);
+                    return;
+                }
+            });
+        }
 
     //Membuka modal gagal update
     function updateRestokFailed(button) {
@@ -2142,19 +2696,18 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
     document.addEventListener('DOMContentLoaded', function() {
         // Menangani klik pada tombol "Save changes"
         document.getElementById('saveChangesBtn').addEventListener('click', function() {
-            // Mendapatkan nilai input
+            // Mendapatkan nilai input tanggal filter
             var checkdatevalue = document.getElementById('checkdatevalue').value;
             var tgl_awal = document.getElementById('tgl_awal').value;
             var tgl_akhir = document.getElementById('tgl_akhir').value;
             var id_nama_perusahaan = document.getElementById('id_nama_perusahaan').value;
-            // var id_kode_barang = document.getElementById('kode_barang').value;
-              var filterValue = document.querySelector('input[name="filter"]:checked').value;
+           
+            var filterValue = document.querySelector('input[name="filter"]:checked').value;
             console.log(id_nama_perusahaan)
             
 
             
             // Membuat query string dari data yang akan dikirim
-            // console.log(id_kode_barang)
             var queryString = 'tgl_awal=' + encodeURIComponent(tgl_awal) + '&tgl_akhir=' + encodeURIComponent(tgl_akhir)+'&id_nama_perusahaan=' + encodeURIComponent(id_nama_perusahaan)+'&filterValue=' + encodeURIComponent(filterValue);
 
             // Menambahkan nilai 'checked' jika checkbox dicentang
@@ -2209,7 +2762,8 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
     var tot_price_without_tax_usd_import =[];
 
     $(document).ready(function() {
-      
+        
+
         // Menangkap perubahan pada elemen select
         $('.select').change(function() {
             // Mendapatkan nilai dari elemen select yang dipilih
@@ -2239,974 +2793,963 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
         });
     });
 
-     $(document).ready(function() {
+    //untuk send import barang
 
-        $('#sendImportBarang').click(function(event) {
-            event.preventDefault();
-             var selectedCheckboxes = $('.kubik-checkbox-tambah:checked');
-            var formData = {
-                // id_product: $('input[name=id_product]').val(),
-                idrestok: [],
-                valuerestok: []
-            };
-             selectedCheckboxes.each(function(index) {
+    // $(document).ready(function() {
+
+    //     // $('#sendImportBarang').click(function(event) {
+    //     //     event.preventDefault();
+    //     //      var selectedCheckboxes = $('.kubik-checkbox-tambah:checked');
+    //     //     var formData = {
+    //     //         // id_product: $('input[name=id_product]').val(),
+    //     //         idrestok: [],
+    //     //         valuerestok: []
+    //     //     };
+    //     //      selectedCheckboxes.each(function(index) {
                 
-                var hiddenInputValue = $(this).next('input[type="hidden"]').val();
+    //     //         var hiddenInputValue = $(this).next('input[type="hidden"]').val();
                 
-                formData.idrestok.push(hiddenInputValue);
-                if (hiddenInputValue) {
-                    formData.valuerestok.push(1); 
-                }
-            });
-             console.log('formdata',formData)
-              $.ajax({
-                type: 'GET',
-                url: '{{ route('admin.pembelian_importbarang_comercial_invoice') }}',
-                data: formData,
-                success: function(response) {
-                    console.log('Data berhasil dikirim:', response);
+    //     //         formData.idrestok.push(hiddenInputValue);
+    //     //         if (hiddenInputValue) {
+    //     //             formData.valuerestok.push(1); 
+    //     //         }
+    //     //     });
+    //     //      console.log('formdata',formData)
+    //     //       $.ajax({
+    //     //         type: 'GET',
+    //     //         url: '{{ route('admin.pembelian_importbarang_comercial_invoice') }}',
+    //     //         data: formData,
+    //     //         success: function(response) {
+    //     //             console.log('Data berhasil dikirim:', response);
 
                  
-                    var contentContainer = $('#content-container2');
-                    contentContainer.empty();
-                    var contentContainer2 = $('#content-container3');
-                    contentContainer2.empty();
+    //     //             var contentContainer = $('#content-container2');
+    //     //             contentContainer.empty();
+    //     //             var contentContainer2 = $('#content-container3');
+    //     //             contentContainer2.empty();
                
-                    var directory = response.url_gambar; 
-                    var hscodehistory =[];
-                    var grossWeight =0;
-                    var nettWeight=0;
-                    var without_tax=0;
-                    var unitPriceUsd=0;
-                    var totalPriceUsd=0;
-                    var qty_input7  =0;
-                    var tdElement =0;
-                    response.orderpembelian.forEach(function(order,index) {
+    //     //             var directory = response.url_gambar; 
+    //     //             var hscodehistory =[];
+    //     //             var grossWeight =0;
+    //     //             var nettWeight=0;
+    //     //             var without_tax=0;
+    //     //             var unitPriceUsd=0;
+    //     //             var totalPriceUsd=0;
+    //     //             var qty_input7  =0;
+    //     //             var tdElement =0;
+    //     //             response.orderpembelian.forEach(function(order,index) {
         
                       
                
     
                         
-                        var productName = order.product.name;
-                        var gambarName ='https://maxipro.id/images/barang/'+order.product.image;
-                        console.log(gambarName)
+    //     //                 var productName = order.product.name;
+    //     //                 var gambarName ='https://maxipro.id/images/barang/'+order.product.image;
+    //     //                 console.log(gambarName)
                         
-                        var newTable1 = $('<table>');
-                        var inputDetailElement = $('<input />').attr({
-                            'id': 'id_edit_import'+index,          
-                            'name': 'restok_'+(index),      
-                            'class': 'form-control restok_import_tambah',    
-                            'placeholder': '',        
-                            'type': 'text',          
-                            'value':order.id
-                        }).css({
-                            'border': '1px solid #696868',
-                            'color' : 'black',
-                            'padding' : '10px',
-                            'width': '100%'           // Sesuaikan dengan kebutuhan Anda
-                        });
+    //     //                 var newTable1 = $('<table>');
+    //     //                 var inputDetailElement = $('<input />').attr({
+    //     //                     'id': 'id_edit_import'+index,          
+    //     //                     'name': 'restok_'+(index),      
+    //     //                     'class': 'form-control restok_import_tambah',    
+    //     //                     'placeholder': '',        
+    //     //                     'type': 'text',          
+    //     //                     'value':order.id
+    //     //                 }).css({
+    //     //                     'border': '1px solid #696868',
+    //     //                     'color' : 'black',
+    //     //                     'padding' : '10px',
+    //     //                     'width': '100%'           // Sesuaikan dengan kebutuhan Anda
+    //     //                 });
 
-                        var input_barangElement = $('<input />').attr({
-                            'id': 'id_barang_import'+index,          // ID untuk elemen input
-                            'name': 'inputName',      // Nama untuk elemen input
-                            'class': 'form-control',    // Kelas CSS untuk elemen input
-                            'placeholder': '',        // Placeholder untuk elemen input
-                            'type': 'text',          // Tipe input
-                            'value': order.id_barang
-                        }).css({
-                            'border': '1px solid #696868',
-                            'color' : 'black',
-                            'padding' : '10px',
-                            'width': '100%'           // Sesuaikan dengan kebutuhan Anda
-                        });
+    //     //                 var input_barangElement = $('<input />').attr({
+    //     //                     'id': 'id_barang_import'+index,          // ID untuk elemen input
+    //     //                     'name': 'inputName',      // Nama untuk elemen input
+    //     //                     'class': 'form-control',    // Kelas CSS untuk elemen input
+    //     //                     'placeholder': '',        // Placeholder untuk elemen input
+    //     //                     'type': 'text',          // Tipe input
+    //     //                     'value': order.id_barang
+    //     //                 }).css({
+    //     //                     'border': '1px solid #696868',
+    //     //                     'color' : 'black',
+    //     //                     'padding' : '10px',
+    //     //                     'width': '100%'           // Sesuaikan dengan kebutuhan Anda
+    //     //                 });
                         
-                        var newTr1 = $('<tr>');
-                        var newRowTd1 = $('<td style="border: 1px solid #696868; color: black;">');
+    //     //                 var newTr1 = $('<tr>');
+    //     //                 var newRowTd1 = $('<td style="border: 1px solid #696868; color: black;">');
                         
-                        var img = $('<img style="width: 350px;height:320px;">');
-                        img.attr('src', gambarName);
+    //     //                 var img = $('<img style="width: 350px;height:320px;">');
+    //     //                 img.attr('src', gambarName);
                         
                      
-                        var newRowTd = $('<td style="border: 2px solid #696868; color: black; width: 100%;">');
-                        var newTable = $('<table style="width: 100%;padding-left: 1px;">');
+    //     //                 var newRowTd = $('<td style="border: 2px solid #696868; color: black; width: 100%;">');
+    //     //                 var newTable = $('<table style="width: 100%;padding-left: 1px;">');
                         
-                        var newTr = $('<tr style="border: 1px solid #d7d7d7; color: black;">');
-                        var newTr2 = $('<tr style="border: 1px solid #d7d7d7;color: black;">');
-                        var newTr3 = $('<tr style="border: 1px solid #d7d7d7;color: black;">');
-                        var newTr4 = $('<tr style="border: 1px solid #d7d7d7;color: black;">');
-                        var newTr5 = $('<tr style="border: 1px solid #d7d7d7;color: black;">');
-                        var newTr6 = $('<tr style="border: 1px solid #d7d7d7;color: black;">');
-                        var newTd = $('<td colspan="3" style="border: 1px solid #d7d7d7; color: white; background-color: black; font-weight: bold ">');
-                            newTd.text(productName); // Mengatur teks sel dengan nama produk
-                        var newTd2 = $('<td style="border: 1px solid #d7d7d7; color: white; background-color: black; font-weight: bold ">');
-                            newTd2.html('Chinese Name<br>中文品名'); 
-                        var newTdChineseName = $('<td colspan="2" style="border: 1px solid #d7d7d7;">');
-                        var inputChineseName = $('<input />').attr({
-                            'id': 'chinese_name_import'+index,
-                            'name': 'chinese_name_' + (index),  
-                            'class': 'form-control chinese_import',    
-                            'placeholder': '',        
-                            'type': 'text',
-                            'value': order.product.name_china,
-                        }).css({
-                            'border': '1px solid #696868',
-                            'color' : 'black',
-                            'padding' : '10px',
-                            'width': '100%'           
-                        });
+    //     //                 var newTr = $('<tr style="border: 1px solid #d7d7d7; color: black;">');
+    //     //                 var newTr2 = $('<tr style="border: 1px solid #d7d7d7;color: black;">');
+    //     //                 var newTr3 = $('<tr style="border: 1px solid #d7d7d7;color: black;">');
+    //     //                 var newTr4 = $('<tr style="border: 1px solid #d7d7d7;color: black;">');
+    //     //                 var newTr5 = $('<tr style="border: 1px solid #d7d7d7;color: black;">');
+    //     //                 var newTr6 = $('<tr style="border: 1px solid #d7d7d7;color: black;">');
+    //     //                 var newTd = $('<td colspan="3" style="border: 1px solid #d7d7d7; color: white; background-color: black; font-weight: bold ">');
+    //     //                     newTd.text(productName); // Mengatur teks sel dengan nama produk
+    //     //                 var newTd2 = $('<td style="border: 1px solid #d7d7d7; color: white; background-color: black; font-weight: bold ">');
+    //     //                     newTd2.html('Chinese Name<br>中文品名'); 
+    //     //                 var newTdChineseName = $('<td colspan="2" style="border: 1px solid #d7d7d7;">');
+    //     //                 var inputChineseName = $('<input />').attr({
+    //     //                     'id': 'chinese_name_import'+index,
+    //     //                     'name': 'chinese_name_' + (index),  
+    //     //                     'class': 'form-control chinese_import',    
+    //     //                     'placeholder': '',        
+    //     //                     'type': 'text',
+    //     //                     'value': order.product.name_china,
+    //     //                 }).css({
+    //     //                     'border': '1px solid #696868',
+    //     //                     'color' : 'black',
+    //     //                     'padding' : '10px',
+    //     //                     'width': '100%'           
+    //     //                 });
 
-                        newTdChineseName.append(inputChineseName);
-                        var newTd3 = $('<td style="border: 1px solid #d7d7d7; color: white; background-color: black; font-weight: bold;width:25.7%; ">');
-                            newTd3.html('English Name<br>英文品名');
+    //     //                 newTdChineseName.append(inputChineseName);
+    //     //                 var newTd3 = $('<td style="border: 1px solid #d7d7d7; color: white; background-color: black; font-weight: bold;width:25.7%; ">');
+    //     //                     newTd3.html('English Name<br>英文品名');
 
-                        var newTdEnglishName = $('<td colspan="2" style="border: 1px solid #d7d7d7;">');
-                        var inputEnglishName = $('<input />').attr({
-                            'id': 'english_name_import'+index,
-                            'name': 'english_name_' + (index),  
-                            'class': 'form-control english_import',    
-                            'placeholder': '',        
-                            'type': 'text',
-                            'value': order.product.name_english,
-                        }).css({
-                            'border': '1px solid #696868',
-                            'color' : 'black',
-                            'padding' : '10px',
-                            'width': '100%'           
-                        });
-                            newTdEnglishName.append(inputEnglishName);
-                        var newTd4 = $('<td style="border: 1px solid #d7d7d7; color: white; background-color: black; font-weight: bold;width:25.7%;">');
-                            newTd4.html('Model<br>型号');
-                        var newTdModel = $('<td colspan="2" style="border: 1px solid #d7d7d7;">');
-                        var modelValue = order.product.model || ''; // Jika order.model null, maka gunakan string kosong
-                        // var inputModel = $('<input type="text" style="width:100%;border: 1px solid #696868; color: black; padding: 10px;" value="' + modelValue + '">'); // Membuat elemen input dengan nilai dari modelValue
-                        var inputModel = $('<input />').attr({
-                            'id': 'model_import'+index,
-                            'name': 'model_name_' + (index),  
-                            'class': 'form-control model_import',    
-                            'placeholder': '',        
-                            'type': 'text',
-                            'value': modelValue,
-                        }).css({
-                            'border': '1px solid #696868',
-                            'color' : 'black',
-                            'padding' : '10px',
-                            'width': '100%'           
-                        }); 
+    //     //                 var newTdEnglishName = $('<td colspan="2" style="border: 1px solid #d7d7d7;">');
+    //     //                 var inputEnglishName = $('<input />').attr({
+    //     //                     'id': 'english_name_import'+index,
+    //     //                     'name': 'english_name_' + (index),  
+    //     //                     'class': 'form-control english_import',    
+    //     //                     'placeholder': '',        
+    //     //                     'type': 'text',
+    //     //                     'value': order.product.name_english,
+    //     //                 }).css({
+    //     //                     'border': '1px solid #696868',
+    //     //                     'color' : 'black',
+    //     //                     'padding' : '10px',
+    //     //                     'width': '100%'           
+    //     //                 });
+    //     //                     newTdEnglishName.append(inputEnglishName);
+    //     //                 var newTd4 = $('<td style="border: 1px solid #d7d7d7; color: white; background-color: black; font-weight: bold;width:25.7%;">');
+    //     //                     newTd4.html('Model<br>型号');
+    //     //                 var newTdModel = $('<td colspan="2" style="border: 1px solid #d7d7d7;">');
+    //     //                 var modelValue = order.product.model || ''; // Jika order.model null, maka gunakan string kosong
+    //     //                 // var inputModel = $('<input type="text" style="width:100%;border: 1px solid #696868; color: black; padding: 10px;" value="' + modelValue + '">'); // Membuat elemen input dengan nilai dari modelValue
+    //     //                 var inputModel = $('<input />').attr({
+    //     //                     'id': 'model_import'+index,
+    //     //                     'name': 'model_name_' + (index),  
+    //     //                     'class': 'form-control model_import',    
+    //     //                     'placeholder': '',        
+    //     //                     'type': 'text',
+    //     //                     'value': modelValue,
+    //     //                 }).css({
+    //     //                     'border': '1px solid #696868',
+    //     //                     'color' : 'black',
+    //     //                     'padding' : '10px',
+    //     //                     'width': '100%'           
+    //     //                 }); 
 
-                        newTdModel.append(inputModel);
-                        var newTd5 = $('<td style="border: 1px solid #d7d7d7; color: white; background-color: black; font-weight: bold;width:25.7%;">');
-                            newTd5.html('Brand<br>品牌'); 
-                            var brandValue = order.product.brand || '';
-                        var newTdBrand = $('<td colspan="2" style="border: 1px solid #d7d7d7;">');
-                        // var inputBrand = $('<input type="text" style="width:100%;border: 1px solid #696868; color: black; padding: 10px;" value="' + brandValue + '">'); // Membuat elemen input dengan nilai dari modelValue
-                        var inputBrand = $('<input />').attr({
-                            'id': 'brand_import'+index,
-                            'name': 'brand_name_' + (index),  
-                            'class': 'form-control brand_import',    
-                            'placeholder': '',        
-                            'type': 'text',
-                            'value': brandValue,
-                        }).css({
-                            'border': '1px solid #696868',
-                            'color' : 'black',
-                            'padding' : '10px',
-                            'width': '100%'           
-                        }); 
+    //     //                 newTdModel.append(inputModel);
+    //     //                 var newTd5 = $('<td style="border: 1px solid #d7d7d7; color: white; background-color: black; font-weight: bold;width:25.7%;">');
+    //     //                     newTd5.html('Brand<br>品牌'); 
+    //     //                     var brandValue = order.product.brand || '';
+    //     //                 var newTdBrand = $('<td colspan="2" style="border: 1px solid #d7d7d7;">');
+    //     //                 // var inputBrand = $('<input type="text" style="width:100%;border: 1px solid #696868; color: black; padding: 10px;" value="' + brandValue + '">'); // Membuat elemen input dengan nilai dari modelValue
+    //     //                 var inputBrand = $('<input />').attr({
+    //     //                     'id': 'brand_import'+index,
+    //     //                     'name': 'brand_name_' + (index),  
+    //     //                     'class': 'form-control brand_import',    
+    //     //                     'placeholder': '',        
+    //     //                     'type': 'text',
+    //     //                     'value': brandValue,
+    //     //                 }).css({
+    //     //                     'border': '1px solid #696868',
+    //     //                     'color' : 'black',
+    //     //                     'padding' : '10px',
+    //     //                     'width': '100%'           
+    //     //                 }); 
 
-                        newTdBrand.append(inputBrand);
-                        var newTd6 = $('<td style="border: 1px solid #d7d7d7; color: white; background-color: black; font-weight: bold;width:25.7%;">');
-                            newTd6.html('HS Code<br>海关编码'); 
-                        var newTdHsCode = $('<td style="border: 1px solid #d7d7d7;">');
-                        var selectHsCode = $('<select style="width:100%;border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control hscode-import">' +
-                                        '<option value="">Pilih Hs Code</option>' +            
-                                        '</select>'); // Membuat elemen select
-                            newTdHsCode.append(selectHsCode);
-                        var newTdHsCode2 = $('<td style="border: 1px solid #d7d7d7;">');
+    //     //                 newTdBrand.append(inputBrand);
+    //     //                 var newTd6 = $('<td style="border: 1px solid #d7d7d7; color: white; background-color: black; font-weight: bold;width:25.7%;">');
+    //     //                     newTd6.html('HS Code<br>海关编码'); 
+    //     //                 var newTdHsCode = $('<td style="border: 1px solid #d7d7d7;">');
+    //     //                 var selectHsCode = $('<select style="width:100%;border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control hscode-import">' +
+    //     //                                 '<option value="">Pilih Hs Code</option>' +            
+    //     //                                 '</select>'); // Membuat elemen select
+    //     //                     newTdHsCode.append(selectHsCode);
+    //     //                 var newTdHsCode2 = $('<td style="border: 1px solid #d7d7d7;">');
                        
-                        var inputHsCode = $('<input />').attr({
-                            'id': 'hscode-import-edit',
-                            'name': 'hscode-input_' + (index),  
-                            'class': 'form-control hscode_import',    
-                            'placeholder': '',        
-                            'type': 'text',
-                            // 'value': newTdBrand,
-                        }).css({
-                            'border': '1px solid #696868',
-                            'color' : 'black',
-                            'padding' : '10px',
-                            'width': '100%'           
-                        }); 
+    //     //                 var inputHsCode = $('<input />').attr({
+    //     //                     'id': 'hscode-import-edit',
+    //     //                     'name': 'hscode-input_' + (index),  
+    //     //                     'class': 'form-control hscode_import',    
+    //     //                     'placeholder': '',        
+    //     //                     'type': 'text',
+    //     //                     // 'value': newTdBrand,
+    //     //                 }).css({
+    //     //                     'border': '1px solid #696868',
+    //     //                     'color' : 'black',
+    //     //                     'padding' : '10px',
+    //     //                     'width': '100%'           
+    //     //                 }); 
 
-                        newTdHsCode2.append(inputHsCode);
-                        newTr.append(newTd);
-                        newTr2.append(newTd2);
-                        newTr2.append(newTdChineseName);
-                        newTr3.append(newTd3);
-                        newTr3.append(newTdEnglishName);
-                        newTr4.append(newTd4);
-                        newTr4.append(newTdModel);
-                        newTr5.append(newTd5);
-                        newTr5.append(newTdBrand);
-                        newTr6.append(newTd6);
-                        newTr6.append(newTdHsCode);
-                        newTr6.append(newTdHsCode2);
-                        newTable.append(newTr);
-                        newTable.append(newTr2);
-                        newTable.append(newTr3);
-                        newTable.append(newTr4);
-                        newTable.append(newTr5);
-                        newTable.append(newTr6);
-                        newRowTd1.append(img);
-                        newRowTd.append(newTable);
-                        newTr1.append(newRowTd1);
-                        newTr1.append(newRowTd);
+    //     //                 newTdHsCode2.append(inputHsCode);
+    //     //                 newTr.append(newTd);
+    //     //                 newTr2.append(newTd2);
+    //     //                 newTr2.append(newTdChineseName);
+    //     //                 newTr3.append(newTd3);
+    //     //                 newTr3.append(newTdEnglishName);
+    //     //                 newTr4.append(newTd4);
+    //     //                 newTr4.append(newTdModel);
+    //     //                 newTr5.append(newTd5);
+    //     //                 newTr5.append(newTdBrand);
+    //     //                 newTr6.append(newTd6);
+    //     //                 newTr6.append(newTdHsCode);
+    //     //                 newTr6.append(newTdHsCode2);
+    //     //                 newTable.append(newTr);
+    //     //                 newTable.append(newTr2);
+    //     //                 newTable.append(newTr3);
+    //     //                 newTable.append(newTr4);
+    //     //                 newTable.append(newTr5);
+    //     //                 newTable.append(newTr6);
+    //     //                 newRowTd1.append(img);
+    //     //                 newRowTd.append(newTable);
+    //     //                 newTr1.append(newRowTd1);
+    //     //                 newTr1.append(newRowTd);
 
  
-                        var newTable2 = $('<table>')
-                        var newTrTable2 = $('<tr>')
-                        var newTdLast = $('<td colspan="3" style="border: 1px solid #d7d7d7; color: white; background-color: black; text-align: center;">');
-                            newTdLast.html('Size(CM)<br>每件尺寸');
-                        var newTd2Last = $('<td  colspan="3" style="border: 1px solid #d7d7d7; color: white; background-color: black; text-align: center;">');
-                            newTd2Last.html('Package Size(CM) <br>每个包装的尺寸');
-                        var newTd3Last = $('<td  colspan="1"rowspan="2" style="border: 1px solid #d7d7d7;color: white; background-color: black; text-align: center; ">');
-                            newTd3Last.html('Quantity <br>数量');
-                        var newTd4Last = $('<td  colspan="1"rowspan="2" style="border: 1px solid #d7d7d7;color: white; background-color: black; text-align: center; ">');
-                            newTd4Last.html('Nett <br> Weight <br>(KG) <br>净重 ');
-                        var newTd5Last = $('<td  colspan="1"rowspan="2" style="border: 1px solid #d7d7d7;color: white; background-color: black; text-align: center; ">');
-                            newTd5Last.html('Gross Weight <br>(KG) <br>毛重');
-                        var newTd6Last = $('<td  colspan="1"rowspan="2" style="border: 1px solid #d7d7d7;color: white; background-color: black; text-align: center; ">');
-                            newTd6Last.html('CBM<br>Volume <br>(M3) <br>体积');
-                        var newTd7Last = $('<td colspan="1"rowspan="2" style="border: 1px solid #d7d7d7;color: white; background-color: black; text-align: center; ">');
-                            newTd7Last.html('Unit Price Without<br> Tax <br>不含税单价 ');
-                        var newTd8Last = $('<td  colspan="1"rowspan="2" style="border: 1px solid #d7d7d7;color: white; background-color: black; text-align: center; ">');
-                            newTd8Last.html('Unit Price USD');
-                        var newTd9Last = $('<td  colspan="1"rowspan="2" style="border: 1px solid #d7d7d7;color: white; background-color: black; text-align: center; ">');
-                            newTd9Last.html('Total Price Without Tax <br>不含税总价');
-                        var newTd10Last = $('<td  colspan="1"rowspan="2" style="border: 1px solid #d7d7d7;color: white; background-color: black; text-align: center; ">');
-                            newTd10Last.html('Total Price <br>USD');
-                        var newTd11Last = $('<td  colspan="1"rowspan="2" style="border: 1px solid #d7d7d7;color: white; background-color: black; text-align: center; ">');
-                            newTd11Last.html('Use<br>用途');
+    //     //                 var newTable2 = $('<table>')
+    //     //                 var newTrTable2 = $('<tr>')
+    //     //                 var newTdLast = $('<td colspan="3" style="border: 1px solid #d7d7d7; color: white; background-color: black; text-align: center;">');
+    //     //                     newTdLast.html('Size(CM)<br>每件尺寸');
+    //     //                 var newTd2Last = $('<td  colspan="3" style="border: 1px solid #d7d7d7; color: white; background-color: black; text-align: center;">');
+    //     //                     newTd2Last.html('Package Size(CM) <br>每个包装的尺寸');
+    //     //                 var newTd3Last = $('<td  colspan="1"rowspan="2" style="border: 1px solid #d7d7d7;color: white; background-color: black; text-align: center; ">');
+    //     //                     newTd3Last.html('Quantity <br>数量');
+    //     //                 var newTd4Last = $('<td  colspan="1"rowspan="2" style="border: 1px solid #d7d7d7;color: white; background-color: black; text-align: center; ">');
+    //     //                     newTd4Last.html('Nett <br> Weight <br>(KG) <br>净重 ');
+    //     //                 var newTd5Last = $('<td  colspan="1"rowspan="2" style="border: 1px solid #d7d7d7;color: white; background-color: black; text-align: center; ">');
+    //     //                     newTd5Last.html('Gross Weight <br>(KG) <br>毛重');
+    //     //                 var newTd6Last = $('<td  colspan="1"rowspan="2" style="border: 1px solid #d7d7d7;color: white; background-color: black; text-align: center; ">');
+    //     //                     newTd6Last.html('CBM<br>Volume <br>(M3) <br>体积');
+    //     //                 var newTd7Last = $('<td colspan="1"rowspan="2" style="border: 1px solid #d7d7d7;color: white; background-color: black; text-align: center; ">');
+    //     //                     newTd7Last.html('Unit Price Without<br> Tax <br>不含税单价 ');
+    //     //                 var newTd8Last = $('<td  colspan="1"rowspan="2" style="border: 1px solid #d7d7d7;color: white; background-color: black; text-align: center; ">');
+    //     //                     newTd8Last.html('Unit Price USD');
+    //     //                 var newTd9Last = $('<td  colspan="1"rowspan="2" style="border: 1px solid #d7d7d7;color: white; background-color: black; text-align: center; ">');
+    //     //                     newTd9Last.html('Total Price Without Tax <br>不含税总价');
+    //     //                 var newTd10Last = $('<td  colspan="1"rowspan="2" style="border: 1px solid #d7d7d7;color: white; background-color: black; text-align: center; ">');
+    //     //                     newTd10Last.html('Total Price <br>USD');
+    //     //                 var newTd11Last = $('<td  colspan="1"rowspan="2" style="border: 1px solid #d7d7d7;color: white; background-color: black; text-align: center; ">');
+    //     //                     newTd11Last.html('Use<br>用途');
                         
-                        var newTr2Table2 = $('<tr>')
-                        var newTd2Tr2Table2 = $('<td style="border: 1px solid #d7d7d7; color: white; background-color: black; text-align: center;">');
-                        newTd2Tr2Table2.html('Length(CM) <br>长');
-                        var newTd3Tr2Table2 = $('<td style="border: 1px solid #d7d7d7; color: white; background-color: black; text-align: center;">');
-                        newTd3Tr2Table2.html('Width(CM) <br>长<');
-                        var newTd4Tr2Table2 = $('<td style="border: 1px solid #d7d7d7; color: white; background-color: black; text-align: center;">');
-                        newTd4Tr2Table2.html('Height(CM) <br>长');
-                        var newTd5Tr2Table2 = $('<td style="border: 1px solid #d7d7d7; color: white; background-color: black; text-align: center;">');
-                        newTd5Tr2Table2.html('Length(CM) <br>长');
-                        var newTd6Tr2Table2 = $('<td style="border: 1px solid #d7d7d7; color: white; background-color: black; text-align: center;">');
-                        newTd6Tr2Table2.html('Width(CM) <br>长');
-                        var newTd7Tr2Table2 = $('<td style="border: 1px solid #d7d7d7; color: white; background-color: black; text-align: center;">');
-                        newTd7Tr2Table2.html('Height(CM) <br>长');
+    //     //                 var newTr2Table2 = $('<tr>')
+    //     //                 var newTd2Tr2Table2 = $('<td style="border: 1px solid #d7d7d7; color: white; background-color: black; text-align: center;">');
+    //     //                 newTd2Tr2Table2.html('Length(CM) <br>长');
+    //     //                 var newTd3Tr2Table2 = $('<td style="border: 1px solid #d7d7d7; color: white; background-color: black; text-align: center;">');
+    //     //                 newTd3Tr2Table2.html('Width(CM) <br>长<');
+    //     //                 var newTd4Tr2Table2 = $('<td style="border: 1px solid #d7d7d7; color: white; background-color: black; text-align: center;">');
+    //     //                 newTd4Tr2Table2.html('Height(CM) <br>长');
+    //     //                 var newTd5Tr2Table2 = $('<td style="border: 1px solid #d7d7d7; color: white; background-color: black; text-align: center;">');
+    //     //                 newTd5Tr2Table2.html('Length(CM) <br>长');
+    //     //                 var newTd6Tr2Table2 = $('<td style="border: 1px solid #d7d7d7; color: white; background-color: black; text-align: center;">');
+    //     //                 newTd6Tr2Table2.html('Width(CM) <br>长');
+    //     //                 var newTd7Tr2Table2 = $('<td style="border: 1px solid #d7d7d7; color: white; background-color: black; text-align: center;">');
+    //     //                 newTd7Tr2Table2.html('Height(CM) <br>长');
 
-                        var newTr3Table2 = $('<tr>');
-                        var newTdTr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
+    //     //                 var newTr3Table2 = $('<tr>');
+    //     //                 var newTdTr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
 
-                        var inputElement = $('<input />').attr({
-                            'id': 'long_import'+index,          // index untuk urutan elemen input
-                            'name': 'long_' + (index),  
-                            'class': 'form-control long_import',    
-                            'placeholder': '',        
-                            'type': 'text',
-                            'value': order.product.long * 100,
-                        }).css({
-                            'border': '1px solid #696868',
-                            'color' : 'black',
-                            'padding' : '10px',
-                            'width': '100%'           
-                        });
-                        newTdTr3Table2.append(inputElement);
+    //     //                 var inputElement = $('<input />').attr({
+    //     //                     'id': 'long_import'+index,          // index untuk urutan elemen input
+    //     //                     'name': 'long_' + (index),  
+    //     //                     'class': 'form-control long_import',    
+    //     //                     'placeholder': '',        
+    //     //                     'type': 'text',
+    //     //                     'value': order.product.long * 100,
+    //     //                 }).css({
+    //     //                     'border': '1px solid #696868',
+    //     //                     'color' : 'black',
+    //     //                     'padding' : '10px',
+    //     //                     'width': '100%'           
+    //     //                 });
+    //     //                 newTdTr3Table2.append(inputElement);
                         
-                        var newTd2Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
-                        var inputElement2 = $('<input />').attr({
-                            'id': 'width_import'+index,     
-                            'name': 'width_'+ (index),      
-                            'class': 'form-control width_import',    
-                            'placeholder': '',   
-                            'type': 'text',
-                            'value': order.product.width * 100,
-                        }).css({
-                            'border': '1px solid #696868',
-                            'color' : 'black',
-                            'padding' : '10px',
-                            'width': '100%'   
-                        });
-                        newTd2Tr3Table2.append(inputElement2);
+    //     //                 var newTd2Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
+    //     //                 var inputElement2 = $('<input />').attr({
+    //     //                     'id': 'width_import'+index,     
+    //     //                     'name': 'width_'+ (index),      
+    //     //                     'class': 'form-control width_import',    
+    //     //                     'placeholder': '',   
+    //     //                     'type': 'text',
+    //     //                     'value': order.product.width * 100,
+    //     //                 }).css({
+    //     //                     'border': '1px solid #696868',
+    //     //                     'color' : 'black',
+    //     //                     'padding' : '10px',
+    //     //                     'width': '100%'   
+    //     //                 });
+    //     //                 newTd2Tr3Table2.append(inputElement2);
 
-                        var newTd3Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
-                        var inputElement3 = $('<input />').attr({
-                            'id': 'height_import'+index,         
-                            'name': 'height_'+ (index),      
-                            'class': 'form-control height_import',  
-                            'placeholder': '',        
-                            'type': 'text',
-                            'value' : order.product.height * 100,
-                        }).css({
-                            'border': '1px solid #696868',
-                            'color' : 'black',
-                            'padding' : '10px',
-                            'width': '100%'           
-                        });
-                        newTd3Tr3Table2.append(inputElement3);
+    //     //                 var newTd3Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
+    //     //                 var inputElement3 = $('<input />').attr({
+    //     //                     'id': 'height_import'+index,         
+    //     //                     'name': 'height_'+ (index),      
+    //     //                     'class': 'form-control height_import',  
+    //     //                     'placeholder': '',        
+    //     //                     'type': 'text',
+    //     //                     'value' : order.product.height * 100,
+    //     //                 }).css({
+    //     //                     'border': '1px solid #696868',
+    //     //                     'color' : 'black',
+    //     //                     'padding' : '10px',
+    //     //                     'width': '100%'           
+    //     //                 });
+    //     //                 newTd3Tr3Table2.append(inputElement3);
                         
-                        var newTd4Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
-                        var inputElement4 = $('<input />').attr({
-                            'id': 'long_p_import'+index,    
-                            'name': 'long_p_'+ (index),      
-                            'class': 'form-control long_p_import',  
-                            'placeholder': '',        
-                            'type': 'text',
-                            'value': order.product.long_p * 100,            
-                        }).css({
-                            'border': '1px solid #696868',
-                            'color' : 'black',
-                            'padding' : '10px',
-                            'width': '100%'           // Sesuaikan dengan kebutuhan Anda
-                        });
-                        newTd4Tr3Table2.append(inputElement4);
+    //     //                 var newTd4Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
+    //     //                 var inputElement4 = $('<input />').attr({
+    //     //                     'id': 'long_p_import'+index,    
+    //     //                     'name': 'long_p_'+ (index),      
+    //     //                     'class': 'form-control long_p_import',  
+    //     //                     'placeholder': '',        
+    //     //                     'type': 'text',
+    //     //                     'value': order.product.long_p * 100,            
+    //     //                 }).css({
+    //     //                     'border': '1px solid #696868',
+    //     //                     'color' : 'black',
+    //     //                     'padding' : '10px',
+    //     //                     'width': '100%'           // Sesuaikan dengan kebutuhan Anda
+    //     //                 });
+    //     //                 newTd4Tr3Table2.append(inputElement4);
                         
-                        var newTd5Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
-                        var inputElement5 = $('<input />').attr({
-                            'id': 'width_p_import'+index,   
-                            'name': 'width_p_'+ (index),      
-                            'class': 'form-control width_p_import',  
-                            'placeholder': '',        
-                            'type': 'text',
-                            'value': order.product.width_p * 100,            
-                        }).css({
-                            'border': '1px solid #696868',
-                            'color' : 'black',
-                            'padding' : '10px',
-                            'width': '100%'           // Sesuaikan dengan kebutuhan Anda
-                        });
-                        newTd5Tr3Table2.append(inputElement5);
+    //     //                 var newTd5Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
+    //     //                 var inputElement5 = $('<input />').attr({
+    //     //                     'id': 'width_p_import'+index,   
+    //     //                     'name': 'width_p_'+ (index),      
+    //     //                     'class': 'form-control width_p_import',  
+    //     //                     'placeholder': '',        
+    //     //                     'type': 'text',
+    //     //                     'value': order.product.width_p * 100,            
+    //     //                 }).css({
+    //     //                     'border': '1px solid #696868',
+    //     //                     'color' : 'black',
+    //     //                     'padding' : '10px',
+    //     //                     'width': '100%'           // Sesuaikan dengan kebutuhan Anda
+    //     //                 });
+    //     //                 newTd5Tr3Table2.append(inputElement5);
                         
-                        var newTd6Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
-                        var inputElement6 = $('<input />').attr({
-                            'id': 'height_p_import'+index,   
-                            'name': 'height_p_'+ (index),      
-                            'class': 'form-control height_p_import',  
-                            'placeholder': '',        
-                            'type': 'text',
-                            'value': order.product.height_p            
-                        }).css({
-                            'border': '1px solid #696868',
-                            'color' : 'black',
-                            'padding' : '10px',
-                            'width': '100%'           // Sesuaikan dengan kebutuhan Anda
-                        });
-                        newTd6Tr3Table2.append(inputElement6);
+    //     //                 var newTd6Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
+    //     //                 var inputElement6 = $('<input />').attr({
+    //     //                     'id': 'height_p_import'+index,   
+    //     //                     'name': 'height_p_'+ (index),      
+    //     //                     'class': 'form-control height_p_import',  
+    //     //                     'placeholder': '',        
+    //     //                     'type': 'text',
+    //     //                     'value': order.product.height_p            
+    //     //                 }).css({
+    //     //                     'border': '1px solid #696868',
+    //     //                     'color' : 'black',
+    //     //                     'padding' : '10px',
+    //     //                     'width': '100%'           // Sesuaikan dengan kebutuhan Anda
+    //     //                 });
+    //     //                 newTd6Tr3Table2.append(inputElement6);
 
-                        var newTd7Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
+    //     //                 var newTd7Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
                        
-                        var inputElement7 = $('<input />').attr({
-                            'id': 'qty_import'+index,          
-                            'name': 'qty_'+(index),
-                            'class': 'form-control qty_import',    
-                            'placeholder': '',        
-                            'type': 'text',
-                            'value': order.jml_permintaan 
-                        }).css({
-                            'border': '1px solid #696868',
-                            'color' : 'black',
-                            'padding' : '10px',
-                            'width': '100%'           // Sesuaikan dengan kebutuhan Anda
-                        });
-                        // .on('change', updateQuantity2); // Attach change event
-
-                        // Initialize qty_qty2 with current values
-                        // console.log('inputElement7',parseFloat(inputElement7.val()))
-                        // qty_qty2[index] = parseFloat(inputElement7.val()) || 0;
-                        // updateQuantity2();
-                        newTd7Tr3Table2.append(inputElement7);
+    //     //                 var inputElement7 = $('<input />').attr({
+    //     //                     'id': 'qty_import'+index,          
+    //     //                     'name': 'qty_'+(index),
+    //     //                     'class': 'form-control qty_import',    
+    //     //                     'placeholder': '',        
+    //     //                     'type': 'text',
+    //     //                     'value': order.jml_permintaan 
+    //     //                 }).css({
+    //     //                     'border': '1px solid #696868',
+    //     //                     'color' : 'black',
+    //     //                     'padding' : '10px',
+    //     //                     'width': '100%'           // Sesuaikan dengan kebutuhan Anda
+    //     //                 });
+                    
+    //     //                 newTd7Tr3Table2.append(inputElement7);
                        
                      
 
                        
                          
-                        if (response.hscodehistory.length > 0) {
+    //     //                 if (response.hscodehistory.length > 0) {
                             
-                            grossWeight = response.hscodehistory[index].gross_weight;
-                            nettWeight = response.hscodehistory[index].nett_weight;
-                        } else {
-                            grossWeight = 0;
-                            nettWeight =0;
+    //     //                     grossWeight = response.hscodehistory[index].gross_weight;
+    //     //                     nettWeight = response.hscodehistory[index].nett_weight;
+    //     //                 } else {
+    //     //                     grossWeight = 0;
+    //     //                     nettWeight =0;
                      
-                        }
+    //     //                 }
                      
-                        var newTd8Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
-                        var inputElement8 = $('<input />').attr({
-                            'id': 'nett_weight_import'+index,          
-                            'name': 'net_weight_'+(index),      
-                            'class': 'form-control nett_weight_import',  
-                            'placeholder': '',        
-                            'type': 'text',
-                            'value': nettWeight,
+    //     //                 var newTd8Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
+    //     //                 var inputElement8 = $('<input />').attr({
+    //     //                     'id': 'nett_weight_import'+index,          
+    //     //                     'name': 'net_weight_'+(index),      
+    //     //                     'class': 'form-control nett_weight_import',  
+    //     //                     'placeholder': '',        
+    //     //                     'type': 'text',
+    //     //                     'value': nettWeight,
                             
-                        }).css({
-                            'border': '1px solid #696868',
-                            'color' : 'black',
-                            'padding' : '10px',
-                            'width': '100%'           
-                        });
-                        newTd8Tr3Table2.append(inputElement8);
+    //     //                 }).css({
+    //     //                     'border': '1px solid #696868',
+    //     //                     'color' : 'black',
+    //     //                     'padding' : '10px',
+    //     //                     'width': '100%'           
+    //     //                 });
+    //     //                 newTd8Tr3Table2.append(inputElement8);
                         
-                        var newTd9Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
-                        var inputElement9 = $('<input />').attr({
-                            'id': 'gross_weight_import'+index,          
-                            'name': 'gross_weight_'+(index),      
-                            'class': 'form-control gross_weight_import',  
-                            'placeholder': '',        
-                            'type': 'text',
-                            'value':grossWeight
-                        }).css({
-                            'border': '1px solid #696868',
-                            'color' : 'black',
-                            'padding' : '10px',
-                            'width': '100%'           
-                        });
-                        newTd9Tr3Table2.append(inputElement9);
+    //     //                 var newTd9Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
+    //     //                 var inputElement9 = $('<input />').attr({
+    //     //                     'id': 'gross_weight_import'+index,          
+    //     //                     'name': 'gross_weight_'+(index),      
+    //     //                     'class': 'form-control gross_weight_import',  
+    //     //                     'placeholder': '',        
+    //     //                     'type': 'text',
+    //     //                     'value':grossWeight
+    //     //                 }).css({
+    //     //                     'border': '1px solid #696868',
+    //     //                     'color' : 'black',
+    //     //                     'padding' : '10px',
+    //     //                     'width': '100%'           
+    //     //                 });
+    //     //                 newTd9Tr3Table2.append(inputElement9);
                        
-                        var newTd10Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
-                        var inputElement10 = $('<input />').attr({
-                            'id': 'cbm_import'+index,       
-                            'name': 'cbm_'+(index),      
-                            'class': 'form-control cbm_import',  
-                            'placeholder': '',        
-                            'type': 'text',
-                            'value': 0 
-                        }).css({
-                            'border': '1px solid #696868',
-                            'color' : 'black',
-                            'padding' : '10px',
-                            'width': '100%'           // Sesuaikan dengan kebutuhan Anda
-                        });
-                        newTd10Tr3Table2.append(inputElement10);
-                        // Function to update CBM value based on input changes
+    //     //                 var newTd10Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
+    //     //                 var inputElement10 = $('<input />').attr({
+    //     //                     'id': 'cbm_import'+index,       
+    //     //                     'name': 'cbm_'+(index),      
+    //     //                     'class': 'form-control cbm_import',  
+    //     //                     'placeholder': '',        
+    //     //                     'type': 'text',
+    //     //                     'value': 0 
+    //     //                 }).css({
+    //     //                     'border': '1px solid #696868',
+    //     //                     'color' : 'black',
+    //     //                     'padding' : '10px',
+    //     //                     'width': '100%'           // Sesuaikan dengan kebutuhan Anda
+    //     //                 });
+    //     //                 newTd10Tr3Table2.append(inputElement10);
+    //     //                 // Function to update CBM value based on input changes
             
-                        function updateCBM() {
+    //     //                 function updateCBM() {
 
-                            var long_p = parseFloat(inputElement4.val()) || 0;
-                            var width_p = parseFloat(inputElement5.val()) || 0;
-                            var height_p = parseFloat(inputElement6.val()) || 0;
-                            var qty_value = parseFloat(inputElement7.val()) || 0;
-                            var cbmValue = ((long_p/100) * (width_p/100) * (height_p/100) * qty_value);
-                            cbmValue = cbmValue.toFixed(2);
+    //     //                     var long_p = parseFloat(inputElement4.val()) || 0;
+    //     //                     var width_p = parseFloat(inputElement5.val()) || 0;
+    //     //                     var height_p = parseFloat(inputElement6.val()) || 0;
+    //     //                     var qty_value = parseFloat(inputElement7.val()) || 0;
+    //     //                     var cbmValue = ((long_p/100) * (width_p/100) * (height_p/100) * qty_value);
+    //     //                     cbmValue = cbmValue.toFixed(2);
 
-                            inputElement10.val(cbmValue); // Inisialisasi nilai inputElement10 dengan cbmValue
+    //     //                     inputElement10.val(cbmValue); // Inisialisasi nilai inputElement10 dengan cbmValue
 
-                            var cbm2 = parseFloat(cbmValue); // Ambil nilai dari cbmValue
+    //     //                     var cbm2 = parseFloat(cbmValue); // Ambil nilai dari cbmValue
 
-                            cbm2Array[index] = cbm2;
-                            qty_qty2[index] =qty_value
-
-
+    //     //                     cbm2Array[index] = cbm2;
+    //     //                     qty_qty2[index] =qty_value
 
 
 
-                            calculateTotalCBM();
 
-                        }
 
-                            // Attach input event listeners to update CBM on input change
-                            inputElement4.on('blur', updateCBM);
-                            inputElement5.on('blur', updateCBM);
-                            inputElement6.on('blur', updateCBM);
+    //     //                     calculateTotalCBM();
+
+    //     //                 }
+
+    //     //                     // Attach input event listeners to update CBM on input change
+    //     //                     inputElement4.on('blur', updateCBM);
+    //     //                     inputElement5.on('blur', updateCBM);
+    //     //                     inputElement6.on('blur', updateCBM);
                             
 
-                            inputElement10.on('input', updateCBM);
+    //     //                     inputElement10.on('input', updateCBM);
 
                        
 
-                        var newTd11Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
-                        var inputElement11 = $('<input />').attr({
-                            'id': 'unit_price_without_tax_import'+index,          
-                            'name': 'unit_price_without_tax_'+(index),      
-                            'class': 'form-control unit_price_without_tax_import',  
-                            'placeholder': '',        
-                            'type': 'text',
-                            'value':0
-                        }).css({
-                            'border': '1px solid #696868',
-                            'color' : 'black',
-                            'padding' : '10px',
-                            'width': '100%'           
-                        });
-                        newTd11Tr3Table2.append(inputElement11);
+    //     //                 var newTd11Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
+    //     //                 var inputElement11 = $('<input />').attr({
+    //     //                     'id': 'unit_price_without_tax_import'+index,          
+    //     //                     'name': 'unit_price_without_tax_'+(index),      
+    //     //                     'class': 'form-control unit_price_without_tax_import',  
+    //     //                     'placeholder': '',        
+    //     //                     'type': 'text',
+    //     //                     'value':0
+    //     //                 }).css({
+    //     //                     'border': '1px solid #696868',
+    //     //                     'color' : 'black',
+    //     //                     'padding' : '10px',
+    //     //                     'width': '100%'           
+    //     //                 });
+    //     //                 newTd11Tr3Table2.append(inputElement11);
                         
-                        var newTd12Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
-                        var inputElement12 = $('<input />').attr({
-                            'id': 'unit_price_usd_import'+index,          
-                            'name': 'unit_price_usd_'+(index),      
-                            'class': 'form-control unit_price_usd_import',    
-                            'placeholder': '',        
-                            'type': 'text',
-                            'value':0,
-                            'disabled':true
-                        }).css({
-                            'border': '1px solid #696868',
-                            'color' : 'black',
-                            'padding' : '10px',
-                            'width': '100%'           
-                        });
-                        newTd12Tr3Table2.append(inputElement12);
-                        function updateUnitPriceUsd() {
+    //     //                 var newTd12Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
+    //     //                 var inputElement12 = $('<input />').attr({
+    //     //                     'id': 'unit_price_usd_import'+index,          
+    //     //                     'name': 'unit_price_usd_'+(index),      
+    //     //                     'class': 'form-control unit_price_usd_import',    
+    //     //                     'placeholder': '',        
+    //     //                     'type': 'text',
+    //     //                     'value':0,
+    //     //                     'disabled':true
+    //     //                 }).css({
+    //     //                     'border': '1px solid #696868',
+    //     //                     'color' : 'black',
+    //     //                     'padding' : '10px',
+    //     //                     'width': '100%'           
+    //     //                 });
+    //     //                 newTd12Tr3Table2.append(inputElement12);
+    //     //                 function updateUnitPriceUsd() {
                               
 
                                
-                              var unit_without_tax = parseFloat(inputElement11.val()) || 0;
-                              // console.log('masuk',unit_without_tax)
-                              var unitPriceUsd = (unit_without_tax/parseFloat(RmbToUsdTambah));
-                              unitPriceUsd= unitPriceUsd.toFixed(2);
-                              // unitPriceUsd = parseFloat(truncateToTwoDecimals(unitPriceUsd));
-                              inputElement12.val(unitPriceUsd);
-                      }
-                        inputElement11.on('input',updateTotalPriceUsd);
-                        inputElement11.on('input',updateUnitPriceUsd);
-                        inputElement7.on('input', function() {
-                            updateCBM();
-                            updateTotalPriceUsd();
-                            updateTotPriceWithoutTax();
-                            updateQuantity();
-                        })
-                        var newTd13Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
-                        var inputElement13 = $('<input />').attr({
-                            'id': 'total_price_without_tax_import'+index,          // ID untuk elemen input
-                            'name': 'total_price_without_tax_'+(index),      // Nama untuk elemen input
-                            'class': 'form-control tot_price_without_tax_import',    // Kelas CSS untuk elemen input
-                            'placeholder': '',        // Placeholder untuk elemen input
-                            'type': 'text',
-                            'value':0,
-                        }).css({
-                            'border': '1px solid #696868',
-                            'color' : 'black',
-                            'padding' : '10px',
-                            'width': '100%'           // Sesuaikan dengan kebutuhan Anda
-                        });
-                        newTd13Tr3Table2.append(inputElement13);
+    //     //                       var unit_without_tax = parseFloat(inputElement11.val()) || 0;
+    //     //                       // console.log('masuk',unit_without_tax)
+    //     //                       var unitPriceUsd = (unit_without_tax/parseFloat(RmbToUsdTambah));
+    //     //                       unitPriceUsd= unitPriceUsd.toFixed(2);
+    //     //                       // unitPriceUsd = parseFloat(truncateToTwoDecimals(unitPriceUsd));
+    //     //                       inputElement12.val(unitPriceUsd);
+    //     //               }
+    //     //                 inputElement11.on('input',updateTotalPriceUsd);
+    //     //                 inputElement11.on('input',updateUnitPriceUsd);
+    //     //                 inputElement7.on('input', function() {
+    //     //                     updateCBM();
+    //     //                     updateTotalPriceUsd();
+    //     //                     updateTotPriceWithoutTax();
+    //     //                     updateQuantity();
+    //     //                 })
+    //     //                 var newTd13Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
+    //     //                 var inputElement13 = $('<input />').attr({
+    //     //                     'id': 'total_price_without_tax_import'+index,          // ID untuk elemen input
+    //     //                     'name': 'total_price_without_tax_'+(index),      // Nama untuk elemen input
+    //     //                     'class': 'form-control tot_price_without_tax_import',    // Kelas CSS untuk elemen input
+    //     //                     'placeholder': '',        // Placeholder untuk elemen input
+    //     //                     'type': 'text',
+    //     //                     'value':0,
+    //     //                 }).css({
+    //     //                     'border': '1px solid #696868',
+    //     //                     'color' : 'black',
+    //     //                     'padding' : '10px',
+    //     //                     'width': '100%'           // Sesuaikan dengan kebutuhan Anda
+    //     //                 });
+    //     //                 newTd13Tr3Table2.append(inputElement13);
                                  
-                        function updateTotPriceWithoutTax() {
+    //     //                 function updateTotPriceWithoutTax() {
                             
-                            var unit_price_without_tax = parseFloat(inputElement11.val()) || 0;
-                            var quantity = parseFloat(inputElement7.val()) || 0;
+    //     //                     var unit_price_without_tax = parseFloat(inputElement11.val()) || 0;
+    //     //                     var quantity = parseFloat(inputElement7.val()) || 0;
                          
-                            var without_tax_tot = quantity*unit_price_without_tax;
-                            without_tax_arr[index] =parseFloat(without_tax_tot)
+    //     //                     var without_tax_tot = quantity*unit_price_without_tax;
+    //     //                     without_tax_arr[index] =parseFloat(without_tax_tot)
                           
-                             calculatewithouttaxarr();
-                            inputElement13.val(without_tax_tot); 
-                        }
+    //     //                      calculatewithouttaxarr();
+    //     //                     inputElement13.val(without_tax_tot); 
+    //     //                 }
 
                         
-                        inputElement11.on('input', updateTotPriceWithoutTax);
+    //     //                 inputElement11.on('input', updateTotPriceWithoutTax);
 
-                        var newTd14Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
-                        var inputElement14 = $('<input />').attr({
-                            'id': 'total_price_usd_import'+index,  
-                            'name': 'total_price_usd_'+(index),      
-                            'class': 'form-control total_price_usd_import',  
-                            'placeholder': '',        
-                            'type': 'text',
-                            'value': 0            
-                        }).css({
-                            'border': '1px solid #696868',
-                            'color' : 'black',
-                            'padding' : '10px',
-                            'width': '100%'           // Sesuaikan dengan kebutuhan Anda
-                        });
-                        newTd14Tr3Table2.append(inputElement14);
+    //     //                 var newTd14Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
+    //     //                 var inputElement14 = $('<input />').attr({
+    //     //                     'id': 'total_price_usd_import'+index,  
+    //     //                     'name': 'total_price_usd_'+(index),      
+    //     //                     'class': 'form-control total_price_usd_import',  
+    //     //                     'placeholder': '',        
+    //     //                     'type': 'text',
+    //     //                     'value': 0            
+    //     //                 }).css({
+    //     //                     'border': '1px solid #696868',
+    //     //                     'color' : 'black',
+    //     //                     'padding' : '10px',
+    //     //                     'width': '100%'           // Sesuaikan dengan kebutuhan Anda
+    //     //                 });
+    //     //                 newTd14Tr3Table2.append(inputElement14);
                         
-                        function updateTotalPriceUsd() {
+    //     //                 function updateTotalPriceUsd() {
                               
 
-                              // var qty_value = parseFloat(inputElement7.val()) || 0;
-                              var qty_value = parseFloat(inputElement7.val()) || 0;
-                              var unit_without_tax = parseFloat(inputElement11.val()) || 0;
+    //     //                       // var qty_value = parseFloat(inputElement7.val()) || 0;
+    //     //                       var qty_value = parseFloat(inputElement7.val()) || 0;
+    //     //                       var unit_without_tax = parseFloat(inputElement11.val()) || 0;
                               
-                              var totalPriceUsd = (parseFloat(unit_without_tax)/parseFloat(RmbToUsdTambah))*parseFloat(qty_value);
-                              totalPriceUsd = totalPriceUsd.toFixed(2);
-                              tot_price_without_tax_usd_import[index] = parseFloat(totalPriceUsd)
-                               calculatewithouttaxusdarr();
-                              inputElement14.val(totalPriceUsd);
-                        }
+    //     //                       var totalPriceUsd = (parseFloat(unit_without_tax)/parseFloat(RmbToUsdTambah))*parseFloat(qty_value);
+    //     //                       totalPriceUsd = totalPriceUsd.toFixed(2);
+    //     //                       tot_price_without_tax_usd_import[index] = parseFloat(totalPriceUsd)
+    //     //                        calculatewithouttaxusdarr();
+    //     //                       inputElement14.val(totalPriceUsd);
+    //     //                 }
                         
-                        var newTd15Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
-                        var inputElement15 = $('<input />').attr({
-                            'id': 'use_name_import'+index,          
-                            'name': 'use_name_'+(index),
-                            'class': 'form-control use_name_import',    
-                            'placeholder': '',        
-                            'type': 'text'            
-                        }).css({
-                            'border': '1px solid #696868',
-                            'color' : 'black',
-                            'padding' : '10px',
-                            'width': '100%'           // Sesuaikan dengan kebutuhan Anda
-                        });
+    //     //                 var newTd15Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
+    //     //                 var inputElement15 = $('<input />').attr({
+    //     //                     'id': 'use_name_import'+index,          
+    //     //                     'name': 'use_name_'+(index),
+    //     //                     'class': 'form-control use_name_import',    
+    //     //                     'placeholder': '',        
+    //     //                     'type': 'text'            
+    //     //                 }).css({
+    //     //                     'border': '1px solid #696868',
+    //     //                     'color' : 'black',
+    //     //                     'padding' : '10px',
+    //     //                     'width': '100%'           // Sesuaikan dengan kebutuhan Anda
+    //     //                 });
 
-                        var deleteLink = $('<a />').attr({
+    //     //                 var deleteLink = $('<a />').attr({
                             
-                            'class': 'delete-input'
-                        }).css({
-                            'color': 'red',
-                            'display': 'inline-block',
-                            'vertical-align': 'top',
-                            'padding': '10px'
-                        }).html('X');
-                        newTd15Tr3Table2.append(inputElement15);
-                        newTd15Tr3Table2.append(deleteLink);
+    //     //                     'class': 'delete-input'
+    //     //                 }).css({
+    //     //                     'color': 'red',
+    //     //                     'display': 'inline-block',
+    //     //                     'vertical-align': 'top',
+    //     //                     'padding': '10px'
+    //     //                 }).html('X');
+    //     //                 newTd15Tr3Table2.append(inputElement15);
+    //     //                 newTd15Tr3Table2.append(deleteLink);
                         
-                        // Menggabungkan sel baru ke dalam baris baru
-                        newTrTable2.append(newTdLast);
-                        newTrTable2.append(newTd2Last);
-                        newTrTable2.append(newTd3Last);
-                        newTrTable2.append(newTd4Last);
-                        newTrTable2.append(newTd5Last);
-                        newTrTable2.append(newTd6Last);
-                        newTrTable2.append(newTd7Last);
-                        newTrTable2.append(newTd8Last);
-                        newTrTable2.append(newTd9Last);
-                        newTrTable2.append(newTd10Last);
-                        newTrTable2.append(newTd11Last);
+    //     //                 // Menggabungkan sel baru ke dalam baris baru
+    //     //                 newTrTable2.append(newTdLast);
+    //     //                 newTrTable2.append(newTd2Last);
+    //     //                 newTrTable2.append(newTd3Last);
+    //     //                 newTrTable2.append(newTd4Last);
+    //     //                 newTrTable2.append(newTd5Last);
+    //     //                 newTrTable2.append(newTd6Last);
+    //     //                 newTrTable2.append(newTd7Last);
+    //     //                 newTrTable2.append(newTd8Last);
+    //     //                 newTrTable2.append(newTd9Last);
+    //     //                 newTrTable2.append(newTd10Last);
+    //     //                 newTrTable2.append(newTd11Last);
 
-                        newTr2Table2.append(newTd2Tr2Table2)
-                        newTr2Table2.append(newTd3Tr2Table2)
-                        newTr2Table2.append(newTd4Tr2Table2)
-                        newTr2Table2.append(newTd5Tr2Table2)
-                        newTr2Table2.append(newTd6Tr2Table2)
-                        newTr2Table2.append(newTd7Tr2Table2)
+    //     //                 newTr2Table2.append(newTd2Tr2Table2)
+    //     //                 newTr2Table2.append(newTd3Tr2Table2)
+    //     //                 newTr2Table2.append(newTd4Tr2Table2)
+    //     //                 newTr2Table2.append(newTd5Tr2Table2)
+    //     //                 newTr2Table2.append(newTd6Tr2Table2)
+    //     //                 newTr2Table2.append(newTd7Tr2Table2)
                         
-                        newTr3Table2.append(newTdTr3Table2)
-                        newTr3Table2.append(newTd2Tr3Table2)
-                        newTr3Table2.append(newTd3Tr3Table2)
-                        newTr3Table2.append(newTd4Tr3Table2)
-                        newTr3Table2.append(newTd5Tr3Table2)
-                        newTr3Table2.append(newTd6Tr3Table2)
-                        newTr3Table2.append(newTd7Tr3Table2)
-                        newTr3Table2.append(newTd8Tr3Table2)
-                        newTr3Table2.append(newTd9Tr3Table2)
-                        newTr3Table2.append(newTd10Tr3Table2)
-                        newTr3Table2.append(newTd11Tr3Table2)
-                        newTr3Table2.append(newTd12Tr3Table2)
-                        newTr3Table2.append(newTd13Tr3Table2)
-                        newTr3Table2.append(newTd14Tr3Table2)
-                        newTr3Table2.append(newTd15Tr3Table2)
+    //     //                 newTr3Table2.append(newTdTr3Table2)
+    //     //                 newTr3Table2.append(newTd2Tr3Table2)
+    //     //                 newTr3Table2.append(newTd3Tr3Table2)
+    //     //                 newTr3Table2.append(newTd4Tr3Table2)
+    //     //                 newTr3Table2.append(newTd5Tr3Table2)
+    //     //                 newTr3Table2.append(newTd6Tr3Table2)
+    //     //                 newTr3Table2.append(newTd7Tr3Table2)
+    //     //                 newTr3Table2.append(newTd8Tr3Table2)
+    //     //                 newTr3Table2.append(newTd9Tr3Table2)
+    //     //                 newTr3Table2.append(newTd10Tr3Table2)
+    //     //                 newTr3Table2.append(newTd11Tr3Table2)
+    //     //                 newTr3Table2.append(newTd12Tr3Table2)
+    //     //                 newTr3Table2.append(newTd13Tr3Table2)
+    //     //                 newTr3Table2.append(newTd14Tr3Table2)
+    //     //                 newTr3Table2.append(newTd15Tr3Table2)
                         
-                        newTable2.append(newTrTable2);
-                        newTable2.append(newTr2Table2);
-                        newTable2.append(newTr3Table2);
+    //     //                 newTable2.append(newTrTable2);
+    //     //                 newTable2.append(newTr2Table2);
+    //     //                 newTable2.append(newTr3Table2);
                     
-                        newTr1.append(newTable2);
+    //     //                 newTr1.append(newTable2);
                         
                         
-                        newTable1.append(inputDetailElement)
-                        newTable1.append(input_barangElement)
-                        newTable1.append(newTr1)
+    //     //                 newTable1.append(inputDetailElement)
+    //     //                 newTable1.append(input_barangElement)
+    //     //                 newTable1.append(newTr1)
                     
                         
             
-                        // Buat elemen <div> dengan atribut, kelas, dan gaya yang sesuai
-                        var newDivSaveItem = $('<div></div>', {
-                            class: 'form-group',
-                            css: {
-                                display: 'flex',
-                                paddingTop: '30px',
-                                textAlign: 'end',
-                                marginLeft:'1390px'
-                            }
-                        });
+    //     //                 // Buat elemen <div> dengan atribut, kelas, dan gaya yang sesuai
+    //     //                 var newDivSaveItem = $('<div></div>', {
+    //     //                     class: 'form-group',
+    //     //                     css: {
+    //     //                         display: 'flex',
+    //     //                         paddingTop: '30px',
+    //     //                         textAlign: 'end',
+    //     //                         marginLeft:'1390px'
+    //     //                     }
+    //     //                 });
 
-                        // Buat elemen <button> dengan atribut, kelas, dan gaya yang sesuai
-                        var newButtonSaveItem = $('<button></button>', {
-                            type: 'button',
-                            id: 'submitButtonImportBarangComercialInvoice_'+index, // Gunakan variabel ascendingIndex sesuai kebutuhan Anda
+    //     //                 // Buat elemen <button> dengan atribut, kelas, dan gaya yang sesuai
+    //     //                 var newButtonSaveItem = $('<button></button>', {
+    //     //                     type: 'button',
+    //     //                     id: 'submitButtonImportBarangComercialInvoice_'+index, // Gunakan variabel ascendingIndex sesuai kebutuhan Anda
 
-                            class: 'btn btn-primary',
+    //     //                     class: 'btn btn-primary',
                             
-                            text: 'Simpan Item',
-                            css: {
-                                marginLeft: 'auto'
-                            }
-                        });
+    //     //                     text: 'Simpan Item',
+    //     //                     css: {
+    //     //                         marginLeft: 'auto'
+    //     //                     }
+    //     //                 });
                         
-                        var currentIndex = index;
-                         newButtonSaveItem.on('click', function() {
+    //     //                 var currentIndex = index;
+    //     //                  newButtonSaveItem.on('click', function() {
                                 
-                                var formData ={
+    //     //                         var formData ={
                                     
-                                    longValue : $('#long_import' + currentIndex).val(),
-                                    widthValue : $('#width_import' + currentIndex).val(),
-                                    heightValue : $('#height_import' + currentIndex).val(),
-                                    long_pValue : $('#long_p_import' + currentIndex).val(),
-                                    width_pValue : $('#width_p_import' + currentIndex).val(),
-                                    height_pValue : $('#height_p_import' + currentIndex).val(),
-                                    qty_Value : $('#qty_import' + currentIndex).val(),
+    //     //                             longValue : $('#long_import' + currentIndex).val(),
+    //     //                             widthValue : $('#width_import' + currentIndex).val(),
+    //     //                             heightValue : $('#height_import' + currentIndex).val(),
+    //     //                             long_pValue : $('#long_p_import' + currentIndex).val(),
+    //     //                             width_pValue : $('#width_p_import' + currentIndex).val(),
+    //     //                             height_pValue : $('#height_p_import' + currentIndex).val(),
+    //     //                             qty_Value : $('#qty_import' + currentIndex).val(),
                                     
-                                };
-                                console.log('formData',formData);
-                                $.ajax({
-                                    url: '', // Ganti dengan URL tujuan Anda
-                                    type: 'GET',
-                                    data: formData,
+    //     //                         };
+    //     //                         console.log('formData',formData);
+    //     //                         $.ajax({
+    //     //                             url: '', // Ganti dengan URL tujuan Anda
+    //     //                             type: 'GET',
+    //     //                             data: formData,
                                     
-                                    success: function(response) {
-                                        alert('Data berhasil disimpan!');
-                                    },
-                                    error: function(xhr, status, error) {
-                                        alert('Terjadi kesalahan: ' + error);
-                                    }
-                                });
+    //     //                             success: function(response) {
+    //     //                                 alert('Data berhasil disimpan!');
+    //     //                             },
+    //     //                             error: function(xhr, status, error) {
+    //     //                                 alert('Terjadi kesalahan: ' + error);
+    //     //                             }
+    //     //                         });
                                   
-                            });
+    //     //                     });
                         
-                        var newTrLast2 = $('<tr>');
-                        var newTdLast2 = $('<td colspan="12"><br></td>'); // Menambahkan colspan dan <td> yang benar
-                        newTrLast2.append(newTdLast2);
-                        contentContainer.append(newTable1); // Menggunakan newTrLast bukan newTr1
+    //     //                 var newTrLast2 = $('<tr>');
+    //     //                 var newTdLast2 = $('<td colspan="12"><br></td>'); // Menambahkan colspan dan <td> yang benar
+    //     //                 newTrLast2.append(newTdLast2);
+    //     //                 contentContainer.append(newTable1); // Menggunakan newTrLast bukan newTr1
 
 
-                        contentContainer.append(newTable2, newTrLast2)
+    //     //                 contentContainer.append(newTable2, newTrLast2)
                         
-                            var selectElement = $('.hscode-import'); // Pilih elemen select
-                            const choices = new Choices(selectElement[0], {
-                                searchEnabled: true,
-                                itemSelectText: '',
-                            });
+    //     //                     var selectElement = $('.hscode-import'); // Pilih elemen select
+    //     //                     const choices = new Choices(selectElement[0], {
+    //     //                         searchEnabled: true,
+    //     //                         itemSelectText: '',
+    //     //                     });
 
-                            selectElement.on('change', function(event) {
-                                const selectedValue = event.target.value;
-                                const inputElement = document.getElementById('hscode-import-edit'); // Ganti dengan ID yang sesuai
-                                if (inputElement) {
-                                    inputElement.value = selectedValue;
-                                }
-                            });
+    //     //                     selectElement.on('change', function(event) {
+    //     //                         const selectedValue = event.target.value;
+    //     //                         const inputElement = document.getElementById('hscode-import-edit'); // Ganti dengan ID yang sesuai
+    //     //                         if (inputElement) {
+    //     //                             inputElement.value = selectedValue;
+    //     //                         }
+    //     //                     });
                         
-                    });
+    //     //             });
                     
-                        var newDivTable3 = $('<div>').css({
-                            'padding-left': '1000px'
-                        });
-                        var newTable3 = $('<table>')
-                        var newTr1Table3 = $('<tr>')
-                        var newTd1Tr1Table3 = $('<td>').css({
-                            'border': '1px solid #696868',
-                            'color': 'black',
-                            'width': '80%'
-                        }).text('freight cost');
+    //     //                 var newDivTable3 = $('<div>').css({
+    //     //                     'padding-left': '1000px'
+    //     //                 });
+    //     //                 var newTable3 = $('<table>')
+    //     //                 var newTr1Table3 = $('<tr>')
+    //     //                 var newTd1Tr1Table3 = $('<td>').css({
+    //     //                     'border': '1px solid #696868',
+    //     //                     'color': 'black',
+    //     //                     'width': '80%'
+    //     //                 }).text('freight cost');
                      
                      
 
-                        var newTd2Tr1Table3 = $('<td>').css({
-                            'border': '1px solid #696868',
-                            'color': 'black',
+    //     //                 var newTd2Tr1Table3 = $('<td>').css({
+    //     //                     'border': '1px solid #696868',
+    //     //                     'color': 'black',
                             
-                        })
+    //     //                 })
                        
-                        var inputTd2Tr1Table3 = $('<input>').attr({
-                            type: 'text',
-                            id: 'freight_cost_id_tab_tambah',
-                            name: 'freight_cost_tambah', 
-                            value: 0,
-                            class: 'form-control custom-border', 
-                        });
-                        newTd2Tr1Table3.append(inputTd2Tr1Table3)
-                        newTr1Table3.append(newTd1Tr1Table3,newTd2Tr1Table3)
-                        inputTd2Tr1Table3.on('input', function() {
+    //     //                 var inputTd2Tr1Table3 = $('<input>').attr({
+    //     //                     type: 'text',
+    //     //                     id: 'freight_cost_id_tab_tambah',
+    //     //                     name: 'freight_cost_tambah', 
+    //     //                     value: 0,
+    //     //                     class: 'form-control custom-border', 
+    //     //                 });
+    //     //                 newTd2Tr1Table3.append(inputTd2Tr1Table3)
+    //     //                 newTr1Table3.append(newTd1Tr1Table3,newTd2Tr1Table3)
+    //     //                 inputTd2Tr1Table3.on('input', function() {
                             
-                            calculatewithouttaxarr();
-                            calculatewithouttaxusdarr();
-                        })
-                        var newTr2Table3 = $('<tr>')
-                        var newTd1Tr2Table3 = $('<td>').css({
-                            'border': '1px solid #696868',
-                            'color': 'black',
-                            'width': '75%'
-                        }).text('Insurance');
-                        var newTd2Tr2Table3 = $('<td>').css({
-                            'border': '1px solid #696868',
-                            'color': 'black',
+    //     //                     calculatewithouttaxarr();
+    //     //                     calculatewithouttaxusdarr();
+    //     //                 })
+    //     //                 var newTr2Table3 = $('<tr>')
+    //     //                 var newTd1Tr2Table3 = $('<td>').css({
+    //     //                     'border': '1px solid #696868',
+    //     //                     'color': 'black',
+    //     //                     'width': '75%'
+    //     //                 }).text('Insurance');
+    //     //                 var newTd2Tr2Table3 = $('<td>').css({
+    //     //                     'border': '1px solid #696868',
+    //     //                     'color': 'black',
                             
-                        })
+    //     //                 })
 
-                        var inputTd2Tr2Table3 = $('<input>').attr({
-                            type: 'text',
-                            id: 'insurance_edit_id_tab_tambah',
-                            name: 'insurance_tambah', 
-                            value: 0,
-                            class: 'form-control custom-border', 
-                        });
-                        inputTd2Tr2Table3.on('input', function() {
-                            calculatewithouttaxarr();
+    //     //                 var inputTd2Tr2Table3 = $('<input>').attr({
+    //     //                     type: 'text',
+    //     //                     id: 'insurance_edit_id_tab_tambah',
+    //     //                     name: 'insurance_tambah', 
+    //     //                     value: 0,
+    //     //                     class: 'form-control custom-border', 
+    //     //                 });
+    //     //                 inputTd2Tr2Table3.on('input', function() {
+    //     //                     calculatewithouttaxarr();
                             
-                            calculatewithouttaxusdarr();
-                        })
-                        newTd2Tr2Table3.append(inputTd2Tr2Table3)
-                        newTr2Table3.append(newTd1Tr2Table3,newTd2Tr2Table3)
-                        newTable3.append(newTr1Table3,newTr2Table3)
-                        newDivTable3.append(newTable3)
+    //     //                     calculatewithouttaxusdarr();
+    //     //                 })
+    //     //                 newTd2Tr2Table3.append(inputTd2Tr2Table3)
+    //     //                 newTr2Table3.append(newTd1Tr2Table3,newTd2Tr2Table3)
+    //     //                 newTable3.append(newTr1Table3,newTr2Table3)
+    //     //                 newDivTable3.append(newTable3)
                         
-                        var newDiv2Table4 = $('<div>').css({
+    //     //                 var newDiv2Table4 = $('<div>').css({
                             
-                            'padding-left': '1000px', 
-                            'padding-top': '30px',
-                        });
+    //     //                     'padding-left': '1000px', 
+    //     //                     'padding-top': '30px',
+    //     //                 });
                         
-                        var newTable4 = $('<table>').css({
-                            'width': '100%', 
-                        });
+    //     //                 var newTable4 = $('<table>').css({
+    //     //                     'width': '100%', 
+    //     //                 });
                         
-                        var newTr1Table4 = $('<tr>');
-                        var newTd1Tr1Table4 = $('<td>').attr('colspan', '2').css({
-                            'border': '1px solid #696868', 
-                            'color': 'black', 
+    //     //                 var newTr1Table4 = $('<tr>');
+    //     //                 var newTd1Tr1Table4 = $('<td>').attr('colspan', '2').css({
+    //     //                     'border': '1px solid #696868', 
+    //     //                     'color': 'black', 
                             
-                            'text-align': 'center',
-                        })
+    //     //                     'text-align': 'center',
+    //     //                 })
                         
-                        var h5Tr1Table4 = $('<h5>').text('Total');
+    //     //                 var h5Tr1Table4 = $('<h5>').text('Total');
                         
 
-                        var newTr2Table4 = $('<tr>');
-                        var newTd1Tr2Table4 = $('<td>').css({
-                            'border': '1px solid #696868',
-                            'color': 'black',
-                            'width': '730px',
-                        }).text('Quantity');
-                        var newTd2Tr2Table4 = $('<td>').attr({
-                            'class': 'custom-td-tambah', // Menambahkan kelas 'my-class'
-                            'id': 'qty-td-tambah' // Menambahkan ID 'my-id'
-                        }).css({
-                            'border': '1px solid #696868',
-                            'color': 'black',
-                            'width': '20%',
-                            'padding-left': '20px'
-                        }).text('0');;
-                        // updateQuantity2();
-                        newTd1Tr1Table4.append(h5Tr1Table4)
-                        newTr1Table4.append(newTd1Tr1Table4)
-                        newTr2Table4.append(newTd1Tr2Table4,newTd2Tr2Table4)
+    //     //                 var newTr2Table4 = $('<tr>');
+    //     //                 var newTd1Tr2Table4 = $('<td>').css({
+    //     //                     'border': '1px solid #696868',
+    //     //                     'color': 'black',
+    //     //                     'width': '730px',
+    //     //                 }).text('Quantity');
+    //     //                 var newTd2Tr2Table4 = $('<td>').attr({
+    //     //                     'class': 'custom-td-tambah', // Menambahkan kelas 'my-class'
+    //     //                     'id': 'qty-td-tambah' // Menambahkan ID 'my-id'
+    //     //                 }).css({
+    //     //                     'border': '1px solid #696868',
+    //     //                     'color': 'black',
+    //     //                     'width': '20%',
+    //     //                     'padding-left': '20px'
+    //     //                 }).text('0');;
+    //     //                 // updateQuantity2();
+    //     //                 newTd1Tr1Table4.append(h5Tr1Table4)
+    //     //                 newTr1Table4.append(newTd1Tr1Table4)
+    //     //                 newTr2Table4.append(newTd1Tr2Table4,newTd2Tr2Table4)
                         
-                        var newTr3Table4 = $('<tr>');
-                        var newTd1Tr3Table4 = $('<td>').css({
-                            'border': '1px solid #696868', 
-                            'color':'black',
-                        }).text('CBM Volume (M3)');
+    //     //                 var newTr3Table4 = $('<tr>');
+    //     //                 var newTd1Tr3Table4 = $('<td>').css({
+    //     //                     'border': '1px solid #696868', 
+    //     //                     'color':'black',
+    //     //                 }).text('CBM Volume (M3)');
 
-                        var newTd2Tr3Table4 = $('<td>').attr({
-                            'class': 'custom-cbm-tambah',
-                            'id':'total_cbm_tambah'
-                        }).css({
-                            'border': '1px solid #696868', 
-                            'color': 'black',
-                            'padding-left': '20px'
-                        }).text('0');
-                        newTr3Table4.append(newTd1Tr3Table4,newTd2Tr3Table4)
+    //     //                 var newTd2Tr3Table4 = $('<td>').attr({
+    //     //                     'class': 'custom-cbm-tambah',
+    //     //                     'id':'total_cbm_tambah'
+    //     //                 }).css({
+    //     //                     'border': '1px solid #696868', 
+    //     //                     'color': 'black',
+    //     //                     'padding-left': '20px'
+    //     //                 }).text('0');
+    //     //                 newTr3Table4.append(newTd1Tr3Table4,newTd2Tr3Table4)
 
-                        var newTr4Table4 = $('<tr>');
-                        var newTd1Tr4Table4 = $('<td>').css({
-                            'border': '1px solid #696868', 
-                            'color': 'black',
-                        }).text('Total Price Without Tax');
+    //     //                 var newTr4Table4 = $('<tr>');
+    //     //                 var newTd1Tr4Table4 = $('<td>').css({
+    //     //                     'border': '1px solid #696868', 
+    //     //                     'color': 'black',
+    //     //                 }).text('Total Price Without Tax');
 
-                        var newTd2Tr4Table4 = $('<td>').attr({
-                            'id': 'custom-tot-price-without-tax-td-tambah',
-                        }).css({
-                            'border': '1px solid #696868', 
-                            'color': 'black',
-                            'padding-left': '20px'
-                        }).text('0');
-                        newTr4Table4.append(newTd1Tr4Table4,newTd2Tr4Table4)
+    //     //                 var newTd2Tr4Table4 = $('<td>').attr({
+    //     //                     'id': 'custom-tot-price-without-tax-td-tambah',
+    //     //                 }).css({
+    //     //                     'border': '1px solid #696868', 
+    //     //                     'color': 'black',
+    //     //                     'padding-left': '20px'
+    //     //                 }).text('0');
+    //     //                 newTr4Table4.append(newTd1Tr4Table4,newTd2Tr4Table4)
 
-                        var newTr5Table4 = $('<tr>');
-                        var newTd1Tr5Table4 = $('<td>').css({
-                            'border': '1px solid #696868',
-                            'color': 'black',
-                        }).text('Total Price Without Tax USD');
+    //     //                 var newTr5Table4 = $('<tr>');
+    //     //                 var newTd1Tr5Table4 = $('<td>').css({
+    //     //                     'border': '1px solid #696868',
+    //     //                     'color': 'black',
+    //     //                 }).text('Total Price Without Tax USD');
 
-                        var newTd2Tr5Table4 = $('<td>').attr({
-                            'id':'custom-tot-price-without-tax-usd-td-tambah'
-                        }).css({
-                            'border': '1px solid #696868', 
-                            'color': 'black',
-                            'padding-left': '20px'
-                        }).text('0');
-                        newTr5Table4.append(newTd1Tr5Table4,newTd2Tr5Table4)
-                        newDiv2Table4.append(newTr1Table4,newTr2Table4,newTr3Table4,newTr4Table4,newTr5Table4)
+    //     //                 var newTd2Tr5Table4 = $('<td>').attr({
+    //     //                     'id':'custom-tot-price-without-tax-usd-td-tambah'
+    //     //                 }).css({
+    //     //                     'border': '1px solid #696868', 
+    //     //                     'color': 'black',
+    //     //                     'padding-left': '20px'
+    //     //                 }).text('0');
+    //     //                 newTr5Table4.append(newTd1Tr5Table4,newTd2Tr5Table4)
+    //     //                 newDiv2Table4.append(newTr1Table4,newTr2Table4,newTr3Table4,newTr4Table4,newTr5Table4)
                        
-                       contentContainer2.append(newDivTable3,newDiv2Table4)
-                       function calculatewithouttaxarr(){
-                            var freight_cost_tambah = parseFloat(inputTd2Tr1Table3.val())||0;
-                            var insurance_tambah = parseFloat(inputTd2Tr2Table3.val()) || 0;
-                            var TotWithout_arr_tax = tot_without_tax_arr.reduce(function(acc, curr) {
-                                        return acc + curr;
-                                    }, 0);
+    //     //                contentContainer2.append(newDivTable3,newDiv2Table4)
+    //     //                function calculatewithouttaxarr(){
+    //     //                     var freight_cost_tambah = parseFloat(inputTd2Tr1Table3.val())||0;
+    //     //                     var insurance_tambah = parseFloat(inputTd2Tr2Table3.val()) || 0;
+    //     //                     var TotWithout_arr_tax = tot_without_tax_arr.reduce(function(acc, curr) {
+    //     //                                 return acc + curr;
+    //     //                             }, 0);
                         
-                            var without_arr_tax = without_tax_arr.reduce(function(acc, curr) {
-                                        return acc + curr;
-                                    }, 0);
+    //     //                     var without_arr_tax = without_tax_arr.reduce(function(acc, curr) {
+    //     //                                 return acc + curr;
+    //     //                             }, 0);
                         
-                            var total_akhir = without_arr_tax+TotWithout_arr_tax+freight_cost_tambah+insurance_tambah
-                            var element = document.getElementById('custom-tot-price-without-tax-td-tambah');
-                            element.textContent = total_akhir
-                        }
-                        function calculatewithouttaxusdarr(){
-                            var freight_cost_tambah = parseFloat(inputTd2Tr1Table3.val())||0;
-                            var insurance_tambah = parseFloat(inputTd2Tr2Table3.val()) || 0;
+    //     //                     var total_akhir = without_arr_tax+TotWithout_arr_tax+freight_cost_tambah+insurance_tambah
+    //     //                     var element = document.getElementById('custom-tot-price-without-tax-td-tambah');
+    //     //                     element.textContent = total_akhir
+    //     //                 }
+    //     //                 function calculatewithouttaxusdarr(){
+    //     //                     var freight_cost_tambah = parseFloat(inputTd2Tr1Table3.val())||0;
+    //     //                     var insurance_tambah = parseFloat(inputTd2Tr2Table3.val()) || 0;
                             
-                            var TotWithout_tot_price_without_tax_usd = tot_price_without_tax_usd.reduce(function(acc, curr) {
-                                                return acc + curr;
-                            }, 0);
-                            var without_tot_price_without_tax_usd_import =tot_price_without_tax_usd_import.reduce(function(acc, curr) {
-                                                return acc + curr;
-                            }, 0);
-                            var total_akhir_without_tax_usd = TotWithout_tot_price_without_tax_usd +without_tot_price_without_tax_usd_import+freight_cost_tambah+insurance_tambah
-                            var element = document.getElementById('custom-tot-price-without-tax-usd-td-tambah');
-                            element.textContent = total_akhir_without_tax_usd.toFixed(2)
-                        }
-                        // function updateQuantity2(){
+    //     //                     var TotWithout_tot_price_without_tax_usd = tot_price_without_tax_usd.reduce(function(acc, curr) {
+    //     //                                         return acc + curr;
+    //     //                     }, 0);
+    //     //                     var without_tot_price_without_tax_usd_import =tot_price_without_tax_usd_import.reduce(function(acc, curr) {
+    //     //                                         return acc + curr;
+    //     //                     }, 0);
+    //     //                     var total_akhir_without_tax_usd = TotWithout_tot_price_without_tax_usd +without_tot_price_without_tax_usd_import+freight_cost_tambah+insurance_tambah
+    //     //                     var element = document.getElementById('custom-tot-price-without-tax-usd-td-tambah');
+    //     //                     element.textContent = total_akhir_without_tax_usd.toFixed(2)
+    //     //                 }
+                   
+    //     //                 function updateQuantity(){
                             
-                        //     var Qty_Qty2 = qty_qty2.reduce(function(acc, curr) {
-                        //                         return acc + curr;
-                        //     }, 0);
-                        //     console.log('qty_qty2',Qty_Qty2)
-                    
-                        //     $('.custom-td-tambah').text(1);
-                        // }
-                        function updateQuantity(){
-                            
-                            var Qty_Qty2 = qty_qty2.reduce(function(acc, curr) {
-                                                return acc + curr;
-                            }, 0);
-                            console.log('qty_qty2',Qty_Qty2)
-                            var element = document.getElementById('qty-td-tambah');
-                            element.textContent = Qty_Qty2
-                        }
-                        function calculateTotalCBM() {
+    //     //                     var Qty_Qty2 = qty_qty2.reduce(function(acc, curr) {
+    //     //                                         return acc + curr;
+    //     //                     }, 0);
+    //     //                     console.log('qty_qty2',Qty_Qty2)
+    //     //                     var element = document.getElementById('qty-td-tambah');
+    //     //                     element.textContent = Qty_Qty2
+    //     //                 }
+    //     //                 function calculateTotalCBM() {
 
                             
-                            var totalCBM2 = cbm2Array.reduce(function(acc, curr) {
-                                return acc + curr;
-                            }, 0);
+    //     //                     var totalCBM2 = cbm2Array.reduce(function(acc, curr) {
+    //     //                         return acc + curr;
+    //     //                     }, 0);
                             
-                            var qty2 = qty_qty2.reduce(function(acc, curr) {
-                                return acc + curr;
-                            }, 0);
-                            var tot_qty = parseFloat(totalCBM2);
-                            console.log('calculateTotalCBM',tot_qty)
-                            $('#total_cbm_tambah').text(tot_qty.toFixed(2));    
+    //     //                     var qty2 = qty_qty2.reduce(function(acc, curr) {
+    //     //                         return acc + curr;
+    //     //                     }, 0);
+    //     //                     var tot_qty = parseFloat(totalCBM2);
+    //     //                     console.log('calculateTotalCBM',tot_qty)
+    //     //                     $('#total_cbm_tambah').text(tot_qty.toFixed(2));    
 
-                        }
-                },
-                error: function(xhr, status, error) {
-                    console.error('Terjadi kesalahan:', error);
+    //     //                 }
+    //     //         },
+    //     //         error: function(xhr, status, error) {
+    //     //             console.error('Terjadi kesalahan:', error);
                     
-                }
-            });
-        });
+    //     //         }
+    //     //     });
+    //     // });
         
-    });
+    // });
 
     $(document).ready(function() {
         $('#submitButtonForm2').on('click', function() {

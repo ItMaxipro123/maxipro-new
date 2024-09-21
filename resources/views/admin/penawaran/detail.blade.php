@@ -297,7 +297,7 @@ Penawaran | PT. Maxipro Group Indonesia
                                             <tr>
 
                                                 <td class="text-center" style="padding: 10px;width: 35%;border: 1px solid #000;"><img src="
-                                                    https://maxipro.id.test/images/barang/{{ $result['image'] }}" alt="" class="img-responsive" style="width: 350px;margin: auto;"></td>
+                                                    https://maxipro.id/images/barang/{{ $result['image'] }}" alt="" class="img-responsive" style="width: 350px;margin: auto;"></td>
 
                                                     <td style="padding: 10px;width: 35%;border: 1px solid #000;">
                                                         @php

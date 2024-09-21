@@ -491,7 +491,7 @@
                     
                         const supplier = response.filtered_supplier[key];
                         
-                        if (supplier && supplier.address) {
+                        if (supplier) {
                             $('#address_company').val(supplier.address);
                             $('#city').val(supplier.city);
                             $('#telp').val(supplier.telp);

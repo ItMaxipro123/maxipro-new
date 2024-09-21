@@ -1,5 +1,3 @@
-   //test js masuk
-   
    // Initialize Choices.js on the select element
    $(document).ready(function() {
                     

@@ -516,7 +516,7 @@ FCL Container    | PT. Maxipro Group Indonesia
                        
                         if ($.isEmptyObject(response)) {//bila response {}
                               function appendImage() {
-                                var img = $('<img>').attr('src', "https://maxipro.id.test/images/placeholder/basic.png").css('width', '70px').css('height', '70px');
+                                var img = $('<img>').attr('src', "https://maxipro.id/images/placeholder/basic.png").css('width', '70px').css('height', '70px');
                                 $('#new-input-container-gambar').empty().append(img);
                             }
                               appendImage(); 
