@@ -1,5 +1,4 @@
-@extends('admin.templates')
-
+@extends('admin.templates_baru')
 
 @section('title')
 Kas | PT. Maxipro Group Indonesia

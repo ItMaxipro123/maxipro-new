@@ -5,169 +5,24 @@
 FCL Container    | PT. Maxipro Group Indonesia
 @endsection
 @section('link')
+
+<link href="{{ asset('css/fcl.css') }}" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
 
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
-    <!-- Choices.js CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+<!-- Choices.js CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
 
 @endsection
-@section('style')
 
-<style>
-    /* Gaya untuk elemen overlay */
-#overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Hitam dengan opacity 0.5 */
-    z-index: 9999; /* Pastikan lebih tinggi dari elemen lain */
-}
-
-    .flatpickr-input {
-        border: 1px solid #ccc;
-        padding: 5px;
-        border-radius: 4px;
-    }
-
-    .dataTables_wrapper .dataTables_paginate .paginate_button.previous {
-        width: auto;
-        /* Atur lebar tombol menjadi otomatis */
-        padding-right: 0px;
-        /* Berikan padding di sisi kanan tombol */
-
-    }
-
-    /* Ganti warna latar belakang tabel */
-    #tabe-stok {
-        background-color: #f0f0f0;
-        /* Ganti dengan warna yang Anda inginkan */
-
-    }
-    #tabe-stok {
-        border-collapse: collapse; /* Ensure borders collapse */
-        width: 100%; /* Set table width to fill its container */
-    }
-
-    #tabe-stok th,
-    #tabe-stok td {
-        padding: 5px; /* Adjust padding as needed */
-        border: 1px solid #ddd; /* Add border */
-        overflow: auto; /* Enable overflow */
-        word-wrap: break-word; /* Wrap long words */
-    }
-
-
-     #tabe-stok-hitung-kubik {
-        background-color: #f0f0f0;
-        /* Ganti dengan warna yang Anda inginkan */
-
-    }
-    #tabe-stok-hitung-kubik {
-        border-collapse: collapse; /* Ensure borders collapse */
-        width: 100%; /* Set table width to fill its container */
-    }
-
-    #tabe-stok-hitung-kubik th,
-    #tabe-stok-hitung-kubik td {
-        padding: 5px; /* Adjust padding as needed */
-        border: 1px solid #ddd; /* Add border */
-        overflow: auto; /* Enable overflow */
-        word-wrap: break-word; /* Wrap long words */
-    }
-
-
-    .dataTables_filter input[type="search"] {
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        /* Opsional: untuk membuat sudut border melengkung */
-        padding: 5px;
-        /* Opsional: untuk memberi jarak antara border dan teks */
-    }
-
-    
-
- 
-
-    /* Style untuk tombol Delete */
-    .btn-delete {
-        width: 15%;
-        /* Lebar default */
-    }
-
-    /* Mengatur lebar tombol saat layar berukuran kecil (misalnya pada perangkat mobile) */
-    @media only screen and (max-width: 600px) {
-        .btn-delete {
-            width: 40%;
-            /* Mengisi lebar penuh */
-        }
-    }
-
-       .color-box {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            margin-left: 5px;
-            margin-bottom: 10px;
-            vertical-align: middle;
-        }
-
-          .bg-light-yellow {
-            background-color:#fff17a; /* Light yellow color */
-        }
-         .bg-light-blue {
-            background-color:#97ebfb; /* Light blue color */
-        }
-           .bg-light-green {
-            background-color: #6cf670; /* Light green color */
-        }
-          .bg-pink {
-            background-color: #FFC0CB; /* Light red color */
-        }
-         .bg-light-grey {
-            background-color: #f4f7f7; /* Light grey color */
-        }
-
-
-        .tooltip-container {
-             position: relative;
-             display: inline-block;
-         }
-
-         .tooltip-container .tooltip-text {
-             visibility: hidden;
-             width: 120px;
-             background-color: black;
-             color: #fff;
-             text-align: center;
-             border-radius: 6px;
-             padding: 5px 0;
-             position: absolute;
-             z-index: 1;
-             bottom: 125%; /* Position the tooltip above the button */
-             left: 50%;
-             margin-left: -60px; /* Center the tooltip */
-             opacity: 0;
-             transition: opacity 0.3s;
-         }
-
-         .tooltip-container:hover .tooltip-text {
-             visibility: visible;
-             opacity: 1;
-         }
-</style>
-
-@endsection
 @section('content')
 
 <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg wider">
     
     <div class="container-fluid">
-        <h4 id="judulStok" style="margin-top: 40px;margin-bottom: 40px;"><i class="fas fa-database"></i> &nbsp FCL Container</h4>
+        <h4 id="judulFcl" style="margin-top: 40px;margin-bottom: 40px;"><i class="fas fa-database"></i> &nbsp FCL Container</h4>
         <small class="display-block" style="position: absolute; top: 70px; left: 50px;">FCL Container {{ $username['data']['teknisi']['name'] }}</small>
         
     </div>
@@ -182,13 +37,13 @@ FCL Container    | PT. Maxipro Group Indonesia
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-12">
-                               <a href="javascript:void(0)" onclick="tambahRestok(this)" name="tambahButton" class="btn btn-large btn-primary btn-tambah">Hitung Kubikasi</a>
-
+                               <a href="javascript:void(0)" onclick="tambahFcl(this)" name="tambahButton" class="btn btn-large btn-primary btn-tambah">Add FCL Container</a>
+         
                                 <div class="d-flex justify-content-end">
 
                                   
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-info" style="width: 10%; margin-right: 5px;" id="openModalBtn">Filter</button>
+                                        <button type="button" class="btn btn-info" style="width: 10%; margin-right: 5px;" id="FilterBtn">Filter</button>
 
                                     </div>
                                     <div class="btn-group">
@@ -240,12 +95,8 @@ FCL Container    | PT. Maxipro Group Indonesia
 
                                 <div class="modal-footer">
 
-                                    <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
-                                    <!-- code diatas untuk modal bootstrap 4 -->
 
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <!-- code diatas untuk modal bootstrap 5 -->
-
                                     <button type="button" class="btn btn-primary" id="saveChangesBtn">Save changes</button>
 
                                 </div>
@@ -254,7 +105,8 @@ FCL Container    | PT. Maxipro Group Indonesia
                         </div>
                     </div>
 
-                 <div class="radio-button-container">
+                    <!-- radio button untuk status -->
+                    <div class="radio-button-container">
                         <label>
                             <div class="color-box bg-light-blue"></div>
                             <input type="radio" name="filter" value="requested" id="filter-status" {{ $Data['msg']['request_check'] == 'requested' ? 'checked' : '' }}>
@@ -311,7 +163,7 @@ FCL Container    | PT. Maxipro Group Indonesia
                             
                             <td style="border: 1px solid #d7d7d7; color: black;">{{ $num }}</td>
                             <td style="border: 1px solid #d7d7d7; color: black;">{{ $formattedDate }}</td>
-                            <td style="border: 1px solid #d7d7d7; color: black;">{{ $data['invoice_no'] }}</td>
+                            <td style="border: 1px solid #d7d7d7; color: black;">INV-{{ $data['invoice_no'] }}</td>
                             <td style="border: 1px solid #d7d7d7; color: black;">{{ $data['supplier']['name'] }}</td>
                             <td style="border: 1px solid #d7d7d7; color: black;">{{ $data['supplier']['company'] }}</td>
                             <td style="border: 1px solid #d7d7d7; color: black;">{{ $data['supplier']['telp'] }}</td>
@@ -319,24 +171,38 @@ FCL Container    | PT. Maxipro Group Indonesia
                        
                        
                             <td style="border: 1px solid #d7d7d7;">
-                                @if($data['status_process'] == 'requested')
-                                <a href="javascript:void(0)" onclick="updateRestok(this)" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-info btn-edit" style="width: 35px; height: 38px; padding: 9px 10px;"title="Edit"> <i class="fas fa-edit"></i></a>
-                                @else
-                               
-                                 <a href="javascript:void(0)" onclick="updateRestokFailed(this); return false;" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-info btn-edit" style="width: 35px; height: 38px; padding: 9px 10px;"title="Edit"> <i class="fas fa-edit"></i></a>
-                                @endif
-                                <a href="javascript:void(0)" 
-                                onclick="rejectOrderPembelian(this)" 
-                                data-id="{{ $data['id'] }}" 
-                                name="{{ $data['invoice_no'] }}" 
-                                class="btn btn-large btn-info btn-danger" 
-                                style="width: 35px; height: 38px; padding: 9px 10px;" 
-                                title="Reject Order">
-                                <i class="fas fa-times"></i>
-                                  </a>
-                                <a href="javascript:void(0)" onclick="deleteOrderPembelian(this)" data-id="{{ $data['id'] }}" name="{{ $data['invoice_no'] }}" class="btn btn-large btn-info btn-danger" style="width: 35px; height: 38px; padding: 9px 10px;" 
-                                title="Delete"><i class="fas fa-trash-alt"></i></a>
+                                <button type="button" 
+                                        onclick="rejectOrderPembelian(this)" 
+                                        data-id="{{ $data['id'] }}" 
 
+                                        class="btn btn-large btn-info btn-danger" 
+                                        style="width: 35px; height: 38px; padding: 9px 10px;" 
+                                        title="Detailr">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                                @if($data['status_process'] == 'requested')
+                                <button type="button" 
+                                     
+                                        data-id="{{ $data['id'] }}" 
+                                        name="editButton" 
+                                        class="btn btn-large btn-info btn-edit" 
+                                        style="width: 35px; height: 38px; padding: 9px 10px;" 
+                                        title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                @else
+                                <a href="javascript:void(0)" onclick="updateRestokFailed(this); return false;" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-secondary btn-edit"><i class="fas fa-edit"></i></a>
+                                @endif
+                                
+                                <button type="button" 
+                                        onclick="deleteFcl(this)" 
+                                        data-id="{{ $data['id'] }}" 
+                                       
+                                        class="btn btn-large btn-info btn-danger" 
+                                        style="width: 35px; height: 38px; padding: 9px 10px;" 
+                                        title="Delete">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
                             </td>
                         </tr>
 
@@ -347,23 +213,36 @@ FCL Container    | PT. Maxipro Group Indonesia
                             @endforeach
                         </tbody>
                     </table>
- 
+                    
+                    <!-- element untuk view tambah -->
+                    <div id="addFclContainer" style="display: none;" class="col-sm-12" style="margin-top: 15px;">
+                            
+                            <form action=""id="Formtambah"></form>
+                    
+                    </div>
+
+                    <!-- element untuk view edit  -->
+                    <div id="editFclContainer" style="display: none;" class="col-sm-12" style="margin-top: 15px;">
+                            
+                            <form action=""id="Formedit"></form>
+                    
+                    </div>
 
                   
                     <!-- modal edit restok -->
-                    <div class="col-sm-12" style="margin-top: 15px;">
+                    <!-- <div class="col-sm-12" style="margin-top: 15px;">
                         <div id="overlay" style="display: none;"></div>
                         <div id="tabe-stok"></div>
 
                         <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-xl" role="document">
                                 <div class="modal-content">
-                                    <!-- Header modal, termasuk tombol close -->
+                                    
                                     <div class="modal-header">
                                        
 
                                     </div>
-                                    <!-- Isi modal -->
+                                    
                                     <div class="modal-body">
                                         
                                         <form id="Formedit">
@@ -372,7 +251,7 @@ FCL Container    | PT. Maxipro Group Indonesia
                                         
                                     </div>
                                     <div class="modal-footer">
-                                        <!-- Tombol untuk menutup modal -->
+                                    
                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="window.location.reload()" >Close</button>
                                    
                                     </div>
@@ -381,13 +260,14 @@ FCL Container    | PT. Maxipro Group Indonesia
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
 
                 </div>
             </div>
         </div>
     </div>
+
 </main>
 
 @endsection
@@ -407,32 +287,22 @@ FCL Container    | PT. Maxipro Group Indonesia
 <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+<script src="../assets/js/fcl-container/fcl-container.js"></script> 
 
 <!-- untuk load datatable -->
 <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        // Initialize Choices.js on the select element
-        const element = document.getElementById('id_jenis');
-        const choices = new Choices(element, {
-            searchEnabled: true,
-            itemSelectText: '',
-        });
-
-        // Enable/disable date inputs based on checkbox state
-        
-    });
+   
 
         //button clear Filter 
     $('#clearFilterBtn').on('click', function() {
 
 
-            window.location.href = '{{ route('admin.pembeliaan_restok') }}'; 
+            window.location.href = '{{ route('admin.pembelian_fcl') }}'; 
     })
 
     //untuk membuat datatable
     $(document).ready(function() {
-        $('#tabe-stok').DataTable({
+        var table= $('#tabe-stok').DataTable({
 
             "dom": '<"top"lf>rt<"bottom"ip><"clear">', // Mengatur posisi elemen filter/search
             "language": { // Menyesuaikan teks placeholder
@@ -474,10 +344,45 @@ FCL Container    | PT. Maxipro Group Indonesia
                 },
                
                 {
-                    data: 'link',
+                    data: null,
                     title: 'Action',
                     render: function(data, type, full, meta) {
-                        return '<a href="' + data + '</a>';
+                        
+                        let invoiceValue = data.invoice.split('INV-')[1] || data.invoice;
+                        return `
+                            <button type="button" 
+                                onclick="rejectOrderPembelian(this)" 
+                                data-id="${invoiceValue}" 
+                                name="${invoiceValue}" 
+                                class="btn btn-large btn-info btn-light" 
+                                style="width: 35px; height: 38px; padding: 9px 10px;" 
+                                title="Detail">
+                            <i class="fas fa-eye"></i>
+                        </button>
+
+                        <button type="button" 
+                                data-id="${invoiceValue}" 
+                                name="${invoiceValue}" 
+                                class="btn btn-large btn-info btn-edit" 
+                                style="width: 35px; height: 38px; padding: 9px 10px;" 
+                                title="${invoiceValue}"
+                                onclick="editInvoice(this)">
+                            <i class="fas fa-edit"></i>
+                        </button>
+
+                    
+                        <button type="button" 
+                                onclick="deleteFcl(this)" 
+                                data-id="${invoiceValue}" 
+                                name="${invoiceValue}" 
+                                class="btn btn-large btn-info btn-danger" 
+                                style="width: 35px; height: 38px; padding: 9px 10px;" 
+                                title="Delete">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+
+
+                        `;
                     }
                 }
 
@@ -487,12 +392,42 @@ FCL Container    | PT. Maxipro Group Indonesia
                 $('.dataTables_filter input[type="search"]').attr('placeholder', 'Cari ...'); // Menyesuaikan placeholder
             }
         });
+        window.dataTableInstance = table;
     });
 
 </script>
 
 
 <script>
+    function editInvoice(element) {
+        event.preventDefault();
+        var invoice = $(element).data('id');
+        // console.log('invoice',invoice)
+        $.ajax({
+            type:'GET',
+            url:'{{ route('admin.pembelian_fcl') }}',
+            data: {
+                menu:'update',
+                invoice: invoice,
+            },
+            success: function(response){
+            //   console.log('response',response);
+                $('.btn-tambah').remove()
+          
+              if (window.dataTableInstance) {
+                        window.dataTableInstance.destroy();
+              }
+              $('#tabe-stok').remove()
+              $('.radio-button-container').remove()
+              $('#clearFilterBtn').remove()
+              $('#FilterBtn').remove()
+              $('#Formedit').html(response);
+              $('#judulFcl').html('<i class="fas fa-database"></i> &nbsp Edit FCL');
+              document.title='Edit FCL   | PT. Maxipro Group Indonesia'
+              $('#editFclContainer').show()
+            }
+        })
+    }
     // proses pengecekan stok
     $(document).ready(function() {
         
@@ -639,7 +574,7 @@ FCL Container    | PT. Maxipro Group Indonesia
                                         
                                         // status: $('select[name=status]').val()
                                     };
-                                  console.log(formData)
+                                //   console.log(formData)
                                     // Mengirim permintaan AJAX
                                     $.ajax({
                                         type: 'GET',
@@ -647,7 +582,7 @@ FCL Container    | PT. Maxipro Group Indonesia
                                         data: formData,
                                         success: function(response) {
                                             // Tanggapan berhasil, lakukan apa yang perlu dilakukan di sini
-                                           console.log(response);
+                                        //    console.log(response);
                                             if(response !== null){
                                                  
                                                  Swal.fire({
@@ -734,58 +669,71 @@ FCL Container    | PT. Maxipro Group Indonesia
 </script>
 <script>
     // Menangani peristiwa klik pada tombol "Filter"
-    document.getElementById('openModalBtn').addEventListener('click', function() {
+    document.getElementById('FilterBtn').addEventListener('click', function() {
         $('#exampleModal').modal('show'); // Menampilkan modal Filter
     });
 
 
    
     // Menangani klik pada tombol tambah
-    function tambahRestok(element) {
+    function tambahFcl(element) {
         event.preventDefault();
 
         $('#product-restok-tambah-filter').val('');
-        console.log($('#product-restok-tambah-filter').val());
+        // console.log($('#product-restok-tambah-filter').val());
         if ($('#product-restok-tambah-filter').val() === null) {
           $('#product-restok-tambah-filter').remove();
 
           }
 
-        $('#tambahModal').modal('show'); // Tampilkan modal
+          
+          var url = "{{ route('admin.pembelian_fcl') }}";
 
+          $.ajax({
+            url: url,
+            type: 'GET', // Menggunakan metode GET
+            data: {
+                menu: 'create',
+
+            },
+            success: function(response) {
+    
+                $('.btn-tambah').remove()
+          
+                if (window.dataTableInstance) {
+                        window.dataTableInstance.destroy();
+                    }
+                    $('#tabe-stok').remove()
+                    $('.radio-button-container').remove()
+                    $('#clearFilterBtn').remove()
+                    $('#FilterBtn').remove()
+                // Insert the response into the form
+                $('#Formtambah').html(response);
+                $('#judulFcl').html('<i class="fas fa-database"></i> &nbsp Create FCL');
+                document.title='Create FCL   | PT. Maxipro Group Indonesia'
+                // Show the container that holds the form
+                $('#addFclContainer').show(); // Display the form container
+                
+            },
+            error: function(xhr, status, error) {
+                // Sembunyikan elemen overlay dengan efek fade-out jika terjadi kesalahan
+
+                // Handle error jika terjadi kesalahan
+                console.error(xhr.responseText);
+                return;
+            }
+        });
 
     }
     
-    //Untuk Menjumlahkan total kubik yang telah dicentang
-    function calculateTotalKubik() {
-        var checkboxes = document.querySelectorAll('.kubik-checkbox');
-        var totalKubik = 0;
-
-        checkboxes.forEach(function(checkbox) {
-            if (checkbox.checked) {
-                var kubikValue = parseFloat(checkbox.closest('tr').querySelector('.kubik-value').textContent);
-                totalKubik += kubikValue;
-
-            }
-        });
-        
-        document.getElementById('total-kubik').textContent = totalKubik;
-    }
-
-    //Untuk Mereset data input checkbox dan total kubik di modal hitung kubk
-    document.getElementById('tambahModal').addEventListener('hidden.bs.modal', function () {
-        var checkboxes = document.querySelectorAll('.kubik-checkbox'); //Inisiasi variabel yang mengambil value select dari class kubik-checkbox
-        checkboxes.forEach(function(checkbox) { //Untuk mengambil input checkbox sesuai urutan berdasarkan array
-            checkbox.checked = false; //Untuk menonaktifkan input checkbox
-        });
-        document.getElementById('total-kubik').textContent = 0; //menset nilai total-kubik menjadi 0
-    });
+  
+    
 
     //Membuka modal update
     function updateRestok(element) {
         event.preventDefault();
         var id = $(element).data('id');
-        console.log(id);
+        // console.log(id);
 
         // Tampilkan elemen overlay dengan efek fade-in sebelum mengirim permintaan AJAX
         $('#overlay').fadeIn();
@@ -825,22 +773,23 @@ FCL Container    | PT. Maxipro Group Indonesia
         Swal.fire({
             icon: 'error',
             title: 'Error!',
-            text: 'Maaf, FCL sudah di proses di penerimaan',
+            text: 'Maaf, item sudah di proses di commercial invoice',
         });
 
         // Prevent the default action (navigation)
         return false;
     }
 
-  function deleteOrderPembelian(element) {
+    function deleteFcl(element) {
     event.preventDefault();
-    var id = $(element).data('id');
+    var invoice = $(element).data('id');
+    console.log('id',invoice)
     var restokName = $(element).attr('name');
 
     // Menggunakan SweetAlert2 untuk konfirmasi penghapusan
     Swal.fire({
         title: 'Konfirmasi',
-        text: "Apakah Anda yakin ingin menghapus order pembelian ini " + restokName + " ?",
+        text: "Apakah Anda yakin ingin menghapus invoice ini INV-" + restokName + " ?",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -849,17 +798,18 @@ FCL Container    | PT. Maxipro Group Indonesia
         cancelButtonText: 'Batal'
     }).then((result) => {
         if (result.isConfirmed) {
-            var url = "{{ route('admin.pembelian_hapus_order_pembelian') }}";
+            var url = "{{ route('admin.pembelian_fcl') }}";
             $('#reload-icon').show();
             $.ajax({
                 url: url,
                 type: 'GET',
                 data: {
-                    id: id
+                    invoice: invoice,
+                    menu:'delete_fcl'
                 },
                 success: function(response) {
                     // Handle response jika sukses
-                    console.log(response);
+                    // console.log(response);
 
                     // Hapus data berdasarkan elemen, element berupa id
                     $(element).closest('tr').remove();
@@ -887,7 +837,7 @@ FCL Container    | PT. Maxipro Group Indonesia
             });
         }
     });
-}
+    }
 
     function rejectOrderPembelian(element) {
         event.preventDefault();
@@ -1092,7 +1042,7 @@ FCL Container    | PT. Maxipro Group Indonesia
                        var id = $('#edit_supplier').data('id');
                        $('#reload-icon').show();
 
-            console.log(supplier,id);
+            // console.log(supplier,id);
             // Kirim data menggunakan AJAX
             $.ajax({
                 url: "{{ route('admin.pembelian_select_supplier_order_pembelian') }}",
@@ -1103,7 +1053,7 @@ FCL Container    | PT. Maxipro Group Indonesia
                     _token: $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function(response) {
-                    console.log(response);
+                    // console.log(response);
                      $('#reload-icon').hide();
                        table.ajax.reload(null, false); // User paging is not reset on reload
                 },

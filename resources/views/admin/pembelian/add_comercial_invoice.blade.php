@@ -1613,7 +1613,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                 
                 freight_cost: $('input[name=freight_cost_tambah]').val()||"",
                 insurance: $('input[name=insurance_tambah]').val()||"", //menggunakan element name
-                incoterms: $('.incoterms-tambah-id').val()||"", //menggunakan element id
+                incoterms: $('#incoterms-tambah-id').val()||"", //menggunakan element id
                 location: $('#location_id_tab').val()||"",
                 supplierbank: $('#banksupplier-tambah-id').val()||"",
                 currency: $('#currency-tambah-id').val()||"",

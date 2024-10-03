@@ -302,7 +302,7 @@ Pembeliaan    | PT. Maxipro Group Indonesia
                                                 <textarea type="text" class="form-control" placeholder="Keterangan" id="keterangan" name="keterangan_name" style="border: 1px solid #ced4da; width: 100%; padding-left:22px;"></textarea>
                                             </div>
                                             <div class="form-group" style="display: flex;padding-top:30px; text-align:end;">
-                                              <button type="submit" id="selecttambahButton" class="btn btn-primary" style="margin-left: auto;">Select
+                                              <button type="submit" id="selecttambahButton" class="btn btn-primary" style="margin-left: auto;">Simpan
                                               </button>
                                           </div>
                                       </form>

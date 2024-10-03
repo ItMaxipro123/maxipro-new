@@ -29,6 +29,318 @@ class ComercialInvoice extends Model
             return ['error' => $e->getMessage()];
         }
     }
+    public static function deleteCommercialInvoice($teknisi_cookie,$id)
+    {
+        try {
+            $client = new Client(['verify' => false]);
+
+            $headers = [
+                'Cookie' => $teknisi_cookie
+            ];
+
+            $response = $client->request('delete', 'https://maxipro.id/TeknisiAPI/hapus_comercial_invoice/'.$id, [
+                'headers' => $headers,
+
+            ]);
+
+            $data = $response->getBody()->getContents();
+            return json_decode($data, true);
+        } catch (\Exception $e) {
+            // Handle exception
+            return ['error' => $e->getMessage()];
+        }
+    }
+    public static function tambahCommercialLocalLcl($teknisi_cookie,$data)
+    {
+        $count = count(array_filter($data['id_item'], function ($value) {
+            return $value !== null;
+        }));
+        // dd($data);
+        $formParams = [
+
+      
+            'modeadmin' => $data['mode_admin'],      //untuk mengirim ke tabel penjualanfromchina
+            'invoicenumber' => $data['invoice_no'],      //untuk mengirim ke tabel penjualanfromchina
+            'packingnumber' => $data['packing_no'],       //untuk mengirim ke tabel penjualanfromchina
+            'contractnumber' => $data['contract_no'],       //untuk mengirim ke tabel penjualanfromchina
+            'database'=> $data['database'],       //untuk mengirim ke tabel penjualanfromchina & pembelian local maupun lcl
+            'supplier'=>$data['supplier'], //untuk mengirim ke tabel penjualanfromchina & pembelian local maupun lcl
+            'name_perusahaan'=>$data['name'], //name company //untuk mengirim ke tabel penjualanfromchina & pembelian local maupun lcl
+            'address'=>$data['address_company'],//untuk mengirim ke tabel penjualanfromchina & pembelian local maupun lcl
+            'city'=>$data['city'], //untuk mengirim ke tabel penjualanfromchina & pembelian local maupun lcl
+            'telephone' =>$data['telp'],
+            'noreferensi'=> $data['no_referensi'],
+            'supplierbank' => 0,
+            'currency'=> $data['matauang'],
+            'tgl_transaksi'=>$data['tgl_transaksi'],
+            'kategori'=>$data['kategori'],
+            'termin'=>$data['termin'],
+            'account_no'=>$data['account'],
+            'beneficiary_name' =>'',
+            'beneficiary_address' =>'',
+            'location'=>'',
+            'status_ppn'=>$data['status_ppn'],
+            'includeppn'=>$data['include_ppn'],
+            'keterangan'=>$data['keterangan'],
+            'cabang'=>$data['cabang'],
+            'freight_cost' => 0,
+            'insurance' => 0,
+            'incoterms' => '',
+            'swift_code'=>'',
+            'bank_name' =>'',
+            'bank_address' =>'',
+            'id'=>'',
+            // 'restok'=>$data['restok']
+        ];
+        
+        $array=[];
+        $key_index=0;
+        $key_index_array=[];
+        foreach ($data['restok']  as $key => $value) {
+            $lastChar = substr($key, -1);
+            $newKey = "restok[{$lastChar}]";
+            $array[$newKey] = $value ?? '';
+            $key_index++;
+            $key_index_array[] = $newKey;
+        }
+        foreach ($data['id_item']  as $key => $value) {
+            $lastChar = substr($key, -1);
+            $newKey = "id_item[{$lastChar}]";
+            $array[$newKey] = $value ?? '';
+            $key_index++;
+            $key_index_array[] = $newKey;
+        }
+        foreach ($data['nama_item']  as $key => $value) {
+            $lastChar = substr($key, -1);
+            $newKey = "nama_item[{$lastChar}]";
+            $array[$newKey] = $value ?? '';
+            $key_index++;
+            $key_index_array[] = $newKey;
+        }
+        foreach ($data['harga_asal']  as $key => $value) {
+            $lastChar = substr($key, -1);
+            $newKey = "price[{$lastChar}]";
+            $array[$newKey] = $value ?? '';
+            $key_index++;
+            $key_index_array[] = $newKey;
+        }
+        foreach ($data['qty']  as $key => $value) {
+            $lastChar = substr($key, -1);
+            $newKey = "qty[{$lastChar}]";
+            $array[$newKey] = $value ?? '';
+            $key_index++;
+            $key_index_array[] = $newKey;
+        }
+        foreach ($data['disc']  as $key => $value) {
+            $lastChar = substr($key, -1);
+            $newKey = "disc[{$lastChar}]";
+            $array[$newKey] = $value ?? '';
+            $key_index++;
+            $key_index_array[] = $newKey;
+        }
+   
+        foreach ($data['ppn']  as $key => $value) {
+            $lastChar = substr($key, -1);
+            $newKey = "ppn[{$lastChar}]";
+            $array[$newKey] = $value ?? '';
+            $key_index++;
+            $key_index_array[] = $newKey;
+        }
+        foreach ($data['td_ppn']  as $key => $value) {
+            $lastChar = substr($key, -1);
+            $newKey = "td_ppn[{$lastChar}]";
+            $array[$newKey] = $value ?? '';
+            $key_index++;
+            $key_index_array[] = $newKey;
+        }
+        foreach ($data['gudang']  as $key => $value) {
+            $lastChar = substr($key, -1);
+            $newKey = "gudang[{$lastChar}]";
+            $array[$newKey] = $value ?? '';
+            $key_index++;
+            $key_index_array[] = $newKey;
+        }
+
+        foreach ($data['english_name'] as $key => $value) {
+            $lastChar = substr($key, -1);
+            $newKey = "english_name[{$lastChar}]";  // Ganti $lastChar dengan string kosong
+            $array[$newKey] = $value ?? '';
+            $key_index++;
+            $key_index_array[] = $newKey;
+        }
+        foreach ($data['chinese_name'] as $key => $value) {
+            $lastChar = substr($key, -1);
+            $newKey = "chinese_name[{$lastChar}]";  // Ganti $lastChar dengan string kosong
+                    $array[$newKey] = $value ?? '';
+            $key_index++;
+            $key_index_array[] = $newKey;
+
+        }
+        foreach ($data['model'] as $key => $value) {
+            $lastChar = substr($key, -1);
+            $newKey = "model[{$lastChar}]"; 
+                    $array[$newKey] = $value ?? '';
+            $key_index++;
+            $key_index_array[] = $newKey;
+
+        }
+        foreach ($data['brand'] as $key => $value) {
+            $lastChar = substr($key, -1);
+            $newKey = "brand[{$lastChar}]"; 
+                    $array[$newKey] = $value ?? '';
+            $key_index++;
+            $key_index_array[] = $newKey;
+
+        }
+        foreach ($data['hs_code'] as $key => $value) {
+            $lastChar = substr($key, -1);
+            $newKey = "hs_code[{$lastChar}]"; 
+            $array[$newKey] = $value ?? '';
+            $key_index++;
+            $key_index_array[] = $newKey;
+
+        }
+        foreach ($data['length_m'] as $key => $value) {
+            $lastChar = substr($key, -1);
+            $newKey = "length_m[{$lastChar}]"; 
+                    $array[$newKey] = $value ?? '';
+            $key_index++;
+            $key_index_array[] = $newKey;
+
+        }
+        foreach ($data['width_m'] as $key => $value) {
+            $lastChar = substr($key, -1);
+            $newKey = "width_m[{$lastChar}]"; 
+                    $array[$newKey] = $value ?? '';
+            $key_index++;
+            $key_index_array[] = $newKey;
+
+        }
+        foreach ($data['height_m'] as $key => $value) {
+            $lastChar = substr($key, -1);
+            $newKey = "height_m[{$lastChar}]"; 
+            $array[$newKey] = $value ?? '';
+            $key_index++;
+            $key_index_array[] = $newKey;
+
+        }
+        foreach ($data['length_p'] as $key => $value) {
+            $lastChar = substr($key, -1);
+            $newKey = "length_p[{$lastChar}]"; 
+            $array[$newKey] = $value ?? '';
+            $key_index++;
+            $key_index_array[] = $newKey;
+
+        }
+        foreach ($data['width_p'] as $key => $value) {
+            $lastChar = substr($key, -1);
+            $newKey = "width_p[{$lastChar}]"; 
+            $array[$newKey] = $value ?? '';
+            $key_index++;
+            $key_index_array[] = $newKey;
+
+        }
+        foreach ($data['height_p'] as $key => $value) {
+            $lastChar = substr($key, -1);
+            $newKey = "height_p[{$lastChar}]"; 
+            $array[$newKey] = $value ?? '';
+            $key_index++;
+            $key_index_array[] = $newKey;
+
+        }
+        foreach ($data['qty'] as $key => $value) {
+            $lastChar = substr($key, -1);
+            $newKey = "qty[{$lastChar}]"; 
+            $array[$newKey] = $value ?? '';
+            $key_index++;
+            $key_index_array[] = $newKey;
+
+        }
+        foreach ($data['nett_weight'] as $key => $value) {
+            $lastChar = substr($key, -1);
+            $newKey = "nett_weight[]"; 
+            $array[$newKey] = $value ?? '';
+            $key_index++;
+            $key_index_array[] = $newKey;
+
+        }
+        foreach ($data['gross_weight'] as $key => $value) {
+            $lastChar = substr($key, -1);
+            $newKey = "gross_weight[{$lastChar}]"; 
+            $array[$newKey] = $value ?? '';
+            $key_index++;
+            $key_index_array[] = $newKey;
+
+        }
+        foreach ($data['cbm'] as $key => $value) {
+            $lastChar = substr($key, -1);
+            $newKey = "cbm_volume[{$lastChar}]"; 
+            $array[$newKey] = $value ?? '';
+            $key_index++;
+            $key_index_array[] = $newKey;
+
+        }
+        foreach ($data['subtotal'] as $key => $value) {
+            
+            $lastChar = substr($key, -1);
+            $newKey = "total[{$lastChar}]";
+            $array[$newKey] = $value ?? '';
+            $key_index++;
+            $key_index_array[] = $newKey;
+
+        }
+        foreach ($data['id_item'] as $key => $value) {
+            $lastChar = substr($key, -1);
+            $newKey = "price_usd[{$lastChar}]"; 
+            $array[$newKey] = 0;
+            $key_index++;
+            $key_index_array[] = $newKey;
+
+        }
+        foreach ($data['id_item'] as $key => $value) {
+            $lastChar = substr($key, -1);
+            $newKey = "total_usd[{$lastChar}]"; 
+            $array[$newKey] = 0;
+            $key_index++;
+            $key_index_array[] = $newKey;
+
+        }
+        foreach ($data['id_item'] as $key => $value) {
+            $lastChar = substr($key, -1);
+            $newKey = "use[{$lastChar}]"; 
+            $array[$newKey] = '';
+            $key_index++;
+            $key_index_array[] = $newKey;
+
+        }
+       
+  
+    
+        $mergedArray = array_merge($formParams, $array);
+     
+
+        try {
+            // dd('aa',$mergedArray);
+            $client = new Client(['verify' => false]);
+
+            $headers = [
+                'Cookie' => $teknisi_cookie
+            ];
+
+          
+            $response = $client->request('POST', 'https://maxipro.id/TeknisiAPI/comercial_invoice_tambah', [
+                'form_params' => $mergedArray,
+                'headers' => $headers,
+            ]);
+
+            $data = $response->getBody()->getContents();
+            // dd($data);
+            return json_decode($data, true);
+        } catch (\Exception $e) {
+            // Handle exception
+            return ['error' => $e->getMessage()];
+        }
+    }
     public static function getSupplierComercialInvoice($teknisi_cookie)
     {
         try {
@@ -710,14 +1022,14 @@ class ComercialInvoice extends Model
             }
 
             $formParams = array_merge($formParams, $newEnglishNames);
- 
+            // dd($formParams);
             $response = $client->request('POST', 'https://maxipro.id/TeknisiAPI/comercial_invoice_tambah', [
                 'form_params' => $formParams,
                 'headers' => $headers,
             ]);
 
             $data2 = $response->getBody()->getContents();
-
+            
             $Data = json_decode($data2, true);
 
             return json_decode($data2, true);

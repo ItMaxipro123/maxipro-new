@@ -144,7 +144,7 @@
             </div>
             <div class="col-md-10">
                 <div class="form-group" style="margin-top:10px;">
-                    <label for="startDateTglRequest">Tanggal Request <span style="color: red;">(Wajib Diisi)</span></label>
+                    <label for="startDateTglRequest">Tanggal Transaksi <span style="color: red;">(Wajib Diisi)</span></label>
                     <input type="text" style="height:55px;" class="form-control custom-border" id="tgl_request_tambah" name="tgl_request" placeholder= "Pilih Tanggal" required >
                 </div>
             </div>
@@ -153,7 +153,7 @@
         <div class="form-group" style="margin-bottom: 20px;margin-top: 10px;">
             <label class="col-lg-3 control-label" style="font-size: 15px;width: 100%">Supplier <span style="color: red;">(Wajib Diisi)</span></label>
 
-            <select class="form-control supplier-supplier" id="supplier-tambah" name="supplier-tambah-name">
+            <select class="form-control supplier-supplier" id="supplier-tambah" name="supplier-tambah-name" required>
                 
                 <option value="">Supplier</option>
                 @foreach($Data['msg']['list_supplier'] as $index => $result)
@@ -166,20 +166,20 @@
            
             <div class="col-md-4">
                 <div style="position: relative; width: 100%;">
-                    <label class="col-lg-3 control-label" style="font-size: 15px;width: 100%" for="">Alamat Perusahaan</label>
-                    <textarea type="text" class="form-control" id="address_company" name="address_company" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;" ></textarea>
+                    <label class="col-lg-3 control-label" style="font-size: 15px;width: 100%" for="">Alamat Perusahaan  <span style="color: red;">(Wajib Diisi)</span></label>
+                    <textarea type="text" class="form-control" id="address_company" name="address_company" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;" required></textarea>
                 </div>
             </div>
             <div class="col-md-4">
                 <div style="position: relative; width: 100%;">
-                    <label class="col-lg-3 control-label" style="font-size: 15px;width: 100%" for="">Kota Perusahaan</label>
-                    <input type="text" class="form-control" id="city"name="city" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;">
+                    <label class="col-lg-3 control-label" style="font-size: 15px;width: 100%" for="">Kota Perusahaan  <span style="color: red;">(Wajib Diisi)</span></label>
+                    <input type="text" class="form-control" id="city"name="city" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;" required>
                 </div>
             </div>
             <div class="col-md-4">
                 <div style="position: relative; width: 100%;">
-                    <label class="col-lg-3 control-label" style="font-size: 15px;width: 100%" for="">No. Telp</label>
-                    <input type="number" class="form-control" id="telp" name="telp" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;">
+                    <label class="col-lg-3 control-label" style="font-size: 15px;width: 100%" for="">No. Telp  <span style="color: red;">(Wajib Diisi)</span></label>
+                    <input type="number" class="form-control" id="telp" name="telp" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;" required>
                 </div>
             </div>
         </div>
@@ -193,6 +193,8 @@
                     <div style="margin-top:20px;position: relative; width: 100%;">
                         <div id="content-container2"></div>
                         <div id="content-container3"></div>
+
+                                <!-- untuk modal convert usd -->
                                 <div id="myModal" class="modal fade" tabindex="-1" role="dialog">
                                     <div class="modal-dialog modal-lg" role="document">
                                             <div class="modal-content">
@@ -216,7 +218,7 @@
                                                     </ul>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" id="saveConvert" class="btn btn-primary">Simpan</button>
+                                                    <button type="button" id="saveConvert" data-dismiss="modal" class="btn btn-primary">Simpan</button>
                                                 </div>
                                             </div>
                                     </div>
@@ -293,7 +295,7 @@
 
         <div class="row">
             <div style="padding-top: 30px;" class="col-md-1">
-                <label for="kodebaranglabel">Currency</label>
+                <label for="kodebaranglabel">Currency <span style="color: red;">(Wajib Diisi)</span></label>
                             
             </div>
             <div class="col-md-11" style="padding-right: 600px;">
@@ -433,7 +435,18 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
  $(document).ready(function() {
+    var valuestatusrate =0
+    var valueelement = $('.border-input')
+    var indexCounter
+    var valuerate=$('.border-input').val();
     
+            
+    $('.border-input').on('change', function() {
+        valuerate = $(this).val()
+        valuestatusrate=1
+        indexCounter =0
+        // console.log('valuerate',valuerate)
+    })
     $('#supplier-tambah').select2({
         placeholder: 'Supplier',
         allowClear: true,
@@ -635,10 +648,7 @@
     $('#importData').on('click', function() {
       $('#importModal').modal('show');
     });
-    function convertFunction(){
-        // console.log('masuk')
-        $('#myModal').modal('show')
-    }
+    
     //memproses data ketika mengklik simpan di modal import data
     $('#sendImportBarang').on('click',function(){
                         
@@ -653,6 +663,7 @@
                                     var without_tax_arr=[];
                                     var tot_price_rmb =[];
                                     var tot_price_usd =[];
+                                    var unit_price_usd =[]
                     
                         var selectedIds = [];
     
@@ -678,6 +689,8 @@
                             },
                             success: function(response){
                                     console.log('response',response)
+                                    
+
                                     var contentContainer = $('#content-container2');
                                     contentContainer.empty();
                                     var contentContainer2 = $('#content-container3');
@@ -698,6 +711,8 @@
                                     var num_key=0;
                                     var tot_freight_cost=0
                                     var tot_insurance=0
+                                    var priceUSDTotalChanged=0;
+                                
                                     detail.forEach(function(item,itemindex){
                                         item.detail.forEach(function(order,index){
                                             console.log('order',order)
@@ -1063,6 +1078,7 @@
                                             cbm_cbm[num_key] = order.cbm || 0;
                                             tot_price_rmb[num_key] = order.total_price_without_tax
                                             tot_price_usd[num_key] = order.total_price_usd
+                                            unit_price_usd[num_key] = order.unit_price_usd
                                             console.log('totprice',tot_price_rmb)
                                            
                                             
@@ -1176,7 +1192,7 @@
                                                 'class': 'form-control unit_price_without_tax_import',  
                                                 'placeholder': '',        
                                                 'type': 'text',
-                                                'value':order.unit_price_without_tax,
+                                                'value':(order.unit_price_without_tax).toFixed(2),
                                                 'disabled':true
                                             }).css({
                                                 'border': '1px solid #696868',
@@ -1193,7 +1209,7 @@
                                                 'class': 'form-control unit_price_usd_import',    
                                                 'placeholder': '',        
                                                 'type': 'text',
-                                                'value':order.unit_price_usd,
+                                                'value':(order.unit_price_usd).toFixed(2),
                                                 'disabled':true
                                             }).css({
                                                 'border': '1px solid #696868',
@@ -1215,12 +1231,12 @@
                                             }
                                             inputElement11.on('input',updateTotalPriceUsd);
                                             inputElement11.on('input',updateUnitPriceUsd);
-                                            inputElement7.on('input', function() {
-                                                updateCBM();
-                                                updateTotalPriceUsd();
-                                                updateTotPriceWithoutTax();
-                                                updateQuantity();
-                                            })
+                                            // inputElement7.on('input', function() {
+                                            //     updateCBM();
+                                            //     updateTotalPriceUsd();
+                                            //     updateTotPriceWithoutTax();
+                                            //     updateQuantity();
+                                            // })
                                             var newTd13Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
                                             var inputElement13 = $('<input />').attr({
                                                 'id': 'total_price_without_tax_import'+num_key,          // ID untuk elemen input
@@ -1228,7 +1244,7 @@
                                                 'class': 'form-control tot_price_without_tax_import',    // Kelas CSS untuk elemen input
                                                 'placeholder': '',        // Placeholder untuk elemen input
                                                 'type': 'text',
-                                                'value':order.total_price_without_tax,
+                                                'value':(order.total_price_without_tax).toFixed(2),
                                                 'disabled':true
                                             }).css({
                                                 'border': '1px solid #696868',
@@ -1236,22 +1252,23 @@
                                                 'padding' : '10px',
                                                 'width': '100%'           // Sesuaikan dengan kebutuhan Anda
                                             });
+                                           
                                             newTd13Tr3Table2.append(inputElement13);
                                                     
-                                            function updateTotPriceWithoutTax() {
+                                            // function updateTotPriceWithoutTax() {
                                                 
-                                                var unit_price_without_tax = parseFloat(inputElement11.val()) || 0;
-                                                var quantity = parseFloat(inputElement7.val()) || 0;
+                                            //     var unit_price_without_tax = parseFloat(inputElement11.val()) || 0;
+                                            //     var quantity = parseFloat(inputElement7.val()) || 0;
                                             
-                                                var without_tax_tot = quantity*unit_price_without_tax;
-                                                without_tax_arr[num_key] =parseFloat(without_tax_tot)
+                                            //     var without_tax_tot = quantity*unit_price_without_tax;
+                                            //     without_tax_arr[num_key] =parseFloat(without_tax_tot)
                                             
-                                                calculatewithouttaxarr();
-                                                inputElement13.val(without_tax_tot); 
-                                            }
+                                            //     calculatewithouttaxarr();
+                                            //     inputElement13.val(without_tax_tot); 
+                                            // }
 
                                             
-                                            inputElement11.on('input', updateTotPriceWithoutTax);
+                                            // inputElement11.on('input', updateTotPriceWithoutTax);
 
                                             var newTd14Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
                                             var inputElement14 = $('<input />').attr({
@@ -1260,15 +1277,42 @@
                                                 'class': 'form-control total_price_usd_import',  
                                                 'placeholder': '',        
                                                 'type': 'text',
-                                                'value': order.total_price_usd            
+                                                'value': (order.total_price_usd).toFixed(2)
                                             }).css({
                                                 'border': '1px solid #696868',
                                                 'color' : 'black',
                                                 'padding' : '10px',
-                                                'width': '100%'           // Sesuaikan dengan kebutuhan Anda
+                                                'width': '100%'           
                                             });
+                                            
+                                            //untuk memproses mengganti nilai unit price usd & total price usd
+                                            // ketika melakukan convert
+                                            valueelement.on('change', function() {
+                                                
+                                                
+                                                var newUnitUsd = order.unit_price_without_tax / valuerate;
+                                                var newTotalUsd = order.total_price_without_tax / valuerate;
+                                                tot_price_usd[indexCounter] = newTotalUsd.toFixed(2)
+                                                unit_price_usd[indexCounter] = newUnitUsd.toFixed(2)
+                                                
+                                                //calculate totalusd
+                                                priceUSDTotalChanged +=newTotalUsd
+                                                
+                                                //menginisiasikan nilai yang baru untuk unit price usd
+                                                inputElement12.val(newUnitUsd.toFixed(2))
+                                                
+                                                //menginisiasikan nilai yang baru untuk total price usd
+                                                inputElement14.val(newTotalUsd.toFixed(2))
+                                                
+                                                //menginisiasikan nilai yang baru untuk element td 
+                                                // total price usd di tabel bawah
+                                                $('#custom-tot-price-without-tax-usd-td-tambah').text(priceUSDTotalChanged.toFixed(2))
+                                                indexCounter++;
+                                            });
+                                           
                                             newTd14Tr3Table2.append(inputElement14);
                                             
+
                                             function updateTotalPriceUsd() {
                                                 
                                                 
@@ -1279,6 +1323,7 @@
                                                 var totalPriceUsd = (parseFloat(unit_without_tax)/1)*parseFloat(qty_value);
                                                 totalPriceUsd = totalPriceUsd.toFixed(2);
                                                 tot_price_usd[num_key] = parseFloat(totalPriceUsd)
+                                              
                                                 calculatewithouttaxusdarr();
                                                 inputElement14.val(totalPriceUsd);
                                             }
@@ -1452,7 +1497,8 @@
                                             'padding': '10px 20px'
                                         });
                                         newButton.on('click', function() {
-                                            convertFunction();
+                                          
+                                            $('#myModal').modal('show')
                                         })
                                     // Append the button to the container
                                     buttonContainer.append(newButton);
@@ -1485,11 +1531,11 @@
                                     });
                                     newTd2Tr1Table3.append(inputTd2Tr1Table3)
                                     newTr1Table3.append(newTd1Tr1Table3,newTd2Tr1Table3)
-                                    inputTd2Tr1Table3.on('input', function() {
+                                    // inputTd2Tr1Table3.on('input', function() {
                                         
-                                        calculatewithouttaxarr();
-                                        calculatewithouttaxusdarr();
-                                    })
+                                    //     calculatewithouttaxarr();
+                                    //     calculatewithouttaxusdarr();
+                                    // })
                                     var newTr2Table3 = $('<tr>')
                                     var newTd1Tr2Table3 = $('<td>').css({
                                         'border': '1px solid #696868',
@@ -1509,11 +1555,11 @@
                                         value: tot_insurance,
                                         class: 'form-control custom-border', 
                                     });
-                                    inputTd2Tr2Table3.on('input', function() {
-                                        calculatewithouttaxarr();
+                                    // inputTd2Tr2Table3.on('input', function() {
+                                    //     calculatewithouttaxarr();
                                         
-                                        calculatewithouttaxusdarr();
-                                    })
+                                    //     calculatewithouttaxusdarr();
+                                    // })
                                     newTd2Tr2Table3.append(inputTd2Tr2Table3)
                                     newTr2Table3.append(newTd1Tr2Table3,newTd2Tr2Table3)
                                     newTable3.append(newTr1Table3,newTr2Table3)
@@ -1590,7 +1636,8 @@
                                         'border': '1px solid #696868', 
                                         'color': 'black',
                                     }).text('Total Price (RMB)');
-
+                                    // valuerate
+                                   
                                     var newTd2Tr4Table4 = $('<td>').attr({
                                         'id': 'custom-tot-price-without-tax-td-tambah',
                                     }).css({
@@ -1598,6 +1645,8 @@
                                         'color': 'black',
                                         'padding-left': '20px'
                                     }).text(totalPriceRmb.toFixed(2));
+
+                                    
                                     newTr4Table4.append(newTd1Tr4Table4,newTd2Tr4Table4)
 
                                     var newTr5Table4 = $('<tr>');
@@ -1674,59 +1723,73 @@
                             }
                         })
 
+                               
+
                             //memproses data dan mengirim data ke controller
                             $('#submitButtonForm2').on('click',function(){
-                                console.log('simpan')
-                                console.log($('.database-tambah').val())
-                                console.log($('#tgl_request_tambah').val())
-                                console.log($('#supplier-tambah').val())
-                                console.log($('#address_company').val())
-                                console.log($('#city').val())
-                                console.log($('#telp').val())
-                                console.log($('#incoterms-tambah-id').val())
-                                console.log($('#location_id_tab').val())
-                                console.log($('#banksupplier-tambah-id').val())
-                                console.log($('#currency-tambah-id').val())
-                                console.log($('#bank_name_id_tab').val())
-                                console.log($('#bankAddress_id_tab_tambah').val())
-                                console.log($('#swiftCode_id_tab_tambah').val());
-                                console.log($('#accountNo_id_tab_tambah').val())
-                                console.log($('#beneficiaryName_id_tab_tambah').val())
-                                console.log($('#beneficiaryAddress_id_tab_tambah').val())
-
-                                console.log('invoice_no',$('#invoice_no_tambah').val())
-                                console.log('contract_no',$('#contract_no_tambah').val())
-                                console.log('packing_no',$('#packing_no_tambah').val()) 
-                                
-                                console.log('modeadmin',$('input[name="modeadmin_tambah"]').val())
+                               
                                 var totalPriceUsdTd = $('#custom-tot-price-without-tax-usd-td-tambah').text();
-                                console.log(totalPriceUsdTd);
+             
                                 var totalPriceRmbTd = $('#custom-tot-price-without-tax-td-tambah').text();
-                                console.log(totalPriceRmbTd)
+                                
                                 var totalCbmTd = $('#total_cbm_tambah').text();
-                                console.log(totalCbmTd)
+                                
                                 var totalQtyTd = $('#qty-td-tambah').text()
-                                console.log(totalQtyTd)
+                                
                                 var totalInsuranceTd= $('#insurance_edit_id_tab_tambah').val()
-                                console.log(totalInsuranceTd)
+                                
                                 var totalFreightCostTd = $('#freight_cost_id_tab_tambah')
-                                                        
-                                var formData = {
-
-                                };
+                                var comercialImportArray = [];
+                                var comercialDetailImportArray = [];
                                 $('.comercial_import_tambah').each(function() {
                                     
-                                    var id = $(this).attr('name');
-                                    formData[id] = $(this).val();
-                                    
+                                    var value = $(this).val();
+                                    comercialImportArray.push(value);
                                 });
                                 
                                 $('.comercial_detail_import_tambah').each(function() {
                                     
-                                    var id = $(this).attr('name');
-                                    formData[id] = $(this).val();
+                                    var value = $(this).val();
+                                    comercialDetailImportArray.push(value);
                                     
-                                });
+                                });         
+                                var formData = {
+                                    database: $('.database-tambah').val(),
+                                    tgl_request: $('#tgl_request_tambah').val(),
+                                    supplier: $('#supplier-tambah').val(),
+                                    address_company: $('#address_company').val(),
+                                    city: $('#city').val(),
+                                    telp: $('#telp').val(),
+                                    incoterms_id: $('#incoterms-tambah-id').val()||"",
+                                    location_id: $('#location_id_tab').val(),
+                                    banksupplier_id: $('#banksupplier-tambah-id').val()||0,
+                                    currency_id: $('#currency-tambah-id').val()||0,
+                                    bank_name_id: $('#bank_name_id_tab').val()||"",
+                                    bank_address: $('#bankAddress_id_tab_tambah').val()||"",
+                                    swift_code: $('#swiftCode_id_tab_tambah').val(),
+                                    account_no: $('#accountNo_id_tab_tambah').val(),
+                                    beneficiary_name: $('#beneficiaryName_id_tab_tambah').val(),
+                                    beneficiary_address: $('#beneficiaryAddress_id_tab_tambah').val(),
+                                    valuerate:valuerate,
+                                    valuestatusrate:valuestatusrate,
+                                    invoice_no: $('#invoice_no_tambah').val(),
+                                    contract_no: $('#contract_no_tambah').val(),
+                                    packing_no: $('#packing_no_tambah').val(),
+                                    id_commercial:comercialImportArray,
+                                    id_commercial_detail:comercialDetailImportArray,
+                                    modeadmin: $('input[name="modeadmin_tambah"]').val(),
+                                    unit_price_usd:unit_price_usd,
+                                    tot_price_usd:tot_price_usd,
+                                    total_price_usd: $('#custom-tot-price-without-tax-usd-td-tambah').text(),
+                                    total_price_rmb: $('#custom-tot-price-without-tax-td-tambah').text(),
+                                    total_cbm: $('#total_cbm_tambah').text(),
+                                    total_qty: $('#qty-td-tambah').text(),
+                                    total_insurance: $('#insurance_edit_id_tab_tambah').val(),
+                                    total_freight_cost: $('#freight_cost_id_tab_tambah').val()
+                                };
+                                
+                                console.log('formData',formData)
+                               
 
                                 $('.chinese_import').each(function() {
                                     
@@ -1818,6 +1881,85 @@
                                     formData[id] = $(this).val();
                                     
                                 });
+                                // console.log('form Data',formData)
+                                var databaseId = $('#database_tambah_id').val();
+                                var tglRequest = $('#tgl_request_tambah').val();
+                                var supplier_tambah = $('#supplier-tambah').val();
+                                var address_company = $('#address_company').val()
+                                var city            = $('#city').val()
+                                var telp            = $('#telp').val()
+                                // Validasi input database
+                                if (!databaseId) {
+                                    Swal.fire({
+                                        icon: 'warning',
+                                        title: 'Warning!',
+                                        text: 'Database tidak boleh kosong'
+                                    });
+                                    return;
+                                }
+
+                                // Validasi input tanggal request
+                                if (!tglRequest) {
+                                    Swal.fire({
+                                        icon: 'warning',
+                                        title: 'Warning!',
+                                        text: 'Tanggal request tidak boleh kosong'
+                                    });
+                                    return;
+                                }
+                                if (!supplier_tambah) {
+                                    Swal.fire({
+                                        icon: 'warning',
+                                        title: 'Warning!',
+                                        text: 'Supplier tidak boleh kosong'
+                                    });
+                                    return;
+                                }
+                                if (!address_company) {
+                                    Swal.fire({
+                                        icon: 'warning',
+                                        title: 'Warning!',
+                                        text: 'Alamat perusahaan tidak boleh kosong'
+                                    });
+                                    return;
+                                }
+                                if (!city) {
+                                    Swal.fire({
+                                        icon: 'warning',
+                                        title: 'Warning!',
+                                        text: 'Kota perusahaan tidak boleh kosong'
+                                    });
+                                    return;
+                                }
+                                if (!telp) {
+                                    Swal.fire({
+                                        icon: 'warning',
+                                        title: 'Warning!',
+                                        text: 'No. Telp tidak boleh kosong'
+                                    });
+                                    return;
+                                }
+                                $.ajax({
+                                    url:'{{ route('admin.pembelian_fcl') }}',
+                                    type:'GET',
+                                    data:{
+                                        form:formData,
+                                        menu:'created_fcl',
+                                    },
+                                    success: function(response){
+                                        Swal.fire({
+                                                icon:'success',
+                                                title:'Success',
+                                                text:response.msg
+                                                }).then((result)=>{
+                                                if(result.isConfirmed){
+                                                    window.location.reload();
+                                                }
+                                            })
+                                    },error: function(xhr,status){
+                                        alert('Terjadi kesalahan')
+                                    }
+                                })
                                 
                                 
                                 

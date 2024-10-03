@@ -3,7 +3,6 @@
       /*rtl:end:ignore*/}/*
       /*rtl:begin:ignore*/
 /*
-
       /*rtl:end:ignore*/
 .flatpickr-months .flatpickr-prev-month.flatpickr-next-month,.flatpickr-months .flatpickr-next-month.flatpickr-next-month{/*
       /*rtl:begin:ignore*/right:0/*
@@ -599,4 +598,17 @@
                     }
                     #element-button-tambah{
                        text-align: right;
+                    }
+                    .select2-container .select2-selection--single {
+                        height: 40px !important; /* Adjust this value as needed */
+                        line-height: 40px; /* Center the text vertically */
+                        padding-top: 5px;
+                        font-size: 15px;
+                    }
+                    
+                    /* Adjust the height of the dropdown items */
+                    .select2-container .select2-results__option {
+                        height: 40px; /* Adjust this value as needed */
+                        line-height: 40px; /* Center the text vertically */
+                        
                     }

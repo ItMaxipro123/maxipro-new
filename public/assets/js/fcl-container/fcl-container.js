@@ -4,7 +4,7 @@ document.getElementById('customCodeCheckbox').addEventListener('click', function
     const invoiceInput = document.querySelector('input[name="invoice_no_tambah"]');
     const contractInput = document.querySelector('input[name="contract_no_tambah"]');
     const packingInput = document.querySelector('input[name="packing_no_tambah"]');
- 
+
     if (this.checked) {
       
       modeadminInput.value = 1;
@@ -31,6 +31,15 @@ $(document).ready(function() {
                     
     // Initialize flatpickr on the date input
     flatpickr("#tgl_request_tambah", {
+        dateFormat: "Y-m-d",
+      
+        disableMobile: true
+    });
+});
+$(document).ready(function() {
+                    
+    // Initialize flatpickr on the date input
+    flatpickr("#tgl_request_edit", {
         dateFormat: "Y-m-d",
       
         disableMobile: true

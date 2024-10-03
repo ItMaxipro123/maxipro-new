@@ -1,4 +1,23 @@
-   // Initialize Choices.js on the select element
+$('#tab-nav .nav-link').on('click', function(e) {
+    e.preventDefault();
+    $('#tab-nav .nav-link').removeClass('active');
+    $(this).addClass('active');
+    $('.tab-content').hide();
+
+    var tabId = $(this).attr('id');
+    switch(tabId) {
+        case 'master-tab':
+            $('#master-content').show();
+            break;
+        case 'pembayaran-tab':
+            $('#pembayaran-content').show();
+            break;
+        case 'ekspedisi-tab':
+            $('#ekspedisi-content').show();
+            break;
+    }
+});
+// Initialize Choices.js on the select element
    $(document).ready(function() {
                     
     // Initialize Choices.js on the select element

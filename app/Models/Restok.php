@@ -31,6 +31,27 @@ class Restok extends Model
                     return ['error' => $e->getMessage()];
                 }
         }
+        public static function getstokBarang($teknisi_cookie,$id)
+        {
+                try {
+                    $client = new Client(['verify' => false]);
+
+                    $headers = [
+                        'Cookie' => $teknisi_cookie
+                    ];
+
+                    $response = $client->request('GET', 'https://maxipro.id/TeknisiAPI/restok_viewstokproduct/'.$id, [
+                        'headers' => $headers,
+                       
+                    ]);
+
+                    $data = $response->getBody()->getContents();
+                    return json_decode($data, true);
+                }catch (\Exception $e) {
+                            // Handle exception
+                    return ['error' => $e->getMessage()];
+                }
+        }
 
         public static function getRestokFilter($teknisi_cookie,$status,$tgl_awal,$tgl_akhir,$checkdatevalue,$id_kode_barang,$nama_barang,$id_jenis)
         {

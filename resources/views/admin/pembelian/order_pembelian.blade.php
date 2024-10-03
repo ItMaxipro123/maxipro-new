@@ -166,7 +166,7 @@ Order Pembeliaan    | PT. Maxipro Group Indonesia
                         <i class="fas fa-sync-alt"></i> Reloading...
                     </div>
                       
-                    <table id="tabe-stok">
+                    <table id="tabe-stok" class="tabel_order_pembelian">
                         <thead>
                             <!-- Add table headers if needed -->
                         </thead>
@@ -534,209 +534,230 @@ Order Pembeliaan    | PT. Maxipro Group Indonesia
             window.location.href = '{{ route('admin.pembeliaan_orderpembelian') }}'; 
     })
   
-    //untuk membuat datatable
+    //untuk membuat datatable halaman datatable
     $(document).ready(function() {
-    // Initialize DataTable
-    var table = $('#tabe-stok').DataTable({
-        "dom": '<"top"lf>rt<"bottom"ip><"clear">', // Positioning of filter/search elements
-        "language": {
-            "searchPlaceholder": "Cari...",
-            "search": "Cari:",
-            "paginate": {
-                "previous": "back", // Custom text for "previous" button
-                "next": "next" // Custom text for "next" button
-            }
-        },
-        columns: [
-            { data: 'num', title: 'No' },
-            { data: 'tgl_request', title: 'Tanggal Request' },
-            { data: 'new_kode', title: 'Kode' },
-            { data: 'name', title: 'Nama Barang' },
-            { data: 'jml_permintaan', title: 'Jml Permintaan' },
-            { data: 'last_stok', title: 'Stok' },
-            { data: 'kubik', title: 'Kubik Value' },
-            { data: 'name_teknisi', title: 'User' },
-            { data: 'keterangan', title: 'Keterangan' },
-            { data: 'supplier', title: 'Supplier' },
-            { data: 'category', title: 'Kategori' },
-            {
-                data: 'link',
-                title: 'Action',
-                render: function(data, type, full, meta) {
-                    return '<a href="' + data + '</a>';
-                }
-            }
-        ],
-        "initComplete": function(settings, json) {
-            $('.dataTables_filter input[type="search"]').attr('placeholder', 'Cari ...');
-            initializeSelect2(); // Initialize Select2 after DataTable is fully initialized
-        }
-    });
-
-    // Function to initialize Select2
-    function initializeSelect2() {
-        $('.select_supplier').select2({
-            placeholder: '-',
-            allowClear: true,
-            width: 'resolve' // Adjust width as needed
-        });
-    }
-
-    // Re-initialize Select2 after every DataTable draw event (e.g., page change)
-    table.on('draw', function() {
-        initializeSelect2();
-    });
-
-    // Handle changes with Select2
-    $(document).on('change', '.select_supplier', function() {
-        var selectedValue = $(this).val();
-        var dataId = $(this).data('id');
-        
-        $('#reload-icon').show();
-
-        // Send data using AJAX
-        $.ajax({
-            url: "{{ route('admin.pembelian_select_supplier_order_pembelian') }}",
-            type: 'GET',
-            data: {
-                id: dataId,
-                supplier: selectedValue,
-                _token: $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function(response) {
-                console.log(response);
-                $('#reload-icon').hide();
-            },
-            error: function(xhr, status, error) {
-                console.error(xhr.responseText);
-            }
-        });
-    });
-    var currentPage = table.page.info().page; // Initialize with the first page
-    var previousPage = currentPage; // Initially, both current and previous are the same
-
-    // Reload the page when the "previous" button or an earlier page index is clicked
-    $(document).on('click', '.paginate_button', function() {
-        previousPage = currentPage;
-
-        // Get the new current page
-        currentPage = table.page.info().page;
-
-        console.log('previous', previousPage);
-        console.log('current', currentPage);
-
-        // Get the target page from button text
-        var targetPage = $(this).text().trim();
-        console.log('target', targetPage);
-
-        // Check if the "previous" button was clicked or if we're on the first page
-        if ($(this).hasClass('previous') || currentPage == 0 || previousPage==targetPage) {
-            location.reload(); // Reload the page
-        }
-        
- 
-    });
-    
-});
-
-
-    //untuk membuat datatable untuk  hitung kubikasi
-    $(document).ready(function() {
-        $('#tabe-stok-hitung-kubik').DataTable({
-
-            "dom": '<"top"lf>rt<"bottom"ip><"clear">', // Mengatur posisi elemen filter/search
-            "language": { // Menyesuaikan teks placeholder
+        // Initialize DataTable
+        var table = $('#tabe-stok').DataTable({
+            "dom": '<"top"lf>rt<"bottom"ip><"clear">', // Positioning of filter/search elements
+            "language": {
                 "searchPlaceholder": "Cari...",
                 "search": "Cari:",
                 "paginate": {
-                    "previous": "back", // Ganti teks untuk tombol "previous"
-                    "next": "next" // Ganti teks untuk tombol "next"
+                    "previous": "back", // Custom text for "previous" button
+                    "next": "next" // Custom text for "next" button
                 }
             },
-
             columns: [
+                { data: 'num', title: 'No' },
+                { data: 'tgl_request', title: 'Tanggal Request' },
+                { data: 'new_kode', title: 'Kode' },
+                { data: 'name', title: 'Nama Barang' },
+                { data: 'jml_permintaan', title: 'Jml Permintaan' },
+                { data: 'last_stok', title: 'Stok' },
+                { data: 'kubik', title: 'Kubik Value' },
+                { data: 'name_teknisi', title: 'User' },
+                { data: 'keterangan', title: 'Keterangan' },
+                { data: 'supplier', title: 'Supplier' },
+                { data: 'category', title: 'Kategori' },
                 {
-                    data: 'check_box',
-                    title: '<>'
+                    data: 'link',
+                    title: 'Action',
+                    render: function(data, type, full, meta) {
+                        return '<a href="' + data + '</a>';
+                    }
+                }
+            ],
+            "initComplete": function(settings, json) {
+                $('.dataTables_filter input[type="search"]').attr('placeholder', 'Cari ...');
+                initializeSelect2(); // Initialize Select2 after DataTable is fully initialized
+            }
+        });
+
+        // Function to initialize Select2
+        function initializeSelect2() {
+            $('.select_supplier').select2({
+                placeholder: '-',
+                allowClear: true,
+                width: 'resolve' // Adjust width as needed
+            });
+        }
+
+        // Re-initialize Select2 after every DataTable draw event (e.g., page change)
+        table.on('draw', function() {
+            initializeSelect2();
+        });
+
+        // Handle changes with Select2
+        $(document).on('change', '.select_supplier', function() {
+            var selectedValue = $(this).val();
+            var dataId = $(this).data('id');
+            
+            $('#reload-icon').show();
+
+            // Send data using AJAX
+            $.ajax({
+                url: "{{ route('admin.pembelian_select_supplier_order_pembelian') }}",
+                type: 'GET',
+                data: {
+                    id: dataId,
+                    supplier: selectedValue,
+                    _token: $('meta[name="csrf-token"]').attr('content')
                 },
-                {
-                    data: 'new_kode',
-                    title: 'Kode'
+                success: function(response) {
+                    console.log(response);
+                    $('#reload-icon').hide();
                 },
-                {
-                    data: 'name',
-                    title: 'Nama Barang'
-                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+        
+        var currentPage = table.page.info().page; // inisiasi dengan page 1
+        var previousPage = currentPage;  //inisiasi halaman sekarang dan sebelumnya sama
+
+        // Reload the page when the "previous" button or an earlier page index is clicked
+        // $(document).on('click', '.paginate_button', function() {
+        //     previousPage = currentPage;
+
+        //     // Get the new current page
+        //     currentPage = table.page.info().page;
+
+        //     console.log('previous', previousPage);
+        //     console.log('current', currentPage);
+
+        //     // Get the target page from button text
+        //     var targetPage = $(this).text().trim();
+        //     console.log('target', targetPage);
+
+        //     // Check if the "previous" button was clicked or if we're on the first page
+        //     if ($(this).hasClass('previous') || currentPage == 0 || previousPage==targetPage) {
+        //        console.log('masuk')
+        //         // location.reload(); // Reload the page
+        //     }
+            
+    
+        // });
+
+        //proses reload bila klik previous button dan halaman sebelumnya
+        table.on('page.dt', function() {
+            var info = table.page.info();
+            var currentPage = info.page; // Get current page
+            var previousPage = info.page - 1; // Previous page is current page - 1
+
+            console.log('Previous Page:', previousPage);
+            console.log('Current Page:', currentPage);
+
+            
+            //bila user click button previous sama dengan page sekaran dan page sekarang = 0
+            if (currentPage === 0 || previousPage === currentPage) {
+                location.reload()
+            }
+        });
+
+        
+    });
+
+
+    // //untuk membuat datatable untuk  hitung kubikasi
+    // $(document).ready(function() {
+    //     $('#tabe-stok-hitung-kubik').DataTable({
+
+    //         "dom": '<"top"lf>rt<"bottom"ip><"clear">', // Mengatur posisi elemen filter/search
+    //         "language": { // Menyesuaikan teks placeholder
+    //             "searchPlaceholder": "Cari...",
+    //             "search": "Cari:",
+    //             "paginate": {
+    //                 "previous": "back", // Ganti teks untuk tombol "previous"
+    //                 "next": "next" // Ganti teks untuk tombol "next"
+    //             }
+    //         },
+
+    //         columns: [
+    //             {
+    //                 data: 'check_box',
+    //                 title: '<>'
+    //             },
+    //             {
+    //                 data: 'new_kode',
+    //                 title: 'Kode'
+    //             },
+    //             {
+    //                 data: 'name',
+    //                 title: 'Nama Barang'
+    //             },
                 
-                {
-                    data: 'jml_permintaan',
-                    title: 'Jml Permintaan'
-                },
-                 {
-                    data: 'last_stok',
-                    title: 'Stok'
-                },
-                 {
-                    data: 'kubik',
-                    title: 'Kubik'
-                },
-                  {
-                    data: 'request_date',
-                    title: 'Request Date'
-                },
-                 {
-                    data: 'name_teknisi',
-                    title: 'User'
-                },
-                 {
-                    data: 'name_supplier',
-                    title: 'Supplier'
-                },
+    //             {
+    //                 data: 'jml_permintaan',
+    //                 title: 'Jml Permintaan'
+    //             },
+    //              {
+    //                 data: 'last_stok',
+    //                 title: 'Stok'
+    //             },
+    //              {
+    //                 data: 'kubik',
+    //                 title: 'Kubik'
+    //             },
+    //               {
+    //                 data: 'request_date',
+    //                 title: 'Request Date'
+    //             },
+    //              {
+    //                 data: 'name_teknisi',
+    //                 title: 'User'
+    //             },
+    //              {
+    //                 data: 'name_supplier',
+    //                 title: 'Supplier'
+    //             },
                  
                
 
-            ],
-            "initComplete": function(settings, json) {
+    //         ],
+    //         "initComplete": function(settings, json) {
 
-                $('.dataTables_filter input[type="search"]').attr('placeholder', 'Cari ...'); // Menyesuaikan placeholder
-            }
-        });
-    });
+    //             $('.dataTables_filter input[type="search"]').attr('placeholder', 'Cari ...'); // Menyesuaikan placeholder
+    //         }
+    //     });
+    // });
 
+    //untuk membuat datatable untuk modal hitung kubikasi
     $(document).ready(function() {
 
             
         // Initialize DataTable
-        var table = $('#tabe-stok-hitung-kubik2').DataTable({
+        var table2 = $('#tabe-stok-hitung-kubik2').DataTable({
             dom: 'lrtip', // Customize the DataTable DOM
             responsive: true, // Enable responsive mode
             
         });
+        
         $('#search-box').on('keyup', function() {
-        table.search(this.value).draw();
-    });
+            table2.search(this.value).draw();
+        });
         $('#downloadpdfButton').click(function() {
             if (!$('#filterCheckedToggle').is(':checked')) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Pilih barang, lalu centang filter',
-                confirmButtonText: 'OK'
-            });
-            return false; // Prevent any default action or further code execution
-        }
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Pilih barang, lalu centang filter',
+                    confirmButtonText: 'OK'
+                });
+                return false; // Prevent any default action or further code execution
+            }
         });
             $('#filterCheckedToggle').on('change', function() {
                 
                 if (this.checked) {
                     $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
-                        return $(table.row(dataIndex).node()).find('.kubik-checkbox').is(':checked');
+                        return $(table2.row(dataIndex).node()).find('.kubik-checkbox').is(':checked');
                     });
                     
                 } else {
                     $.fn.dataTable.ext.search.pop();
                 }
-                table.draw();
+                table2.draw();
                 $('#downloadpdfButton').click(function() {
                     // Collect checked items
                     
@@ -801,6 +822,7 @@ Order Pembeliaan    | PT. Maxipro Group Indonesia
 
     
     });
+    
 </script>
 
 

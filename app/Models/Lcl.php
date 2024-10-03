@@ -18,7 +18,7 @@ class Lcl extends Model
 
         try{
             $client = new \GuzzleHttp\Client(['verify' => false]);
-
+       
             $headers = [
                 'Cookie' => $teknisi_cookie
             ];
@@ -40,7 +40,7 @@ class Lcl extends Model
                         'matauang'=>$data['matauang'],
                         'matauang_asal'=>$data['matauang_asal'],
                         'statusconvert'=>$data['statusconvert'],
-                        'keterangan'=>$data['keterangan'],
+                       
                         'cabang'=>$data['cabang'],
                         'td_ppn'=>$data['td_ppn'],
                  
@@ -69,7 +69,7 @@ class Lcl extends Model
                         'matauang'=>$data['matauang'],
                         'matauang_asal'=>$data['matauang_asal'],
                         'statusconvert'=>$data['statusconvert'],
-                        'keterangan'=>$data['keterangan'],
+                       
                         'cabang'=>$data['cabang'],
                         'td_ppn'=>$data['td_ppn'],
                  
@@ -89,7 +89,7 @@ class Lcl extends Model
             }
             
             else{
-                
+             
                 $formParams = [
                     'database'=> $data['database'],
                     'noreferensi'=> $data['noreferensi'],
@@ -100,7 +100,7 @@ class Lcl extends Model
                     'matauang'=>$data['matauang'],
                     'matauang_asal'=>$data['matauang_asal'],
                     'statusconvert'=>$data['statusconvert'],
-                    'keterangan'=>$data['keterangan'],
+                
                     'cabang'=>$data['cabang'],
                     'td_ppn'=>$data['td_ppn'],
                     'td_subtotal'=>$data['td_subtotal'],
@@ -245,7 +245,7 @@ class Lcl extends Model
                 return json_decode($data2, true);
             }
             else{
-              
+        
                 foreach ($data['iditem']  as $key => $value) {
                     $lastChar = substr($key, -1);
                     $newKey = "iditem[{$lastChar}]";
@@ -260,6 +260,7 @@ class Lcl extends Model
                     $key_index++;
                     $key_index_array[] = $newKey;
                 }
+                
                 foreach ($data['idrestok']  as $key => $value) {
                     $lastChar = substr($key, -1);
                     $newKey = "idrestok[{$lastChar}]";
@@ -267,6 +268,7 @@ class Lcl extends Model
                     $key_index++;
                     $key_index_array[] = $newKey;
                 }
+             
                 foreach ($data['price_asal'] as $key => $value) {
                     $lastChar = substr($key, -1);
                     $newKey = "price_asal[{$lastChar}]";
@@ -274,6 +276,7 @@ class Lcl extends Model
                     $key_index++;
                     $key_index_array[] = $newKey;
                 }
+                
                 if($data['statusconvert']==0){
                     foreach ($data['price_asal'] as $key => $value) {
                         $lastChar = substr($key, -1);
@@ -283,6 +286,7 @@ class Lcl extends Model
                         $key_index_array[] = $newKey;
                     }
                 }
+                
                 foreach ($data['qty'] as $key => $value) {
                     $lastChar = substr($key, -1);
                     $newKey = "qty[{$lastChar}]";
@@ -290,6 +294,7 @@ class Lcl extends Model
                     $key_index++;
                     $key_index_array[] = $newKey;
                 }
+                
                 foreach ($data['disc'] as $key => $value) {
                     $lastChar = substr($key, -1);
                     $newKey = "disc[{$lastChar}]";
@@ -297,6 +302,7 @@ class Lcl extends Model
                     $key_index++;
                     $key_index_array[] = $newKey;
                 }
+                
                 foreach ($data['ppn_item'] as $key => $value) {
                     $lastChar = substr($key, -1);
                     $newKey = "ppn_item[{$lastChar}]";
@@ -304,6 +310,7 @@ class Lcl extends Model
                     $key_index++;
                     $key_index_array[] = $newKey;
                 }
+                
                 foreach ($data['gudang'] as $key => $value) {
                     $lastChar = substr($key, -1);
                     $newKey = "gudang[{$lastChar}]";
@@ -311,6 +318,7 @@ class Lcl extends Model
                     $key_index++;
                     $key_index_array[] = $newKey;
                 }
+                
                 foreach ($data['subtot_arr'] as $key => $value) {
                     $lastChar = substr($key, -1);
                     $newKey = "subtotal[{$lastChar}]";
@@ -318,6 +326,7 @@ class Lcl extends Model
                     $key_index++;
                     $key_index_array[] = $newKey;
                 }
+                
                 foreach ($data['price_ppn'] as $key => $value) {
                     $lastChar = substr($key, -1);
                     $newKey = "priceppn[{$lastChar}]";
@@ -325,6 +334,7 @@ class Lcl extends Model
                     $key_index++;
                     $key_index_array[] = $newKey;
                 }
+                
                 foreach ($data['idcommercial'] as $key => $value) {
                     $lastChar = substr($key, -1);
                     $newKey = "idcommercial[{$lastChar}]";
@@ -332,9 +342,9 @@ class Lcl extends Model
                     $key_index++;
                     $key_index_array[] = $newKey;
                 }
-              
+                
                 $formParams = array_merge($formParams,$array);
-                // dd($data,$formParams);
+                
                 $response = $client->request('POST', 'https://maxipro.id/TeknisiAPI/lcl_create', [
                     'form_params' => $formParams,
                     'headers' => $headers,
@@ -681,6 +691,29 @@ class Lcl extends Model
             return ['error' => $e->getMessage()];
         }
     }
+    public static function getSelectEkspedisi($teknisi_cookie)
+    {
+        try {
+            $client = new Client(['verify' => false]);
+
+            $headers = [
+                'Cookie' => $teknisi_cookie
+            ];
+
+            $response = $client->request('GET', 'https://maxipro.id/TeknisiAPI/select_ekspedisi', [
+                'headers' => $headers,
+
+            ]);
+
+            
+            $data = $response->getBody()->getContents();
+            
+            return json_decode($data, true);
+        } catch (\Exception $e) {
+            // Handle exception
+            return ['error' => $e->getMessage()];
+        }
+    }
 
     public static function getLclPembelianFilter($teknisi_cookie, $status, $tgl_awal, $tgl_akhir, $checkdatevalue, $invoice)
     {
@@ -836,7 +869,7 @@ class Lcl extends Model
         }
     }
 
-    public static function getHapusOrderPembelian($teknisi_cookie, $id)
+    public static function getDeleteLcl($teknisi_cookie, $invoice)
     {
         try {
             $client = new Client(['verify' => false]);
@@ -845,14 +878,14 @@ class Lcl extends Model
                 'Cookie' => $teknisi_cookie
             ];
 
-            $response = $client->request('delete', 'https://maxipro.id/TeknisiAPI/order_pembelian_hapus/' . $id, [
+            $response = $client->request('delete', 'https://maxipro.id/TeknisiAPI/lcl_hapuslcl/' . $invoice, [
                 'headers' => $headers,
 
             ]);
 
             $data = $response->getBody()->getContents();
             $Data = json_decode($data, true);
-
+            // dd($Data);
             return json_decode($data, true);
         } catch (\Exception $e) {
             // Handle exception

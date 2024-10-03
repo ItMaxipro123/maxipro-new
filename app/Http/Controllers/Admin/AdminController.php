@@ -1142,6 +1142,10 @@ class AdminController extends Controller
             }
             return view('admin.pembelian.restok', compact('username', 'data', 'Data'));
         }
+        else {
+
+            return redirect()->route('login');
+        }
     }
 
     public function pembeliaan_restok_filter(Request $request)
@@ -1168,6 +1172,10 @@ class AdminController extends Controller
             }
 
             return view('admin.pembelian.restok_filter', compact('username', 'data', 'Data','id_jenis'));
+        }
+        else {
+
+            return redirect()->route('login');
         }
     }
 
@@ -1206,6 +1214,10 @@ class AdminController extends Controller
                 return response()->json(['error' => $e->getMessage()], 500);
             }
         }
+        else {
+
+            return redirect()->route('login');
+        }
     }
 
     public function pembelian_restok_tambah_filter(Request $request)
@@ -1218,8 +1230,8 @@ class AdminController extends Controller
         $product = $request->input('product');
         $laststok = $request->input('laststok');
         $jml_permintaan = $request->input('jml_permintaan');
-        $keterangan = $request->input('keterangan');
-
+        $keterangan = $request->input('keterangan') ?? '';
+         // dd($tgl_request,$product,$laststok,$jml_permintaan,$teknisi_id,$keterangan);
 
         $client = new Client([
             'verify' => false, // Matikan verifikasi SSL
@@ -1246,11 +1258,15 @@ class AdminController extends Controller
 
                 $body = $response->getBody()->getContents();
                 $Data = json_decode($body, true);
-                // dd($Data);
+                return response()->json($Data, 200);
             } catch (GuzzleException $e) {
                 // Tangani pengecualian jika terjadi kesalahan dalam permintaan Guzzle
                 echo "Error: " . $e->getMessage();
             }
+        }
+        else {
+
+            return redirect()->route('login');
         }
     }
 
@@ -1680,6 +1696,7 @@ class AdminController extends Controller
         $data = Session::get('teknisi_id');
         $responseData = json_decode($data, true);
         $comercialInvoiceModel = new \App\Models\ComercialInvoice();
+        $lclPembelianModel = new \App\Models\LCL();
         $menu=$request->input('menu');
         if (isset($responseData)) {
             if($menu=='create_local'){
@@ -1688,6 +1705,143 @@ class AdminController extends Controller
                 $Data = $comercialInvoiceModel->getSupplierComercialInvoice($teknisi_cookie);
                 
                 return response()->json($Data,200);
+            }
+            elseif($menu=='tambah_lcl_local'){
+                $username = $responseData;
+                $teknisi_cookie = $responseData['cookie'];
+                $formDataSend = $request->input('form');
+                // dd($formDataSend);
+                $combinedParams =[
+                    'category_comercial_invoice'=>$formDataSend['category_comercial_invoice'],
+                    'mode_admin'=>$formDataSend['modeadmin'],
+                    'database' =>$formDataSend['database'],
+                    'supplier'=>$formDataSend['supplier'],
+                    'invoice_no' => $formDataSend['invoice_no'] ?? '',
+                    'packing_no' => $formDataSend['packing_no'] ?? '',
+                    'contract_no' => $formDataSend['contract_no'] ?? '',
+                    'address_company' => $formDataSend['address_company'] ?? '',
+                    'city' => $formDataSend['city'] ?? '',
+                    'name' => $formDataSend['name'] ?? '',
+                    'telp' => $formDataSend['telp'] ?? '',
+                    'no_referensi' => $formDataSend['no_referensi'] ?? '',
+                    'tgl_transaksi' => $formDataSend['tgl_transaksi'] ?? '',
+                    'matauang' => $formDataSend['matauang'] ?? '',
+                    'keterangan' => $formDataSend['keterangan'] ?? '',
+                    'kategori' => $formDataSend['kategori'] ?? '',
+                    'cabang' => $formDataSend['cabang'] ?? '',
+                    'status_ppn' => $formDataSend['status_ppn'] ?? '',
+                    'include_ppn' => $formDataSend['include_ppn'] ?? '',
+                    'td_subtotal' => $formDataSend['td_subtotal'] ?? '',
+                    'discount_percent' => $formDataSend['discount_percent'] ?? '',
+                    'discount_nominal' => $formDataSend['discount_nominal'] ?? '',
+                    'ppn_11' => $formDataSend['ppn_11'] ?? '',
+                    'total' => $formDataSend['total'] ?? '',
+                    'id_item' => $formDataSend['id_item'] ?? '',
+                    'nama_item' => $formDataSend['nama_item'] ?? '',
+                    'harga_asal' => $formDataSend['harga_asal'] ?? '',
+                    'qty' => $formDataSend['qty'] ?? '',
+                    'disc' => $formDataSend['disc'] ?? '',
+                    'subtotal' => $formDataSend['subtotal'] ?? '',
+                    'ppn' => $formDataSend['ppn'] ?? '',
+                    'td_ppn' => $formDataSend['td_ppn_harga'] ?? '',
+                    'gudang' => $formDataSend['gudang'] ?? '',
+                    'account' =>$formDataSend['account'],
+                    'termin' =>$formDataSend['termin'],
+                    'restok'=>$formDataSend['restok'],
+                    'length_m'=>$formDataSend['length_m'],
+                    'length_p'=>$formDataSend['length_p'],
+                    'width_m'=>$formDataSend['width_m'],
+                    'width_p'=>$formDataSend['width_p'],
+                    'height_m'=>$formDataSend['height_m'],
+                    'height_p'=>$formDataSend['height_p'],
+                    'brand' => isset($formDataSend['brand']) ? $formDataSend['brand'] : '',
+                    'model' => isset($formDataSend['model']) ? $formDataSend['model'] : '',
+                    'chinese_name'=>$formDataSend['chinese_name'],
+                    'english_name'=>$formDataSend['english_name'],
+                    'nett_weight'=>$formDataSend['nett_weight'],
+                    'gross_weight'=>$formDataSend['gross_weight'],
+                    'cbm'=>$formDataSend['cbm'],
+                    'hs_code'=>$formDataSend['hs_code'],
+                    
+                ];
+                $Data = $comercialInvoiceModel->tambahCommercialLocalLcl($teknisi_cookie,$combinedParams);
+                // dd($Data);
+                if($formDataSend['category_comercial_invoice']=='local'){
+                    dd('a');
+                }
+                else{
+                    
+                   
+                    $fomrSend =[
+                            // 'includeppn'=>$include_ppn,
+                            'database' => $formDataSend['database'],
+                            'noreferensi' => $formDataSend['no_referensi'],
+                            'tgl_transaksi' => $formDataSend['tgl_transaksi'],
+                            'termin' => $formDataSend['termin'],
+                            'account' =>$formDataSend['account'],
+                            'supplier'=>$formDataSend['supplier'],
+                            'matauang'=>$formDataSend['matauang'],
+                            'matauang_asal'=>$formDataSend['matauang'],
+                            'statusconvert'=>0,
+                            'valuenominalconvert'=>1,
+                            'valuecategoryconvert'=>'default',
+                            'iditem' => $formDataSend['id_item'],
+                            'iditem_select'=>null,
+                            'idcommercial' => [$Data['idcommercial']],
+                            
+                            'item'=>$formDataSend['nama_item'],
+                            'idrestok' => [$Data['idrestok']],
+
+                            
+                            'price_asal'=>$formDataSend['harga_asal'],
+                            
+                            'price_invoice'=>0,
+                            'qty'=>$formDataSend['qty'],
+                            'disc'=>$formDataSend['disc'],
+                            'ppn_item'=>$formDataSend['ppn'],
+                            'gudang'=>$formDataSend['gudang'],
+                            
+                
+                            'keterangan'=>$formDataSend['keterangan'],
+                            'cabang'=>$formDataSend['cabang'],
+                            
+                            'subtot_arr'=>$formDataSend['subtotal'],
+                            
+                            'price_ppn'=>$formDataSend['td_ppn_harga'],
+                            'td_ppn'=>$formDataSend['ppn_11'],
+                            'td_subtotal'=>$formDataSend['td_subtotal'],
+                            'td_total'=>$formDataSend['total'],
+                            'td_discount'=>$formDataSend['discount_percent'],
+                            'td_discount_nominal'=>$formDataSend['discount_nominal'],
+                            'ppn'=>$formDataSend['status_ppn'],
+                            'includeppn'=>$formDataSend['include_ppn'],
+                    ];
+                    // dd($fomrSend);
+                    $DataLcl = $lclPembelianModel->tambahLcl($teknisi_cookie, $fomrSend);
+                    $DataLclMsg = is_array($DataLcl['msg']) ? $DataLcl['msg'] : [$DataLcl['msg']];
+                    $DataLclMsg = array_merge($DataLclMsg, ['idpembelianlcl' => $DataLcl['idpembelianlcl']]);
+                    $DataMsg = is_array($Data['msg']) ? $Data['msg'] : [$Data['msg']];
+                    $Data = array_merge($Data, ['msg2' => $DataLcl['msg']]);
+                    // Merge the messages
+                    $combinedResponse = array_merge($DataLcl,$Data);
+                    // $combinedResponseString = implode(' dan ',$combinedResponse);
+                    // dd($combinedResponse);
+                    
+                    // dd($combinedResponseString);
+                    return response()->json($combinedResponse,200);
+                }
+                
+            }
+            elseif($menu=='delete_comercial_invoice'){
+                $id_comercial = $request->input('id');
+                $username = $responseData;
+                $teknisi_cookie = $responseData['cookie'];
+                $Data = $comercialInvoiceModel->deleteCommercialInvoice($teknisi_cookie,$id_comercial);
+                // dd($Data);
+                return response()->json($Data,200);
+            }
+            elseif($menu=='print_purchase_order'){
+                dd('masuk purchase');
             }
             else{
 
@@ -2081,8 +2235,8 @@ class AdminController extends Controller
                 'contractnumber'=>$contract_no,
             ];
             
-      
-    //   dd($data['address']);
+            // dd($data);
+            //   dd($data['address']);
         if (isset($responseData)) {
             $username = $responseData;
             $teknisi_cookie = $responseData['cookie'];
@@ -2365,15 +2519,33 @@ class AdminController extends Controller
                 }
                 return response()->json($Data);
             }
+            //untuk select ekspedisi
+            elseif($menu=='select_ekspedisi'){
+                $Data = $lclPembelianModel->getSelectEkspedisi($teknisi_cookie);
+                if(isset($Data['error'])){
+                    return response()->json($Data,500);
+                }
+                return response()->json($Data);
+            }
             //untuk select item
             elseif($menu=='select_item'){
                 $id = $request->input('id');
                 $Data_barang = $lclPembelianModel->getLclAddBarang($teknisi_cookie,$id);
-             
+                
+                
                 if (isset($Data['error'])) {
                     return response()->json($Data_barang, 500);
                 }
                 return response()->json($Data_barang);
+            }
+            elseif($menu=='stok_gudang'){
+                $id = $request->input('id');
+                $restokPembelianModel = new \App\Models\Restok();
+                $Data_restok = $restokPembelianModel->getstokBarang($teknisi_cookie,$id);
+                if (isset($Data['error'])) {
+                    return response()->json($Data_restok, 500);
+                }
+                return response()->json($Data_restok);
             }
             elseif($menu=='tambah_ekspedisi'){
                 $send_data = [
@@ -2424,6 +2596,14 @@ class AdminController extends Controller
                 // dd($Data);
                 return response()->json($Data);
             }
+            elseif($menu=='delete_lcl'){
+                $invoice = $request->input('invoice');
+                $invoice = $request->input('invoice');
+                $Data = $lclPembelianModel->getDeleteLcl($teknisi_cookie, $invoice);
+             
+                // dd('Data',$Data);
+                return response()->json($Data);
+            }
             //untuk halaman get view
             else{
 
@@ -2435,6 +2615,9 @@ class AdminController extends Controller
                 }
                 return view('admin.pembelian.lcl_pembelian', compact('username', 'data', 'Data','Data_barang'));
             }
+        }else {
+
+            return redirect()->route('login');
         }
     }
 
@@ -2463,6 +2646,9 @@ class AdminController extends Controller
                 return response()->json($Data, 500);
             }
             return view('admin.pembelian.lcl_pembelian_filter', compact('username', 'data', 'Data','Data_barang'));
+        }else {
+
+            return redirect()->route('login');
         }
     }
 
@@ -2764,6 +2950,44 @@ class AdminController extends Controller
                     $Data = $fclPembelian->getFclPembelian($teknisi_cookie);
                     
                     return view('admin.pembelian.fcl_pembelian_create', compact('Data'));
+                }elseif($menu=='created_fcl'){
+                    
+                    $username = $responseData;
+
+                    $teknisi_cookie = $responseData['cookie'];
+                    $form = $request->input('form');
+                    $Data = $fclPembelian->createdFclPembelian($teknisi_cookie,$form);
+                    // dd('forma a',$form,'model',$Data);
+                    // dd($Data);
+                    return response()->json($Data,200);
+                    
+                }
+                elseif($menu=='update'){
+                    
+                    $username = $responseData;
+
+                    $teknisi_cookie = $responseData['cookie'];
+                    $invoice = $request->input('invoice');
+                    $Data = $fclPembelian->editFclPembelian($teknisi_cookie,$invoice);
+                    // dd($Data);
+                    // return response()->json($Data,200);
+                    return view('admin.pembelian.edit_fcl', compact('username', 'Data'));
+                }
+                elseif($menu=='updated_fcl'){
+                    $teknisi_cookie = $responseData['cookie'];
+                    $form = $request->input('form');
+                    $Data = $fclPembelian->updatedFclPembelian($teknisi_cookie,$form);
+                    
+                    return response()->json($Data,200);
+
+                }
+                elseif($menu=='delete_fcl'){
+                    $teknisi_cookie = $responseData['cookie'];
+                    $invoice = $request->input('invoice');
+                    // dd($invoice);
+                    $Data = $fclPembelian->deletedFclPembelian($teknisi_cookie,$invoice);
+                    // dd($Data);
+                    return response()->json($Data,200);
                 }
                 elseif($menu=='importbarang'){
                     $id = $request->input('id_commercial');
@@ -2789,6 +3013,10 @@ class AdminController extends Controller
                     return view('admin.pembelian.fcl_pembelian', compact('username', 'data', 'Data'));
                 }
             }
+        }
+        else {
+
+            return redirect()->route('login');
         }
     }
 
@@ -3610,12 +3838,14 @@ class AdminController extends Controller
         $data = Session::get('teknisi_id');
         $responseData = json_decode($data, true);
         // dd($responseData);
+        // dd($responseData);
         try {
             // Create a new GuzzleHTTP client with verify option set to false
             $client = new Client([
                 'verify' => false
             ]);
             $teknisi_cookie = $responseData['cookie'];
+            // dd($teknisi_cookie);
             // Define headers for the request
             $headers = [
                 'Cookie' => $teknisi_cookie
@@ -3625,6 +3855,7 @@ class AdminController extends Controller
             $response = $client->request('GET', 'https://maxipro.id/TeknisiAPI/logout', [
                 'headers' => $headers
             ]);
+            
             Session::forget('teknisi_id');
             // Redirect to the login route
             return redirect()->route('login');

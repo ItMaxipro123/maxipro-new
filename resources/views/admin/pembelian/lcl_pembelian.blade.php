@@ -35,7 +35,7 @@ LCL   | PT. Maxipro Group Indonesia
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-12">
-                               <a href="javascript:void(0)" id="tambah_lcl" onclick="tambahRestok()" name="tambahButton" class="btn btn-large btn-primary btn-tambah">Add LCL</a>
+                               <!-- <a href="javascript:void(0)" id="tambah_lcl" onclick="tambahRestok()" name="tambahButton" class="btn btn-large btn-primary btn-tambah">Add LCL</a> -->
                                <input type="hidden" id="lclValue" value="0">
                                 <div class="d-flex justify-content-end">
                                    
@@ -843,6 +843,7 @@ LCL   | PT. Maxipro Group Indonesia
 
                                     </div>
 
+                                    <!-- modal menampilkan data ketika edit row di tabel ekspedisi  -->
                                     <div class="modal fade" id="editModalEksepedisiLcl" tabindex="-1" role="dialog" aria-labelledby="editModalEksepedisiLclLabel" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
@@ -1284,7 +1285,7 @@ LCL   | PT. Maxipro Group Indonesia
     $(document).ready(function() {
 
         
-         var table = $('#tabe-stok').DataTable({
+        var table = $('#tabe-stok').DataTable({
         "dom": '<"top"lf>rt<"bottom"ip><"clear">',
         "language": {
             "searchPlaceholder": "Cari...",
@@ -1353,14 +1354,14 @@ LCL   | PT. Maxipro Group Indonesia
                 data: null,
                 title: 'Action',
                 render: function(data, type, full, meta) {
-         
+                    
                     return `
                         <button type="button" 
                                 data-id="${data.invoice}" 
                                 name="${data.invoice}" 
                                 class="btn btn-large btn-info btn-edit" 
                                 style="width: 35px; height: 38px; padding: 9px 10px;" 
-                                title="${data.invoice}"
+                                title="Edit Invoice"
                                 onclick="editInvoice(this)">
                             <i class="fas fa-edit"></i>
                         </button>
@@ -1552,7 +1553,7 @@ LCL   | PT. Maxipro Group Indonesia
         // Menggunakan SweetAlert2 untuk konfirmasi penghapusan
         Swal.fire({
             title: 'Konfirmasi',
-            text: "Apakah Anda yakin ingin menghapus order pembelian ini " + restokName + " ?",
+            text: "Apakah Anda yakin ingin menghapus invoice " + restokName + " ?",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -1561,13 +1562,14 @@ LCL   | PT. Maxipro Group Indonesia
             cancelButtonText: 'Batal'
         }).then((result) => {
             if (result.isConfirmed) {
-                var url = "{{ route('admin.pembelian_hapus_order_pembelian') }}";
+                var url = "{{ route('admin.pembelian_lcl') }}";
                 $('#reload-icon').show();
                 $.ajax({
                     url: url,
                     type: 'GET',
                     data: {
-                        id: id
+                        menu:'delete_lcl',
+                        invoice: restokName
                     },
                     success: function(response) {
                         // Handle response jika sukses
@@ -3709,9 +3711,7 @@ LCL   | PT. Maxipro Group Indonesia
                                 tambah_resi_ekspedisi:tambah_resi_ekspedisi
                             },
                             success: function(response){
-                                // if(array_keterangan.length!=0){
-                                    
-                                // }
+                             
                                 array_tgl.push(response.tgl_kirim);
                                 array_kode.push(response.kodepengiriman);
                                 array_rute.push(response.rute);
@@ -3805,6 +3805,7 @@ LCL   | PT. Maxipro Group Indonesia
                                                 click: function() {
                                                     var getIndex = $(this).closest('tr').index(); // Ambil indeks baris
                                                     $('#editModalEksepedisiLcl').modal('show');
+                                                    
                                                     var currentIndex=0
                                                     var curIndex=0;
                                                     if (array_keterangan.length > 0 && array_keterangan.length !=ekspedisi_row_tambah.length) {
@@ -4037,6 +4038,33 @@ LCL   | PT. Maxipro Group Indonesia
                                 $('.edit_biaya_ekspedisi_lcl').val(array_price[getIndex])
                                 $('.rute_ekspedisi').val(array_rute[getIndex]).trigger('change')
                                 $('.edit_ekspedisi_lcl').val(array_nama[getIndex]).trigger('change')
+                                $('#editModalEksepedisiLcl').on('shown.bs.modal', function () {
+
+                             
+
+
+                                    const editRuteEkspedisi = new Choices('#rute_ekspedisi', {
+                                        searchEnabled: true,  // Enable search
+                                        removeItemButton: true,  // Allow clearing the selection
+                                        shouldSort: false,  // Keep the order of the options
+                                        itemSelectText: '',  // Text for selecting items (empty if you don't want text)
+                                    });
+                                    editRuteEkspedisi.setChoiceByValue(array_rute[getIndex]);
+                                    const editMatauangEkspedisi = new Choices('#edit_matauang_ekspedisi', {
+                                        searchEnabled: true,  // Enable search
+                                        removeItemButton: true,  // Allow clearing the selection
+                                        shouldSort: false,  // Keep the order of the options
+                                        itemSelectText: '',  // Text for selecting items (empty if you don't want text)
+                                    });
+                                    editMatauangEkspedisi.setChoiceByValue(array_matauang[getIndex]);
+                                    const editEkspedisi = new Choices('#edit_ekspedisi_lcl', {
+                                        searchEnabled: true,  // Enable search
+                                        removeItemButton: true,  // Allow clearing the selection
+                                        shouldSort: false,  // Keep the order of the options
+                                        itemSelectText: '',  // Text for selecting items (empty if you don't want text)
+                                    });
+                                    editEkspedisi.setChoiceByValue(array_nama[getIndex]);
+                                })
                                 $('.edit_no_resi').val(array_resi[getIndex])
                                 $('.edit_keterangan').val(array_keterangan[getIndex])
                                 $('#update_ekspedisi').data('index', getIndex); 
@@ -4046,37 +4074,37 @@ LCL   | PT. Maxipro Group Indonesia
                               
                         // Create the delete button
                         var deleteButtonEksepedisi = $('<button>')
-        .addClass('btn btn-sm btn-danger')
-        .css({ 'margin-left': '5px' })
-        .html('<i class="fas fa-trash"></i>')
-        .attr('title', 'Delete')
-        .on('click', function() {
-            var itemIndex3 = $(this).closest('tr').index(); // Get index of the row
+                        .addClass('btn btn-sm btn-danger')
+                        .css({ 'margin-left': '5px' })
+                        .html('<i class="fas fa-trash"></i>')
+                        .attr('title', 'Delete')
+                        .on('click', function() {
+                            var itemIndex3 = $(this).closest('tr').index(); // Get index of the row
 
-            // Remove item from arrays
-            array_kode.splice(itemIndex3, 1);
-            array_tgl.splice(itemIndex3, 1);
-            array_rute.splice(itemIndex3, 1);
-            array_nama.splice(itemIndex3, 1);
-            array_resi.splice(itemIndex3, 1);
-            array_price.splice(itemIndex3, 1);
-            array_keterangan.splice(itemIndex3, 1);
-            array_matauang.splice(itemIndex3, 1);
+                            // Remove item from arrays
+                            array_kode.splice(itemIndex3, 1);
+                            array_tgl.splice(itemIndex3, 1);
+                            array_rute.splice(itemIndex3, 1);
+                            array_nama.splice(itemIndex3, 1);
+                            array_resi.splice(itemIndex3, 1);
+                            array_price.splice(itemIndex3, 1);
+                            array_keterangan.splice(itemIndex3, 1);
+                            array_matauang.splice(itemIndex3, 1);
 
-            // Remove the row from the table
-            $(this).closest('tr').remove();
+                            // Remove the row from the table
+                            $(this).closest('tr').remove();
 
-            // Log the updated arrays after deletion
-            console.log('Deleted row and updated arrays for index:', itemIndex3);
-            console.log('array_kode:', array_kode);
-            console.log('array_tgl:', array_tgl);
-            console.log('array_rute:', array_rute);
-            console.log('array_nama:', array_nama);
-            console.log('array_resi:', array_resi);
-            console.log('array_price:', array_price);
-            console.log('array_keterangan:', array_keterangan);
-            console.log('array_matauang:', array_matauang);
-        });
+                            // Log the updated arrays after deletion
+                            console.log('Deleted row and updated arrays for index:', itemIndex3);
+                            console.log('array_kode:', array_kode);
+                            console.log('array_tgl:', array_tgl);
+                            console.log('array_rute:', array_rute);
+                            console.log('array_nama:', array_nama);
+                            console.log('array_resi:', array_resi);
+                            console.log('array_price:', array_price);
+                            console.log('array_keterangan:', array_keterangan);
+                            console.log('array_matauang:', array_matauang);
+                        });
                             $('#update_ekspedisi').on('click',function(){
                         
                         
@@ -4207,33 +4235,24 @@ LCL   | PT. Maxipro Group Indonesia
                     allowClear: true, // Optional, to allow clearing the selection
                     width: 'resolve' 
                 });
-                $('#edit_matauang_ekspedisi').select2({
-                    placeholder: "Pilih Mata Uang", // Optional placeholder
-                    allowClear: true, // Optional, to allow clearing the selection
-                    width: 'resolve' 
-                });
+                // $('#edit_matauang_ekspedisi').select2({
+                //     placeholder: "Pilih Mata Uang", // Optional placeholder
+                //     allowClear: true, // Optional, to allow clearing the selection
+                //     width: 'resolve' 
+                // });
                 $('#rute').select2({
                     placeholder: "Pilih Rute", // Optional placeholder
                     allowClear: true, // Optional, to allow clearing the selection
                     width: 'resolve' 
                 });
-                $('#rute_ekspedisi').select2({
-                    placeholder: "Pilih Rute", // Optional placeholder
-                    allowClear: true, // Optional, to allow clearing the selection
-                    width: 'resolve' 
-                });
+
                 $('#ekspedisi').select2({
                     placeholder: "Pilih ekspedisi", // Optional placeholder
                     allowClear: true, // Optional, to allow clearing the selection
                     width: 'resolve' 
                 });
                 
-                $('#edit_ekspedisi_lcl').select2({
-                    placeholder: "Pilih ekspedisi", // Optional placeholder
-                    allowClear: true, // Optional, to allow clearing the selection
-                    width: 'resolve' 
-                });
-                
+        
                     id_lcl = pembelianLcl.id
                     // console.log('pembelianLcl',pembelianLcl)
                     var checboxppn = $('#flexCheckDefault');

@@ -3,7 +3,6 @@
       /*rtl:end:ignore*/}/*
       /*rtl:begin:ignore*/
 /*
-
       /*rtl:end:ignore*/
 .flatpickr-months .flatpickr-prev-month.flatpickr-next-month,.flatpickr-months .flatpickr-next-month.flatpickr-next-month{/*
       /*rtl:begin:ignore*/right:0/*
@@ -251,6 +250,11 @@
             padding-top:15px;
         }
         .border-input{
+            border: 1px solid #ced4da;
+            width: 100%;
+            padding-left:20px;
+        } 
+        .border-statusrate{
             border: 1px solid #ced4da;
             width: 100%;
             padding-left:20px;
