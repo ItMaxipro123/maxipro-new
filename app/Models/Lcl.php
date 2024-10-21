@@ -8,7 +8,7 @@ use GuzzleHttp\Client;
 
 class Lcl extends Model
 {
-    public static function tambahLcl($teknisi_cookie,$data){
+    public static function tambahLocal($teknisi_cookie,$data){
  
         $array_data = [];
         
@@ -31,6 +31,7 @@ class Lcl extends Model
                 
                     
                     $formParams = [
+                        'category_comercial_invoice'=>$data['category_comercial'],
                         'database'=> $data['database'],
                         'noreferensi'=> $data['noreferensi'],
                         'tgl_transaksi'=>$data['tgl_transaksi'],
@@ -60,6 +61,7 @@ class Lcl extends Model
                 else{
                     
                     $formParams = [
+                        'category_comercial_invoice'=>$data['category_comercial'],
                         'database'=> $data['database'],
                         'noreferensi'=> $data['noreferensi'],
                         'tgl_transaksi'=>$data['tgl_transaksi'],
@@ -89,8 +91,9 @@ class Lcl extends Model
             }
             
             else{
-             
+            
                 $formParams = [
+                    'category_comercial_invoice'=>$data['category_comercial'],
                     'database'=> $data['database'],
                     'noreferensi'=> $data['noreferensi'],
                     'tgl_transaksi'=>$data['tgl_transaksi'],
@@ -233,8 +236,8 @@ class Lcl extends Model
                 }
                 
                 $formParams = array_merge($formParams,$array);
-                // dd($formParams);
-                $response = $client->request('POST', 'https://maxipro.id/TeknisiAPI/lcl_create', [
+            
+                $response = $client->request('POST', 'https://maxipro.id/TeknisiAPI/local_create', [
                     'form_params' => $formParams,
                     'headers' => $headers,
                 ]);
@@ -345,6 +348,364 @@ class Lcl extends Model
                 
                 $formParams = array_merge($formParams,$array);
                 
+                $response = $client->request('POST', 'https://maxipro.id/TeknisiAPI/local_create', [
+                    'form_params' => $formParams,
+                    'headers' => $headers,
+                ]);
+                $data2 = $response->getBody()->getContents();
+                
+                $Data = json_decode($data2, true);
+                return json_decode($data2, true);
+            }
+        }catch(\Exception $e){
+            return([
+                'error_message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+        }
+
+    }
+
+    public static function tambahLcl($teknisi_cookie,$data){
+ 
+        $array_data = [];
+        
+        $count = count(array_filter($data['item'], function($value){
+            return $value !== null;
+        }));
+
+        try{
+            $client = new \GuzzleHttp\Client(['verify' => false]);
+       
+            $headers = [
+                'Cookie' => $teknisi_cookie
+            ];
+            if($data['iditem_select']!==null){
+          
+                $ppnItemHasOne = in_array('1', $data['ppn_item']);
+                $ppnItemSelectHasOne = in_array('1', $data['ppn_item_select']);
+           
+                if ($ppnItemHasOne || $ppnItemSelectHasOne) {
+                
+                    
+                    $formParams = [
+                        'category_comercial_invoice'=>$data['category_comercial'],
+                        'database'=> $data['database'],
+                        'noreferensi'=> $data['noreferensi'],
+                        'tgl_transaksi'=>$data['tgl_transaksi'],
+                        'termin'=>$data['termin'],
+                        'account'=>$data['account'],
+                        'supplier'=>$data['supplier'],
+                        'matauang'=>$data['matauang'],
+                        'matauang_asal'=>$data['matauang_asal'],
+                        'statusconvert'=>$data['statusconvert'],
+                       
+                        'cabang'=>$data['cabang'],
+                        'td_ppn'=>$data['td_ppn'],
+                 
+                        'td_subtotal'=>$data['td_subtotal'],
+                        'td_total'=>$data['td_total'],
+                        'td_discount'=>$data['td_discount'],
+                        'td_discount_nominal'=>$data['td_discount_nominal'],
+                        'keterangan'=>$data['keterangan'],
+                        'statusconvert'=>$data['statusconvert'],
+                        'valuenominalconvert'=>$data['valuenominalconvert'],
+                        'valuecategoryconvert'=>$data['valuecategoryconvert'],
+                        'includeppn'=>$data['includeppn'],
+                        'ppn'=>$data['ppn']
+                        
+                    ];
+                }
+                else{
+                    
+                    $formParams = [
+                        'category_comercial_invoice'=>$data['category_comercial'],
+                        'database'=> $data['database'],
+                        'noreferensi'=> $data['noreferensi'],
+                        'tgl_transaksi'=>$data['tgl_transaksi'],
+                        'termin'=>$data['termin'],
+                        'account'=>$data['account'],
+                        'supplier'=>$data['supplier'],
+                        'matauang'=>$data['matauang'],
+                        'matauang_asal'=>$data['matauang_asal'],
+                        'statusconvert'=>$data['statusconvert'],
+                       
+                        'cabang'=>$data['cabang'],
+                        'td_ppn'=>$data['td_ppn'],
+                 
+                        'td_subtotal'=>$data['td_subtotal'],
+                        'td_total'=>$data['td_total'],
+                        'td_discount'=>$data['td_discount'],
+                        'td_discount_nominal'=>$data['td_discount_nominal'],
+                        'keterangan'=>$data['keterangan'],
+                        'statusconvert'=>$data['statusconvert'],
+                        'valuenominalconvert'=>$data['valuenominalconvert'],
+                        'valuecategoryconvert'=>$data['valuecategoryconvert'],
+                        'includeppn'=>$data['includeppn'],
+                        'ppn'=>$data['ppn']
+                        
+                    ];
+                }
+            }
+            
+            else{
+            
+                $formParams = [
+                    'category_comercial_invoice'=>$data['category_comercial'],
+                    'database'=> $data['database'],
+                    'noreferensi'=> $data['noreferensi'],
+                    'tgl_transaksi'=>$data['tgl_transaksi'],
+                    'termin'=>$data['termin'],
+                    'account'=>$data['account'],
+                    'supplier'=>$data['supplier'],
+                    'matauang'=>$data['matauang'],
+                    'matauang_asal'=>$data['matauang_asal'],
+                    'statusconvert'=>$data['statusconvert'],
+                
+                    'cabang'=>$data['cabang'],
+                    'td_ppn'=>$data['td_ppn'],
+                    'td_subtotal'=>$data['td_subtotal'],
+                    'td_total'=>$data['td_total'],
+                    'td_discount'=>$data['td_discount'],
+                    'td_discount_nominal'=>$data['td_discount_nominal'],
+                    'keterangan'=>$data['keterangan'],
+                    'statusconvert'=>$data['statusconvert'],
+                    'valuenominalconvert'=>$data['valuenominalconvert'],
+                    'valuecategoryconvert'=>$data['valuecategoryconvert'],
+                    'includeppn'=>$data['includeppn'],
+                    'ppn'=>$data['ppn']
+                ];
+            }
+
+            $array=[];
+            $key_index=0;
+            $key_index_array=[];
+        
+         
+            if($data != [] && $data['iditem_select']!=null){
+            
+                $newArrayCommercial = array_merge($data['idcommercial'],$data['idcommercial_select'] );
+                $newArrayRestok = array_merge($data['idrestok'],$data['idrestok_select'] );
+                $newArray = array_merge($data['iditem'], $data['iditem_select']);
+                $newArrayPriceAsal = array_merge($data['price_asal'], $data['price_asal_select']);
+                if($data['statusconvert']==1){
+
+                    $newArrayPrice = array_merge($data['price_invoice'], $data['price_invoice_select']);
+                    foreach ($newArrayPrice as $key => $value) {
+                        $lastChar = substr($key, -1);
+                        $newKey = "price[{$lastChar}]";
+                        $array[$newKey] = $value ?? '';
+                        $key_index++;
+                        $key_index_array[] = $newKey;
+                    }
+                }
+                
+                $newArrayQty = array_merge($data['qty'], $data['qty_select']);
+                $newArrayDisc = array_merge($data['disc'], $data['disc_select']);
+                $newArrayPpnItem = array_merge($data['ppn_item'], $data['ppn_item_select']);
+                $newArrayPricePpn = array_merge($data['price_ppn'], $data['price_ppn_select']);
+                $newArrayGudang = array_merge($data['gudang'], $data['gudang_select']);
+                $newArraySubtot = array_merge($data['subtot_arr'], $data['subtot_arr_select']);
+                foreach ($data['item'] as $key => $value) {
+                    $lastChar = substr($key, -1);
+                    $newKey = "item[{$lastChar}]";
+                    $array[$newKey] = $value ?? '';
+                    $key_index++;
+                    $key_index_array[] = $newKey;
+                }
+                foreach ($newArrayCommercial as $key => $value) {
+                    $lastChar = substr($key, -1);
+                    $newKey = "idcommercial[{$lastChar}]";
+                    $array[$newKey] = $value ?? '';
+                    $key_index++;
+                    $key_index_array[] = $newKey;
+                }
+                foreach ($newArrayRestok as $key => $value) {
+                    $lastChar = substr($key, -1);
+                    $newKey = "idrestok[{$lastChar}]";
+                    $array[$newKey] = $value ?? '';
+                    $key_index++;
+                    $key_index_array[] = $newKey;
+                }
+                foreach ($newArray as $key => $value) {
+                    $lastChar = substr($key, -1);
+                    $newKey = "iditem[{$lastChar}]";
+                    $array[$newKey] = $value ?? '';
+                    $key_index++;
+                    $key_index_array[] = $newKey;
+                }
+                foreach ($newArrayPriceAsal as $key => $value) {
+                    $lastChar = substr($key, -1);
+                    $newKey = "price_asal[{$lastChar}]";
+                    $array[$newKey] = $value ?? '';
+                    $key_index++;
+                    $key_index_array[] = $newKey;
+                }
+              
+                foreach ($newArrayPriceAsal as $key => $value) {
+                    $lastChar = substr($key, -1);
+                    $newKey = "price[{$lastChar}]";
+                    $array[$newKey] = $value ?? '';
+                    $key_index++;
+                    $key_index_array[] = $newKey;
+                }
+              
+                foreach ($newArrayQty as $key => $value) {
+                    $lastChar = substr($key, -1);
+                    $newKey = "qty[{$lastChar}]";
+                    $array[$newKey] = $value ?? '';
+                    $key_index++;
+                    $key_index_array[] = $newKey;
+                }
+                foreach ($newArrayDisc as $key => $value) {
+                    $lastChar = substr($key, -1);
+                    $newKey = "disc[{$lastChar}]";
+                    $array[$newKey] = $value ?? '';
+                    $key_index++;
+                    $key_index_array[] = $newKey;
+                }
+                foreach ($newArrayPpnItem as $key => $value) {
+                    $lastChar = substr($key, -1);
+                    $newKey = "ppn_item[{$lastChar}]";
+                    $array[$newKey] = $value ?? '';
+                    $key_index++;
+                    $key_index_array[] = $newKey;
+                }
+                foreach ($newArrayPricePpn as $key => $value) {
+                    $lastChar = substr($key, -1);
+                    $newKey = "priceppn[{$lastChar}]";
+                    $array[$newKey] = $value ?? '';
+                    $key_index++;
+                    $key_index_array[] = $newKey;
+                }
+                foreach ($newArrayGudang as $key => $value) {
+                    $lastChar = substr($key, -1);
+                    $newKey = "gudang[{$lastChar}]";
+                    $array[$newKey] = $value ?? '';
+                    $key_index++;
+                    $key_index_array[] = $newKey;
+                }
+                foreach ($newArraySubtot as $key => $value) {
+                    $lastChar = substr($key, -1);
+                    $newKey = "subtotal[{$lastChar}]";
+                    $array[$newKey] = $value ?? '';
+                    $key_index++;
+                    $key_index_array[] = $newKey;
+                }
+                
+                $formParams = array_merge($formParams,$array);
+            
+                $response = $client->request('POST', 'https://maxipro.id/TeknisiAPI/lcl_create', [
+                    'form_params' => $formParams,
+                    'headers' => $headers,
+                ]);
+           
+                $data2 = $response->getBody()->getContents();
+                $Data = json_decode($data2, true);
+               
+                return json_decode($data2, true);
+            }
+            else{
+        
+                foreach ($data['iditem']  as $key => $value) {
+                    $lastChar = substr($key, -1);
+                    $newKey = "iditem[{$lastChar}]";
+                    $array[$newKey] = $value ?? '';
+                    $key_index++;
+                    $key_index_array[] = $newKey;
+                }
+                foreach ($data['item'] as $key => $value) {
+                    $lastChar = substr($key, -1);
+                    $newKey = "item[{$lastChar}]";
+                    $array[$newKey] = $value ?? '';
+                    $key_index++;
+                    $key_index_array[] = $newKey;
+                }
+                
+                foreach ($data['idrestok']  as $key => $value) {
+                    $lastChar = substr($key, -1);
+                    $newKey = "idrestok[{$lastChar}]";
+                    $array[$newKey] = $value ?? '';
+                    $key_index++;
+                    $key_index_array[] = $newKey;
+                }
+             
+                foreach ($data['price_asal'] as $key => $value) {
+                    $lastChar = substr($key, -1);
+                    $newKey = "price_asal[{$lastChar}]";
+                    $array[$newKey] = $value ?? '';
+                    $key_index++;
+                    $key_index_array[] = $newKey;
+                }
+                
+                if($data['statusconvert']==0){
+                    foreach ($data['price_asal'] as $key => $value) {
+                        $lastChar = substr($key, -1);
+                        $newKey = "price[{$lastChar}]";
+                        $array[$newKey] = $value ?? '';
+                        $key_index++;
+                        $key_index_array[] = $newKey;
+                    }
+                }
+                
+                foreach ($data['qty'] as $key => $value) {
+                    $lastChar = substr($key, -1);
+                    $newKey = "qty[{$lastChar}]";
+                    $array[$newKey] = $value ?? '';
+                    $key_index++;
+                    $key_index_array[] = $newKey;
+                }
+                
+                foreach ($data['disc'] as $key => $value) {
+                    $lastChar = substr($key, -1);
+                    $newKey = "disc[{$lastChar}]";
+                    $array[$newKey] = $value ?? '';
+                    $key_index++;
+                    $key_index_array[] = $newKey;
+                }
+                
+                foreach ($data['ppn_item'] as $key => $value) {
+                    $lastChar = substr($key, -1);
+                    $newKey = "ppn_item[{$lastChar}]";
+                    $array[$newKey] = $value ?? '';
+                    $key_index++;
+                    $key_index_array[] = $newKey;
+                }
+                
+                foreach ($data['gudang'] as $key => $value) {
+                    $lastChar = substr($key, -1);
+                    $newKey = "gudang[{$lastChar}]";
+                    $array[$newKey] = $value ?? '';
+                    $key_index++;
+                    $key_index_array[] = $newKey;
+                }
+                
+                foreach ($data['subtot_arr'] as $key => $value) {
+                    $lastChar = substr($key, -1);
+                    $newKey = "subtotal[{$lastChar}]";
+                    $array[$newKey] = $value ?? '';
+                    $key_index++;
+                    $key_index_array[] = $newKey;
+                }
+                
+                foreach ($data['price_ppn'] as $key => $value) {
+                    $lastChar = substr($key, -1);
+                    $newKey = "priceppn[{$lastChar}]";
+                    $array[$newKey] = $value ?? '';
+                    $key_index++;
+                    $key_index_array[] = $newKey;
+                }
+                
+                foreach ($data['idcommercial'] as $key => $value) {
+                    $lastChar = substr($key, -1);
+                    $newKey = "idcommercial[{$lastChar}]";
+                    $array[$newKey] = $value ?? '';
+                    $key_index++;
+                    $key_index_array[] = $newKey;
+                }
+                
+                $formParams = array_merge($formParams,$array);
+                // dd($formParams);
                 $response = $client->request('POST', 'https://maxipro.id/TeknisiAPI/lcl_create', [
                     'form_params' => $formParams,
                     'headers' => $headers,
@@ -584,6 +945,7 @@ class Lcl extends Model
             return ['error'=> $e->getMessage()];
         }
     }
+
     public static function saveEkspedisiTabel($teknisi_cookie,$data){
         try{
             $client = new Client(['verify' => false]);
@@ -691,6 +1053,7 @@ class Lcl extends Model
             return ['error' => $e->getMessage()];
         }
     }
+
     public static function getSelectEkspedisi($teknisi_cookie)
     {
         try {
@@ -799,7 +1162,31 @@ class Lcl extends Model
             echo 'Error: ' . $e->getMessage();
         }
     }
+    public static function getEditViewLocal($teknisi_cookie, $invoice)
+    {
+        $client = new Client([
+            'verify' => false  // Menonaktifkan verifikasi sertifikat SSL
+        ]);
     
+        $headers = [
+            'Cookie' => 'ci_session=' . $teknisi_cookie  // Menggunakan cookie yang sesuai
+        ];
+    
+       
+        try {
+            // Mengirim permintaan POST dengan multipart
+            $res = $client->request('GET', 'https://maxipro.id/TeknisiAPI/lcl_editview/' . $invoice, [
+                'headers' => $headers,
+
+            ]);
+            
+            $Data = $res->getBody()->getContents();
+            return json_decode($Data, true);
+        } catch (\Exception $e) {
+            // Menangani kesalahan dan menampilkan pesan error
+            echo 'Error: ' . $e->getMessage();
+        }
+    }
 
     public static function getLclAdd($teknisi_cookie){
         try {

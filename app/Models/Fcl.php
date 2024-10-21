@@ -267,16 +267,11 @@ class Fcl extends Model
             
             $data = $response->getBody()->getContents();
             $decodedData = json_decode($data, true);
-            // dd($id,$decodedData['msg']['bank_supplier']);
-            
-            // $filteredDataSupplier = array_filter($decodedData['msg']['list_supplier'], function($item) use ($id) {
-            //     return $item['id'] == $id; // Pastikan 'id' sesuai dengan key pada data
-            // });
+
             $filteredDataBankSupplier = array_filter($decodedData['msg']['bank_supplier'], function($item) use ($id) {
                 return $item['id'] == $id; // Pastikan 'id' sesuai dengan key pada data
             });
-            // dd($filteredDataBankSupplier);
-            // return $filteredDataSupplier;
+            
             return [
               
                 'filtered_bank_supplier' => $filteredDataBankSupplier
@@ -329,6 +324,29 @@ class Fcl extends Model
             ];
 
             $response = $client->request('GET', 'https://maxipro.id/TeknisiAPI/fcl_editview/' . $invoice, [
+                'headers' => $headers,
+
+            ]);
+
+            $data = $response->getBody()->getContents();
+            $Data = json_decode($data, true);
+            
+            return json_decode($data, true);
+        } catch (\Exception $e) {
+            // Handle exception
+            return ['error' => $e->getMessage()];
+        }
+    }
+    public static function detailFclPembelian($teknisi_cookie, $invoice)
+    {
+        try {
+            $client = new Client(['verify' => false]);
+
+            $headers = [
+                'Cookie' => $teknisi_cookie
+            ];
+
+            $response = $client->request('GET', 'https://maxipro.id/TeknisiAPI/fcl_detail/' . $invoice, [
                 'headers' => $headers,
 
             ]);

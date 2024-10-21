@@ -434,3 +434,10 @@
      
     }
 
+    .btn.custom-primary {
+        background-color: #f04848; /* Red-Orange color */
+        border-color: #000000; /* Same color for the border */
+        color: #ffffff;
+    }
+    
+  

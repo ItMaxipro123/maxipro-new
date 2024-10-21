@@ -50,12 +50,14 @@ class ComercialInvoice extends Model
             return ['error' => $e->getMessage()];
         }
     }
+
+    //menambahkan comercial invoice melalui add local/lcl
     public static function tambahCommercialLocalLcl($teknisi_cookie,$data)
     {
         $count = count(array_filter($data['id_item'], function ($value) {
             return $value !== null;
         }));
-        // dd($data);
+        
         $formParams = [
 
       
@@ -90,7 +92,7 @@ class ComercialInvoice extends Model
             'bank_name' =>'',
             'bank_address' =>'',
             'id'=>'',
-            // 'restok'=>$data['restok']
+            
         ];
         
         $array=[];
@@ -341,6 +343,7 @@ class ComercialInvoice extends Model
             return ['error' => $e->getMessage()];
         }
     }
+    
     public static function getSupplierComercialInvoice($teknisi_cookie)
     {
         try {
@@ -448,6 +451,7 @@ class ComercialInvoice extends Model
 
     public static function getEditComercialInvoice($teknisi_cookie, $id)
     {
+        
         try {
             $client = new Client(['verify' => false]);
 
@@ -462,7 +466,32 @@ class ComercialInvoice extends Model
 
             $data = $response->getBody()->getContents();
             $Data = json_decode($data, true);
-            // dd($Data);
+            
+            return json_decode($data, true);
+        } catch (\Exception $e) {
+            // Handle exception
+            return ['error' => $e->getMessage()];
+        }
+    }
+
+    public static function getDetailComercialInvoice($teknisi_cookie, $id)
+    {
+        
+        try {
+            $client = new Client(['verify' => false]);
+
+            $headers = [
+                'Cookie' => $teknisi_cookie
+            ];
+
+            $response = $client->request('GET', 'https://maxipro.id/TeknisiAPI/comercial_invoice_detail/' . $id, [
+                'headers' => $headers,
+
+            ]);
+
+            $data = $response->getBody()->getContents();
+            $Data = json_decode($data, true);
+            
             return json_decode($data, true);
         } catch (\Exception $e) {
             // Handle exception

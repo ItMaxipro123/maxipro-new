@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 
 use PDF;
-
+use TCPDF;
 class AdminController extends Controller
 {
     //function untuk view edit kas surabaya
@@ -1414,34 +1414,100 @@ class AdminController extends Controller
         }
     }
 
-    public function pembelian_print_pdfpo_order_pembelian(Request $request){
+    // public function pembelian_print_pdfpo_order_pembelian(Request $request){
+    //     $data = Session::get('teknisi_id');
+    //     $nama_barang = explode(',', $request->input('nama_barang'));
+    //     $nama_barang_english = explode(',', $request->input('nama_barang_english'));
+    //     $nama_barang_china = explode(',', $request->input('nama_barang_china'));
+    //     $nama_supplier = explode(',', $request->input('nama_supplier'));
+        
+    //     $new_kode = explode(',', $request->input('new_kode'));
+    //     $jml_permintaan = explode(',', $request->input('jml_permintaan'));
+    //     $image = explode(',', $request->input('image'));
+    //     $data2 = array(
+    //         'nama_barang' => $nama_barang,
+    //         'nama_barang_english' => $nama_barang_english,
+    //         'nama_barang_china' => $nama_barang_china,
+    //         'new_kode' => $new_kode,
+    //         'jml_permintaan' => $jml_permintaan,
+    //         'image' => $image,
+    //         'nama_supplier' => $nama_supplier
+    //     );
+        
+    //     $view = view('admin.pembelian.printpdf_po', compact('data2'))->render();
+    //     // dd($data2);
+    //          // Generate PDF
+    //          $pdf = PDF::loadHTML($view);
+    //          $pdf->setOptions([
+    //              'isHtml5ParserEnabled' => true,
+    //              'isRemoteEnabled' => true,
+    //              'defaultFont' => 'Fireflysung' // Pastikan font ini terpasang
+    //          ]);
+    //          // Tampilkan PDF di browser
+    //     return $pdf->stream('document.pdf');
+        
+    // }
+
+    public function pembelian_print_pdfpo_order_pembelian(Request $request)
+    {
+        // Mengambil data teknisi dari session
         $data = Session::get('teknisi_id');
+
+        // Mendapatkan input dari request
         $nama_barang = explode(',', $request->input('nama_barang'));
         $nama_barang_english = explode(',', $request->input('nama_barang_english'));
         $nama_barang_china = explode(',', $request->input('nama_barang_china'));
         $nama_supplier = explode(',', $request->input('nama_supplier'));
-        
         $new_kode = explode(',', $request->input('new_kode'));
         $jml_permintaan = explode(',', $request->input('jml_permintaan'));
         $image = explode(',', $request->input('image'));
-        $data2 = array(
+
+        // Membuat array data untuk tampilan PDF
+        $data2 = [
             'nama_barang' => $nama_barang,
             'nama_barang_english' => $nama_barang_english,
             'nama_barang_china' => $nama_barang_china,
             'new_kode' => $new_kode,
             'jml_permintaan' => $jml_permintaan,
             'image' => $image,
-            'nama_supplier' => $nama_supplier
-        );
-        
-        $view = view('admin.pembelian.printpdf_po', compact('data2'))->render();
+            'nama_supplier' => $nama_supplier,
+            'teknisi_id' => $data, // Menambahkan teknisi_id ke data
+        ];
+        $data_title=[
+            
+        'title'=>'商业发票'
+    ];
+        // Menyiapkan tampilan untuk PDF
+        $view = view('admin.pembelian.printpdf_po', compact('data2','data_title'))->render();
 
-             // Generate PDF
-        $pdf = PDF::loadHTML($view);
+        // Membuat instance TCPDF
+        $pdf = new TCPDF();
 
-             // Tampilkan PDF di browser
-        return $pdf->stream('document.pdf');
-        
+        // Disable the default header and footer
+        $pdf->setPrintHeader(false); // Disable header
+        $pdf->setPrintFooter(false); // Disable footer if not needed
+
+        // Set properti dokumen
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor('Your Name'); // Ganti dengan nama penulis
+        $pdf->SetTitle('Purchase Order (商业发票)');
+        $pdf->SetSubject('PDF Document');
+        $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
+
+        // Mengatur ukuran dan orientasi halaman
+        $pdf->SetMargins(0, 0, 0); // Set left, top, right margins (10mm each)
+        // $pdf->SetMargins(5.29, 5.29, 5.29); // Set left, top, right margins to 15px (approx. 5.29mm)
+        // $pdf->SetAutoPageBreak(TRUE, 15); // Set auto page break with 15mm bottom margin
+        $pdf->AddPage('P', 'A4'); // A4 paper, portrait orientation
+
+        // Set the CID0CT font for Chinese characters
+        $pdf->SetFont('cid0ct', '',5); // Adjust font size as needed
+
+        // Menambahkan HTML ke PDF
+        $pdf->writeHTML($view, true, false, true, false, '');
+
+        // Tampilkan PDF di browser
+        return $pdf->Output('document.pdf', 'I');
     }
 
     // public function processData($data)
@@ -1696,7 +1762,7 @@ class AdminController extends Controller
         $data = Session::get('teknisi_id');
         $responseData = json_decode($data, true);
         $comercialInvoiceModel = new \App\Models\ComercialInvoice();
-        $lclPembelianModel = new \App\Models\LCL();
+        $lclPembelianModel = new \App\Models\LcL();
         $menu=$request->input('menu');
         if (isset($responseData)) {
             if($menu=='create_local'){
@@ -1710,9 +1776,9 @@ class AdminController extends Controller
                 $username = $responseData;
                 $teknisi_cookie = $responseData['cookie'];
                 $formDataSend = $request->input('form');
-                // dd($formDataSend);
+                
                 $combinedParams =[
-                    'category_comercial_invoice'=>$formDataSend['category_comercial_invoice'],
+                    'category_comercial_invoice'=>$formDataSend['category_comercial_invoice'], //belum ditambahkan ke colom category_comercial_invoice
                     'mode_admin'=>$formDataSend['modeadmin'],
                     'database' =>$formDataSend['database'],
                     'supplier'=>$formDataSend['supplier'],
@@ -1764,16 +1830,72 @@ class AdminController extends Controller
                     'hs_code'=>$formDataSend['hs_code'],
                     
                 ];
+                //menambahkan comercial invoice melalui add local/lcl
                 $Data = $comercialInvoiceModel->tambahCommercialLocalLcl($teknisi_cookie,$combinedParams);
-                // dd($Data);
+                
                 if($formDataSend['category_comercial_invoice']=='local'){
-                    dd('a');
+                    $fomrSend =[
+                            
+                        'database' => $formDataSend['database'],
+                        'noreferensi' => $formDataSend['no_referensi'],
+                        'tgl_transaksi' => $formDataSend['tgl_transaksi'],
+                        'termin' => $formDataSend['termin'],
+                        'account' =>$formDataSend['account'],
+                        'supplier'=>$formDataSend['supplier'],
+                        'matauang'=>$formDataSend['matauang'],
+                        'matauang_asal'=>$formDataSend['matauang'],
+                        'statusconvert'=>0,
+                        'valuenominalconvert'=>1,
+                        'valuecategoryconvert'=>'default',
+                        'iditem' => $formDataSend['id_item'],
+                        'iditem_select'=>null,
+                        'idcommercial' => [$Data['idcommercial']],
+                        
+                        'item'=>$formDataSend['nama_item'],
+                        'idrestok' => [$Data['idrestok']],
+
+                        
+                        'price_asal'=>$formDataSend['harga_asal'],
+                        
+                        'price_invoice'=>0,
+                        'qty'=>$formDataSend['qty'],
+                        'disc'=>$formDataSend['disc'],
+                        'ppn_item'=>$formDataSend['ppn'],
+                        'gudang'=>$formDataSend['gudang'],
+                        
+            
+                        'keterangan'=>$formDataSend['keterangan'],
+                        'cabang'=>$formDataSend['cabang'],
+                        
+                        'subtot_arr'=>$formDataSend['subtotal'],
+                        
+                        'price_ppn'=>$formDataSend['td_ppn_harga'],
+                        'td_ppn'=>$formDataSend['ppn_11'],
+                        'td_subtotal'=>$formDataSend['td_subtotal'],
+                        'td_total'=>$formDataSend['total'],
+                        'td_discount'=>$formDataSend['discount_percent'],
+                        'td_discount_nominal'=>$formDataSend['discount_nominal'],
+                        'ppn'=>$formDataSend['status_ppn'],
+                        'includeppn'=>$formDataSend['include_ppn'],
+                        'category_comercial'=>$formDataSend['category_comercial_invoice']
+                ];
+                
+                    $DataLcl = $lclPembelianModel->tambahLocal($teknisi_cookie, $fomrSend);
+                    
+                    $DataLclMsg = is_array($DataLcl['msg']) ? $DataLcl['msg'] : [$DataLcl['msg']];
+                    $DataLclMsg = array_merge($DataLclMsg, ['idpembelianlcl' => $DataLcl['idpembelianlcl']]);
+                    $DataMsg = is_array($Data['msg']) ? $Data['msg'] : [$Data['msg']];
+                    $Data = array_merge($Data, ['msg2' => $DataLcl['msg']]);
+                    // Merge the messages
+                    $combinedResponse = array_merge($DataLcl,$Data);
+                    
+                    return response()->json($combinedResponse,200);
                 }
                 else{
                     
                    
                     $fomrSend =[
-                            // 'includeppn'=>$include_ppn,
+                            
                             'database' => $formDataSend['database'],
                             'noreferensi' => $formDataSend['no_referensi'],
                             'tgl_transaksi' => $formDataSend['tgl_transaksi'],
@@ -1815,19 +1937,18 @@ class AdminController extends Controller
                             'td_discount_nominal'=>$formDataSend['discount_nominal'],
                             'ppn'=>$formDataSend['status_ppn'],
                             'includeppn'=>$formDataSend['include_ppn'],
+                            'category_comercial'=>$formDataSend['category_comercial_invoice']
                     ];
-                    // dd($fomrSend);
+                    
                     $DataLcl = $lclPembelianModel->tambahLcl($teknisi_cookie, $fomrSend);
+                    
                     $DataLclMsg = is_array($DataLcl['msg']) ? $DataLcl['msg'] : [$DataLcl['msg']];
                     $DataLclMsg = array_merge($DataLclMsg, ['idpembelianlcl' => $DataLcl['idpembelianlcl']]);
                     $DataMsg = is_array($Data['msg']) ? $Data['msg'] : [$Data['msg']];
                     $Data = array_merge($Data, ['msg2' => $DataLcl['msg']]);
                     // Merge the messages
                     $combinedResponse = array_merge($DataLcl,$Data);
-                    // $combinedResponseString = implode(' dan ',$combinedResponse);
-                    // dd($combinedResponse);
                     
-                    // dd($combinedResponseString);
                     return response()->json($combinedResponse,200);
                 }
                 
@@ -1945,20 +2066,248 @@ class AdminController extends Controller
         $id = $request->input('id_product');
        
         $restok 	 	= $request->input('idrestok');
-    
-       
+        $menu           = $request->input('menu');
+        $Data;
         $orderPembelianModel = new \App\Models\ComercialInvoice();
         if (isset($responseData)) {
             $username = $responseData;
 
             $teknisi_cookie = $responseData['cookie'];
+            if($menu=='detail_commercial'){
+                
+                $Data = $orderPembelianModel->getEditComercialInvoice($teknisi_cookie, $id);
+                
+                if (isset($Data['error'])) {
+                    return response()->json($Data, 500);
+                }
+                
+                return view('admin.pembelian.commercialinvoice.detailcomercialinvoice', compact('username', 'Data'));
+            }
+            elseif($menu=='proforma_invoice'){
+              
+              
+                // $id_detail = $request->input('id_product');
+              
+                // $invoice_data = $orderPembelianModel->getDetailComercialInvoice($teknisi_cookie, $id_detail);
+            
+              
+                // $view = view('admin.pembelian.commercialinvoice.proformaInvoicepdf', compact('invoice_data','id_detail'))->render();
+
+                // // Generate PDF
+                // $pdf = PDF::loadHTML($view);
+
+                // // Tampilkan PDF di browser
+                // return $pdf->stream('document.pdf');
+
+                $id_detail = $request->input('id_product');
+              
+                $invoice_data = $orderPembelianModel->getDetailComercialInvoice($teknisi_cookie, $id_detail);
+            
+              
+                // Menyiapkan tampilan untuk PDF
+                $view = view('admin.pembelian.commercialinvoice.proformaInvoicepdf', compact('invoice_data','id_detail'))->render();
+
+                // Membuat instance TCPDF
+                $pdf = new TCPDF();
+
+                // Disable the default header and footer
+                $pdf->setPrintHeader(false); // Disable header
+                $pdf->setPrintFooter(false); // Disable footer if not needed
+
+                // Set properti dokumen
+                $pdf->SetCreator(PDF_CREATOR);
+                $pdf->SetAuthor('Your Name'); // Ganti dengan nama penulis
+                $pdf->SetTitle('Proforma Invoice (采购订单)');
+                $pdf->SetSubject('PDF Document');
+                $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
+
+                // Mengatur ukuran dan orientasi halaman
+                $pdf->SetMargins(2,-2, 2); // Set left, top, right margins (10mm each)
+                // $pdf->SetMargins(5.29, 5.29, 5.29); // Set left, top, right margins to 15px (approx. 5.29mm)
+                // $pdf->SetAutoPageBreak(TRUE, 15); // Set auto page break with 15mm bottom margin
+                $pdf->AddPage('P', 'A4'); // A4 paper, portrait orientation
+
+                // Set the CID0CT font for Chinese characters
+                $pdf->SetFont('cid0ct', '',5); // Adjust font size as needed
+
+                // Menambahkan HTML ke PDF
+                $pdf->writeHTML($view, true, false, true, false, '');
+
+                // Tampilkan PDF di browser
+                return $pdf->Output('document.pdf', 'I');
+
+
+            }
+            elseif($menu=='purchase_order'){
+              
+            
+                $id_detail = $request->input('id_product');
+              
+                $invoice_data = $orderPembelianModel->getDetailComercialInvoice($teknisi_cookie, $id_detail);
+            
+              
+                // Menyiapkan tampilan untuk PDF
+                $view = view('admin.pembelian.commercialinvoice.purchaseorderpdf', compact('invoice_data','id_detail'))->render();
+
+                // Membuat instance TCPDF
+                $pdf = new TCPDF();
+
+                // Disable the default header and footer
+                $pdf->setPrintHeader(false); // Disable header
+                $pdf->setPrintFooter(false); // Disable footer if not needed
+
+                // Set properti dokumen
+                $pdf->SetCreator(PDF_CREATOR);
+                $pdf->SetAuthor('Your Name'); // Ganti dengan nama penulis
+                $pdf->SetTitle('Purchase Order (商业发票)');
+                $pdf->SetSubject('PDF Document');
+                $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
+
+                // Mengatur ukuran dan orientasi halaman
+                $pdf->SetMargins(2,0, 2); // Set left, top, right margins (10mm each)
+                // $pdf->SetMargins(5.29, 5.29, 5.29); // Set left, top, right margins to 15px (approx. 5.29mm)
+                // $pdf->SetAutoPageBreak(TRUE, 15); // Set auto page break with 15mm bottom margin
+                $pdf->AddPage('P', 'A4'); // A4 paper, portrait orientation
+
+                // Set the CID0CT font for Chinese characters
+                $pdf->SetFont('cid0ct', '',5); // Adjust font size as needed
+
+                // Menambahkan HTML ke PDF
+                $pdf->writeHTML($view, true, false, true, false, '');
+
+                // Tampilkan PDF di browser
+                return $pdf->Output('document.pdf', 'I');
+
+            }
+            elseif($menu=='sales_contract'){
+              
+            
+                $id_detail = $request->input('id_product');
+              
+                $invoice_data = $orderPembelianModel->getDetailComercialInvoice($teknisi_cookie, $id_detail);
+            
+              
+                // Menyiapkan tampilan untuk PDF
+                $view = view('admin.pembelian.commercialinvoice.salescontractpdf', compact('invoice_data','id_detail'))->render();
+
+                // Membuat instance TCPDF
+                $pdf = new TCPDF();
+
+                // Disable the default header and footer
+                $pdf->setPrintHeader(false); // Disable header
+                $pdf->setPrintFooter(false); // Disable footer if not needed
+
+                // Set properti dokumen
+                $pdf->SetCreator(PDF_CREATOR);
+                $pdf->SetAuthor('Your Name'); // Ganti dengan nama penulis
+                $pdf->SetTitle('Sales Contract (销货合同)');
+                $pdf->SetSubject('PDF Document');
+                $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
+
+                // Mengatur ukuran dan orientasi halaman
+                $pdf->SetMargins(2,0, 2); // Set left, top, right margins (10mm each)
+                // $pdf->SetMargins(5.29, 5.29, 5.29); // Set left, top, right margins to 15px (approx. 5.29mm)
+                // $pdf->SetAutoPageBreak(TRUE, 15); // Set auto page break with 15mm bottom margin
+                $pdf->AddPage('P', 'A4'); // A4 paper, portrait orientation
+
+                // Set the CID0CT font for Chinese characters
+                $pdf->SetFont('cid0ct', '',5); // Adjust font size as needed
+
+                // Menambahkan HTML ke PDF
+                $pdf->writeHTML($view, true, false, true, false, '');
+
+                // Tampilkan PDF di browser
+                return $pdf->Output('document.pdf', 'I');
+            }
+            elseif($menu == 'comercial_invoice'){
+
+                
+                $id_detail = $request->input('id_product');
+              
+                $invoice_data = $orderPembelianModel->getDetailComercialInvoice($teknisi_cookie, $id_detail);
+            
+              
+                // Menyiapkan tampilan untuk PDF
+                $view = view('admin.pembelian.commercialinvoice.comercialInvoicepdf', compact('invoice_data','id_detail'))->render();
+
+                // Membuat instance TCPDF
+                $pdf = new TCPDF();
+
+                // Disable the default header and footer
+                $pdf->setPrintHeader(false); // Disable header
+                $pdf->setPrintFooter(false); // Disable footer if not needed
+
+                // Set properti dokumen
+                $pdf->SetCreator(PDF_CREATOR);
+                $pdf->SetAuthor('Your Name'); // Ganti dengan nama penulis
+                $pdf->SetTitle('Commercial Invoice (商业发票)');
+                $pdf->SetSubject('PDF Document');
+                $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
+
+                // Mengatur ukuran dan orientasi halaman
+                $pdf->SetMargins(2,0, 2); // Set left, top, right margins (10mm each)
+                // $pdf->SetMargins(5.29, 5.29, 5.29); // Set left, top, right margins to 15px (approx. 5.29mm)
+                // $pdf->SetAutoPageBreak(TRUE, 15); // Set auto page break with 15mm bottom margin
+                $pdf->AddPage('P', 'A4'); // A4 paper, portrait orientation
+
+                // Set the CID0CT font for Chinese characters
+                $pdf->SetFont('cid0ct', '',5); // Adjust font size as needed
+
+                // Menambahkan HTML ke PDF
+                $pdf->writeHTML($view, true, false, true, false, '');
+
+                // Tampilkan PDF di browser
+                return $pdf->Output('document.pdf', 'I');
+
+            }
+            elseif($menu == 'packing_list'){
+
+                
+                $id_detail = $request->input('id_product');
+              
+                $invoice_data = $orderPembelianModel->getDetailComercialInvoice($teknisi_cookie, $id_detail);
+            
+                $sumitem = count($invoice_data['msg']['commercialinvoice']['detail']);
+                // Menyiapkan tampilan untuk PDF
+                $view = view('admin.pembelian.commercialinvoice.packingListpdf', compact('invoice_data','id_detail','sumitem'))->render();
+
+                // Membuat instance TCPDF
+                $pdf = new TCPDF();
+
+                // Disable the default header and footer
+                $pdf->setPrintHeader(false); // Disable header
+                $pdf->setPrintFooter(false); // Disable footer if not needed
+
+                // Set properti dokumen
+                $pdf->SetCreator(PDF_CREATOR);
+                $pdf->SetAuthor('Your Name'); // Ganti dengan nama penulis
+                $pdf->SetTitle('Packing List (商业发票)');
+                $pdf->SetSubject('PDF Document');
+                $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
+
+                // Mengatur ukuran dan orientasi halaman
+                $pdf->SetMargins(2,0, 2,0); // Set left, top, right margins (10mm each)
+                // $pdf->SetMargins(5.29, 5.29, 5.29); // Set left, top, right margins to 15px (approx. 5.29mm)
+                // $pdf->SetAutoPageBreak(TRUE, 15); // Set auto page break with 15mm bottom margin
+                $pdf->AddPage('P', 'A4'); // A4 paper, portrait orientation
+
+                // Set the CID0CT font for Chinese characters
+                $pdf->SetFont('cid0ct', '',5); // Adjust font size as needed
+
+                // Menambahkan HTML ke PDF
+                $pdf->writeHTML($view, true, false, true, false, 'C');
+
+                // Tampilkan PDF di browser
+                return $pdf->Output('document.pdf', 'I');
+
+            }
 
             if(!empty($restok)){
-                // dd('restok',$restok);
+                
                 $DataImport = $orderPembelianModel->getImportBarangComercialInvoice($teknisi_cookie, $restok);
               
                 $Data = $orderPembelianModel->getEditComercialInvoice($teknisi_cookie, $id);
-                // dd($Data);
+                
                 if (isset($Data['error']) && isset($DataImport['error']) ) {
                     
                     $response = isset($Data['error']) ? $Data : $DataImport;
@@ -2488,6 +2837,169 @@ class AdminController extends Controller
         }
     }
 
+    public function pembelian_local(Request $request)
+    {
+        $data = Session::get('teknisi_id');
+        $responseData = json_decode($data, true);
+        $lclPembelianModel = new \App\Models\Lcl();
+       
+        $menu = $request->input('menu');
+        if (isset($responseData)) {
+            $username = $responseData;
+
+            $teknisi_cookie = $responseData['cookie'];
+            
+            // untuk edit view
+            if($menu=='edit'){
+                $invoice = $request->input('invoice');
+                $Data = $lclPembelianModel->getEditViewLocal($teknisi_cookie, $invoice);
+             
+                return response()->json($Data);
+            }
+            //untuk importbarang
+            elseif($menu=='importbarang'){
+                $idcomercial = $request->input('idcommercial');
+                $Data = $lclPembelianModel->getLclPembelianImportInvoice($teknisi_cookie,$idcomercial);
+                
+                if(isset($Data['error'])){
+                
+                    return response()->json($Data,500);
+                }
+                return response()->json($Data);
+            }
+            //untuk select ekspedisi
+            elseif($menu=='select_ekspedisi'){
+                $Data = $lclPembelianModel->getSelectEkspedisi($teknisi_cookie);
+                if(isset($Data['error'])){
+                    return response()->json($Data,500);
+                }
+                return response()->json($Data);
+            }
+            //untuk select item
+            elseif($menu=='select_item'){
+                $id = $request->input('id');
+                $Data_barang = $lclPembelianModel->getLclAddBarang($teknisi_cookie,$id);
+                
+                
+                if (isset($Data['error'])) {
+                    return response()->json($Data_barang, 500);
+                }
+                return response()->json($Data_barang);
+            }
+            elseif($menu=='stok_gudang'){
+                $id = $request->input('id');
+                $restokPembelianModel = new \App\Models\Restok();
+                $Data_restok = $restokPembelianModel->getstokBarang($teknisi_cookie,$id);
+                if (isset($Data['error'])) {
+                    return response()->json($Data_restok, 500);
+                }
+                return response()->json($Data_restok);
+            }
+            elseif($menu=='tambah_ekspedisi'){
+                $send_data = [
+                    'tambah_tgl_ekspedisi' => $request->input('tambah_tgl_ekspedisi'),
+                    'tambah_ekspedisi' => $request->input('tambah_ekspedisi'),
+                    'tambah_keterangan' => $request->input('tambah_keterangan'),
+                    'tambah_rute' => $request->input('tambah_rute'),
+                    'tambah_matauang_ekspedisi' => $request->input('tambah_matauang_ekspedisi'),
+                    'tambah_biaya_ekspedisi' => $request->input('tambah_biaya_ekspedisi'),
+                    'tambah_resi_ekspedisi' => $request->input('tambah_resi_ekspedisi'),
+
+                ];
+                
+                $Data = $lclPembelianModel->tambahEkspedisiTabel($teknisi_cookie,$send_data);
+                
+                return response()->json($Data);
+            }
+            // untuk edit ekspedisi di tabel tab ekspedisi
+            elseif($menu=='update_ekspedisi'){
+                $send_data = [
+                    'kodepengiriman_update' => $request->input('kodepengiriman_update'),
+                    'tgl_kirim_update'=>$request->input('tgl_kirim_update'),
+                    'matauang_update'=>$request->input('matauang_update'),
+                    'price_update'=>$request->input('price_update'),
+                    'rute_update'=>$request->input('rute_update'),
+                    'ekspedisi_update'=>$request->input('ekspedisi_update'),
+                    'resi_update'=>$request->input('resi_update'),
+                    'keterangan_update'=>$request->input('keterangan_update')
+                ];
+                
+                $Data = $lclPembelianModel->updateEkspedisiTabel($teknisi_cookie,$send_data);
+                return response()->json($Data);
+            }
+            elseif($menu=='save_ekspedisi'){
+                
+                $send_data = [
+                    'kodepengiriman_ekspedisi'=>$request->input('kode'),
+                    'tgl_kirim_ekspedisi'=>$request->input('tgl'),
+                    'rute_ekspedisi'=>$request->input('rute'),
+                    'ekspedisi_ekspedisi'=>$request->input('nama'),
+                    'resi_ekspedisi'=>$request->input('resi'),
+                    'price_ekspedisi'=>$request->input('price'),
+                    'keterangan_ekspedisi'=>$request->input('keterangan'),
+                    'matauang_ekspedisi'=>$request->input('matauang'),
+                    'id_lcl'=>$request->input('id_lcl'),
+                ];
+                $Data = $lclPembelianModel->saveEkspedisiTabel($teknisi_cookie,$send_data);
+                // dd($Data);
+                return response()->json($Data);
+            }
+            elseif($menu=='delete_lcl'){
+                $invoice = $request->input('invoice');
+                
+                $Data = $lclPembelianModel->getDeleteLcl($teknisi_cookie, $invoice);
+             
+                // dd('Data',$Data);
+                return response()->json($Data);
+            }
+            //untuk halaman get view
+            else{
+
+                $Data = $lclPembelianModel->getLclPembelian($teknisi_cookie);
+                $Data_barang = $lclPembelianModel->getLclAdd($teknisi_cookie);
+                // dd($Data);
+                if (isset($Data['error'])) {
+                    return response()->json($Data, 500);
+                }
+                return view('admin.pembelian.local_pembelian', compact('username', 'data', 'Data','Data_barang'));
+            }
+        }else {
+
+            return redirect()->route('login');
+        }
+    }
+
+    public function pembelian_local_filter(Request $request)
+    {
+        // dd('a');
+        $data = Session::get('teknisi_id');
+        $status = $request->input('filterValue');
+        $tgl_awal = $request->input('tgl_awal');
+        $tgl_akhir = $request->input('tgl_akhir');
+        $invoice = $request->input('invoice');
+        $checkdatevalue = $request->input('checkdatevalue');
+        $responseData = json_decode($data, true);
+        $lclModel = new \App\Models\Lcl();
+        if (isset($responseData)) {
+            $username = $responseData;
+
+            $teknisi_cookie = $responseData['cookie'];
+
+
+            $Data = $lclModel->getLclPembelianFilter($teknisi_cookie, $status, $tgl_awal, $tgl_akhir, $checkdatevalue,$invoice);
+            $Data_barang = $lclModel->getLclAdd($teknisi_cookie);
+            // dd($Data['msg']['pembelianlcl']['ekspedisilcl']);
+            // dd($Data);
+            if (isset($Data['error'])) {
+                return response()->json($Data, 500);
+            }
+            return view('admin.pembelian.local_pembelian_filter', compact('username', 'data', 'Data','Data_barang'));
+        }else {
+
+            return redirect()->route('login');
+        }
+    }
+
 
     public function pembelian_lcl(Request $request)
     {
@@ -2596,9 +3108,9 @@ class AdminController extends Controller
                 // dd($Data);
                 return response()->json($Data);
             }
-            elseif($menu=='delete_lcl'){
+            elseif($menu=='delete_local'){
                 $invoice = $request->input('invoice');
-                $invoice = $request->input('invoice');
+                
                 $Data = $lclPembelianModel->getDeleteLcl($teknisi_cookie, $invoice);
              
                 // dd('Data',$Data);
@@ -2921,9 +3433,9 @@ class AdminController extends Controller
 
     public function pembelian_fcl(Request $request)
     {
-        // dd('a');
+        
         $menu = $request->input('menu');
-        // dd($menu);
+        
         
         $data = Session::get('teknisi_id');
         $responseData = json_decode($data, true);
@@ -3008,6 +3520,59 @@ class AdminController extends Controller
                     // dd($Data);
                     return response()->json($Data);
                 }
+                elseif($menu=='detail_fcl'){
+                    $invoice = $request->input('invoice');
+                    $teknisi_cookie = $responseData['cookie'];
+                    $Data = $fclPembelian->detailFclPembelian($teknisi_cookie,$invoice);
+                    
+                    return view('admin.pembelian.fcl.detailfcl', compact('username', 'Data'));
+                }
+                // elseif($menu == 'proforma_invoice') {
+                    
+                //     $invoice = $request->input('invoice');
+                //     $teknisi_cookie = $responseData['cookie'];
+                
+                //     // Retrieve the data for the invoice
+                //     $invoice_data = $fclPembelian->detailFclPembelian($teknisi_cookie, $invoice);
+                
+                //     // Title data for the view
+                //     $data_title = [
+                //         'title' => '商业发票'
+                //     ];
+                
+                //     // Render the view as HTML (from Blade)
+                //     $html = view('admin.pembelian.fcl.proformaInvoicepdf', compact('invoice_data', 'data_title'))->render();
+                
+                //     // Create a TCPDF instance
+                //     $pdf = new TCPDF();
+                
+                //     // Disable the default header and footer
+                //     $pdf->setPrintHeader(false);
+                //     $pdf->setPrintFooter(false);
+                
+                //     // Set document properties
+                //     $pdf->SetCreator(PDF_CREATOR);
+                //     $pdf->SetAuthor('Your Name');
+                //     $pdf->SetTitle('Purchase Order (商业发票)');
+                //     $pdf->SetSubject('PDF Document');
+                //     $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
+                
+                //     // Set margins
+                //     $pdf->SetMargins(10, 10, 10); // Adjust margins
+                
+                //     // Add a page
+                //     $pdf->AddPage('P', 'A4');
+                
+                //     // Set the CID0CT font for Chinese characters
+                //     $pdf->SetFont('cid0ct', '',9); // Set a suitable font and size for Chinese characters
+                
+                //     // Add the HTML content generated by the Blade view
+                //     $pdf->writeHTML($html, true, false, true, false, '');
+                
+                //     // Output the PDF to the browser
+                //     return $pdf->Output('document.pdf', 'I');
+                // }
+                
                 else{
 
                     return view('admin.pembelian.fcl_pembelian', compact('username', 'data', 'Data'));
@@ -3019,6 +3584,223 @@ class AdminController extends Controller
             return redirect()->route('login');
         }
     }
+
+    public function pembelian_fcl_detail_printpdf(Request $request){
+        $menu = $request->input('menu');
+        $data = Session::get('teknisi_id');
+        $responseData = json_decode($data, true);
+        $fclPembelian = new \App\Models\Fcl();
+        if(isset($responseData)) {
+            $username = $responseData;
+            // dd('controller');
+            $teknisi_cookie = $responseData['cookie'];
+            if($menu == 'proforma_invoice'){
+       
+                    $menu = $request->input('menu');
+                    
+                    
+                    $data = Session::get('teknisi_id');
+                    $responseData = json_decode($data, true);
+                    $fclPembelian = new \App\Models\Fcl();
+                    $invoice = $request->input('invoice');
+                    $teknisi_cookie = $responseData['cookie'];
+                
+                    // Retrieve the data for the invoice
+                    $invoice_data = $fclPembelian->detailFclPembelian($teknisi_cookie, $invoice);
+                
+                    
+
+                    $view = view('admin.pembelian.fcl.proformaInvoicepdf', compact('invoice_data'))->render();
+
+                    // // Generate PDF
+                    // $pdf = PDF::loadHTML($view);
+    
+                    // // Tampilkan PDF di browser
+                    // return $pdf->stream('document.pdf');
+                    
+
+                    // Membuat instance TCPDF
+                    $pdf = new TCPDF();
+
+                    // Disable the default header and footer
+                    $pdf->setPrintHeader(false); // Disable header
+                    $pdf->setPrintFooter(false); // Disable footer if not needed
+
+                    // Set properti dokumen
+                    $pdf->SetCreator(PDF_CREATOR);
+                    $pdf->SetAuthor('Your Name'); // Ganti dengan nama penulis
+                    $pdf->SetTitle('Proforma Invoice (采购订单)');
+                    $pdf->SetSubject('PDF Document');
+                    $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
+
+                    // Mengatur ukuran dan orientasi halaman
+                    $pdf->SetMargins(2,-2, 2); // Set left, top, right margins (10mm each)
+                    // $pdf->SetMargins(5.29, 5.29, 5.29); // Set left, top, right margins to 15px (approx. 5.29mm)
+                    // $pdf->SetAutoPageBreak(TRUE, 15); // Set auto page break with 15mm bottom margin
+                    $pdf->AddPage('P', 'A4'); // A4 paper, portrait orientation
+
+                    // Set the CID0CT font for Chinese characters
+                    $pdf->SetFont('cid0ct', '',5); // Adjust font size as needed
+
+                    // Menambahkan HTML ke PDF
+                    $pdf->writeHTML($view, true, false, true, false, '');
+
+                    // Tampilkan PDF di browser
+                    return $pdf->Output('document.pdf', 'I');
+
+            }
+            elseif($menu == 'purchase_order'){
+                    $menu = $request->input('menu');
+                        
+                        
+                    $data = Session::get('teknisi_id');
+                    $responseData = json_decode($data, true);
+                    $fclPembelian = new \App\Models\Fcl();
+                    $invoice = $request->input('invoice');
+                    $teknisi_cookie = $responseData['cookie'];
+                
+                    // Retrieve the data for the invoice
+                    $invoice_data = $fclPembelian->detailFclPembelian($teknisi_cookie, $invoice);
+                    $view = view('admin.pembelian.fcl.purchaseorderpdf', compact('invoice_data'))->render();
+
+                    // Generate PDF
+                    $pdf = new TCPDF();
+
+                    // Disable the default header and footer
+                    $pdf->setPrintHeader(false); // Disable header
+                    $pdf->setPrintFooter(false); // Disable footer if not needed
+
+                    // Set properti dokumen
+                    $pdf->SetCreator(PDF_CREATOR);
+                    $pdf->SetAuthor('Your Name'); // Ganti dengan nama penulis
+                    $pdf->SetTitle('Purchase Order (商业发票)');
+                    $pdf->SetSubject('PDF Document');
+                    $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
+
+                    // Mengatur ukuran dan orientasi halaman
+                    $pdf->SetMargins(2,-2, 2); // Set left, top, right margins (10mm each)
+                    // $pdf->SetMargins(5.29, 5.29, 5.29); // Set left, top, right margins to 15px (approx. 5.29mm)
+                    // $pdf->SetAutoPageBreak(TRUE, 15); // Set auto page break with 15mm bottom margin
+                    $pdf->AddPage('P', 'A4'); // A4 paper, portrait orientation
+
+                    // Set the CID0CT font for Chinese characters
+                    $pdf->SetFont('cid0ct', '',5); // Adjust font size as needed
+
+                    // Menambahkan HTML ke PDF
+                    $pdf->writeHTML($view, true, false, true, false, '');
+
+                    // Tampilkan PDF di browser
+                    return $pdf->Output('document.pdf', 'I');
+            }
+            elseif($menu == 'sales_contract'){
+                    $menu = $request->input('menu');
+                        
+                        
+                    $data = Session::get('teknisi_id');
+                    $responseData = json_decode($data, true);
+                    $fclPembelian = new \App\Models\Fcl();
+                    $invoice = $request->input('invoice');
+                    $teknisi_cookie = $responseData['cookie'];
+                
+                    // Retrieve the data for the invoice
+                    $invoice_data = $fclPembelian->detailFclPembelian($teknisi_cookie, $invoice);
+                    $view = view('admin.pembelian.fcl.salescontractpdf', compact('invoice_data'))->render();
+
+                    // Generate PDF
+                    $pdf = new TCPDF();
+
+                    // Disable the default header and footer
+                    $pdf->setPrintHeader(false); // Disable header
+                    $pdf->setPrintFooter(false); // Disable footer if not needed
+
+                    // Set properti dokumen
+                    $pdf->SetCreator(PDF_CREATOR);
+                    $pdf->SetAuthor('Your Name'); // Ganti dengan nama penulis
+                    $pdf->SetTitle('Purchase Order (商业发票)');
+                    $pdf->SetSubject('PDF Document');
+                    $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
+
+                    // Mengatur ukuran dan orientasi halaman
+                    $pdf->SetMargins(2,-2, 2); // Set left, top, right margins (10mm each)
+                    // $pdf->SetMargins(5.29, 5.29, 5.29); // Set left, top, right margins to 15px (approx. 5.29mm)
+                    // $pdf->SetAutoPageBreak(TRUE, 15); // Set auto page break with 15mm bottom margin
+                    $pdf->AddPage('P', 'A4'); // A4 paper, portrait orientation
+
+                    // Set the CID0CT font for Chinese characters
+                    $pdf->SetFont('cid0ct', '',5); // Adjust font size as needed
+
+                    // Menambahkan HTML ke PDF
+                    $pdf->writeHTML($view, true, false, true, false, '');
+
+                    // Tampilkan PDF di browser
+                    return $pdf->Output('document.pdf', 'I');
+            }
+            elseif($menu == 'comercial_invoice'){
+                    $menu = $request->input('menu');
+                        
+                        
+                    $data = Session::get('teknisi_id');
+                    $responseData = json_decode($data, true);
+                    $fclPembelian = new \App\Models\Fcl();
+                    $invoice = $request->input('invoice');
+                    $teknisi_cookie = $responseData['cookie'];
+                
+                    // Retrieve the data for the invoice
+                    $invoice_data = $fclPembelian->detailFclPembelian($teknisi_cookie, $invoice);
+                    $view = view('admin.pembelian.fcl.comercialInvoicepdf', compact('invoice_data'))->render();
+
+                    $pdf = new TCPDF();
+
+                    // Disable the default header and footer
+                    $pdf->setPrintHeader(false); // Disable header
+                    $pdf->setPrintFooter(false); // Disable footer if not needed
+
+                    // Set properti dokumen
+                    $pdf->SetCreator(PDF_CREATOR);
+                    $pdf->SetAuthor('Your Name'); // Ganti dengan nama penulis
+                    $pdf->SetTitle('Purchase Order (商业发票)');
+                    $pdf->SetSubject('PDF Document');
+                    $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
+
+                    // Mengatur ukuran dan orientasi halaman
+                    $pdf->SetMargins(2,-2, 2); // Set left, top, right margins (10mm each)
+                    // $pdf->SetMargins(5.29, 5.29, 5.29); // Set left, top, right margins to 15px (approx. 5.29mm)
+                    // $pdf->SetAutoPageBreak(TRUE, 15); // Set auto page break with 15mm bottom margin
+                    $pdf->AddPage('P', 'A4'); // A4 paper, portrait orientation
+
+                    // Set the CID0CT font for Chinese characters
+                    $pdf->SetFont('cid0ct', '',5); // Adjust font size as needed
+
+                    // Menambahkan HTML ke PDF
+                    $pdf->writeHTML($view, true, false, true, false, '');
+
+                    // Tampilkan PDF di browser
+                    return $pdf->Output('document.pdf', 'I');
+            }
+            elseif($menu == 'packing_list'){
+                    $menu = $request->input('menu');
+                        
+                        
+                    $data = Session::get('teknisi_id');
+                    $responseData = json_decode($data, true);
+                    $fclPembelian = new \App\Models\Fcl();
+                    $invoice = $request->input('invoice');
+                    $teknisi_cookie = $responseData['cookie'];
+                
+                    // Retrieve the data for the invoice
+                    $invoice_data = $fclPembelian->detailFclPembelian($teknisi_cookie, $invoice);
+                    // dd(count($invoice_data['msg']['list_comercial_invoice']));
+                    $sumitem = count($invoice_data['msg']['list_comercial_invoice']);
+                    $view = view('admin.pembelian.fcl.packingListpdf', compact('invoice_data','sumitem'))->render();
+
+                    // Generate PDF
+                    $pdf = PDF::loadHTML($view);
+    
+                    // Tampilkan PDF di browser
+                    return $pdf->stream('document.pdf');
+            }
+        }
+    }   
 
     public function pembelian_fcl_filter(Request $request)
     {
@@ -3455,10 +4237,69 @@ class AdminController extends Controller
         $checkdatevalue = $request->input('checkdatevalue');
         $kode = $request->input('kode');
         $fcl_lcl = $request->input('fcl_lcl');
+        $username = $responseData;
+        $teknisi_id = $responseData['data']['teknisi']['id'];
+        $teknisi_cookie = $responseData['cookie'];
+        $menu = $request->input('menu');
+        $penerimaan_pembelian = new \App\Models\Penerimaan\Pembelian();
         if (isset($responseData)) {
-            $username = $responseData;
-            $teknisi_id = $responseData['data']['teknisi']['id'];
-            $teknisi_cookie = $responseData['cookie'];
+            if($menu=='tambah'){
+                $Data =$penerimaan_pembelian->tambahViewPembelian($teknisi_cookie, $checkdatevalue, $tgl_awal, $tgl_akhir,$fcl_lcl);
+                return view('admin.penerimaan.pembelian.pembelian_create', compact('username', 'data', 'Data'));
+            }
+            elseif($menu=='edit_penerimaan'){
+                $form = $request->input('form');
+                $Data = $penerimaan_pembelian->editPembelian($teknisi_cookie,$form);
+                // dd($Data);
+                return response()->json($Data);
+                
+            }
+            elseif($menu=='tambah_penerimaan'){
+                $form = $request->input('form');
+                $Data = $penerimaan_pembelian->tambahPembelian($teknisi_cookie,$form);
+                
+                return response()->json($Data);
+                
+            }
+            elseif($menu=='edit_view'){
+                $code = $request->input('code');
+                $Data = $penerimaan_pembelian->editViewPembelian($teknisi_cookie,$code);
+                
+                return view('admin.penerimaan.pembelian.edit_pembelian', compact('username', 'Data','menu'));
+            }
+            elseif($menu=='detail_view'){
+                $code = $request->input('code');
+                $Data = $penerimaan_pembelian->editViewPembelian($teknisi_cookie,$code);
+                
+                return view('admin.penerimaan.pembelian.edit_pembelian', compact('username', 'Data','menu'));
+            }
+            elseif($menu=='fcl_import'){
+                $id = $request->input('id');
+                $Data = $penerimaan_pembelian->importFcl($teknisi_cookie,$id);
+               
+                return response()->json($Data);
+            }
+            elseif($menu=='lcl_import'){
+                $id = $request->input('id');
+                $Data = $penerimaan_pembelian->importLcl($teknisi_cookie,$id);
+                
+                return response()->json($Data);
+            }
+            elseif($menu=='delete_pembelian'){
+                $id = $request->input('id');
+                $Data = $penerimaan_pembelian->deletePembelian($teknisi_cookie,$id);
+                return response()->json($Data);
+            }
+            elseif($menu=='invoice_bee'){
+                $invoice = $request->input('invoice');
+                $id = $request->input('id');
+                // dd($id,$invoice);
+                $Data = $penerimaan_pembelian->importInvoicePembelian($teknisi_cookie,$invoice,$id);
+                // dd($Data);
+                return response()->json($Data);
+            }
+            
+        
             try {
                 // Create a new GuzzleHTTP client with verify option set to false
                 $client = new Client([
@@ -3485,7 +4326,7 @@ class AdminController extends Controller
                 ]);
                 $data = $response->getBody()->getContents();
                 $Data = json_decode($data, true);
-                // dd($Data);
+                
                 return view('admin.penerimaan.penerimaan', compact('username', 'data', 'Data'));
             } catch (\Exception $e) {
                 // Handle Guzzle HTTP exception, you might want to log or handle the error accordingly

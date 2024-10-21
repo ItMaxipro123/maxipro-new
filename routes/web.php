@@ -167,6 +167,9 @@ Route::prefix('admin')->group(function () {
     
     Route::get('data_selectcategorycomercialinvoice', [AdminController::class, 'pembelian_selectcategory_comercial_invoice'])->name('admin.pembelian_selectcategory_comercial_invoice');
     
+    //Feature Pembelian Local
+    Route::get('data_localpembelian', [AdminController::class, 'pembelian_local'])->name('admin.pembelian_local');
+    Route::get('data_localpembelian_filter', [AdminController::class, 'pembelian_local_filter'])->name('admin.pembelian_local_filter');
    
     //Feature Pembelian LCL
     Route::get('data_lclpembelian', [AdminController::class, 'pembelian_lcl'])->name('admin.pembelian_lcl');
@@ -178,11 +181,11 @@ Route::prefix('admin')->group(function () {
     Route::get('data_lclimportbarang',[AdminController::class,'pembelian_lclimportbarang'])->name('admin.pembelian_lclimportbarang');
     
     Route::get('data_tambahlclpembelian', [AdminController::class, 'pembelian_tambah_lcl'])->name('admin.pembelian_tambah_lcl');
-    // Route::get('data_lclbarang', [AdminController::class, 'pembelian_lclbarang'])->name('admin.pembelian_lclbarang');
 
 
     //Feature Pembelian FCL
     Route::get('data_fclpembelian', [AdminController::class, 'pembelian_fcl'])->name('admin.pembelian_fcl');
+    Route::get('data_fclpembelian_detail_printpdf', [AdminController::class, 'pembelian_fcl_detail_printpdf'])->name('admin.pembelian_fcl_detail_printpdf');
     Route::get('data_fclpembelian_filter', [AdminController::class, 'pembelian_fcl_filter'])->name('admin.pembelian_fcl_filter');
 
     //Feature Penerimaan Pembelian

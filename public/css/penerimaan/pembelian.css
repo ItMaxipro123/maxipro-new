@@ -1,0 +1,137 @@
+.padding {
+    padding-top:20px;
+}
+.custom-border {
+    border: 1px solid #ced4da;
+    padding-left: 20px;
+}
+#rute{
+    border: 1px solid #000000; 
+    color: black;
+}
+
+  /* mengatur padding di teks tabel */
+.bordered-cell {
+    border: 2px solid #ccc; /* Adjust border thickness and color */
+}
+.bordered-input {
+    border: 2px solid #ccc; /* Adjust border thickness and color */
+    border-radius: 4px; /* Optional: Adds rounded corners */
+    margin-top:50px;
+    text-align: center; /* Centers the text inside the input */
+}
+.centered-text {
+    text-align: center;
+    padding-top: 50px; /* Default padding for larger screens */
+}
+
+/* Adjust padding for smaller screens */
+@media (max-width: 768px) {
+.centered-text {
+    padding-top: 50px; /* Reduce padding for medium screens (tablets, small laptops) */
+}
+}
+
+@media (max-width: 576px) {
+.centered-text {
+    padding-top: 50px; /* Reduce padding for small screens (mobile devices) */
+}
+}
+
+.flatpickr-input {
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.previous {
+    width: auto;
+    /* Atur lebar tombol menjadi otomatis */
+    padding-right: 0px;
+    /* Berikan padding di sisi kanan tombol */
+
+}
+
+/* Ganti warna latar belakang tabel */
+#tabe-stok {
+    background-color: #f0f0f0;
+    /* Ganti dengan warna yang Anda inginkan */
+
+}
+
+.dataTables_filter input[type="search"] {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    /* Opsional: untuk membuat sudut border melengkung */
+    padding: 5px;
+    /* Opsional: untuk memberi jarak antara border dan teks */
+}
+
+
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Warna gelap dengan opasitas */
+    z-index: 9999;
+    /* Layer di atas semua konten */
+    display: none;
+    /* Default tidak ditampilkan */
+}
+
+#overlay i {
+    color: white;
+    /* Warna ikon */
+    font-size: 50px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* Sesuaikan ukuran ikon sesuai kebutuhan */
+}
+
+
+/* Style untuk tombol Delete */
+.btn-delete {
+    width: 25%;
+    /* Lebar default */
+}
+
+/* Mengatur lebar tombol saat layar berukuran kecil (misalnya pada perangkat mobile) */
+@media only screen and (max-width: 600px) {
+    .btn-delete {
+        width: 50%;
+        /* Mengisi lebar penuh */
+    }
+}
+
+      /* Adjust the height of the Select2 input box */
+      .select2-selection--single {
+        height: 45px !important; /* Increase height */
+        display: flex;
+        align-items: center; /* Vertically center the text */
+        font-size: 14px; /* Increase font size for better scaling */
+    }
+
+    /* Adjust the padding and line-height for the Select2 input box */
+    .select2-selection__rendered {
+        padding-left: 12px; /* Increase padding if needed */
+        line-height: 60px; /* Ensure text is centered vertically */
+        margin-top:7px;
+    }
+    .select2-selection__arrow {
+        margin-top:7px !important;
+    }
+    /* Adjust the height of the dropdown list */
+    .select2-dropdown {
+        max-height: 300px; /* Increase maximum height for the dropdown */
+        overflow-y: auto;  /* Enable scrolling if the list is long */
+        width: auto;       /* Let the width adjust to fit content */
+    }
+    .select2-selection__rendered[placeholder] {
+        margin-top: 17px !important; /* Adjust top padding to move placeholder text */
+     
+    }
