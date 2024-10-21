@@ -1030,6 +1030,7 @@ LCL   | PT. Maxipro Group Indonesia
                             @endphp
                             <!-- Table data will be populated here -->
                             @foreach($Data['msg']['pembelianlcl'] as $index => $data)
+                            @if($data['category_transaksi']!='local')
                             @php
                             \Carbon\Carbon::setLocale('id'); // Set locale ke Bahasa Indonesia
                             $formattedDate = \Carbon\Carbon::parse($data['tgl_transaksi'])->translatedFormat('d F Y');
@@ -1193,6 +1194,7 @@ LCL   | PT. Maxipro Group Indonesia
                             @php
                             $num++;
                             @endphp
+                            @endif
                             @endforeach
                         </tbody>
                     </table>
@@ -1285,7 +1287,7 @@ LCL   | PT. Maxipro Group Indonesia
     $(document).ready(function() {
 
         
-         var table = $('#tabe-stok').DataTable({
+        var table = $('#tabe-stok').DataTable({
         "dom": '<"top"lf>rt<"bottom"ip><"clear">',
         "language": {
             "searchPlaceholder": "Cari...",
@@ -1354,14 +1356,14 @@ LCL   | PT. Maxipro Group Indonesia
                 data: null,
                 title: 'Action',
                 render: function(data, type, full, meta) {
-         
+                    
                     return `
                         <button type="button" 
                                 data-id="${data.invoice}" 
                                 name="${data.invoice}" 
                                 class="btn btn-large btn-info btn-edit" 
                                 style="width: 35px; height: 38px; padding: 9px 10px;" 
-                                title="${data.invoice}"
+                                title="Edit Invoice"
                                 onclick="editInvoice(this)">
                             <i class="fas fa-edit"></i>
                         </button>
@@ -1553,7 +1555,7 @@ LCL   | PT. Maxipro Group Indonesia
         // Menggunakan SweetAlert2 untuk konfirmasi penghapusan
         Swal.fire({
             title: 'Konfirmasi',
-            text: "Apakah Anda yakin ingin menghapus order pembelian ini " + restokName + " ?",
+            text: "Apakah Anda yakin ingin menghapus invoice " + restokName + " ?",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -1562,13 +1564,14 @@ LCL   | PT. Maxipro Group Indonesia
             cancelButtonText: 'Batal'
         }).then((result) => {
             if (result.isConfirmed) {
-                var url = "{{ route('admin.pembelian_hapus_order_pembelian') }}";
+                var url = "{{ route('admin.pembelian_lcl') }}";
                 $('#reload-icon').show();
                 $.ajax({
                     url: url,
                     type: 'GET',
                     data: {
-                        id: id
+                        menu:'delete_lcl',
+                        invoice: restokName
                     },
                     success: function(response) {
                         // Handle response jika sukses

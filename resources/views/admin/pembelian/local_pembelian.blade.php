@@ -2,7 +2,7 @@
 
 
 @section('title')
-LCL   | PT. Maxipro Group Indonesia
+LOCAL   | PT. Maxipro Group Indonesia
 @endsection
 @section('link')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -20,8 +20,8 @@ LCL   | PT. Maxipro Group Indonesia
 <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg wider">
     
     <div class="container-fluid">
-        <h4 id="judulLcl" style="margin-top: 40px;margin-bottom: 40px;"><i class="fas fa-database"></i> &nbsp LCL</h4>
-        <small class="display-block" style="position: absolute; top: 70px; left: 50px;" id="subjudulLcl">LCL {{ $username['data']['teknisi']['name'] }}</small>
+        <h4 id="judulLcl" style="margin-top: 40px;margin-bottom: 40px;"><i class="fas fa-database"></i> &nbsp LOCAL</h4>
+        <small class="display-block" style="position: absolute; top: 70px; left: 50px;" id="subjudulLcl">LOCAL {{ $username['data']['teknisi']['name'] }}</small>
         
     </div>
 
@@ -947,7 +947,7 @@ LCL   | PT. Maxipro Group Indonesia
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Filter Transaksi LCL</h5>
+                                    <h5 class="modal-title" id="exampleModalLabel">Filter Transaksi LOCAL</h5>
                                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -1030,170 +1030,170 @@ LCL   | PT. Maxipro Group Indonesia
                             @endphp
                             <!-- Table data will be populated here -->
                             @foreach($Data['msg']['pembelianlcl'] as $index => $data)
-                            @if($data['category_transaksi']!='local')
-                            @php
-                            \Carbon\Carbon::setLocale('id'); // Set locale ke Bahasa Indonesia
-                            $formattedDate = \Carbon\Carbon::parse($data['tgl_transaksi'])->translatedFormat('d F Y');
-                           $rowStyle = '';
-                            if ($data['status_process'] == 'requested') {
-                                $rowStyle = 'background-color: #97ebfb;';
-                            } elseif ($data['status_process'] == 'process') {
-                                $rowStyle = 'background-color: #feb3aa;';
-                            }
-                            elseif ($data['status_process'] == 'complete') {
-                                $rowStyle = 'background-color: #6cf670;';
-                            }                            
-                            @endphp
-                        <tr style="{{ $rowStyle }}">
-                            
-                      
-                        
-                        <td style="border: 1px solid #d7d7d7; color: black;">
-                            {{ $num }}     
-                        </td>
-
-                            <td style="border: 1px solid #d7d7d7; color: black; width:5px;">{{ $formattedDate }}</td>
-                            <td style="border: 1px solid #d7d7d7; color: black; width:10px;">{{ $data['invoice'] }}</td>
-                            <td style="border: 1px solid #d7d7d7; color: black;max-width: 10px; text-overflow: ellipsis;">{{ $data['supplier']['name'] }}</td>
-                            <td style="border: 1px solid #d7d7d7; color: black; width:5px;">{{ $data['teknisi']['name'] }}</td>
-                            <td style="border: 1px solid #d7d7d7; color: black; width:5px;">{{ $data['cabang']['name'] }}</td>
-                            <td style="border: 1px solid #d7d7d7; color: black; width:10px;">{{ $data['status_converttorupiah'] == '1' ? 'Rp' : $data['matauang']['simbol'] }} 
-                                {{ $data['status_converttorupiah'] == '1' ? number_format($data['subtotal_idr'], 0, ',', '.') : number_format($data['subtotal'], 0, ',', '.') }}
-                            </td>
-                            
-                            <!-- jika ekspedisilcl pada pembelian lcl lebih dari 0 -->
-                            @if(count($data['ekspedisilcl']) >0)
+                            @if($data['category_transaksi']=='local')
                                 @php
-                                    $num_baris=0;
-                                @endphp
-                                <td style="border: 1px solid #d7d7d7; color: black; width:5px;">
-                                @foreach($data['ekspedisilcl'] as $resultekspedisi)
-                                    @php
-                                   
-                                    foreach($Data['msg']['ekspedisi'] as $result){
-                                        if($resultekspedisi['id_ekspedisi'] == $result['id']){
-                                            $name_ekspedisi = $result['name'];
-                                            $resi = $resultekspedisi['resi'];
-                                            $price = $resultekspedisi['price'];
-                                            $num_baris++;
+                                        \Carbon\Carbon::setLocale('id'); // Set locale ke Bahasa Indonesia
+                                        $formattedDate = \Carbon\Carbon::parse($data['tgl_transaksi'])->translatedFormat('d F Y');
+                                        $rowStyle = '';
+                                        if ($data['status_process'] == 'requested') {
+                                            $rowStyle = 'background-color: #97ebfb;';
+                                        } elseif ($data['status_process'] == 'process') {
+                                            $rowStyle = 'background-color: #feb3aa;';
                                         }
-                                   
-                                    }
+                                        elseif ($data['status_process'] == 'complete') {
+                                            $rowStyle = 'background-color: #6cf670;';
+                                        }                            
+                                @endphp
+                                <tr style="{{ $rowStyle }}">
                                     
-                                    
-                                    @endphp
-                                    <span style="color: black;">
-
-                                       <p style="color:black;font-weight:400;">
-                                       {{ $formattedDate = \Carbon\Carbon::parse($resultekspedisi['tgl_kirim'])->translatedFormat('d F Y')}}
-                                       </p> 
-                                </span>
-                                 @endforeach
-                                </td>
-                                <td style="border: 1px solid #d7d7d7; color: black; width:10px">
-                                @foreach($data['ekspedisilcl'] as $resultekspedisi)
-                                    
-                                        @foreach($Data['msg']['select_ekspedisi'] as $selectEkspedisi)
-                                            @if($resultekspedisi['id_ekspedisi'] == $selectEkspedisi['id'])    
-                                                <span style="color: black;">
-                                                    <p style="color:black; font-weight:400;">
-                                                    {{ $selectEkspedisi['name'] }}  
-                                                    </p> 
-                                                </span>
-                                            @endif
-                                        @endforeach
-                                @endforeach
-                                </td>
-                                <td style="border: 1px solid #d7d7d7; color: black; width:10px">
-                                @foreach($data['ekspedisilcl'] as $resultekspedisi)
-                                   
-                                   <span style="color: black;">
-                                       <p style="color:black; font-weight:400;">
-                                           {{$resultekspedisi['resi']}}
-                                       </p> 
-                                   </span>
-                             
-                                @endforeach
-                                </td>
-                                <td style="border: 1px solid #d7d7d7; color: black;max-width: 10px;">
-                                    @foreach($data['ekspedisilcl'] as $resultekspedisi)
-                                    
-                                    @foreach($Data['msg']['matauang'] as $selectmatauang)
-                                            @if($resultekspedisi['id_matauang'] == $selectmatauang['id'])    
-                                                <span style="color: black;">
-                                                    <p style="color:black; font-weight:400;">
-                                                    
-                                                    {{ $selectmatauang['simbol'] }} {{ number_format($resultekspedisi['price'],0,',','.') }}  
-                                                    </p> 
-                                                </span>
-                                            @endif
-                                        @endforeach
+                            
                                 
-                                    @endforeach
-                                </td>
-                                
-                               
-                            <!-- bila ekspedisilcl pada lcl null -->
-                            @else
-                                <td style="border: 1px solid #d7d7d7; color: black; width:5px;"></td>
-                                <td style="border: 1px solid #d7d7d7; color: black;max-width: 40px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"></td>
-                                <td style="border: 1px solid #d7d7d7; color: black; width:10px"></td>
-                                <td style="border: 1px solid #d7d7d7; color: black;max-width: 10px;"></td>
-                            @endif
-                            <td style="border: 1px solid #d7d7d7; color: black; width:5px;">LCL</td>
-                            <td style="border: 1px solid #d7d7d7; color: black;max-width: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                                    @if($data['status_converttorupiah'] == '1')
-                                    <label class="label icon-box-check">
-                                        <i class="fas fa-check" style="color: white; font-weight:bold;"></i>
-                                    </label>
+                                    <td style="border: 1px solid #d7d7d7; color: black;">
+                                        {{ $num }}     
+                                    </td>
 
+                                    <td style="border: 1px solid #d7d7d7; color: black; width:5px;">{{ $formattedDate }}</td>
+                                    <td style="border: 1px solid #d7d7d7; color: black; width:10px;">{{ $data['invoice'] }}</td>
+                                    <td style="border: 1px solid #d7d7d7; color: black;max-width: 10px; text-overflow: ellipsis;">{{ $data['supplier']['name'] }}</td>
+                                    <td style="border: 1px solid #d7d7d7; color: black; width:5px;">{{ $data['teknisi']['name'] }}</td>
+                                    <td style="border: 1px solid #d7d7d7; color: black; width:5px;">{{ $data['cabang']['name'] }}</td>
+                                    <td style="border: 1px solid #d7d7d7; color: black; width:10px;">{{ $data['status_converttorupiah'] == '1' ? 'Rp' : $data['matauang']['simbol'] }} 
+                                        {{ $data['status_converttorupiah'] == '1' ? number_format($data['subtotal_idr'], 0, ',', '.') : number_format($data['subtotal'], 0, ',', '.') }}
+                                    </td>
+                                    
+                                    <!-- jika ekspedisilcl pada pembelian lcl lebih dari 0 -->
+                                    @if(count($data['ekspedisilcl']) >0)
+                                        @php
+                                            $num_baris=0;
+                                        @endphp
+                                        <td style="border: 1px solid #d7d7d7; color: black; width:5px;">
+                                        @foreach($data['ekspedisilcl'] as $resultekspedisi)
+                                            @php
+                                        
+                                            foreach($Data['msg']['ekspedisi'] as $result){
+                                                if($resultekspedisi['id_ekspedisi'] == $result['id']){
+                                                    $name_ekspedisi = $result['name'];
+                                                    $resi = $resultekspedisi['resi'];
+                                                    $price = $resultekspedisi['price'];
+                                                    $num_baris++;
+                                                }
+                                        
+                                            }
+                                            
+                                            
+                                            @endphp
+                                            <span style="color: black;">
+
+                                            <p style="color:black;font-weight:400;">
+                                            {{ $formattedDate = \Carbon\Carbon::parse($resultekspedisi['tgl_kirim'])->translatedFormat('d F Y')}}
+                                            </p> 
+                                        </span>
+                                        @endforeach
+                                        </td>
+                                        <td style="border: 1px solid #d7d7d7; color: black; width:10px">
+                                        @foreach($data['ekspedisilcl'] as $resultekspedisi)
+                                            
+                                                @foreach($Data['msg']['select_ekspedisi'] as $selectEkspedisi)
+                                                    @if($resultekspedisi['id_ekspedisi'] == $selectEkspedisi['id'])    
+                                                        <span style="color: black;">
+                                                            <p style="color:black; font-weight:400;">
+                                                            {{ $selectEkspedisi['name'] }}  
+                                                            </p> 
+                                                        </span>
+                                                    @endif
+                                                @endforeach
+                                        @endforeach
+                                        </td>
+                                        <td style="border: 1px solid #d7d7d7; color: black; width:10px">
+                                        @foreach($data['ekspedisilcl'] as $resultekspedisi)
+                                        
+                                        <span style="color: black;">
+                                            <p style="color:black; font-weight:400;">
+                                                {{$resultekspedisi['resi']}}
+                                            </p> 
+                                        </span>
+                                    
+                                        @endforeach
+                                        </td>
+                                        <td style="border: 1px solid #d7d7d7; color: black;max-width: 10px;">
+                                            @foreach($data['ekspedisilcl'] as $resultekspedisi)
+                                            
+                                            @foreach($Data['msg']['matauang'] as $selectmatauang)
+                                                    @if($resultekspedisi['id_matauang'] == $selectmatauang['id'])    
+                                                        <span style="color: black;">
+                                                            <p style="color:black; font-weight:400;">
+                                                            
+                                                            {{ $selectmatauang['simbol'] }} {{ number_format($resultekspedisi['price'],0,',','.') }}  
+                                                            </p> 
+                                                        </span>
+                                                    @endif
+                                                @endforeach
+                                        
+                                            @endforeach
+                                        </td>
+                                        
+                                    
+                                    <!-- bila ekspedisilcl pada lcl null -->
                                     @else
-                                    <label class="label icon-box-times">
-                                        <i class="fas fa-times" style="color: white; font-weight:bold;"></i>
-                                    </label>
-
+                                        <td style="border: 1px solid #d7d7d7; color: black; width:5px;"></td>
+                                        <td style="border: 1px solid #d7d7d7; color: black;max-width: 40px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"></td>
+                                        <td style="border: 1px solid #d7d7d7; color: black; width:10px"></td>
+                                        <td style="border: 1px solid #d7d7d7; color: black;max-width: 10px;"></td>
                                     @endif
-                            </td>
-                            <td style="border: 1px solid #d7d7d7;">
-                                
-                                <button type="button" 
-                                     
-                                        data-id="{{ $data['id'] }}" 
-                                        name="editButton" 
-                                        class="btn btn-large btn-info btn-edit" 
-                                        style="width: 35px; height: 38px; padding: 9px 10px;" 
-                                        title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                
-                                
-                                <button type="button" 
-                                        onclick="rejectOrderPembelian(this)" 
-                                        data-id="{{ $data['id'] }}" 
-                                        name="{{ $data['invoice'] }}" 
-                                        class="btn btn-large btn-info btn-danger" 
-                                        style="width: 35px; height: 38px; padding: 9px 10px;" 
-                                        title="Reject Order">
-                                    <i class="fas fa-times"></i>
-                                </button>
+                                    <td style="border: 1px solid #d7d7d7; color: black; width:5px;">{{ strtoupper($data['category_transaksi'])  }}</td>
+                                    <td style="border: 1px solid #d7d7d7; color: black;max-width: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                            @if($data['status_converttorupiah'] == '1')
+                                            <label class="label icon-box-check">
+                                                <i class="fas fa-check" style="color: white; font-weight:bold;"></i>
+                                            </label>
 
-                                <button type="button" 
-                                        onclick="deleteOrderPembelian(this)" 
-                                        data-id="{{ $data['id'] }}" 
-                                        name="{{ $data['invoice'] }}" 
-                                        class="btn btn-large btn-info btn-danger" 
-                                        style="width: 35px; height: 38px; padding: 9px 10px;" 
-                                        title="Delete">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
+                                            @else
+                                            <label class="label icon-box-times">
+                                                <i class="fas fa-times" style="color: white; font-weight:bold;"></i>
+                                            </label>
 
-                            </td>
-                        </tr>
+                                            @endif
+                                    </td>
+                                    <td style="border: 1px solid #d7d7d7;">
+                                        
+                                        <button type="button" 
+                                            
+                                                data-id="{{ $data['id'] }}" 
+                                                name="editButton" 
+                                                class="btn btn-large btn-info btn-edit" 
+                                                style="width: 35px; height: 38px; padding: 9px 10px;" 
+                                                title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        
+                                        
+                                        <button type="button" 
+                                                onclick="rejectOrderPembelian(this)" 
+                                                data-id="{{ $data['id'] }}" 
+                                                name="{{ $data['invoice'] }}" 
+                                                class="btn btn-large btn-info btn-danger" 
+                                                style="width: 35px; height: 38px; padding: 9px 10px;" 
+                                                title="Reject Order">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+
+                                        <button type="button" 
+                                                onclick="deleteOrderPembelian(this)" 
+                                                data-id="{{ $data['id'] }}" 
+                                                name="{{ $data['invoice'] }}" 
+                                                class="btn btn-large btn-info btn-danger" 
+                                                style="width: 35px; height: 38px; padding: 9px 10px;" 
+                                                title="Delete">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+
+                                    </td>
+                                </tr>
 
 
-                            @php
-                            $num++;
-                            @endphp
+                                @php
+                                $num++;
+                                @endphp
                             @endif
                             @endforeach
                         </tbody>
@@ -1367,15 +1367,7 @@ LCL   | PT. Maxipro Group Indonesia
                                 onclick="editInvoice(this)">
                             <i class="fas fa-edit"></i>
                         </button>
-                        <button type="button" 
-                                onclick="rejectOrderPembelian(this)" 
-                                data-id="${data.id}" 
-                                name="${data.invoice}" 
-                                class="btn btn-large btn-info btn-danger" 
-                                style="width: 35px; height: 38px; padding: 9px 10px;" 
-                                title="Reject Order">
-                            <i class="fas fa-times"></i>
-                        </button>
+                   
                         <button type="button" 
                                 onclick="deleteOrderPembelian(this)" 
                                 data-id="${data.id}" 
@@ -1414,7 +1406,7 @@ LCL   | PT. Maxipro Group Indonesia
         function sendFilterData(selectedValue) {
             // console.log('filter',selectedValue)
             $.ajax({
-                url: '{{ route('admin.pembelian_lcl_filter') }}', // Replace with your server endpoint
+                url: '{{ route('admin.pembelian_local_filter') }}', // Replace with your server endpoint
                 method: 'GET',
                 data: { 
                     filterValue: selectedValue 
@@ -1422,7 +1414,7 @@ LCL   | PT. Maxipro Group Indonesia
                 success: function(response) {
                     // Handle success response
                     // console.log(response);
-            var newRoute = "{{ route('admin.pembelian_lcl_filter') }}?filterValue="+lastSelectedValue;
+            var newRoute = "{{ route('admin.pembelian_local_filter') }}?filterValue="+lastSelectedValue;
 
                     window.location.href = newRoute;
 
@@ -1564,13 +1556,13 @@ LCL   | PT. Maxipro Group Indonesia
             cancelButtonText: 'Batal'
         }).then((result) => {
             if (result.isConfirmed) {
-                var url = "{{ route('admin.pembelian_lcl') }}";
+                var url = "{{ route('admin.pembelian_local') }}";
                 $('#reload-icon').show();
                 $.ajax({
                     url: url,
                     type: 'GET',
                     data: {
-                        menu:'delete_lcl',
+                        menu:'delete_local',
                         invoice: restokName
                     },
                     success: function(response) {
@@ -1769,7 +1761,7 @@ LCL   | PT. Maxipro Group Indonesia
             }
 
             // Mendefinisikan URL target
-            var url = "{{ route('admin.pembelian_lcl_filter') }}" + '?' + queryString;
+            var url = "{{ route('admin.pembelian_local_filter') }}" + '?' + queryString;
 
             // Mengirim permintaan GET ke server
             fetch(url)
@@ -1787,7 +1779,7 @@ LCL   | PT. Maxipro Group Indonesia
 
                     // Memuat ulang halaman
 
-                     var reloadUrl = "{{ route('admin.pembelian_lcl_filter') }}" + '?' + queryString;
+                     var reloadUrl = "{{ route('admin.pembelian_local_filter') }}" + '?' + queryString;
                 
                     window.location.href = reloadUrl;
 
@@ -3649,7 +3641,7 @@ LCL   | PT. Maxipro Group Indonesia
             // Example: You can now use this ID in an AJAX request or any other logic
             $.ajax({
                 type: 'GET',
-                url: '{{ route('admin.pembelian_lcl') }}',
+                url: '{{ route('admin.pembelian_local') }}',
                 data: { 
                     menu:'edit',
                     invoice: invoice },
@@ -3667,8 +3659,8 @@ LCL   | PT. Maxipro Group Indonesia
                     $('#tambah_lcl').remove();
                     $('#tab-nav').show();
                     $('#master-tab').trigger('click'); // Show master content by default
-                    $('#judulLcl').html('<i class="fas fa-database"></i> &nbsp Edit LCL');
-                    document.title='Edit LCL   | PT. Maxipro Group Indonesia'
+                    $('#judulLcl').html('<i class="fas fa-database"></i> &nbsp Edit Local');
+                    document.title='Edit Local   | PT. Maxipro Group Indonesia'
                     
                     //menambah ekspedisi
                   

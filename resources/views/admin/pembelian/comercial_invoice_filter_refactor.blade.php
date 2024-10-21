@@ -49,7 +49,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                 </div>
                                 <ul id="tab-nav" class="nav nav-tabs fade show" style="display: none;">
                                     <li class="nav-item"><a class="nav-link active" href="#" id="master-tab">Master</a></li>
-                                    <!-- <li class="nav-item"><a class="nav-link" href="#" id="pembayaran-tab">Pembayaran</a></li> -->
+                                    
                                     <li class="nav-item"><a class="nav-link" href="#" id="ekspedisi-tab">Ekspedisi</a></li>
                                 </ul>
 
@@ -217,8 +217,9 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                             
                                             <td id="td-3">   
                                                 <select id="select_category_{{ $i }}" class="form-control select_select_category" data-id_commercial="{{ $data['id'] }}" style="background-color: white">
-                                                    <option value="">Pilih Kategori</option>
+                                                    <option value="0">Pilih Kategori</option>
                                                     <option value="fcl" {{ $data['category_comercial_invoice'] == 'fcl' ? 'selected' : '' }}>FCL</option>
+                                                    
                                                     
                                                     
                                                 </select>
@@ -226,12 +227,13 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                            
                                             <td id="td-2">
                                                 @if ($data['status'] == 'requested')
-                                                <a href="javascript:void(0)" onclick="updateComercialInvoice(this)" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-info btn-edit" style="width: 35px; height: 38px; padding: 9px 10px;" title="Edit"><i class="fas fa-edit"></i></a>
+                                                    <a href="javascript:void(0)" onclick="detailComercialInvoice(this)" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-info btn-light" style="width: 35px; height: 38px; padding: 9px 10px;" title="Detail Commercial Invoice"><i class="fas fa-eye"></i></a>
+                                                    <a href="javascript:void(0)" onclick="updateComercialInvoice(this)" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-info btn-edit" style="width: 35px; height: 38px; padding: 9px 10px;" title="Edit"><i class="fas fa-edit"></i></a>
                                                 @else
-                                                <a href="javascript:void(0)" onclick="updateRestokFailed(this); return false;" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-info btn-edit" style="width: 35px; height: 38px; padding: 9px 10px;" title="Edit"><i class="fas fa-edit"></i></a>
+                                                    <a href="javascript:void(0)" onclick="updateRestokFailed(this); return false;" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-info btn-edit" style="width: 35px; height: 38px; padding: 9px 10px;" title="Edit"><i class="fas fa-edit"></i></a>
                                                 @endif
-                                                <a href="javascript:void(0)" onclick="printComercialInvoice(this)" data-id="{{ $data['id'] }}" name="{{ $data['invoice_no'] }}" class="btn btn-large btn-info btn-danger" style="width: 35px; height: 38px; padding: 9px 10px;" title="Reject Order"><i class="fas fa-times"></i></a>
-                                                <a href="javascript:void(0)" onclick="deleteComercialInvoice(this)" data-id="{{ $data['id'] }}" name="{{ $data['invoice_no'] }}" class="btn btn-large btn-info btn-danger" style="width: 35px; height: 38px; padding: 9px 10px;" title="Delet2e"><i class="fas fa-trash-alt"></i></a>
+                                                
+                                                    <a href="javascript:void(0)" onclick="deleteComercialInvoice(this)" data-id="{{ $data['id'] }}" name="{{ $data['invoice_no'] }}" class="btn btn-large btn-info btn-danger" style="width: 35px; height: 38px; padding: 9px 10px;" title="Delet2e"><i class="fas fa-trash-alt"></i></a>
                                             </td>
                                             <td>
                                             </td>
@@ -290,7 +292,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                                     @else
                                                     <a href="javascript:void(0)" onclick="updateRestokFailed(this); return false;" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-info btn-edit" style="width: 35px; height: 38px; padding: 9px 10px;" title="Edit"><i class="fas fa-edit"></i></a>
                                                     @endif
-                                                    <a href="javascript:void(0)" onclick="printComercialInvoice(this)" data-id="{{ $data['id'] }}" name="{{ $data['invoice_no'] }}" class="btn btn-large btn-info btn-light" style="width: 35px; height: 38px; padding: 9px 10px;" title="Print Purchase Order"><i class="fas fa-book"></i></a>
+                                                    <a href="javascript:void(0)" onclick="rejectOrderPembelian(this)" data-id="{{ $data['id'] }}" name="{{ $data['invoice_no'] }}" class="btn btn-large btn-info btn-danger" style="width: 35px; height: 38px; padding: 9px 10px;" title="Reject Order"><i class="fas fa-times"></i></a>
                                                     <a href="javascript:void(0)" onclick="deleteComercialInvoice(this)" data-id="{{ $data['id'] }}" name="{{ $data['invoice_no'] }}" class="btn btn-large btn-info btn-danger" style="width: 35px; height: 38px; padding: 9px 10px;" title="Delete5"><i class="fas fa-trash-alt"></i></a>
                                                 </td>
                                                 <td>
@@ -1666,8 +1668,17 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
             </div>
         </div>
     </div>
-</main>
+    
+     
+                  
+    
 
+</main>
+        
+<div id="detailFclContainer"  style="display: none;" class="col-sm-12" style="margin-top: 15px;">
+                            <div id="divDetail"></div>
+                    </div>
+    
 @endsection
 
 @section('script')
@@ -2142,7 +2153,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
             $('#tambahComercialLocal').remove()
             $('#tab-nav').show();
             $('#master-tab').trigger('click'); 
-            $('#judulRestok').html('<i class="fas fa-database"></i> &nbsp Add Commercial Invoice Kategori Local');
+            $('#judulRestok').html('<i class="fas fa-database"></i> &nbsp Add Commercial Invoice Kategori LCL/Local');
             $('#addcomerialinvoicelocal').css('display','block')
             
             $.ajax({
@@ -3286,6 +3297,72 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
         }
     });
 
+    function detailComercialInvoice(element){
+        event.preventDefault();
+        var id = $(element).data('id');
+        console.log('id',id)
+
+
+        $('#overlay').fadeIn();
+
+        var url = "{{ route('admin.pembelian_editview_comercial_invoice') }}";
+
+        $.ajax({
+            url: url,
+            type: 'GET', // Menggunakan metode GET
+            data: {
+                menu:'detail_commercial',
+                id_product: id
+            },
+            success: function(response) {
+                $('aside.sidenav').remove();
+                $('.btn-tambah').remove()
+          
+                if (window.dataTableInstance) {
+                            window.dataTableInstance.destroy();
+                }
+                $('#tabe-stok').remove()
+                $('.radio-button-container').remove()
+                $('#clearFilterBtn').remove()
+                $('#FilterBtn').remove()
+                $('#divDetail').html(response);
+                $('#detailFclContainer').css({
+                    'background-image': 'url(https://i.pinimg.com/originals/e4/5f/54/e45f54e2cc5516e2210c34453db5ab6e.jpg)',
+                    'background-size': 'cover',
+                    'background-position': 'center',
+                    'background-repeat': 'no-repeat',
+                    'min-height': '100vh',       // Membuat elemen memenuhi tinggi viewport
+                    'min-width':'100vh',
+                    'display': 'flex',           // Mengaktifkan flexbox
+                    'flex-direction': 'column',  // Susunan elemen secara vertikal
+                    'justify-content': 'center', // Posisi elemen di tengah secara vertikal
+                    'align-items': 'center'      // Posisi elemen di tengah secara horizontal
+                });
+                $('#detailFclContainer').show();
+                $('#judulFcl').hide()
+                $('.display-block').hide()
+                document.title='Detail FCL   | PT. Maxipro Group Indonesia'
+                $('.container-fluid').hide()
+           
+                $('.card').css({
+                   
+                    'display':'none'
+                    
+                });
+           
+            },
+            error: function(xhr, status, error) {
+                // Sembunyikan elemen overlay dengan efek fade-out jika terjadi kesalahan
+                $('#overlay').fadeOut();
+
+                // Handle error jika terjadi kesalahan
+                console.error(xhr.responseText);
+                return;
+            }
+        });
+
+    }
+
     function updateComercialInvoice(element) {
             //Membuka modal update
             event.preventDefault();
@@ -3321,7 +3398,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                     return;
                 }
             });
-        }
+    }
 
     //Membuka modal gagal update
     function updateRestokFailed(button) {
@@ -3395,21 +3472,11 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
     });
   }
 
-    function printComercialInvoice(element) {
+    function rejectOrderPembelian(element) {
         event.preventDefault();
         var id = $(element).data('id');
         var restokName = $(element).attr('name');
 
-        $.ajax({
-            url:'{{ route('admin.pembelian_comercial_invoice') }}',
-            type:'GET',
-            data:{
-                menu:'print_purchase_order'
-            },
-            success: function(response){
-                console.log('response print purhcase order',response)
-            },
-        });
         // Menggunakan SweetAlert2 untuk konfirmasi penghapusan
         Swal.fire({
             title: 'Konfirmasi',
@@ -3422,7 +3489,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
             cancelButtonText: 'Batal'
         }).then((result) => {
             if (result.isConfirmed) {
-                var url = "{{ route('admin.pembelian_comercial_invoice') }}";
+                var url = "{{ route('admin.pembelian_reject_order_pembelian') }}";
 
                 $.ajax({
                     url: url,
@@ -3644,964 +3711,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
         });
     });
 
-        //untuk send import barang
-
-        // $(document).ready(function() {
-
-        //     // $('#sendImportBarang').click(function(event) {
-        //     //     event.preventDefault();
-        //     //      var selectedCheckboxes = $('.kubik-checkbox-tambah:checked');
-        //     //     var formData = {
-        //     //         // id_product: $('input[name=id_product]').val(),
-        //     //         idrestok: [],
-        //     //         valuerestok: []
-        //     //     };
-        //     //      selectedCheckboxes.each(function(index) {
-                    
-        //     //         var hiddenInputValue = $(this).next('input[type="hidden"]').val();
-                    
-        //     //         formData.idrestok.push(hiddenInputValue);
-        //     //         if (hiddenInputValue) {
-        //     //             formData.valuerestok.push(1); 
-        //     //         }
-        //     //     });
-        //     //      console.log('formdata',formData)
-        //     //       $.ajax({
-        //     //         type: 'GET',
-        //     //         url: '{{ route('admin.pembelian_importbarang_comercial_invoice') }}',
-        //     //         data: formData,
-        //     //         success: function(response) {
-        //     //             console.log('Data berhasil dikirim:', response);
-
-                    
-        //     //             var contentContainer = $('#content-container2');
-        //     //             contentContainer.empty();
-        //     //             var contentContainer2 = $('#content-container3');
-        //     //             contentContainer2.empty();
-                
-        //     //             var directory = response.url_gambar; 
-        //     //             var hscodehistory =[];
-        //     //             var grossWeight =0;
-        //     //             var nettWeight=0;
-        //     //             var without_tax=0;
-        //     //             var unitPriceUsd=0;
-        //     //             var totalPriceUsd=0;
-        //     //             var qty_input7  =0;
-        //     //             var tdElement =0;
-        //     //             response.orderpembelian.forEach(function(order,index) {
-            
-                        
-                
         
-                            
-        //     //                 var productName = order.product.name;
-        //     //                 var gambarName ='https://maxipro.id/images/barang/'+order.product.image;
-        //     //                 console.log(gambarName)
-                            
-        //     //                 var newTable1 = $('<table>');
-        //     //                 var inputDetailElement = $('<input />').attr({
-        //     //                     'id': 'id_edit_import'+index,          
-        //     //                     'name': 'restok_'+(index),      
-        //     //                     'class': 'form-control restok_import_tambah',    
-        //     //                     'placeholder': '',        
-        //     //                     'type': 'text',          
-        //     //                     'value':order.id
-        //     //                 }).css({
-        //     //                     'border': '1px solid #696868',
-        //     //                     'color' : 'black',
-        //     //                     'padding' : '10px',
-        //     //                     'width': '100%'           // Sesuaikan dengan kebutuhan Anda
-        //     //                 });
-
-        //     //                 var input_barangElement = $('<input />').attr({
-        //     //                     'id': 'id_barang_import'+index,          // ID untuk elemen input
-        //     //                     'name': 'inputName',      // Nama untuk elemen input
-        //     //                     'class': 'form-control',    // Kelas CSS untuk elemen input
-        //     //                     'placeholder': '',        // Placeholder untuk elemen input
-        //     //                     'type': 'text',          // Tipe input
-        //     //                     'value': order.id_barang
-        //     //                 }).css({
-        //     //                     'border': '1px solid #696868',
-        //     //                     'color' : 'black',
-        //     //                     'padding' : '10px',
-        //     //                     'width': '100%'           // Sesuaikan dengan kebutuhan Anda
-        //     //                 });
-                            
-        //     //                 var newTr1 = $('<tr>');
-        //     //                 var newRowTd1 = $('<td style="border: 1px solid #696868; color: black;">');
-                            
-        //     //                 var img = $('<img style="width: 350px;height:320px;">');
-        //     //                 img.attr('src', gambarName);
-                            
-                        
-        //     //                 var newRowTd = $('<td style="border: 2px solid #696868; color: black; width: 100%;">');
-        //     //                 var newTable = $('<table style="width: 100%;padding-left: 1px;">');
-                            
-        //     //                 var newTr = $('<tr style="border: 1px solid #d7d7d7; color: black;">');
-        //     //                 var newTr2 = $('<tr style="border: 1px solid #d7d7d7;color: black;">');
-        //     //                 var newTr3 = $('<tr style="border: 1px solid #d7d7d7;color: black;">');
-        //     //                 var newTr4 = $('<tr style="border: 1px solid #d7d7d7;color: black;">');
-        //     //                 var newTr5 = $('<tr style="border: 1px solid #d7d7d7;color: black;">');
-        //     //                 var newTr6 = $('<tr style="border: 1px solid #d7d7d7;color: black;">');
-        //     //                 var newTd = $('<td colspan="3" style="border: 1px solid #d7d7d7; color: white; background-color: black; font-weight: bold ">');
-        //     //                     newTd.text(productName); // Mengatur teks sel dengan nama produk
-        //     //                 var newTd2 = $('<td style="border: 1px solid #d7d7d7; color: white; background-color: black; font-weight: bold ">');
-        //     //                     newTd2.html('Chinese Name<br>中文品名'); 
-        //     //                 var newTdChineseName = $('<td colspan="2" style="border: 1px solid #d7d7d7;">');
-        //     //                 var inputChineseName = $('<input />').attr({
-        //     //                     'id': 'chinese_name_import'+index,
-        //     //                     'name': 'chinese_name_' + (index),  
-        //     //                     'class': 'form-control chinese_import',    
-        //     //                     'placeholder': '',        
-        //     //                     'type': 'text',
-        //     //                     'value': order.product.name_china,
-        //     //                 }).css({
-        //     //                     'border': '1px solid #696868',
-        //     //                     'color' : 'black',
-        //     //                     'padding' : '10px',
-        //     //                     'width': '100%'           
-        //     //                 });
-
-        //     //                 newTdChineseName.append(inputChineseName);
-        //     //                 var newTd3 = $('<td style="border: 1px solid #d7d7d7; color: white; background-color: black; font-weight: bold;width:25.7%; ">');
-        //     //                     newTd3.html('English Name<br>英文品名');
-
-        //     //                 var newTdEnglishName = $('<td colspan="2" style="border: 1px solid #d7d7d7;">');
-        //     //                 var inputEnglishName = $('<input />').attr({
-        //     //                     'id': 'english_name_import'+index,
-        //     //                     'name': 'english_name_' + (index),  
-        //     //                     'class': 'form-control english_import',    
-        //     //                     'placeholder': '',        
-        //     //                     'type': 'text',
-        //     //                     'value': order.product.name_english,
-        //     //                 }).css({
-        //     //                     'border': '1px solid #696868',
-        //     //                     'color' : 'black',
-        //     //                     'padding' : '10px',
-        //     //                     'width': '100%'           
-        //     //                 });
-        //     //                     newTdEnglishName.append(inputEnglishName);
-        //     //                 var newTd4 = $('<td style="border: 1px solid #d7d7d7; color: white; background-color: black; font-weight: bold;width:25.7%;">');
-        //     //                     newTd4.html('Model<br>型号');
-        //     //                 var newTdModel = $('<td colspan="2" style="border: 1px solid #d7d7d7;">');
-        //     //                 var modelValue = order.product.model || ''; // Jika order.model null, maka gunakan string kosong
-        //     //                 // var inputModel = $('<input type="text" style="width:100%;border: 1px solid #696868; color: black; padding: 10px;" value="' + modelValue + '">'); // Membuat elemen input dengan nilai dari modelValue
-        //     //                 var inputModel = $('<input />').attr({
-        //     //                     'id': 'model_import'+index,
-        //     //                     'name': 'model_name_' + (index),  
-        //     //                     'class': 'form-control model_import',    
-        //     //                     'placeholder': '',        
-        //     //                     'type': 'text',
-        //     //                     'value': modelValue,
-        //     //                 }).css({
-        //     //                     'border': '1px solid #696868',
-        //     //                     'color' : 'black',
-        //     //                     'padding' : '10px',
-        //     //                     'width': '100%'           
-        //     //                 }); 
-
-        //     //                 newTdModel.append(inputModel);
-        //     //                 var newTd5 = $('<td style="border: 1px solid #d7d7d7; color: white; background-color: black; font-weight: bold;width:25.7%;">');
-        //     //                     newTd5.html('Brand<br>品牌'); 
-        //     //                     var brandValue = order.product.brand || '';
-        //     //                 var newTdBrand = $('<td colspan="2" style="border: 1px solid #d7d7d7;">');
-        //     //                 // var inputBrand = $('<input type="text" style="width:100%;border: 1px solid #696868; color: black; padding: 10px;" value="' + brandValue + '">'); // Membuat elemen input dengan nilai dari modelValue
-        //     //                 var inputBrand = $('<input />').attr({
-        //     //                     'id': 'brand_import'+index,
-        //     //                     'name': 'brand_name_' + (index),  
-        //     //                     'class': 'form-control brand_import',    
-        //     //                     'placeholder': '',        
-        //     //                     'type': 'text',
-        //     //                     'value': brandValue,
-        //     //                 }).css({
-        //     //                     'border': '1px solid #696868',
-        //     //                     'color' : 'black',
-        //     //                     'padding' : '10px',
-        //     //                     'width': '100%'           
-        //     //                 }); 
-
-        //     //                 newTdBrand.append(inputBrand);
-        //     //                 var newTd6 = $('<td style="border: 1px solid #d7d7d7; color: white; background-color: black; font-weight: bold;width:25.7%;">');
-        //     //                     newTd6.html('HS Code<br>海关编码'); 
-        //     //                 var newTdHsCode = $('<td style="border: 1px solid #d7d7d7;">');
-        //     //                 var selectHsCode = $('<select style="width:100%;border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control hscode-import">' +
-        //     //                                 '<option value="">Pilih Hs Code</option>' +            
-        //     //                                 '</select>'); // Membuat elemen select
-        //     //                     newTdHsCode.append(selectHsCode);
-        //     //                 var newTdHsCode2 = $('<td style="border: 1px solid #d7d7d7;">');
-                        
-        //     //                 var inputHsCode = $('<input />').attr({
-        //     //                     'id': 'hscode-import-edit',
-        //     //                     'name': 'hscode-input_' + (index),  
-        //     //                     'class': 'form-control hscode_import',    
-        //     //                     'placeholder': '',        
-        //     //                     'type': 'text',
-        //     //                     // 'value': newTdBrand,
-        //     //                 }).css({
-        //     //                     'border': '1px solid #696868',
-        //     //                     'color' : 'black',
-        //     //                     'padding' : '10px',
-        //     //                     'width': '100%'           
-        //     //                 }); 
-
-        //     //                 newTdHsCode2.append(inputHsCode);
-        //     //                 newTr.append(newTd);
-        //     //                 newTr2.append(newTd2);
-        //     //                 newTr2.append(newTdChineseName);
-        //     //                 newTr3.append(newTd3);
-        //     //                 newTr3.append(newTdEnglishName);
-        //     //                 newTr4.append(newTd4);
-        //     //                 newTr4.append(newTdModel);
-        //     //                 newTr5.append(newTd5);
-        //     //                 newTr5.append(newTdBrand);
-        //     //                 newTr6.append(newTd6);
-        //     //                 newTr6.append(newTdHsCode);
-        //     //                 newTr6.append(newTdHsCode2);
-        //     //                 newTable.append(newTr);
-        //     //                 newTable.append(newTr2);
-        //     //                 newTable.append(newTr3);
-        //     //                 newTable.append(newTr4);
-        //     //                 newTable.append(newTr5);
-        //     //                 newTable.append(newTr6);
-        //     //                 newRowTd1.append(img);
-        //     //                 newRowTd.append(newTable);
-        //     //                 newTr1.append(newRowTd1);
-        //     //                 newTr1.append(newRowTd);
-
-    
-        //     //                 var newTable2 = $('<table>')
-        //     //                 var newTrTable2 = $('<tr>')
-        //     //                 var newTdLast = $('<td colspan="3" style="border: 1px solid #d7d7d7; color: white; background-color: black; text-align: center;">');
-        //     //                     newTdLast.html('Size(CM)<br>每件尺寸');
-        //     //                 var newTd2Last = $('<td  colspan="3" style="border: 1px solid #d7d7d7; color: white; background-color: black; text-align: center;">');
-        //     //                     newTd2Last.html('Package Size(CM) <br>每个包装的尺寸');
-        //     //                 var newTd3Last = $('<td  colspan="1"rowspan="2" style="border: 1px solid #d7d7d7;color: white; background-color: black; text-align: center; ">');
-        //     //                     newTd3Last.html('Quantity <br>数量');
-        //     //                 var newTd4Last = $('<td  colspan="1"rowspan="2" style="border: 1px solid #d7d7d7;color: white; background-color: black; text-align: center; ">');
-        //     //                     newTd4Last.html('Nett <br> Weight <br>(KG) <br>净重 ');
-        //     //                 var newTd5Last = $('<td  colspan="1"rowspan="2" style="border: 1px solid #d7d7d7;color: white; background-color: black; text-align: center; ">');
-        //     //                     newTd5Last.html('Gross Weight <br>(KG) <br>毛重');
-        //     //                 var newTd6Last = $('<td  colspan="1"rowspan="2" style="border: 1px solid #d7d7d7;color: white; background-color: black; text-align: center; ">');
-        //     //                     newTd6Last.html('CBM<br>Volume <br>(M3) <br>体积');
-        //     //                 var newTd7Last = $('<td colspan="1"rowspan="2" style="border: 1px solid #d7d7d7;color: white; background-color: black; text-align: center; ">');
-        //     //                     newTd7Last.html('Unit Price Without<br> Tax <br>不含税单价 ');
-        //     //                 var newTd8Last = $('<td  colspan="1"rowspan="2" style="border: 1px solid #d7d7d7;color: white; background-color: black; text-align: center; ">');
-        //     //                     newTd8Last.html('Unit Price USD');
-        //     //                 var newTd9Last = $('<td  colspan="1"rowspan="2" style="border: 1px solid #d7d7d7;color: white; background-color: black; text-align: center; ">');
-        //     //                     newTd9Last.html('Total Price Without Tax <br>不含税总价');
-        //     //                 var newTd10Last = $('<td  colspan="1"rowspan="2" style="border: 1px solid #d7d7d7;color: white; background-color: black; text-align: center; ">');
-        //     //                     newTd10Last.html('Total Price <br>USD');
-        //     //                 var newTd11Last = $('<td  colspan="1"rowspan="2" style="border: 1px solid #d7d7d7;color: white; background-color: black; text-align: center; ">');
-        //     //                     newTd11Last.html('Use<br>用途');
-                            
-        //     //                 var newTr2Table2 = $('<tr>')
-        //     //                 var newTd2Tr2Table2 = $('<td style="border: 1px solid #d7d7d7; color: white; background-color: black; text-align: center;">');
-        //     //                 newTd2Tr2Table2.html('Length(CM) <br>长');
-        //     //                 var newTd3Tr2Table2 = $('<td style="border: 1px solid #d7d7d7; color: white; background-color: black; text-align: center;">');
-        //     //                 newTd3Tr2Table2.html('Width(CM) <br>长<');
-        //     //                 var newTd4Tr2Table2 = $('<td style="border: 1px solid #d7d7d7; color: white; background-color: black; text-align: center;">');
-        //     //                 newTd4Tr2Table2.html('Height(CM) <br>长');
-        //     //                 var newTd5Tr2Table2 = $('<td style="border: 1px solid #d7d7d7; color: white; background-color: black; text-align: center;">');
-        //     //                 newTd5Tr2Table2.html('Length(CM) <br>长');
-        //     //                 var newTd6Tr2Table2 = $('<td style="border: 1px solid #d7d7d7; color: white; background-color: black; text-align: center;">');
-        //     //                 newTd6Tr2Table2.html('Width(CM) <br>长');
-        //     //                 var newTd7Tr2Table2 = $('<td style="border: 1px solid #d7d7d7; color: white; background-color: black; text-align: center;">');
-        //     //                 newTd7Tr2Table2.html('Height(CM) <br>长');
-
-        //     //                 var newTr3Table2 = $('<tr>');
-        //     //                 var newTdTr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
-
-        //     //                 var inputElement = $('<input />').attr({
-        //     //                     'id': 'long_import'+index,          // index untuk urutan elemen input
-        //     //                     'name': 'long_' + (index),  
-        //     //                     'class': 'form-control long_import',    
-        //     //                     'placeholder': '',        
-        //     //                     'type': 'text',
-        //     //                     'value': order.product.long * 100,
-        //     //                 }).css({
-        //     //                     'border': '1px solid #696868',
-        //     //                     'color' : 'black',
-        //     //                     'padding' : '10px',
-        //     //                     'width': '100%'           
-        //     //                 });
-        //     //                 newTdTr3Table2.append(inputElement);
-                            
-        //     //                 var newTd2Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
-        //     //                 var inputElement2 = $('<input />').attr({
-        //     //                     'id': 'width_import'+index,     
-        //     //                     'name': 'width_'+ (index),      
-        //     //                     'class': 'form-control width_import',    
-        //     //                     'placeholder': '',   
-        //     //                     'type': 'text',
-        //     //                     'value': order.product.width * 100,
-        //     //                 }).css({
-        //     //                     'border': '1px solid #696868',
-        //     //                     'color' : 'black',
-        //     //                     'padding' : '10px',
-        //     //                     'width': '100%'   
-        //     //                 });
-        //     //                 newTd2Tr3Table2.append(inputElement2);
-
-        //     //                 var newTd3Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
-        //     //                 var inputElement3 = $('<input />').attr({
-        //     //                     'id': 'height_import'+index,         
-        //     //                     'name': 'height_'+ (index),      
-        //     //                     'class': 'form-control height_import',  
-        //     //                     'placeholder': '',        
-        //     //                     'type': 'text',
-        //     //                     'value' : order.product.height * 100,
-        //     //                 }).css({
-        //     //                     'border': '1px solid #696868',
-        //     //                     'color' : 'black',
-        //     //                     'padding' : '10px',
-        //     //                     'width': '100%'           
-        //     //                 });
-        //     //                 newTd3Tr3Table2.append(inputElement3);
-                            
-        //     //                 var newTd4Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
-        //     //                 var inputElement4 = $('<input />').attr({
-        //     //                     'id': 'long_p_import'+index,    
-        //     //                     'name': 'long_p_'+ (index),      
-        //     //                     'class': 'form-control long_p_import',  
-        //     //                     'placeholder': '',        
-        //     //                     'type': 'text',
-        //     //                     'value': order.product.long_p * 100,            
-        //     //                 }).css({
-        //     //                     'border': '1px solid #696868',
-        //     //                     'color' : 'black',
-        //     //                     'padding' : '10px',
-        //     //                     'width': '100%'           // Sesuaikan dengan kebutuhan Anda
-        //     //                 });
-        //     //                 newTd4Tr3Table2.append(inputElement4);
-                            
-        //     //                 var newTd5Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
-        //     //                 var inputElement5 = $('<input />').attr({
-        //     //                     'id': 'width_p_import'+index,   
-        //     //                     'name': 'width_p_'+ (index),      
-        //     //                     'class': 'form-control width_p_import',  
-        //     //                     'placeholder': '',        
-        //     //                     'type': 'text',
-        //     //                     'value': order.product.width_p * 100,            
-        //     //                 }).css({
-        //     //                     'border': '1px solid #696868',
-        //     //                     'color' : 'black',
-        //     //                     'padding' : '10px',
-        //     //                     'width': '100%'           // Sesuaikan dengan kebutuhan Anda
-        //     //                 });
-        //     //                 newTd5Tr3Table2.append(inputElement5);
-                            
-        //     //                 var newTd6Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
-        //     //                 var inputElement6 = $('<input />').attr({
-        //     //                     'id': 'height_p_import'+index,   
-        //     //                     'name': 'height_p_'+ (index),      
-        //     //                     'class': 'form-control height_p_import',  
-        //     //                     'placeholder': '',        
-        //     //                     'type': 'text',
-        //     //                     'value': order.product.height_p            
-        //     //                 }).css({
-        //     //                     'border': '1px solid #696868',
-        //     //                     'color' : 'black',
-        //     //                     'padding' : '10px',
-        //     //                     'width': '100%'           // Sesuaikan dengan kebutuhan Anda
-        //     //                 });
-        //     //                 newTd6Tr3Table2.append(inputElement6);
-
-        //     //                 var newTd7Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
-                        
-        //     //                 var inputElement7 = $('<input />').attr({
-        //     //                     'id': 'qty_import'+index,          
-        //     //                     'name': 'qty_'+(index),
-        //     //                     'class': 'form-control qty_import',    
-        //     //                     'placeholder': '',        
-        //     //                     'type': 'text',
-        //     //                     'value': order.jml_permintaan 
-        //     //                 }).css({
-        //     //                     'border': '1px solid #696868',
-        //     //                     'color' : 'black',
-        //     //                     'padding' : '10px',
-        //     //                     'width': '100%'           // Sesuaikan dengan kebutuhan Anda
-        //     //                 });
-                        
-        //     //                 newTd7Tr3Table2.append(inputElement7);
-                        
-                        
-
-                        
-                            
-        //     //                 if (response.hscodehistory.length > 0) {
-                                
-        //     //                     grossWeight = response.hscodehistory[index].gross_weight;
-        //     //                     nettWeight = response.hscodehistory[index].nett_weight;
-        //     //                 } else {
-        //     //                     grossWeight = 0;
-        //     //                     nettWeight =0;
-                        
-        //     //                 }
-                        
-        //     //                 var newTd8Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
-        //     //                 var inputElement8 = $('<input />').attr({
-        //     //                     'id': 'nett_weight_import'+index,          
-        //     //                     'name': 'net_weight_'+(index),      
-        //     //                     'class': 'form-control nett_weight_import',  
-        //     //                     'placeholder': '',        
-        //     //                     'type': 'text',
-        //     //                     'value': nettWeight,
-                                
-        //     //                 }).css({
-        //     //                     'border': '1px solid #696868',
-        //     //                     'color' : 'black',
-        //     //                     'padding' : '10px',
-        //     //                     'width': '100%'           
-        //     //                 });
-        //     //                 newTd8Tr3Table2.append(inputElement8);
-                            
-        //     //                 var newTd9Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
-        //     //                 var inputElement9 = $('<input />').attr({
-        //     //                     'id': 'gross_weight_import'+index,          
-        //     //                     'name': 'gross_weight_'+(index),      
-        //     //                     'class': 'form-control gross_weight_import',  
-        //     //                     'placeholder': '',        
-        //     //                     'type': 'text',
-        //     //                     'value':grossWeight
-        //     //                 }).css({
-        //     //                     'border': '1px solid #696868',
-        //     //                     'color' : 'black',
-        //     //                     'padding' : '10px',
-        //     //                     'width': '100%'           
-        //     //                 });
-        //     //                 newTd9Tr3Table2.append(inputElement9);
-                        
-        //     //                 var newTd10Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
-        //     //                 var inputElement10 = $('<input />').attr({
-        //     //                     'id': 'cbm_import'+index,       
-        //     //                     'name': 'cbm_'+(index),      
-        //     //                     'class': 'form-control cbm_import',  
-        //     //                     'placeholder': '',        
-        //     //                     'type': 'text',
-        //     //                     'value': 0 
-        //     //                 }).css({
-        //     //                     'border': '1px solid #696868',
-        //     //                     'color' : 'black',
-        //     //                     'padding' : '10px',
-        //     //                     'width': '100%'           // Sesuaikan dengan kebutuhan Anda
-        //     //                 });
-        //     //                 newTd10Tr3Table2.append(inputElement10);
-        //     //                 // Function to update CBM value based on input changes
-                
-        //     //                 function updateCBM() {
-
-        //     //                     var long_p = parseFloat(inputElement4.val()) || 0;
-        //     //                     var width_p = parseFloat(inputElement5.val()) || 0;
-        //     //                     var height_p = parseFloat(inputElement6.val()) || 0;
-        //     //                     var qty_value = parseFloat(inputElement7.val()) || 0;
-        //     //                     var cbmValue = ((long_p/100) * (width_p/100) * (height_p/100) * qty_value);
-        //     //                     cbmValue = cbmValue.toFixed(2);
-
-        //     //                     inputElement10.val(cbmValue); // Inisialisasi nilai inputElement10 dengan cbmValue
-
-        //     //                     var cbm2 = parseFloat(cbmValue); // Ambil nilai dari cbmValue
-
-        //     //                     cbm2Array[index] = cbm2;
-        //     //                     qty_qty2[index] =qty_value
-
-
-
-
-
-        //     //                     calculateTotalCBM();
-
-        //     //                 }
-
-        //     //                     // Attach input event listeners to update CBM on input change
-        //     //                     inputElement4.on('blur', updateCBM);
-        //     //                     inputElement5.on('blur', updateCBM);
-        //     //                     inputElement6.on('blur', updateCBM);
-                                
-
-        //     //                     inputElement10.on('input', updateCBM);
-
-                        
-
-        //     //                 var newTd11Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
-        //     //                 var inputElement11 = $('<input />').attr({
-        //     //                     'id': 'unit_price_without_tax_import'+index,          
-        //     //                     'name': 'unit_price_without_tax_'+(index),      
-        //     //                     'class': 'form-control unit_price_without_tax_import',  
-        //     //                     'placeholder': '',        
-        //     //                     'type': 'text',
-        //     //                     'value':0
-        //     //                 }).css({
-        //     //                     'border': '1px solid #696868',
-        //     //                     'color' : 'black',
-        //     //                     'padding' : '10px',
-        //     //                     'width': '100%'           
-        //     //                 });
-        //     //                 newTd11Tr3Table2.append(inputElement11);
-                            
-        //     //                 var newTd12Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
-        //     //                 var inputElement12 = $('<input />').attr({
-        //     //                     'id': 'unit_price_usd_import'+index,          
-        //     //                     'name': 'unit_price_usd_'+(index),      
-        //     //                     'class': 'form-control unit_price_usd_import',    
-        //     //                     'placeholder': '',        
-        //     //                     'type': 'text',
-        //     //                     'value':0,
-        //     //                     'disabled':true
-        //     //                 }).css({
-        //     //                     'border': '1px solid #696868',
-        //     //                     'color' : 'black',
-        //     //                     'padding' : '10px',
-        //     //                     'width': '100%'           
-        //     //                 });
-        //     //                 newTd12Tr3Table2.append(inputElement12);
-        //     //                 function updateUnitPriceUsd() {
-                                
-
-                                
-        //     //                       var unit_without_tax = parseFloat(inputElement11.val()) || 0;
-        //     //                       // console.log('masuk',unit_without_tax)
-        //     //                       var unitPriceUsd = (unit_without_tax/parseFloat(RmbToUsdTambah));
-        //     //                       unitPriceUsd= unitPriceUsd.toFixed(2);
-        //     //                       // unitPriceUsd = parseFloat(truncateToTwoDecimals(unitPriceUsd));
-        //     //                       inputElement12.val(unitPriceUsd);
-        //     //               }
-        //     //                 inputElement11.on('input',updateTotalPriceUsd);
-        //     //                 inputElement11.on('input',updateUnitPriceUsd);
-        //     //                 inputElement7.on('input', function() {
-        //     //                     updateCBM();
-        //     //                     updateTotalPriceUsd();
-        //     //                     updateTotPriceWithoutTax();
-        //     //                     updateQuantity();
-        //     //                 })
-        //     //                 var newTd13Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
-        //     //                 var inputElement13 = $('<input />').attr({
-        //     //                     'id': 'total_price_without_tax_import'+index,          // ID untuk elemen input
-        //     //                     'name': 'total_price_without_tax_'+(index),      // Nama untuk elemen input
-        //     //                     'class': 'form-control tot_price_without_tax_import',    // Kelas CSS untuk elemen input
-        //     //                     'placeholder': '',        // Placeholder untuk elemen input
-        //     //                     'type': 'text',
-        //     //                     'value':0,
-        //     //                 }).css({
-        //     //                     'border': '1px solid #696868',
-        //     //                     'color' : 'black',
-        //     //                     'padding' : '10px',
-        //     //                     'width': '100%'           // Sesuaikan dengan kebutuhan Anda
-        //     //                 });
-        //     //                 newTd13Tr3Table2.append(inputElement13);
-                                    
-        //     //                 function updateTotPriceWithoutTax() {
-                                
-        //     //                     var unit_price_without_tax = parseFloat(inputElement11.val()) || 0;
-        //     //                     var quantity = parseFloat(inputElement7.val()) || 0;
-                            
-        //     //                     var without_tax_tot = quantity*unit_price_without_tax;
-        //     //                     without_tax_arr[index] =parseFloat(without_tax_tot)
-                            
-        //     //                      calculatewithouttaxarr();
-        //     //                     inputElement13.val(without_tax_tot); 
-        //     //                 }
-
-                            
-        //     //                 inputElement11.on('input', updateTotPriceWithoutTax);
-
-        //     //                 var newTd14Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
-        //     //                 var inputElement14 = $('<input />').attr({
-        //     //                     'id': 'total_price_usd_import'+index,  
-        //     //                     'name': 'total_price_usd_'+(index),      
-        //     //                     'class': 'form-control total_price_usd_import',  
-        //     //                     'placeholder': '',        
-        //     //                     'type': 'text',
-        //     //                     'value': 0            
-        //     //                 }).css({
-        //     //                     'border': '1px solid #696868',
-        //     //                     'color' : 'black',
-        //     //                     'padding' : '10px',
-        //     //                     'width': '100%'           // Sesuaikan dengan kebutuhan Anda
-        //     //                 });
-        //     //                 newTd14Tr3Table2.append(inputElement14);
-                            
-        //     //                 function updateTotalPriceUsd() {
-                                
-
-        //     //                       // var qty_value = parseFloat(inputElement7.val()) || 0;
-        //     //                       var qty_value = parseFloat(inputElement7.val()) || 0;
-        //     //                       var unit_without_tax = parseFloat(inputElement11.val()) || 0;
-                                
-        //     //                       var totalPriceUsd = (parseFloat(unit_without_tax)/parseFloat(RmbToUsdTambah))*parseFloat(qty_value);
-        //     //                       totalPriceUsd = totalPriceUsd.toFixed(2);
-        //     //                       tot_price_without_tax_usd_import[index] = parseFloat(totalPriceUsd)
-        //     //                        calculatewithouttaxusdarr();
-        //     //                       inputElement14.val(totalPriceUsd);
-        //     //                 }
-                            
-        //     //                 var newTd15Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
-        //     //                 var inputElement15 = $('<input />').attr({
-        //     //                     'id': 'use_name_import'+index,          
-        //     //                     'name': 'use_name_'+(index),
-        //     //                     'class': 'form-control use_name_import',    
-        //     //                     'placeholder': '',        
-        //     //                     'type': 'text'            
-        //     //                 }).css({
-        //     //                     'border': '1px solid #696868',
-        //     //                     'color' : 'black',
-        //     //                     'padding' : '10px',
-        //     //                     'width': '100%'           // Sesuaikan dengan kebutuhan Anda
-        //     //                 });
-
-        //     //                 var deleteLink = $('<a />').attr({
-                                
-        //     //                     'class': 'delete-input'
-        //     //                 }).css({
-        //     //                     'color': 'red',
-        //     //                     'display': 'inline-block',
-        //     //                     'vertical-align': 'top',
-        //     //                     'padding': '10px'
-        //     //                 }).html('X');
-        //     //                 newTd15Tr3Table2.append(inputElement15);
-        //     //                 newTd15Tr3Table2.append(deleteLink);
-                            
-        //     //                 // Menggabungkan sel baru ke dalam baris baru
-        //     //                 newTrTable2.append(newTdLast);
-        //     //                 newTrTable2.append(newTd2Last);
-        //     //                 newTrTable2.append(newTd3Last);
-        //     //                 newTrTable2.append(newTd4Last);
-        //     //                 newTrTable2.append(newTd5Last);
-        //     //                 newTrTable2.append(newTd6Last);
-        //     //                 newTrTable2.append(newTd7Last);
-        //     //                 newTrTable2.append(newTd8Last);
-        //     //                 newTrTable2.append(newTd9Last);
-        //     //                 newTrTable2.append(newTd10Last);
-        //     //                 newTrTable2.append(newTd11Last);
-
-        //     //                 newTr2Table2.append(newTd2Tr2Table2)
-        //     //                 newTr2Table2.append(newTd3Tr2Table2)
-        //     //                 newTr2Table2.append(newTd4Tr2Table2)
-        //     //                 newTr2Table2.append(newTd5Tr2Table2)
-        //     //                 newTr2Table2.append(newTd6Tr2Table2)
-        //     //                 newTr2Table2.append(newTd7Tr2Table2)
-                            
-        //     //                 newTr3Table2.append(newTdTr3Table2)
-        //     //                 newTr3Table2.append(newTd2Tr3Table2)
-        //     //                 newTr3Table2.append(newTd3Tr3Table2)
-        //     //                 newTr3Table2.append(newTd4Tr3Table2)
-        //     //                 newTr3Table2.append(newTd5Tr3Table2)
-        //     //                 newTr3Table2.append(newTd6Tr3Table2)
-        //     //                 newTr3Table2.append(newTd7Tr3Table2)
-        //     //                 newTr3Table2.append(newTd8Tr3Table2)
-        //     //                 newTr3Table2.append(newTd9Tr3Table2)
-        //     //                 newTr3Table2.append(newTd10Tr3Table2)
-        //     //                 newTr3Table2.append(newTd11Tr3Table2)
-        //     //                 newTr3Table2.append(newTd12Tr3Table2)
-        //     //                 newTr3Table2.append(newTd13Tr3Table2)
-        //     //                 newTr3Table2.append(newTd14Tr3Table2)
-        //     //                 newTr3Table2.append(newTd15Tr3Table2)
-                            
-        //     //                 newTable2.append(newTrTable2);
-        //     //                 newTable2.append(newTr2Table2);
-        //     //                 newTable2.append(newTr3Table2);
-                        
-        //     //                 newTr1.append(newTable2);
-                            
-                            
-        //     //                 newTable1.append(inputDetailElement)
-        //     //                 newTable1.append(input_barangElement)
-        //     //                 newTable1.append(newTr1)
-                        
-                            
-                
-        //     //                 // Buat elemen <div> dengan atribut, kelas, dan gaya yang sesuai
-        //     //                 var newDivSaveItem = $('<div></div>', {
-        //     //                     class: 'form-group',
-        //     //                     css: {
-        //     //                         display: 'flex',
-        //     //                         paddingTop: '30px',
-        //     //                         textAlign: 'end',
-        //     //                         marginLeft:'1390px'
-        //     //                     }
-        //     //                 });
-
-        //     //                 // Buat elemen <button> dengan atribut, kelas, dan gaya yang sesuai
-        //     //                 var newButtonSaveItem = $('<button></button>', {
-        //     //                     type: 'button',
-        //     //                     id: 'submitButtonImportBarangComercialInvoice_'+index, // Gunakan variabel ascendingIndex sesuai kebutuhan Anda
-
-        //     //                     class: 'btn btn-primary',
-                                
-        //     //                     text: 'Simpan Item',
-        //     //                     css: {
-        //     //                         marginLeft: 'auto'
-        //     //                     }
-        //     //                 });
-                            
-        //     //                 var currentIndex = index;
-        //     //                  newButtonSaveItem.on('click', function() {
-                                    
-        //     //                         var formData ={
-                                        
-        //     //                             longValue : $('#long_import' + currentIndex).val(),
-        //     //                             widthValue : $('#width_import' + currentIndex).val(),
-        //     //                             heightValue : $('#height_import' + currentIndex).val(),
-        //     //                             long_pValue : $('#long_p_import' + currentIndex).val(),
-        //     //                             width_pValue : $('#width_p_import' + currentIndex).val(),
-        //     //                             height_pValue : $('#height_p_import' + currentIndex).val(),
-        //     //                             qty_Value : $('#qty_import' + currentIndex).val(),
-                                        
-        //     //                         };
-        //     //                         console.log('formData',formData);
-        //     //                         $.ajax({
-        //     //                             url: '', // Ganti dengan URL tujuan Anda
-        //     //                             type: 'GET',
-        //     //                             data: formData,
-                                        
-        //     //                             success: function(response) {
-        //     //                                 alert('Data berhasil disimpan!');
-        //     //                             },
-        //     //                             error: function(xhr, status, error) {
-        //     //                                 alert('Terjadi kesalahan: ' + error);
-        //     //                             }
-        //     //                         });
-                                    
-        //     //                     });
-                            
-        //     //                 var newTrLast2 = $('<tr>');
-        //     //                 var newTdLast2 = $('<td colspan="12"><br></td>'); // Menambahkan colspan dan <td> yang benar
-        //     //                 newTrLast2.append(newTdLast2);
-        //     //                 contentContainer.append(newTable1); // Menggunakan newTrLast bukan newTr1
-
-
-        //     //                 contentContainer.append(newTable2, newTrLast2)
-                            
-        //     //                     var selectElement = $('.hscode-import'); // Pilih elemen select
-        //     //                     const choices = new Choices(selectElement[0], {
-        //     //                         searchEnabled: true,
-        //     //                         itemSelectText: '',
-        //     //                     });
-
-        //     //                     selectElement.on('change', function(event) {
-        //     //                         const selectedValue = event.target.value;
-        //     //                         const inputElement = document.getElementById('hscode-import-edit'); // Ganti dengan ID yang sesuai
-        //     //                         if (inputElement) {
-        //     //                             inputElement.value = selectedValue;
-        //     //                         }
-        //     //                     });
-                            
-        //     //             });
-                        
-        //     //                 var newDivTable3 = $('<div>').css({
-        //     //                     'padding-left': '1000px'
-        //     //                 });
-        //     //                 var newTable3 = $('<table>')
-        //     //                 var newTr1Table3 = $('<tr>')
-        //     //                 var newTd1Tr1Table3 = $('<td>').css({
-        //     //                     'border': '1px solid #696868',
-        //     //                     'color': 'black',
-        //     //                     'width': '80%'
-        //     //                 }).text('freight cost');
-                        
-                        
-
-        //     //                 var newTd2Tr1Table3 = $('<td>').css({
-        //     //                     'border': '1px solid #696868',
-        //     //                     'color': 'black',
-                                
-        //     //                 })
-                        
-        //     //                 var inputTd2Tr1Table3 = $('<input>').attr({
-        //     //                     type: 'text',
-        //     //                     id: 'freight_cost_id_tab_tambah',
-        //     //                     name: 'freight_cost_tambah', 
-        //     //                     value: 0,
-        //     //                     class: 'form-control custom-border', 
-        //     //                 });
-        //     //                 newTd2Tr1Table3.append(inputTd2Tr1Table3)
-        //     //                 newTr1Table3.append(newTd1Tr1Table3,newTd2Tr1Table3)
-        //     //                 inputTd2Tr1Table3.on('input', function() {
-                                
-        //     //                     calculatewithouttaxarr();
-        //     //                     calculatewithouttaxusdarr();
-        //     //                 })
-        //     //                 var newTr2Table3 = $('<tr>')
-        //     //                 var newTd1Tr2Table3 = $('<td>').css({
-        //     //                     'border': '1px solid #696868',
-        //     //                     'color': 'black',
-        //     //                     'width': '75%'
-        //     //                 }).text('Insurance');
-        //     //                 var newTd2Tr2Table3 = $('<td>').css({
-        //     //                     'border': '1px solid #696868',
-        //     //                     'color': 'black',
-                                
-        //     //                 })
-
-        //     //                 var inputTd2Tr2Table3 = $('<input>').attr({
-        //     //                     type: 'text',
-        //     //                     id: 'insurance_edit_id_tab_tambah',
-        //     //                     name: 'insurance_tambah', 
-        //     //                     value: 0,
-        //     //                     class: 'form-control custom-border', 
-        //     //                 });
-        //     //                 inputTd2Tr2Table3.on('input', function() {
-        //     //                     calculatewithouttaxarr();
-                                
-        //     //                     calculatewithouttaxusdarr();
-        //     //                 })
-        //     //                 newTd2Tr2Table3.append(inputTd2Tr2Table3)
-        //     //                 newTr2Table3.append(newTd1Tr2Table3,newTd2Tr2Table3)
-        //     //                 newTable3.append(newTr1Table3,newTr2Table3)
-        //     //                 newDivTable3.append(newTable3)
-                            
-        //     //                 var newDiv2Table4 = $('<div>').css({
-                                
-        //     //                     'padding-left': '1000px', 
-        //     //                     'padding-top': '30px',
-        //     //                 });
-                            
-        //     //                 var newTable4 = $('<table>').css({
-        //     //                     'width': '100%', 
-        //     //                 });
-                            
-        //     //                 var newTr1Table4 = $('<tr>');
-        //     //                 var newTd1Tr1Table4 = $('<td>').attr('colspan', '2').css({
-        //     //                     'border': '1px solid #696868', 
-        //     //                     'color': 'black', 
-                                
-        //     //                     'text-align': 'center',
-        //     //                 })
-                            
-        //     //                 var h5Tr1Table4 = $('<h5>').text('Total');
-                            
-
-        //     //                 var newTr2Table4 = $('<tr>');
-        //     //                 var newTd1Tr2Table4 = $('<td>').css({
-        //     //                     'border': '1px solid #696868',
-        //     //                     'color': 'black',
-        //     //                     'width': '730px',
-        //     //                 }).text('Quantity');
-        //     //                 var newTd2Tr2Table4 = $('<td>').attr({
-        //     //                     'class': 'custom-td-tambah', // Menambahkan kelas 'my-class'
-        //     //                     'id': 'qty-td-tambah' // Menambahkan ID 'my-id'
-        //     //                 }).css({
-        //     //                     'border': '1px solid #696868',
-        //     //                     'color': 'black',
-        //     //                     'width': '20%',
-        //     //                     'padding-left': '20px'
-        //     //                 }).text('0');;
-        //     //                 // updateQuantity2();
-        //     //                 newTd1Tr1Table4.append(h5Tr1Table4)
-        //     //                 newTr1Table4.append(newTd1Tr1Table4)
-        //     //                 newTr2Table4.append(newTd1Tr2Table4,newTd2Tr2Table4)
-                            
-        //     //                 var newTr3Table4 = $('<tr>');
-        //     //                 var newTd1Tr3Table4 = $('<td>').css({
-        //     //                     'border': '1px solid #696868', 
-        //     //                     'color':'black',
-        //     //                 }).text('CBM Volume (M3)');
-
-        //     //                 var newTd2Tr3Table4 = $('<td>').attr({
-        //     //                     'class': 'custom-cbm-tambah',
-        //     //                     'id':'total_cbm_tambah'
-        //     //                 }).css({
-        //     //                     'border': '1px solid #696868', 
-        //     //                     'color': 'black',
-        //     //                     'padding-left': '20px'
-        //     //                 }).text('0');
-        //     //                 newTr3Table4.append(newTd1Tr3Table4,newTd2Tr3Table4)
-
-        //     //                 var newTr4Table4 = $('<tr>');
-        //     //                 var newTd1Tr4Table4 = $('<td>').css({
-        //     //                     'border': '1px solid #696868', 
-        //     //                     'color': 'black',
-        //     //                 }).text('Total Price Without Tax');
-
-        //     //                 var newTd2Tr4Table4 = $('<td>').attr({
-        //     //                     'id': 'custom-tot-price-without-tax-td-tambah',
-        //     //                 }).css({
-        //     //                     'border': '1px solid #696868', 
-        //     //                     'color': 'black',
-        //     //                     'padding-left': '20px'
-        //     //                 }).text('0');
-        //     //                 newTr4Table4.append(newTd1Tr4Table4,newTd2Tr4Table4)
-
-        //     //                 var newTr5Table4 = $('<tr>');
-        //     //                 var newTd1Tr5Table4 = $('<td>').css({
-        //     //                     'border': '1px solid #696868',
-        //     //                     'color': 'black',
-        //     //                 }).text('Total Price Without Tax USD');
-
-        //     //                 var newTd2Tr5Table4 = $('<td>').attr({
-        //     //                     'id':'custom-tot-price-without-tax-usd-td-tambah'
-        //     //                 }).css({
-        //     //                     'border': '1px solid #696868', 
-        //     //                     'color': 'black',
-        //     //                     'padding-left': '20px'
-        //     //                 }).text('0');
-        //     //                 newTr5Table4.append(newTd1Tr5Table4,newTd2Tr5Table4)
-        //     //                 newDiv2Table4.append(newTr1Table4,newTr2Table4,newTr3Table4,newTr4Table4,newTr5Table4)
-                        
-        //     //                contentContainer2.append(newDivTable3,newDiv2Table4)
-        //     //                function calculatewithouttaxarr(){
-        //     //                     var freight_cost_tambah = parseFloat(inputTd2Tr1Table3.val())||0;
-        //     //                     var insurance_tambah = parseFloat(inputTd2Tr2Table3.val()) || 0;
-        //     //                     var TotWithout_arr_tax = tot_without_tax_arr.reduce(function(acc, curr) {
-        //     //                                 return acc + curr;
-        //     //                             }, 0);
-                            
-        //     //                     var without_arr_tax = without_tax_arr.reduce(function(acc, curr) {
-        //     //                                 return acc + curr;
-        //     //                             }, 0);
-                            
-        //     //                     var total_akhir = without_arr_tax+TotWithout_arr_tax+freight_cost_tambah+insurance_tambah
-        //     //                     var element = document.getElementById('custom-tot-price-without-tax-td-tambah');
-        //     //                     element.textContent = total_akhir
-        //     //                 }
-        //     //                 function calculatewithouttaxusdarr(){
-        //     //                     var freight_cost_tambah = parseFloat(inputTd2Tr1Table3.val())||0;
-        //     //                     var insurance_tambah = parseFloat(inputTd2Tr2Table3.val()) || 0;
-                                
-        //     //                     var TotWithout_tot_price_without_tax_usd = tot_price_without_tax_usd.reduce(function(acc, curr) {
-        //     //                                         return acc + curr;
-        //     //                     }, 0);
-        //     //                     var without_tot_price_without_tax_usd_import =tot_price_without_tax_usd_import.reduce(function(acc, curr) {
-        //     //                                         return acc + curr;
-        //     //                     }, 0);
-        //     //                     var total_akhir_without_tax_usd = TotWithout_tot_price_without_tax_usd +without_tot_price_without_tax_usd_import+freight_cost_tambah+insurance_tambah
-        //     //                     var element = document.getElementById('custom-tot-price-without-tax-usd-td-tambah');
-        //     //                     element.textContent = total_akhir_without_tax_usd.toFixed(2)
-        //     //                 }
-                    
-        //     //                 function updateQuantity(){
-                                
-        //     //                     var Qty_Qty2 = qty_qty2.reduce(function(acc, curr) {
-        //     //                                         return acc + curr;
-        //     //                     }, 0);
-        //     //                     console.log('qty_qty2',Qty_Qty2)
-        //     //                     var element = document.getElementById('qty-td-tambah');
-        //     //                     element.textContent = Qty_Qty2
-        //     //                 }
-        //     //                 function calculateTotalCBM() {
-
-                                
-        //     //                     var totalCBM2 = cbm2Array.reduce(function(acc, curr) {
-        //     //                         return acc + curr;
-        //     //                     }, 0);
-                                
-        //     //                     var qty2 = qty_qty2.reduce(function(acc, curr) {
-        //     //                         return acc + curr;
-        //     //                     }, 0);
-        //     //                     var tot_qty = parseFloat(totalCBM2);
-        //     //                     console.log('calculateTotalCBM',tot_qty)
-        //     //                     $('#total_cbm_tambah').text(tot_qty.toFixed(2));    
-
-        //     //                 }
-        //     //         },
-        //     //         error: function(xhr, status, error) {
-        //     //             console.error('Terjadi kesalahan:', error);
-                        
-        //     //         }
-        //     //     });
-        //     // });
-            
-        // });
-
     $(document).ready(function() {
         $('#submitButtonForm2').on('click', function() {
       

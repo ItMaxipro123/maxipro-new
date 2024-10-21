@@ -445,7 +445,7 @@
         valuerate = $(this).val()
         valuestatusrate=1
         indexCounter =0
-        // console.log('valuerate',valuerate)
+ 
     })
     $('#supplier-tambah').select2({
         placeholder: 'Supplier',

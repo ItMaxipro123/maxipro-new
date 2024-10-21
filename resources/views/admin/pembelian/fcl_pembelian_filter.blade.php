@@ -172,7 +172,7 @@ FCL Container    | PT. Maxipro Group Indonesia
                        
                             <td style="border: 1px solid #d7d7d7;">
                                 <button type="button" 
-                                        onclick="rejectOrderPembelian(this)" 
+                                        onclick="detailFcl(this)" 
                                         data-id="{{ $data['id'] }}" 
 
                                         class="btn btn-large btn-info btn-danger" 
@@ -227,8 +227,7 @@ FCL Container    | PT. Maxipro Group Indonesia
                             <form action=""id="Formedit"></form>
                     
                     </div>
-
-                  
+                
                     <!-- modal edit restok -->
                     <!-- <div class="col-sm-12" style="margin-top: 15px;">
                         <div id="overlay" style="display: none;"></div>
@@ -268,7 +267,14 @@ FCL Container    | PT. Maxipro Group Indonesia
         </div>
     </div>
 
+    
 </main>
+
+            
+                    <div id="detailFclContainer"  style="display: none;" class="col-sm-12" style="margin-top: 15px;">
+                            <div id="divDetail"></div>
+                    </div>
+                  
 
 @endsection
 
@@ -351,7 +357,7 @@ FCL Container    | PT. Maxipro Group Indonesia
                         let invoiceValue = data.invoice.split('INV-')[1] || data.invoice;
                         return `
                             <button type="button" 
-                                onclick="rejectOrderPembelian(this)" 
+                                onclick="detailFcl(this)" 
                                 data-id="${invoiceValue}" 
                                 name="${invoiceValue}" 
                                 class="btn btn-large btn-info btn-light" 
@@ -839,56 +845,79 @@ FCL Container    | PT. Maxipro Group Indonesia
     });
     }
 
-    function rejectOrderPembelian(element) {
-        event.preventDefault();
-        var id = $(element).data('id');
-        var restokName = $(element).attr('name');
+    function detailFcl(element) {
+    event.preventDefault();
+    
+    // Scroll halaman ke atas sebelum mengirim AJAX request
+    window.scrollTo(0, 0); 
 
-        // Menggunakan SweetAlert2 untuk konfirmasi penghapusan
-        Swal.fire({
-            title: 'Konfirmasi',
-            text: "Apakah Anda yakin ingin mereject Order Pembelian ini " + restokName + " ?",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Ya, Reject!',
-            cancelButtonText: 'Batal'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                var url = "{{ route('admin.pembelian_reject_order_pembelian') }}";
+    var invoice = $(element).data('id');
+    var restokName = $(element).attr('name');
+    console.log('invoice', invoice);
 
-                $.ajax({
-                    url: url,
-                    type: 'GET',
-                    data: {
-                        id: id
-                    },
-                    success: function(response) {
-                        // Handle response jika sukses
-                        console.log(response);
+    $.ajax({
+        url: '{{ route('admin.pembelian_fcl') }}',
+        data: {
+            invoice: invoice,
+            menu: 'detail_fcl'
+        },
+        success: function(response) {
+            // Menghapus elemen yang tidak dibutuhkan
+            $('aside.sidenav').remove();
+            $('.btn-tambah').remove();
 
-                        // Hapus data berdasarkan elemen, element berupa id
-                        $(element).closest('tr').remove();
-
-                        // Tampilkan SweetAlert2 ketika berhasil dihapus
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Berhasil',
-                            text: 'Data berhasil direject!',
-                            showConfirmButton: false,
-                            timer: 1500
-                        });
-                    },
-                    error: function(xhr, status, error) {
-                        // Handle error jika terjadi kesalahan
-                        console.error(xhr.responseText);
-                        return;
-                    }
-                });
+            if (window.dataTableInstance) {
+                window.dataTableInstance.destroy();
             }
-        });
-    }
+
+            $('#tabe-stok').remove();
+            $('.radio-button-container').remove();
+            $('#clearFilterBtn').remove();
+            $('#FilterBtn').remove();
+
+            // Mengisi div detail dengan response
+            $('#divDetail').html(response);
+            $('#detailFclContainer').css({
+                'background-image': 'url(https://i.pinimg.com/originals/e4/5f/54/e45f54e2cc5516e2210c34453db5ab6e.jpg)',
+                'background-size': 'cover',
+                'background-position': 'center',
+                'background-repeat': 'no-repeat',
+                'min-height': '100vh',       // Membuat elemen memenuhi tinggi viewport
+                'min-width':'100vh',
+                'display': 'flex',           // Mengaktifkan flexbox
+                'flex-direction': 'column',  // Susunan elemen secara vertikal
+                'justify-content': 'center', // Posisi elemen di tengah secara vertikal
+                'align-items': 'center'      // Posisi elemen di tengah secara horizontal
+            });
+            $('#detailFclContainer').show();
+
+            $('#judulFcl').hide();
+            $('.display-block').hide();
+            document.title = 'Detail FCL   | PT. Maxipro Group Indonesia';
+            $('.container-fluid').hide();
+
+            // Menyembunyikan card
+            $('.card').css({
+                'display': 'none'
+            });
+            
+
+            // Atur tampilan main agar background image memenuhi halaman
+            // $('main.main-content').css({
+            //     'background-image': 'url(https://i.pinimg.com/originals/e4/5f/54/e45f54e2cc5516e2210c34453db5ab6e.jpg)',
+            //     'background-size': 'cover',
+            //     'background-position': 'center',
+            //     'background-repeat': 'no-repeat',
+            //     'min-height': '100vh', // Agar main content memenuhi viewport
+            //     'display': 'flex',      // Mengaktifkan flexbox untuk alignment
+            //     'flex-direction': 'column', // Vertikal stack
+            //     'justify-content': 'center', // Center vertikal
+            //     'align-items': 'center' // Center horizontal
+            // });
+        }
+    });
+}
+
 
     $('#tambahModal').on('hidden.bs.modal', function () {
      

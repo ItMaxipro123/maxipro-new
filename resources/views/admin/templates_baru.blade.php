@@ -507,7 +507,7 @@
               </a>
             </li>
             <li class="nav-item">
-               <a href="{{ route('admin.pembelian_lcl') }}" class="nav-link text-white { Request::is('admin/data_lclpembelian') ? 'active bg-gradient-primary' : '' }}">
+               <a href="{{ route('admin.pembelian_local') }}" class="nav-link text-white { Request::is('admin/data_localpembelian') ? 'active bg-gradient-primary' : '' }}">
                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i style="color:black" class="fas fa-wallet"></i>
                   <span class="nav-link-text ms-1" style="color:black;">Local</span>

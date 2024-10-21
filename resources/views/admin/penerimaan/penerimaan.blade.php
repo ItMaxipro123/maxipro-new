@@ -7,144 +7,16 @@ Penerimaan Pembelian   | PT. Maxipro Group Indonesia
 @section('link')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css"/>
+<link rel="stylesheet" href="{{ asset('css/penerimaan/pembelian.css') }}">
 @endsection
-@section('style')
 
-<style>
-    .flatpickr-input {
-        border: 1px solid #ccc;
-        padding: 5px;
-        border-radius: 4px;
-    }
-
-    .dataTables_wrapper .dataTables_paginate .paginate_button.previous {
-        width: auto;
-        /* Atur lebar tombol menjadi otomatis */
-        padding-right: 0px;
-        /* Berikan padding di sisi kanan tombol */
-
-    }
-
-    /* Ganti warna latar belakang tabel */
-    #tabe-stok {
-        background-color: #f0f0f0;
-        /* Ganti dengan warna yang Anda inginkan */
-
-    }
-
-    .dataTables_filter input[type="search"] {
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        /* Opsional: untuk membuat sudut border melengkung */
-        padding: 5px;
-        /* Opsional: untuk memberi jarak antara border dan teks */
-    }
-
-
-    /* CSS untuk gaya select2 custom */
-    .select2-container--custom .select2-selection--single {
-        height: calc(2.25rem + 2px);
-        padding: .375rem .75rem;
-        background-color: #fff;
-        border: 1px solid #ced4da;
-        border-radius: .25rem;
-        width: 100%;
-    }
-
-    .empty-row {
-        border: none;
-    }
-
-    .select2-container--custom .select2-selection--single {
-        height: calc(2.25rem + 2px);
-        padding: .375rem .75rem;
-        background-color: #fff;
-        border: 1px solid #ced4da;
-        border-radius: .25rem;
-        width: 100%;
-    }
-
-    .empty-row {
-        border: none;
-    }
-
-    .select2-container--custom .select2-selection--single .select2-selection__arrow {
-        right: 10px;
-    }
-
-    .select2-container--custom .select2-selection--single .select2-selection__rendered {
-        color: #495057;
-        line-height: 1.5;
-        text-align: center;
-        font-size: 14px;
-    }
-
-    .select2-container--custom .select2-selection--single .select2-selection__placeholder {
-        color: #6c757d;
-    }
-
-    .select2-container--custom .select2-selection--single:focus {
-        border-color: #80bdff;
-        outline: 0;
-        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-    }
-
-    .select2-container--custom .select2-results__options {
-        overflow-y: auto;
-
-        max-height: 200px;
-
-    }
-
-    #overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        /* Warna gelap dengan opasitas */
-        z-index: 9999;
-        /* Layer di atas semua konten */
-        display: none;
-        /* Default tidak ditampilkan */
-    }
-
-    #overlay i {
-        color: white;
-        /* Warna ikon */
-        font-size: 50px;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        /* Sesuaikan ukuran ikon sesuai kebutuhan */
-    }
-
-
-    /* Style untuk tombol Delete */
-    .btn-delete {
-        width: 25%;
-        /* Lebar default */
-    }
-
-    /* Mengatur lebar tombol saat layar berukuran kecil (misalnya pada perangkat mobile) */
-    @media only screen and (max-width: 600px) {
-        .btn-delete {
-            width: 50%;
-            /* Mengisi lebar penuh */
-        }
-    }
-</style>
-
-@endsection
 @section('content')
 
 <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg wider">
     <div id="overlay"> <i class="fas fa-spinner fa-spin"></i> </div>
     <div class="container-fluid">
-        <h4 id="judulStok" style="margin-top: 40px;margin-bottom: 40px;"><i class="fas fa-database"></i> &nbsp Penerimaan Pembelian</h4>
+        <h4 id="judulPembelian" style="margin-top: 40px;margin-bottom: 40px;"><i class="fas fa-database"></i> &nbsp Penerimaan Pembelian</h4>
 
         <small class="display-block" style="position: absolute; top: 70px; left: 50px;">Penerimaan Pembelian {{ $username['data']['teknisi']['name'] }}</small>
     </div>
@@ -159,13 +31,13 @@ Penerimaan Pembelian   | PT. Maxipro Group Indonesia
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-12">
-                         <a href="javascript:void(0)" onclick="tambahPenawaran(this)" name="tambahButton" class="btn btn-large btn-primary btn-tambah">Add Penerimaan Pembelian</a>
+                         <a href="javascript:void(0)" onclick="tambahPembelian(this)" name="tambahButton" class="btn btn-large btn-primary btn-tambah">Add Penerimaan Pembelian</a>
 
                                 <div class="d-flex justify-content-end">
 
                                   
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-info" style="width: 10%; margin-right: 5px;" id="openModalBtn">Filter</button>
+                                        <button type="button" class="btn btn-info" style="width: 10%; margin-right: 5px;" id="filterBtn">Filter</button>
 
                                     </div>
                                     <div class="btn-group">
@@ -229,60 +101,72 @@ Penerimaan Pembelian   | PT. Maxipro Group Indonesia
                         </div>
                     </div>
 
-                    <table id="tabe-stok" class="table table-bordered table-striped">
-                        <thead>
+                    <div class="table-responsive"> <!-- Membungkus tabel dengan div table-responsive -->
+                        <table id="tabe-stok" class="table table-bordered table-striped">
+                            <thead>
+                                <!-- Header dapat ditambahkan jika diperlukan -->
+                            </thead>
+                            <tbody>
+                                @php
+                                $num =1;
+                                @endphp
+                                <!-- Table data will be populated here -->
+                                @foreach($Data['msg']['penerimaan'] as $index => $data)
 
-                        </thead>
-                        <tbody>
-                            @php
-                            $num =1;
-                            @endphp
-                            <!-- Table data will be populated here -->
-                            @foreach($Data['msg']['penerimaan'] as $index => $data)
+                                @php
+                                \Carbon\Carbon::setLocale('id'); // Set locale ke Bahasa Indonesia
+                                $formattedDate = \Carbon\Carbon::parse($data['tgl_terima'])->translatedFormat('d F Y');
+                                @endphp
+                                <tr>
+                                    <td>{{ $num }}</td>
+                                    <td>{{ $formattedDate }} </td>
+                                    <td>{{ $data['kode'] }}</td>
+
+                                    @if($data['category']=='fcl')
+                                    <td>INV-{{ $data['fcl']['invoice_no'] }}</td>
+                                    @else
+                                    <td>{{ $data['lcl']['invoice'] }}</td>
+                                    @endif
+
+                                    <td>{{ $data['gudang']['name'] }}</td>
+                                    <td>{{ $data['teknisi']['name'] }}</td>
+                                    <td>
+                                        <input type="text" name="invoicebee" value="{{ $data['invoicebee'] }}" data-id="{{$data['id']}}">
+                                        
+                                    </td>
+                                    <td>
+                                        <span style="background-color: transparant; font-weight: bold; text-transform: uppercase;">
+                                            <p style="color:black; text-align:center; font-weight:bold;"> {{ $data['category'] }}</p>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div style="background-color: red; color: white; text-align: center; font-weight: bold; text-transform: uppercase; width: 50%; margin: 0 auto;">
+                                            {{ $data['category_import'] }}
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        
+                                     
+                                    </td>
+                                </tr>
+                                @php $num++ @endphp
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <div id="tambahPembelianContainer" style="display: none;" class="col-sm-12" style="margin-top: 15px;">
                             
-                            @php
-                            \Carbon\Carbon::setLocale('id'); // Set locale ke Bahasa Indonesia
-                            $formattedDate = \Carbon\Carbon::parse($data['tgl_terima'])->translatedFormat('d F Y');
-                            @endphp
-                            <tr>
-                                <td>{{ $num }}</td>
-                                <td>{{ $formattedDate }}</td>
-                                <td>{{ $data['kode'] }}</td>
-                                
-                                @if($data['category']=='fcl')
-                                <td>INV-{{ $data['fcl']['invoice_no'] }}</td>
-                                @else
-                                <td>{{ $data['lcl']['invoice'] }}</td>
-
-                                @endif
-                                <td>{{ $data['gudang']['name'] }}</td>
-                                <td>{{ $data['teknisi']['name'] }}</td>
-                                <td>
-                                    <input type="text" name="invoicebee" value="{{ $data['invoicebee'] }}">
-                                </td>
-                                <td>
-                                    <span style=" background-color: red;  font-weight: bold; text-transform: uppercase;">
-                                       <p style="background-color: red; color:white; text-align:center; font-weight:bold;"> {{ $data['category_import'] }}</p>
-                                    </span>
-                                </td>
-
-
-                                <td>
-                                    <a href="javascript:void(0)" onclick="updatePenawaran(this)" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-secondary btn-edit">Edit</a>
-                                     <a href="{{ route('admin.detailview_penawaran_filter', ['id' => $data['id']]) }}" class="btn btn-large btn-info btn-detail">Detail</a>
-                                   
-                                   <a href="javascript:void(0)" onclick="deletePenawaran(this)" data-id="{{ $data['id'] }}" name="{{ $data['name_db'] }}" class="btn btn-large btn-primary btn-delete">Delete</a>
-                                
-                                </td>
-                            </tr>
-                            @php $num++
-                            @endphp
-                            @endforeach
-
-                        </tbody>
-
-                    </table>
-
+                            <form action=""id="Formtambah"></form>
+                    
+                    </div>
+                    <div id="editPembelianContainer" style="display: none;" class="col-sm-12" style="margin-top: 15px;">
+                            
+                            <form action=""id="Formedit"></form>
+                    
+                    </div>
 
                     <!-- modal tambah penerimaan pembelian-->
                     <div class="col-sm-12" style="margin-top: 15px;">
@@ -328,48 +212,6 @@ Penerimaan Pembelian   | PT. Maxipro Group Indonesia
                                                     </div>
                                                 </div>
 
-                                                <div class="form-group" id="id_pembelian_UD" style="display: none; padding-top:30px;">
-                                                    <div class="row">
-                                                        <div class="col-md-3">
-                                                            <label class="col-lg-3 control-label" style="width:100%">ID Pembelian <span style="color: red;">(Wajib Diisi)</span></label>
-                                                        </div>
-                                                        <div class="col-md-9">
-                                                            <div style="position: relative; width: 100%;">
-                                                                <select class="form-control" id="id_pembelian_select1" name="id_pembelian_UD" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;" required>
-                                                                    <option value="">Pilih LCL / FCL</option>
-                                                                    @foreach($Data['msg']['pembelianlcl'] as $index =>$data)
-                                                                    
-                                                                    <option value="new">LCL - {{ $data['value']['invoice'] }} ({{$data['sumqty'] - $data['sumqtyterima'] }})</option>
-                                                                    
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    
-                                                </div>
-                                                <div class="form-group" id="id_pembelian_PT" style="display: block; padding-top:30px;">
-                                                    <div class="row">
-                                                        <div class="col-md-3">
-                                                            
-                                                            <label class="col-lg-3 control-label"  style="width:100%">ID Pembelian <span style="color: red;">(Wajib Diisi)</span></label>
-                                                        </div>
-                                                        <div class="col-md-9">
-                                                            <div style="position: relative; width: 100%;">
-                                                                <select class="form-control" id="id_pembelian_select2"name="id_pembelian_PT" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;" required>
-                                                                    <option value="">Pilih LCL / FCL</option>
-                                                                    @foreach($Data['msg']['fclcontainer'] as $index =>$data)
-                                                                    
-                                                                    <option value="new">FCL - INV-{{ $data['value']['invoice_no'] }} ({{$data['sumqty'] - $data['sumqtyterima'] }}) </option>
-                                                                    
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                </div>
                                                 <div class="form-group" style="padding-top:25px;">
                                                     <div class="row">
                                                         <div class="col-md-12">
@@ -768,220 +610,268 @@ document.addEventListener('DOMContentLoaded', function() {
 <script>
     
     $(document).ready(function() {
-        $('#tabe-stok').DataTable({
-
-            "dom": '<"top"lf>rt<"bottom"ip><"clear">', // Mengatur posisi elemen filter/search
-            "language": { // Menyesuaikan teks placeholder
+    // Initialize DataTable and store its instance in window.dataTableInstance
+        window.dataTableInstance = $('#tabe-stok').DataTable({
+            "dom": '<"top"lf>rt<"bottom"ip><"clear">',
+            "language": {
                 "searchPlaceholder": "Cari...",
                 "search": "Cari:",
                 "paginate": {
-                    "previous": "back", // Ganti teks untuk tombol "previous"
-                    "next": "next" // Ganti teks untuk tombol "next"
+                    "previous": "back",
+                    "next": "next"
                 }
             },
+            columns: [
+                { data: 'num', title: 'No' },
+                { data: 'tgl_terima', title: 'Tanggal' },
+                { data: 'code', title: 'Kode' },
+                { data: 'lcl_fcl', title: 'LCL /FCL Reference' },
+                { data: 'gudang', title: 'Gudang' },
+                { data: 'user', title: 'User' },
+                { data: 'no_pembelian_bee', title: 'No. Pembelian Bee' },
+                { data: 'category', title: 'Kategori' },
+                { data: 'category_import', title: 'Kategori Import/Non Import' },
+                {
+                        data: null,
+                        title: 'Action',
+                        render: function(data, type, full, meta) {
+                            // let kode = data.
+                            let id_pembelian=data.code
+                            
+                            return `
+                            <button type="button" 
+                                    data-id="${id_pembelian}" 
+                                    name="${id_pembelian}" 
+                                    class="btn btn-large btn-success btn-edit" 
+                                    style="width: 35px; height: 38px; padding: 9px 10px;" 
+                                    title="Detail"
+                                    onclick="detailPembelian(this)">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button type="button" 
+                                    data-id="${id_pembelian}" 
+                                    name="${id_pembelian}" 
+                                    class="btn btn-large btn-info btn-edit" 
+                                    style="width: 35px; height: 38px; padding: 9px 10px;" 
+                                    title="Edit"
+                                    onclick="editPembelian(this)">
+                                <i class="fas fa-edit"></i>
+                            </button>
 
-            columns: [{
-                    data: 'num',
-                    title: 'No'
-                },
-                {
-                    data: 'tgl_terima',
-                    title: 'Tanggal'
-                },
-                  {
-                    data: 'code',
-                    title: 'Kode'
-                },
-                {
-                    data: 'lcl_fcl',
-                    title: 'LCL /FCL Reference'
-                },
-                {
-                    data: 'gudang',
-                    title: 'Gudang'
-                },
-                {
-                    data: 'user',
-                    title: 'User'
-                },
-                {
-                    data: 'no_pembelian_bee',
-                    title: 'No. Pembelian Bee'
-                },
-                {
-                    data: 'category',
-                    title: 'Kategori'
-                },
-                {
-                    data: 'link',
-                    title: 'Action',
-                    render: function(data, type, full, meta) {
-                        return '<a href="' + data + '</a>';
-                    }
+                            <button type="button" 
+                                    onclick="deletePembelian(this)" 
+                                    data-id="${id_pembelian}" 
+                                    name="${data.code}" 
+                                    class="btn btn-large btn-info btn-danger" 
+                                    style="width: 35px; height: 38px; padding: 9px 10px;" 
+                                    title="Delete">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+
+                            `;
+                        }
                 }
-
             ],
             "initComplete": function(settings, json) {
-
-                $('.dataTables_filter input[type="search"]').attr('placeholder', 'Cari ...'); // Menyesuaikan placeholder
+                $('.dataTables_filter input[type="search"]').attr('placeholder', 'Cari ...');
             }
         });
+
+        
+        $('input[name=invoicebee]').change(function(){
+
+
+
+            var id        = $(this).attr('data-id');
+
+            var invoice   = $(this).val();
+
+            console.log('id',id,'invoice',invoice)
+
+            $.ajax({
+                url:'{{ route('admin.penerimaan_pembelian') }}',
+                data:{
+                    invoice:invoice,
+                    menu:'invoice_bee',
+                    id:id
+                },
+                success: function(response){
+                    Swal.fire({
+                        icon:'success',
+                        title:'Success',
+                        text:response.msg
+                        }).then((result)=>{
+                        if(result.isConfirmed){
+                            window.location.reload();
+                        }
+                    })
+                }
+
+            })
+
+        })
+
+
+
     });
 </script>
 
 <script>
     // Menangani peristiwa klik pada tombol "Filter"
-    document.getElementById('openModalBtn').addEventListener('click', function() {
+    document.getElementById('filterBtn').addEventListener('click', function() {
         $('#exampleModal').modal('show'); // Menampilkan modal Filter
     });
 
-        function detailPenawaran(element) {
-          var id = $(element).data('id');
-          console.log(id);
+    
 
-          var url = "{{ route('admin.detailview_penawaran_filter') }}";
+    function deletePembelian(element){
+        var id = $(element).data('id')
+        var restokName = $(element).attr('name');
+        console.log('id',id)
+        Swal.fire({
+            title: 'Konfirmasi',
+            text: "Apakah Anda yakin ingin menghapus invoice ini INV-" + restokName + " ?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, Hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var url = "{{ route('admin.penerimaan_pembelian') }}";
+                $('#reload-icon').show();
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+            
+                    data: {
+                        menu:'delete_pembelian',
+                        id:id
+                    },
+                    success: function(response) {
+                        
 
-          $.ajax({
-            url: url,
-                type: 'GET', // Menggunakan metode POST
-                data: {
+                        // Hapus data berdasarkan elemen, element berupa id
+                        $(element).closest('tr').remove();
+                        $('#reload-icon').hide();
+                        // Reload DataTable without reloading the entire page
+                        table.ajax.reload(null, false);
+                        // Tampilkan SweetAlert2 ketika berhasil dihapus
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil',
+                            text: 'Data berhasil dihapus!',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
 
-                    id: id
-                },
-                success: function(response) {
-                    // Handle response jika sukses
-                    var newRoute = "{{ route('admin.detailview_penawaran_filter') }}";
-                    window.location.href = newRoute;
+                        // Decrement the value of $num
+                        var num2 = parseInt($('#num2').text());
+                        $('#num').text(num2 + 1);
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error jika terjadi kesalahan
+                        console.error(xhr.responseText);
+                        return;
+                    }
+                });
+            }
+        });
+    }
 
-                },
-                error: function(xhr, status, error) {
-                    // Handle error jika terjadi kesalahan
-                    console.error(xhr.responseText);
-                    return;
-                }
-            });
-        }
+    // Menangani klik pada tombol Detail
+    function detailPembelian(element){
+        event.preventDefault();
+        
+        var code = $(element).data('id')
+        console.log('code',code)
+        $.ajax({
+            type:'GET',
+            url:'{{ route('admin.penerimaan_pembelian') }}',
+            data: {
+                menu:'detail_view',
+                code:code
+            },
+            success: function(response){
+                    $('#judulPembelian').html('<i class="fas fa-database"></i> &nbsp Detail Penerimaan Pembelian');
+                    document.title='Detail Penerimaan Pembelian   | PT. Maxipro Group Indonesia'
+                    $('.btn-tambah').remove()
+                    if (window.dataTableInstance) {
+                        window.dataTableInstance.destroy();
+                    }
+                    $('#tabe-stok').remove()
+                    $('.radio-button-container').remove()
+                    $('#clearFilterBtn').remove()
+                    $('#filterBtn').remove()
+                    $('#editPembelianContainer').show()
+                    $('#Formedit').html(response)
+            }
+        })
+    }
 
     // Menangani klik pada tombol Edit
-    function updatePenawaran(element) {
+    function editPembelian(element){
         event.preventDefault();
-        var id = $(element).data('id');
-        console.log(id);
-
-        var url = "{{ route('admin.editview_penawaran_filter') }}";
-
+        
+        var code = $(element).data('id')
+        console.log('code',code)
         $.ajax({
-            url: url,
-            type: 'GET', // Menggunakan metode POST
+            type:'GET',
+            url:'{{ route('admin.penerimaan_pembelian') }}',
             data: {
-
-                id: id
+                menu:'edit_view',
+                code:code
             },
-            success: function(response) {
-                // Handle response jika sukses
-
-                $('#editForm').html(response);
-                // Tampilkan modal
-                $('#editModal').modal('show');
-               
-            },
-            error: function(xhr, status, error) {
-                // Handle error jika terjadi kesalahan
-                console.error(xhr.responseText);
-                return;
+            success: function(response){
+                    $('.btn-tambah').remove()
+                    if (window.dataTableInstance) {
+                        window.dataTableInstance.destroy();
+                    }
+                    $('#judulPembelian').html('<i class="fas fa-database"></i> &nbsp Edit Penerimaan Pembelian');
+                    document.title='Edit Penerimaan Pembelian   | PT. Maxipro Group Indonesia'
+                    $('#tabe-stok').remove()
+                    $('.radio-button-container').remove()
+                    $('#clearFilterBtn').remove()
+                    $('#filterBtn').remove()
+                    $('#editPembelianContainer').show()
+                    $('#Formedit').html(response)
             }
-        });
+        })
     }
+
+
 
     // Menangani klik pada tombol tambah
-    function tambahPenawaran(element) {
+    function tambahPembelian(element) {
         event.preventDefault();
-     $('#tambahModal').modal('show'); // Tampilkan modal
-    }
-
-    function detailKas(element) {
-        event.preventDefault();
-        var id = $(element).data('id');
-        console.log(id);
-
-        var url = "{{ route('admin.kasdetail') }}";
-
+        
+      
         $.ajax({
-            url: url,
-            type: 'GET', // Menggunakan metode POST
-            data: {
-
-                id: id
+            url:'{{ route('admin.penerimaan_pembelian') }}',
+            data:{
+                menu:'tambah'
             },
-            success: function(response) {
-                // Handle response jika sukses
-
-                $('#detailForm').html(response);
-                // Tampilkan modal
-                $('#detailModal').modal('show');
+            success: function(response){
+                    $('.btn-tambah').remove()
+                    $('#judulPembelian').html('<i class="fas fa-database"></i> &nbsp Tambah Penerimaan Pembelian');
+                    document.title='Tambah Penerimaan Pembelian   | PT. Maxipro Group Indonesia'
+                    if (window.dataTableInstance) {
+                        window.dataTableInstance.destroy();
+                    }
+                    $('#tabe-stok').remove()
+                    $('.radio-button-container').remove()
+                    $('#clearFilterBtn').remove()
+                    $('#filterBtn').remove()
+                    $('#tambahPembelianContainer').show()
+                    $('#Formtambah').html(response)
                 
-               
-            },
-            error: function(xhr, status, error) {
-                // Handle error jika terjadi kesalahan
-                console.error(xhr.responseText);
-                return;
             }
-        });
+        })
     }
 
-
-    function deletePenawaran(element) {
-    event.preventDefault();
-    var id = $(element).data('id');
-    var penawaranName = $(element).attr('name');
-
-    // Menggunakan SweetAlert2 untuk konfirmasi penghapusan
-    Swal.fire({
-        title: 'Konfirmasi',
-        text: "Apakah Anda yakin ingin menghapus penawaran ini " + penawaranName + " ?",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Ya, Hapus!',
-        cancelButtonText: 'Batal'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            var url = "{{ route('admin.hapus_penawaran_filter') }}";
-
-            $.ajax({
-                url: url,
-                type: 'GET',
-                data: {
-                    id: id
-                },
-                success: function(response) {
-                    // Handle response jika sukses
-                    console.log(response);
-
-                    // Hapus data berdasarkan elemen, element berupa id
-                    $(element).closest('tr').remove();
-
-                    // Tampilkan SweetAlert2 ketika berhasil dihapus
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil',
-                        text: 'Data berhasil dihapus!',
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                },
-                error: function(xhr, status, error) {
-                    // Handle error jika terjadi kesalahan
-                    console.error(xhr.responseText);
-                    return;
-                }
-            });
-        }
-    });
-}
-
+  
+   
 
 </script>
 
