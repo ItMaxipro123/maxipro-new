@@ -1762,7 +1762,7 @@ class AdminController extends Controller
         $data = Session::get('teknisi_id');
         $responseData = json_decode($data, true);
         $comercialInvoiceModel = new \App\Models\ComercialInvoice();
-        $lclPembelianModel = new \App\Models\LcL();
+
         $menu=$request->input('menu');
         if (isset($responseData)) {
             if($menu=='create_local'){
@@ -1773,6 +1773,7 @@ class AdminController extends Controller
                 return response()->json($Data,200);
             }
             elseif($menu=='tambah_lcl_local'){
+                $lclPembelianModel = new \App\Models\LcL();
                 $username = $responseData;
                 $teknisi_cookie = $responseData['cookie'];
                 $formDataSend = $request->input('form');
