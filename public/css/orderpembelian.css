@@ -152,11 +152,11 @@
                 height: auto; 
                 min-height: 360px;
              }
-             #btn-filter {
+             #openModalBtn {
                 width: 10%; 
                 margin-right: 5px;
              }
-             #clearFliterBtn{
+             #clearFilterBtn{
                 width: 10%;
                 margin-right: 5px;
              }

@@ -367,7 +367,7 @@ class Lcl extends Model
     }
 
     public static function tambahLcl($teknisi_cookie,$data){
- 
+        
         $array_data = [];
         
         $count = count(array_filter($data['item'], function($value){
@@ -389,6 +389,7 @@ class Lcl extends Model
                 
                     
                     $formParams = [
+                        'category_transaksi'=>$data['category_transaksi'],
                         'category_comercial_invoice'=>$data['category_comercial'],
                         'database'=> $data['database'],
                         'noreferensi'=> $data['noreferensi'],
@@ -419,7 +420,8 @@ class Lcl extends Model
                 else{
                     
                     $formParams = [
-                        'category_comercial_invoice'=>$data['category_comercial'],
+                        'category_transaksi'=>$data['category_transaksi'],
+                        'category_comercial_invoice'=>$data['category_comercial_invoice'],
                         'database'=> $data['database'],
                         'noreferensi'=> $data['noreferensi'],
                         'tgl_transaksi'=>$data['tgl_transaksi'],
@@ -451,7 +453,8 @@ class Lcl extends Model
             else{
             
                 $formParams = [
-                    'category_comercial_invoice'=>$data['category_comercial'],
+                    'category_transaksi'=>$data['category_transaksi'],
+                    'category_comercial_invoice'=>$data['category_comercial_invoice'],
                     'database'=> $data['database'],
                     'noreferensi'=> $data['noreferensi'],
                     'tgl_transaksi'=>$data['tgl_transaksi'],
@@ -481,7 +484,7 @@ class Lcl extends Model
             $key_index=0;
             $key_index_array=[];
         
-         
+            //bila import barang & select item ada
             if($data != [] && $data['iditem_select']!=null){
             
                 $newArrayCommercial = array_merge($data['idcommercial'],$data['idcommercial_select'] );
@@ -490,6 +493,7 @@ class Lcl extends Model
                 $newArrayPriceAsal = array_merge($data['price_asal'], $data['price_asal_select']);
                 if($data['statusconvert']==1){
 
+                 
                     $newArrayPrice = array_merge($data['price_invoice'], $data['price_invoice_select']);
                     foreach ($newArrayPrice as $key => $value) {
                         $lastChar = substr($key, -1);
@@ -499,7 +503,7 @@ class Lcl extends Model
                         $key_index_array[] = $newKey;
                     }
                 }
-                
+            
                 $newArrayQty = array_merge($data['qty'], $data['qty_select']);
                 $newArrayDisc = array_merge($data['disc'], $data['disc_select']);
                 $newArrayPpnItem = array_merge($data['ppn_item'], $data['ppn_item_select']);
@@ -594,7 +598,7 @@ class Lcl extends Model
                 }
                 
                 $formParams = array_merge($formParams,$array);
-            
+                
                 $response = $client->request('POST', 'https://maxipro.id/TeknisiAPI/lcl_create', [
                     'form_params' => $formParams,
                     'headers' => $headers,
@@ -605,8 +609,9 @@ class Lcl extends Model
                
                 return json_decode($data2, true);
             }
+            //bila import barang saja yang ada
             else{
-        
+      
                 foreach ($data['iditem']  as $key => $value) {
                     $lastChar = substr($key, -1);
                     $newKey = "iditem[{$lastChar}]";
@@ -646,6 +651,14 @@ class Lcl extends Model
                         $key_index++;
                         $key_index_array[] = $newKey;
                     }
+                }
+                
+                foreach ($data['price_invoice'] as $key => $value) {
+                    $lastChar = substr($key, -1);
+                    $newKey = "price[{$lastChar}]";
+                    $array[$newKey] = $value ?? '';
+                    $key_index++;
+                    $key_index_array[] = $newKey;
                 }
                 
                 foreach ($data['qty'] as $key => $value) {
@@ -768,7 +781,7 @@ class Lcl extends Model
             $array=[];
             $key_index=0;
             $key_index_array=[];
-            // dd('a',$data);
+            
             foreach ($data['iditem']  as $key => $value) {
                 $lastChar = substr($key, -1);
                 $newKey = "iditem[{$lastChar}]";
@@ -855,22 +868,26 @@ class Lcl extends Model
                 $key_index++;
                 $key_index_array[] = $newKey;
             }
-            foreach ($data['price_invoice'] as $key => $value) {
-                $lastChar = substr($key, -1);
-                $newKey = "price[{$lastChar}]";
-                $array[$newKey] = $value ?? '';
-                $key_index++;
-                $key_index_array[] = $newKey;
+            if($data['statusconvert']==1){
+
+                foreach ($data['price_invoice'] as $key => $value) {
+                    $lastChar = substr($key, -1);
+                    $newKey = "price[{$lastChar}]";
+                    $array[$newKey] = $value ?? '';
+                    $key_index++;
+                    $key_index_array[] = $newKey;
+                }
             }
            
             $formParams = array_merge($formParams,$array);
             
-            // dd($formParams);
+            // dd('model',$formParams);
             $response = $client->request('POST', 'https://maxipro.id/TeknisiAPI/lcl_edit', [
                 'form_params' => $formParams,
                 'headers' => $headers,
             ]);
             $data2 = $response->getBody()->getContents();
+            // dd($data2);
             $Data = json_decode($data2, true);
             
             return json_decode($data2, true);
@@ -1046,6 +1063,29 @@ class Lcl extends Model
 
             
             $data = $response->getBody()->getContents();
+            // dd('model',$data);
+            return json_decode($data, true);
+        } catch (\Exception $e) {
+            // Handle exception
+            return ['error' => $e->getMessage()];
+        }
+    }
+    public static function getLocalPembelian($teknisi_cookie)
+    {
+        try {
+            $client = new Client(['verify' => false]);
+
+            $headers = [
+                'Cookie' => $teknisi_cookie
+            ];
+
+            $response = $client->request('GET', 'https://maxipro.id/TeknisiAPI/local', [
+                'headers' => $headers,
+
+            ]);
+
+            
+            $data = $response->getBody()->getContents();
             
             return json_decode($data, true);
         } catch (\Exception $e) {
@@ -1053,7 +1093,6 @@ class Lcl extends Model
             return ['error' => $e->getMessage()];
         }
     }
-
     public static function getSelectEkspedisi($teknisi_cookie)
     {
         try {
@@ -1102,7 +1141,7 @@ class Lcl extends Model
 
             $data = $response->getBody()->getContents();
             $Data = json_decode($data, true);
-            // dd($Data);
+            // dd($Data['msg']['invoice']);
             return json_decode($data, true);
         } catch (\Exception $e) {
             // Handle exception
@@ -1144,8 +1183,9 @@ class Lcl extends Model
         ]);
     
         $headers = [
-            'Cookie' => 'ci_session=' . $teknisi_cookie  // Menggunakan cookie yang sesuai
+            'Cookie' => $teknisi_cookie
         ];
+       
     
        
         try {
@@ -1169,17 +1209,17 @@ class Lcl extends Model
         ]);
     
         $headers = [
-            'Cookie' => 'ci_session=' . $teknisi_cookie  // Menggunakan cookie yang sesuai
+            'Cookie' => $teknisi_cookie
         ];
     
-       
+
         try {
             // Mengirim permintaan POST dengan multipart
             $res = $client->request('GET', 'https://maxipro.id/TeknisiAPI/lcl_editview/' . $invoice, [
                 'headers' => $headers,
 
             ]);
-            
+          
             $Data = $res->getBody()->getContents();
             return json_decode($Data, true);
         } catch (\Exception $e) {
@@ -1277,6 +1317,222 @@ class Lcl extends Model
         } catch (\Exception $e) {
             // Handle exception
             return ['error' => $e->getMessage()];
+        }
+    }
+
+    public static function createPembayaran($teknisi_cookie,$get_data){
+        
+        try {
+            $client = new Client(['verify' => false]);
+
+            $headers = [
+                'Cookie' => $teknisi_cookie
+            ];
+           
+            $response = $client->request('POST', 'https://maxipro.id/TeknisiAPI/lcl_local_createpembayaran' , [
+                'form_params' => [
+                    'matauang' =>$get_data['matauang_pembayaran'],
+                    'tgl_bayar' =>$get_data['tgl_bayar'],
+                    'price' =>$get_data['nominal_pembayaran'],
+                    'keterangan' =>$get_data['keterangan'],
+                    
+                ],
+                'headers' => $headers,
+            ]);
+            
+            $data = $response->getBody()->getContents();
+            $Data = json_decode($data, true);
+            
+            return json_decode($data, true);
+        } catch (\Exception $e) {
+            
+            return ['error' => $e->getMessage()];
+        }
+    }
+
+    public static function createdPembayaran($teknisi_cookie,$created_data){
+        // dd($created_data );
+        // dd($created_data['form'][0]['id_pembelianlcl'] );
+        if(isset($created_data['form'][0]['id_pembelianlcl'])){
+
+            $formParams = array(
+                'id_lcllocal'=> $created_data['form'][0]['id_pembelianlcl']
+            );
+            if (isset($created_data['form_create']) && is_array($created_data['form_create']) && count($created_data['form_create']) > 0) {
+                $combined_data = array_merge($created_data['form_create'], $created_data['form']);
+                $array=[];
+                $key_index=0;
+                $key_index_array=[];
+                foreach ($combined_data as $key => $value) {
+                    $lastChar = substr($key, -1);
+                    $newKey = "matauang_pembayaran[{$lastChar}]";
+                    $array[$newKey] = $value['matauang'] ?? $value['id_matauang'] ?? ''; // Gunakan nilai yang tersedia
+                    $key_index++;
+                    $key_index_array[] = $newKey;
+                }
+                
+                foreach ($combined_data as $key => $value) {
+                    $lastChar = substr($key, -1);
+                    $newKey = "kodepembayaran_pembayaran[{$lastChar}]";
+                    $array[$newKey] = $value['kode'] ?? $value['kodepembayaran'] ?? '';
+                    $key_index++;
+                    $key_index_array[] = $newKey;
+                }
+                foreach ($combined_data as $key => $value) {
+                    $lastChar = substr($key, -1);
+                    $newKey = "tgl_bayar_pembayaran[{$lastChar}]";
+                    $array[$newKey] = $value['tgl_bayar'] ?? $value['tgl_bayar_create'] ?? '';
+                    $key_index++;
+                    $key_index_array[] = $newKey;
+                }
+                foreach ($combined_data as $key => $value) {
+                    $lastChar = substr($key, -1);
+                    $newKey = "price_pembayaran[{$lastChar}]";
+                    $array[$newKey] = $value['price'] ?? $value['price_create'] ?? '';
+                    $key_index++;
+                    $key_index_array[] = $newKey;
+                }
+                
+                foreach ($combined_data as $key => $value) {
+                    $lastChar = substr($key, -1);
+                    $newKey = "bukti_pembayaran[{$lastChar}]";
+                    $array[$newKey] = $value['bukti'] ?? $value['bukti_pembayaran'] ?? '';
+                    $key_index++;
+                    $key_index_array[] = $newKey;
+                }
+                foreach ($combined_data as $key => $value) {
+                    $lastChar = substr($key, -1);
+                    $newKey = "keterangan_pembayaran[{$lastChar}]";
+                    $array[$newKey] = $value['keterangan'] ?? $value['keterangan_create'] ?? '';
+                    $key_index++;
+                    $key_index_array[] = $newKey;
+                }
+                $formParams = array_merge($formParams,$array);
+            }
+            else{
+                $array=[];
+                $key_index=0;
+                $key_index_array=[];
+                foreach ($created_data['form'] as $key => $value) {
+                    $lastChar = substr($key, -1);
+                    $newKey = "matauang_pembayaran[{$lastChar}]";
+                    $array[$newKey] =  $value['id_matauang'] ?? ''; // Gunakan nilai yang tersedia
+                    $key_index++;
+                    $key_index_array[] = $newKey;
+                }
+                
+                foreach ($created_data['form'] as $key => $value) {
+                    $lastChar = substr($key, -1);
+                    $newKey = "kodepembayaran_pembayaran[{$lastChar}]";
+                    $array[$newKey] = $value['kode'] ?? '';
+                    $key_index++;
+                    $key_index_array[] = $newKey;
+                }
+                foreach ($created_data['form'] as $key => $value) {
+                    $lastChar = substr($key, -1);
+                    $newKey = "tgl_bayar_pembayaran[{$lastChar}]";
+                    $array[$newKey] = $value['tgl_bayar'] ?? '';
+                    $key_index++;
+                    $key_index_array[] = $newKey;
+                }
+                foreach ($created_data['form'] as $key => $value) {
+                    $lastChar = substr($key, -1);
+                    $newKey = "price_pembayaran[{$lastChar}]";
+                    $array[$newKey] = $value['price']  ?? '';
+                    $key_index++;
+                    $key_index_array[] = $newKey;
+                }
+                
+                foreach ($created_data['form'] as $key => $value) {
+                    $lastChar = substr($key, -1);
+                    $newKey = "bukti_pembayaran[{$lastChar}]";
+                    $array[$newKey] = $value['bukti']  ?? '';
+                    $key_index++;
+                    $key_index_array[] = $newKey;
+                }
+                foreach ($created_data['form']  as $key => $value) {
+                    $lastChar = substr($key, -1);
+                    $newKey = "keterangan_pembayaran[{$lastChar}]";
+                    $array[$newKey] = $value['keterangan']  ?? '';
+                    $key_index++;
+                    $key_index_array[] = $newKey;
+                }
+                $formParams = array_merge($formParams,$array);
+            }
+        }
+        else{
+            // dd($created_data);
+            $array=[];
+            $key_index=0;
+            $key_index_array=[];
+            $formParams = array(
+                'id_lcllocal'=> $created_data['id_pembelian_savelcl']
+            );
+            foreach ($created_data['form_create'] as $key => $value) {
+                $lastChar = substr($key, -1);
+                $newKey = "matauang_pembayaran[{$lastChar}]";
+                $array[$newKey] =  $value['matauang'] ?? ''; // Gunakan nilai yang tersedia
+                $key_index++;
+                $key_index_array[] = $newKey;
+            }
+            
+            foreach ($created_data['form_create'] as $key => $value) {
+                $lastChar = substr($key, -1);
+                $newKey = "kodepembayaran_pembayaran[{$lastChar}]";
+                $array[$newKey] = $value['kodepembayaran'] ?? '';
+                $key_index++;
+                $key_index_array[] = $newKey;
+            }
+            foreach ($created_data['form_create'] as $key => $value) {
+                $lastChar = substr($key, -1);
+                $newKey = "tgl_bayar_pembayaran[{$lastChar}]";
+                $array[$newKey] = $value['tgl_bayar_create'] ?? '';
+                $key_index++;
+                $key_index_array[] = $newKey;
+            }
+            foreach ($created_data['form_create'] as $key => $value) {
+                $lastChar = substr($key, -1);
+                $newKey = "price_pembayaran[{$lastChar}]";
+                $array[$newKey] = $value['price_create']  ?? '';
+                $key_index++;
+                $key_index_array[] = $newKey;
+            }
+            
+            foreach ($created_data['form_create'] as $key => $value) {
+                $lastChar = substr($key, -1);
+                $newKey = "bukti_pembayaran[{$lastChar}]";
+                $array[$newKey] = $value['bukti_pembayaran']  ?? '';
+                $key_index++;
+                $key_index_array[] = $newKey;
+            }
+            foreach ($created_data['form_create']  as $key => $value) {
+                $lastChar = substr($key, -1);
+                $newKey = "keterangan_pembayaran[{$lastChar}]";
+                $array[$newKey] = $value['keterangan_create']  ?? '';
+                $key_index++;
+                $key_index_array[] = $newKey;
+            }
+            $formParams = array_merge($formParams,$array);
+        }
+       
+        try{
+            $client = new Client(['verify'=>false]);
+             $headers = [
+                'Cookie' => $teknisi_cookie
+            ];
+           
+            $response = $client->request('POST', 'https://maxipro.id/TeknisiAPI/lcl_local_savepembayaran' , [
+                'form_params' => $formParams,
+                'headers' => $headers,
+            ]);
+            
+            $data = $response->getBody()->getContents();
+            $Data = json_decode($data, true);
+            // dd($Data);
+            
+            return json_decode($data, true);
+        }catch(\Exception $e){
+            return ['error'=>$e->getMessage()];
         }
     }
 }

@@ -127,11 +127,7 @@
 
                     <td valign="top" style="text-align: left;">
 
-                      <p>
-
-                        {{$invoice_data['msg']['commercialinvoice']['name']}}<br>
-
-                        {{$invoice_data['msg']['commercialinvoice']['address']}}
+                      <p>{{$invoice_data['msg']['commercialinvoice']['name']}}<br>{{$invoice_data['msg']['commercialinvoice']['address']}}
 
                         {{$invoice_data['msg']['commercialinvoice']['city']}}
 
@@ -253,7 +249,7 @@
               @php
               $allqty =  $allqty+ $result['qty'];
               $allpkgs = $allpkgs + $result['pkgs'];
-              $alltotal = $alltotal + $result['total_price_usd'];
+              $alltotal = $alltotal + $result['total_price_without_tax'];
               @endphp
               <td style="text-align: center;"><p style="margin: 0;margin-bottom: 12px;
               line-height: 2;">{{$number++}}</p></td>
@@ -274,9 +270,9 @@
               line-height: 2;">{{number_format($result['pkgs'])}}</p></td>
 
               <td style="text-align: right;"><p style="margin: 0;margin-bottom: 12px;
-              line-height: 2;">{{ $matauang_simbol }} {{ number_format($result['unit_price_usd'],2) }}</p></td>
+              line-height: 2;">{{ $matauang_simbol }} {{ number_format($result['unit_price_without_tax'],2) }}</p></td>
               <td style="text-align: right;"><p style="margin: 0;margin-bottom: 12px;
-              line-height: 2;">{{ $matauang_simbol }} {{ number_format($result['total_price_usd'],2) }}</p></td>
+              line-height: 2;">{{ $matauang_simbol }} {{ number_format($result['total_price_without_tax'],2) }}</p></td>
 
 
 

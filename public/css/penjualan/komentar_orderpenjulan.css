@@ -1,0 +1,27 @@
+th {
+    text-align: center; /* Pusatkan teks */
+    overflow: hidden; /* Sembunyikan konten yang melampaui lebar */
+    text-overflow: ellipsis; /* Tambahkan titik-titik pada teks yang terpotong */
+    white-space: nowrap; /* Hindari teks melompat ke baris baru */
+    border: 1px solid #d7d7d7; /* Tambahkan batas */
+    padding: 5px; /* Ruang dalam header */
+    color: black; /* Warna teks */
+}
+.split-text {
+    display: inline-block;
+    white-space: pre-wrap; /* Memaksa teks untuk mengikuti pemisahan baris */
+    line-height: 1.2; /* Atur jarak antar baris */
+}
+/* Atur lebar khusus untuk setiap kolom */
+th:nth-child(1) { width: 1%; } /* No */
+th:nth-child(2) { width: 5%; } /* Tanggal */
+th:nth-child(3) { width: 5%; } /* No. Order Penjualan */
+th:nth-child(4) { width: 5%; } /* Invoice Penjualan */
+th:nth-child(5) { width: 15%; } /* Customer */
+th:nth-child(6) { width: 10%; } /* Sales */
+th:nth-child(7) { width: 10%; } /* Cabang */
+th:nth-child(8) { width: 10%; } /* Total */
+th:nth-child(9) { width: 10%; } /* Status Bayar */
+th:nth-child(10) { width: 10%; } /* Status Order */
+th:nth-child(11) { width: 10%; } /* Tag */
+th:nth-child(12) { width: 10%; } 

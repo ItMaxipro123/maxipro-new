@@ -2,151 +2,23 @@
 
 
 @section('title')
-Penerimaan Document  | PT. Maxipro Group Indonesia
+Penerimaan Dokumen  | PT. Maxipro Group Indonesia
 @endsection
 @section('link')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+<link rel="stylesheet" href="{{ asset('css/penerimaan/document.css') }}">
 @endsection
-@section('style')
 
-<style>
-    .flatpickr-input {
-        border: 1px solid #ccc;
-        padding: 5px;
-        border-radius: 4px;
-    }
-
-    .dataTables_wrapper .dataTables_paginate .paginate_button.previous {
-        width: auto;
-        /* Atur lebar tombol menjadi otomatis */
-        padding-right: 0px;
-        /* Berikan padding di sisi kanan tombol */
-
-    }
-
-    /* Ganti warna latar belakang tabel */
-    #tabe-stok {
-        background-color: #f0f0f0;
-        /* Ganti dengan warna yang Anda inginkan */
-
-    }
-
-    .dataTables_filter input[type="search"] {
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        /* Opsional: untuk membuat sudut border melengkung */
-        padding: 5px;
-        /* Opsional: untuk memberi jarak antara border dan teks */
-    }
-
-
-    /* CSS untuk gaya select2 custom */
-    .select2-container--custom .select2-selection--single {
-        height: calc(2.25rem + 2px);
-        padding: .375rem .75rem;
-        background-color: #fff;
-        border: 1px solid #ced4da;
-        border-radius: .25rem;
-        width: 100%;
-    }
-
-    .empty-row {
-        border: none;
-    }
-
-    .select2-container--custom .select2-selection--single {
-        height: calc(2.25rem + 2px);
-        padding: .375rem .75rem;
-        background-color: #fff;
-        border: 1px solid #ced4da;
-        border-radius: .25rem;
-        width: 100%;
-    }
-
-    .empty-row {
-        border: none;
-    }
-
-    .select2-container--custom .select2-selection--single .select2-selection__arrow {
-        right: 10px;
-    }
-
-    .select2-container--custom .select2-selection--single .select2-selection__rendered {
-        color: #495057;
-        line-height: 1.5;
-        text-align: center;
-        font-size: 14px;
-    }
-
-    .select2-container--custom .select2-selection--single .select2-selection__placeholder {
-        color: #6c757d;
-    }
-
-    .select2-container--custom .select2-selection--single:focus {
-        border-color: #80bdff;
-        outline: 0;
-        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-    }
-
-    .select2-container--custom .select2-results__options {
-        overflow-y: auto;
-
-        max-height: 200px;
-
-    }
-
-    #overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        /* Warna gelap dengan opasitas */
-        z-index: 9999;
-        /* Layer di atas semua konten */
-        display: none;
-        /* Default tidak ditampilkan */
-    }
-
-    #overlay i {
-        color: white;
-        /* Warna ikon */
-        font-size: 50px;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        /* Sesuaikan ukuran ikon sesuai kebutuhan */
-    }
-
-
-    /* Style untuk tombol Delete */
-    .btn-delete {
-        width: 25%;
-        /* Lebar default */
-    }
-
-    /* Mengatur lebar tombol saat layar berukuran kecil (misalnya pada perangkat mobile) */
-    @media only screen and (max-width: 600px) {
-        .btn-delete {
-            width: 50%;
-            /* Mengisi lebar penuh */
-        }
-    }
-</style>
-
-@endsection
 @section('content')
 
 <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg wider">
     <div id="overlay"> <i class="fas fa-spinner fa-spin"></i> </div>
     <div class="container-fluid">
-        <h4 id="judulStok" style="margin-top: 40px;margin-bottom: 40px;"><i class="fas fa-database"></i> &nbsp Penerimaan Document</h4>
+        <h4 id="judulDokumen" style="margin-top: 40px;margin-bottom: 40px;display:none;"><i class="fas fa-database"></i> &nbsp Penerimaan Dokumen</h4>
 
-        <small class="display-block" style="position: absolute; top: 70px; left: 50px;">Penerimaan Document {{ $username['data']['teknisi']['name'] }}</small>
+        <small class="display-block" style="position: absolute; top: 70px; left: 50px;">Penerimaan Dokumen {{ $username['data']['teknisi']['name'] }}</small>
     </div>
 
 
@@ -157,19 +29,19 @@ Penerimaan Document  | PT. Maxipro Group Indonesia
                 <div id="content" class="card p-0 p-md-4 wider" style="height: auto; min-height: 360px;">
                     
                     <div class="col-md-12">
-                        <div class="row">
+                        <div class="row" >
                             <div class="col-md-12">
-                         <a href="javascript:void(0)" onclick="tambahPenawaran(this)" name="tambahButton" class="btn btn-large btn-primary btn-tambah">Add Penerimaan Document</a>
+                         <a href="javascript:void(0)" onclick="tambahDocument(this)" name="tambahButton" class="btn btn-large btn-primary btn-tambah" style="display:none;">Add Penerimaan Document</a>
 
                                 <div class="d-flex justify-content-end">
 
                                   
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-info" style="width: 10%; margin-right: 5px;" id="openModalBtn">Filter</button>
+                                        <button type="button" class="btn btn-info" style="width: 10%; margin-right: 5px;display:none;" id="filterBtn">Filter</button>
 
                                     </div>
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-warning" style="width: 10%; margin-right: 5px;" id="clearFilterBtn">Clear Filter</button>
+                                        <button type="button" class="btn btn-warning" style="width: 10%; margin-right: 5px;display:none;" id="clearFilterBtn">Clear Filter</button>
 
                                     </div>
                                 </div>
@@ -213,11 +85,6 @@ Penerimaan Document  | PT. Maxipro Group Indonesia
                                 </div>
                                 <div class="modal-footer">
 
-                                    <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
-                                    <!-- code diatas untuk modal bootstrap 4 -->
-
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <!-- code diatas untuk modal bootstrap 5 -->
 
                                     <button type="button" class="btn btn-primary" id="saveChangesBtn">Save changes</button>
 
@@ -225,206 +92,59 @@ Penerimaan Document  | PT. Maxipro Group Indonesia
                             </div>
                         </div>
                     </div>
+                    <div class="table-responsive" style="display:none;">
 
-                    <table id="tabe-stok" class="table table-bordered table-striped">
-                        <thead>
-
-                        </thead>
-                        <tbody>
-                            @php
-                            $num =1;
-                            @endphp
-                            <!-- Table data will be populated here -->
-                            @foreach($Data['msg']['penerimaan'] as $index => $data)
-                            
-                            @php
-                            \Carbon\Carbon::setLocale('id'); // Set locale ke Bahasa Indonesia
-                            $formattedDate = \Carbon\Carbon::parse($data['tgl_terima'])->translatedFormat('d F Y');
-                            @endphp
-                            <tr>
-                                <td>{{ $num }}</td>
-                                <td>{{ $formattedDate }}</td>
-                                <td>{{ $data['kode'] }}</td>
-                              
-
-                              
-                              
-                                <td>{{ $data['teknisi']['name'] }}</td>
-                               
+                        <table id="tabe-stok" class="table table-bordered table-striped" >
+                            <thead>
+    
+                            </thead>
+                            <tbody>
+                                @php
+                                $num =1;
+                                @endphp
+                                <!-- Table data will be populated here -->
+                                @foreach($Data['msg']['penerimaan'] as $index => $data)
                                 
-
-
-                                <td>
-                                    <a href="javascript:void(0)" onclick="updatePenawaran(this)" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-secondary btn-edit">Edit</a>
-                                     <a href="{{ route('admin.detailview_penawaran_filter', ['id' => $data['id']]) }}" class="btn btn-large btn-info btn-detail">Detail</a>
+                                @php
+                                \Carbon\Carbon::setLocale('id'); // Set locale ke Bahasa Indonesia
+                                $formattedDate = \Carbon\Carbon::parse($data['tgl_terima'])->translatedFormat('d F Y');
+                                @endphp
+                                <tr>
+                                    <td>{{ $num }}</td>
+                                    <td>{{ $formattedDate }}</td>
+                                    <td>{{ $data['kode'] }}</td>
+                                  
+    
+                                  
+                                  
+                                    <td>{{ $data['teknisi']['name'] }}</td>
                                    
-                                   <a href="javascript:void(0)" onclick="deletePenawaran(this)" data-id="{{ $data['id'] }}" name="{{ $data['kode'] }}" class="btn btn-large btn-primary btn-delete">Delete</a>
-                                
-                                </td>
-                            </tr>
-                            @php $num++
-                            @endphp
-                            @endforeach
-
-                        </tbody>
-
-                    </table>
-
-
-                    <!-- modal tambah penerimaan pindah gudang-->
-                    <div class="col-sm-12" style="margin-top: 15px;">
-
-                            <div class="modal fade" id="tambahModal" tabindex="-1" role="dialog" aria-labelledby="tambahModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-xl" role="document">
-                                    <div class="modal-content">
-                                        <!-- Header modal, termasuk tombol close -->
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="tambahModalLabel">Tambah Penerimaan Barang Lain</h5>
-
-                                        </div>
-                                        <!-- Isi modal -->
-                                        <div class="modal-body">
-                                            
-                                            
-                                            <form action="" class="form-horizontal" id="tambahForm" method="get">
-                                                @csrf
-                                                <h4 style="margin-bottom: 10px;">Form Tambah Penerimaan Document</h4>
-
-                                                
-                                                <!-- <div class="form-group" style="display: flex; align-items: center; margin-top:30px; margin-bottom: 20px;">
-                                                    <label class="col-lg-3 control-label" style="font-size: 15px;" for="id_db">ID Pembelian <span style="color: red;">(Wajib Diisi)</span></label>
-                                                    <div style="position: relative; width: 100%;">
-                                                        <select class="form-control" name="id_db" id="id_db" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;" required>
-                                                            <option value="">Pilih Database</option>
-                                                            <option value="UD">UD</option>
-                                                            <option value="PT">PT</option>
-                                                        </select>
-                                                    </div>
-                                                </div> -->
-                                                
-                                                <div class="form-group" style="padding-top:10px;">
-                                                    <div class="row">
-                                                        <div class="col-md-3">
-
-                                                            <label for="startDatepicker">Tanggal Terima: <span style="color: red;">(Wajib Diisi)</span></label>
-                                                        </div>
-                                                        <div class="col-md-9">
-
-                                                            <input type="text" placeholder="Pilih Tanggal Terima" class="form-control" id="tgl_request" name="tgl_request_name" required>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group" style="padding-top:20px;">
-                                                    <div class="row">
-                                                        <div class="col-md-3">
-
-                                                            <label for="pengirim">Pengirim <span style="color: red;">(Wajib Diisi)</span></label>
-                                                        </div>
-                                                        <div class="col-md-9">
-
-                                                            <input type="text" style="border: 1px solid #ced4da;padding-left: 10px;" placeholder="Pengirim" class="form-control" id="pengirim" name="pengirim_name" required>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                
-                                                <div class="form-group" style="padding-top:25px;">
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <table class="table table-bordered table-striped"style="border: 2px solid #ced4da;">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <td>
-                                                                            No. Document
-                                                                        </td>
-
-                                                                        <td>
-                                                                            Action
-                                                                        </td>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody id="tableBody">
-                                                                    
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group" style="display: flex;padding-top:30px; text-align:end;">
-                                                    <button type="button" id="tambahDataTable" class="btn btn-success" style="margin-left: auto;">Tambah Nomor Document
-                                                    </button>
-                                                </div>
-                                                <div class="form-group" style="padding-top:20px;">
-                                                    <div class="row">
-                                                        <div class="col-md-3">
-
-                                                            <label for="pengirim">Keterangan <span style="color: red;">(Wajib Diisi)</span></label>
-                                                        </div>
-                                                        <div class="col-md-9">
-
-                                                            
-                                                            <textarea name="keterangan_name" id="keterangan"placeholder="Keterangan"style="border: 1px solid #ced4da;padding-left: 10px;width:100%;" required></textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>                                               
-                                              
-
-                                                <div class="form-group" style="display: flex;padding-top:30px; text-align:end;">
-                                                    <button type="submit" id="selecttambahButton" class="btn btn-primary" style="margin-left: auto;">Simpan
-                                                    </button>
-                                                </div>
-
-                                            </form>
-                                            
-                                            
-                                        </div>
-                                        <div class="modal-footer">
-                                            <!-- Tombol untuk menutup modal -->
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="location.reload()">Close</button>
                                     
-                                        </div>
+    
+    
+                                    <td>
+                                
+                                    </td>
+                                </tr>
+                                @php $num++
+                                @endphp
+                                @endforeach
+    
+                            </tbody>
+    
+                        </table>
 
-
-                                    </div>
-                                </div>
-                            </div>
                     </div>
+
+                    <div id="tambahPenerimaanContainer" style="display: none;" class="col-sm-12" style="margin-top: 15px;">
+                            <form action=""id="Formtambah"></form>            
+                    </div>
+                   
 
 
 
                     
-                    <!-- modal edit penawaran -->
-                    <div class="col-sm-12" style="margin-top: 15px;">
-                        <div id="tabe-stok"></div>
-
-                        <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-xl" role="document">
-                                <div class="modal-content">
-                                    <!-- Header modal, termasuk tombol close -->
-                                    <div class="modal-header">
-                                       
-
-                                    </div>
-                                    <!-- Isi modal -->
-                                    <div class="modal-body">
-                                        
-                                        <form id="editForm">
-
-                                        </form>
-                                        
-                                    </div>
-                                    <div class="modal-footer">
-                                        <!-- Tombol untuk menutup modal -->
-                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="location.reload()">Close</button>
-                                   
-                                    </div>
-
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                
 
 
                 </div>
@@ -445,7 +165,7 @@ Penerimaan Document  | PT. Maxipro Group Indonesia
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <!-- DataTables Bootstrap 4 Integration -->
 <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+
 <!-- Choices.js JS -->
 <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
@@ -479,8 +199,6 @@ Penerimaan Document  | PT. Maxipro Group Indonesia
             searchEnabled: true,
             itemSelectText: '',
         });
-
-        // Enable/disable date inputs based on checkbox state
         
     });
     
@@ -736,203 +454,258 @@ Penerimaan Document  | PT. Maxipro Group Indonesia
 <script>
     
     $(document).ready(function() {
-        $('#tabe-stok').DataTable({
+        function initializeDataTable() {
 
-            "dom": '<"top"lf>rt<"bottom"ip><"clear">', // Mengatur posisi elemen filter/search
-            "language": { // Menyesuaikan teks placeholder
-                "searchPlaceholder": "Cari...",
-                "search": "Cari:",
-                "paginate": {
-                    "previous": "back", // Ganti teks untuk tombol "previous"
-                    "next": "next" // Ganti teks untuk tombol "next"
-                }
-            },
-
-            columns: [{
-                    data: 'num',
-                    title: 'No'
-                },
-                {
-                    data: 'tgl_terima',
-                    title: 'Tanggal Terima'
-                },
-                  {
-                    data: 'code',
-                    title: 'Kode'
-                },
-                {
-                    data: 'user',
-                    title: 'User'
-                },
-                {
-                    data: 'link',
-                    title: 'Action',
-                    render: function(data, type, full, meta) {
-                        return '<a href="' + data + '</a>';
-                    }
-                }
-
-            ],
-            "initComplete": function(settings, json) {
-
-                $('.dataTables_filter input[type="search"]').attr('placeholder', 'Cari ...'); // Menyesuaikan placeholder
+        
+            if ($.fn.DataTable.isDataTable('#tabe-stok')) {
+                // Hapus instance DataTable sebelumnya
+                $('#tabe-stok').DataTable().clear().destroy();
             }
+            window.dataTableInstance = $('#tabe-stok').DataTable({
+
+                "dom": '<"top"lf>rt<"bottom"ip><"clear">', // Mengatur posisi elemen filter/search
+                "language": { // Menyesuaikan teks placeholder
+                    "searchPlaceholder": "Cari...",
+                    "search": "Cari:",
+                    "paginate": {
+                        "previous": "back", // Ganti teks untuk tombol "previous"
+                        "next": "next" // Ganti teks untuk tombol "next"
+                    }
+                },
+
+                columns: [{
+                        data: 'num',
+                        title: 'No'
+                    },
+                    {
+                        data: 'tgl_terima',
+                        title: 'Tanggal Terima'
+                    },
+                    {
+                        data: 'code',
+                        title: 'Kode'
+                    },
+                    {
+                        data: 'user',
+                        title: 'User'
+                    },
+                    {
+                        data: 'link',
+                        title: 'Action',
+                        render: function(data, type, full, meta) {
+                            let code=full.code
+                            
+                            return `
+                                <button type="button" 
+                                        data-id="${code}" 
+                                        name="${code}" 
+                                        class="btn btn-large btn-info edit-btn" 
+                                        style="width: 35px; height: 38px; padding: 9px 10px;" 
+                                        title="Edit Penerimaan Dokumen">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button type="button" 
+                                        onclick="deleteDocument(this)" 
+                                        data-id="${code}" 
+                                        name="${code}" 
+                                        class="btn btn-large btn-info btn-danger" 
+                                        style="width: 35px; height: 38px; padding: 9px 10px;" 
+                                        title="Hapus Penerimaan Dokumen">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+
+                                `;
+                        }
+                    }
+
+                ],
+                "initComplete": function(settings, json) {
+
+                    $('.dataTables_filter input[type="search"]').attr('placeholder', 'Cari ...'); // Menyesuaikan placeholder
+                }
+            });
+        }
+        initializeDataTable();
+
+        // Contoh ketika data di-refresh
+        $('#refreshTableButton').on('click', function() {
+            // Perbarui data tabel di sini (jika diperlukan)
+            // Misalnya, dengan AJAX untuk memuat ulang data baru
+            // Kemudian inisialisasi ulang DataTable
+            initializeDataTable();
         });
     });
 </script>
 
 <script>
     // Menangani peristiwa klik pada tombol "Filter"
-    document.getElementById('openModalBtn').addEventListener('click', function() {
+    document.getElementById('filterBtn').addEventListener('click', function() {
         $('#exampleModal').modal('show'); // Menampilkan modal Filter
     });
 
-        function detailPenawaran(element) {
-          var id = $(element).data('id');
-          console.log(id);
 
-          var url = "{{ route('admin.detailview_penawaran_filter') }}";
-
-          $.ajax({
-            url: url,
-                type: 'GET', // Menggunakan metode POST
-                data: {
-
-                    id: id
-                },
-                success: function(response) {
-                    // Handle response jika sukses
-                    var newRoute = "{{ route('admin.detailview_penawaran_filter') }}";
-                    window.location.href = newRoute;
-
-                },
-                error: function(xhr, status, error) {
-                    // Handle error jika terjadi kesalahan
-                    console.error(xhr.responseText);
-                    return;
-                }
-            });
-        }
-
-    // Menangani klik pada tombol Edit
-    function updatePenawaran(element) {
+    $(document).on('click','.edit-btn', function(event){
         event.preventDefault();
-        var id = $(element).data('id');
-        console.log(id);
-
-        var url = "{{ route('admin.editview_penawaran_filter') }}";
-
-        $.ajax({
-            url: url,
-            type: 'GET', // Menggunakan metode POST
-            data: {
-
-                id: id
+        var code = $(this).data('id')
+        
+         $.ajax({
+            url:'{{ route('admin.edit_document')}}',
+            data:{
+                menu:'edit_view',
+                id:code,
             },
-            success: function(response) {
-                // Handle response jika sukses
+            success: function(response){
+        
+                $('main.main-content').removeClass('wider ps ps--active-y');
+                        $('small.display-block').css('top', '30px');
+                        // Ganti konten dari form dengan response dari server
+                        $('#Formtambah').show();
+                        $('#Formtambah').html(response);
+                        
+                        // Ubah judul dan ikon
+                        $('#judulDokumen').html('<i class="fas fa-database"></i> &nbsp Edit Dokumen');
+                        document.title = 'Edit Dokumen | PT. Maxipro Group Indonesia';
 
-                $('#editForm').html(response);
-                // Tampilkan modal
-                $('#editModal').modal('show');
-               
+                        // Menghapus elemen yang tidak dibutuhkan
+                        $('.btn-tambah').hide();
+                        $('.radio-button-container').hide();
+                        $('#clearFilterBtn').hide();
+                        $('#filterBtn').hide();
+                           // Menghancurkan DataTable jika ada
+                        if (window.dataTableInstance) {
+                            window.dataTableInstance.destroy();
+                        }
+                        $('#tabe-stok').hide();
+                        $('#tambahPenerimaanContainer').show();
+                        history.pushState({ code: code }, 'Edit Dokumen', '{{ route('admin.edit_document') }}' );
+
             },
-            error: function(xhr, status, error) {
-                // Handle error jika terjadi kesalahan
+            error: function(xhr, status, error){
                 console.error(xhr.responseText);
                 return;
             }
-        });
-    }
-
-    // Menangani klik pada tombol tambah
-    function tambahPenawaran(element) {
-        event.preventDefault();
-     $('#tambahModal').modal('show'); // Tampilkan modal
-    }
-
-    function detailKas(element) {
-        event.preventDefault();
-        var id = $(element).data('id');
-        console.log(id);
-
-        var url = "{{ route('admin.kasdetail') }}";
-
-        $.ajax({
-            url: url,
-            type: 'GET', // Menggunakan metode POST
-            data: {
-
-                id: id
-            },
-            success: function(response) {
-                // Handle response jika sukses
-
-                $('#detailForm').html(response);
-                // Tampilkan modal
-                $('#detailModal').modal('show');
-                
-               
-            },
-            error: function(xhr, status, error) {
-                // Handle error jika terjadi kesalahan
-                console.error(xhr.responseText);
-                return;
-            }
-        });
-    }
-
-
-    function deletePenawaran(element) {
-    event.preventDefault();
-    var id = $(element).data('id');
-    var penawaranName = $(element).attr('name');
-
-    // Menggunakan SweetAlert2 untuk konfirmasi penghapusan
-    Swal.fire({
-        title: 'Konfirmasi',
-        text: "Apakah Anda yakin ingin menghapus penawaran ini " + penawaranName + " ?",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Ya, Hapus!',
-        cancelButtonText: 'Batal'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            var url = "{{ route('admin.hapus_penawaran_filter') }}";
-
-            $.ajax({
-                url: url,
-                type: 'GET',
-                data: {
-                    id: id
-                },
-                success: function(response) {
-                    // Handle response jika sukses
-                    console.log(response);
-
-                    // Hapus data berdasarkan elemen, element berupa id
-                    $(element).closest('tr').remove();
-
-                    // Tampilkan SweetAlert2 ketika berhasil dihapus
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil',
-                        text: 'Data berhasil dihapus!',
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                },
-                error: function(xhr, status, error) {
-                    // Handle error jika terjadi kesalahan
-                    console.error(xhr.responseText);
-                    return;
-                }
-            });
-        }
+         })
     });
-}
+
+
+    function deleteDocument(element) {
+        event.preventDefault();
+        var id = $(element).data('id');
+        var penawaranName = $(element).attr('name');
+
+        // Menggunakan SweetAlert2 untuk konfirmasi penghapusan
+        Swal.fire({
+            title: 'Konfirmasi',
+            text: "Apakah Anda yakin ingin menghapus penawaran ini " + penawaranName + " ?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, Hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var url = "{{ route('admin.penerimaan_document') }}";
+
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    data: {
+                        id: id,
+                        menu:'delete_document'
+                    },
+                    success: function(response) {
+                        // Handle response jika sukses
+                        console.log(response);
+
+                        // Hapus data berdasarkan elemen, element berupa id
+                        $(element).closest('tr').remove();
+
+                        // Tampilkan SweetAlert2 ketika berhasil dihapus
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil',
+                            text: 'Data berhasil dihapus!',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error jika terjadi kesalahan
+                        console.error(xhr.responseText);
+                        return;
+                    }
+                });
+            }
+        });
+    }
+    const currentUrl = window.location.pathname;
+       
+    if(currentUrl==='/admin/tambah_penerimaan_document'){
+        $('.table-responsive').hide();
+        $('main.main-content').removeClass('wider ps ps--active-y');
+        $('small.display-block').css('top', '30px');
+        $('.btn-tambah').hide();
+        $('.radio-button-container').hide();
+        $('#clearFilterBtn').hide();
+        $('#filterBtn').hide();
+        // Menghancurkan DataTable jika ada
+        if (window.dataTableInstance) {
+            window.dataTableInstance.destroy();
+        }
+      
+        tambahDocument()
+    }
+    else if(currentUrl==='/admin/data_penerimaan_document_filter'){
+        $('.btn-tambah').show()
+        $('.table-responsive').show();
+        $('#clearFilterBtn').show();
+        $('#filterBtn').show();
+        $('#judulDokumen').show()
+    }
+    else if(currentUrl==='/admin/edit_penerimaan_document'){
+     
+        window.location.href='data_penerimaan_document'
+        
+    }
+    // Menangani klik pada tombol tambah
+    function tambahDocument() {
+        // event.preventDefault();
+        $.ajax({
+                url:'{{ route('admin.tambah_document') }}',
+                data:{
+                    menu:'tambah_document_view'
+                },
+                success: function(response){
+                                $('main.main-content').removeClass('wider ps ps--active-y');
+                                $('small.display-block').css('top', '30px');
+                                $('#Formtambah').show();
+                                $('#Formtambah').html(response);
+                                // Ubah judul dan ikon
+                                
+                                $('#judulDokumen').html('<i class="fas fa-database"></i> &nbsp Tambah Penerimaan Dokumen');
+                                document.title = 'Tambah Penerimaan Dokumen | PT. Maxipro Group Indonesia';
+                                $('#judulDokumen').show()
+                                // Menghapus elemen yang tidak dibutuhkan
+                                $('.btn-tambah').hide();
+                                $('.radio-button-container').hide();
+                                $('#clearFilterBtn').hide();
+                                $('#filterBtn').hide();
+                                   // Menghancurkan DataTable jika ada
+                                if (window.dataTableInstance) {
+                                    window.dataTableInstance.destroy();
+                                }
+                                $('#tambahPenerimaanContainer').show();
+                                $('#tabe-stok').hide();
+                                history.pushState({page:'Tambah Dokumen' }, 'Tambah Dokumen', '{{ route('admin.tambah_document') }}' );
+                },
+                error: function(xhr, status, error) {
+                    // Handle error jika terjadi kesalahan
+                    console.error(xhr.responseText);
+                    return;
+                }
+        })
+    }
 
 
 </script>

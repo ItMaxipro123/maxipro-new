@@ -5,8 +5,104 @@
 
   .rounded-image {
     border-radius: 50%;
-    
-    
-    
-    
+   
   }
+/* Custom Button Style */
+.btn-custom {
+  background-color: transparent; /* Tidak ada warna latar */
+  border: none; /* Tidak ada garis tepi */
+  cursor: pointer; /* Mengubah kursor menjadi pointer */
+  padding: 0; /* Menghapus padding default */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Default expanded sidebar */
+.sidenav {
+  width: 250px;
+  transition: width 0.3s ease-in-out;
+}
+
+/* Minimized sidebar */
+.sidenav.minimized {
+  width: 150px;
+}
+
+/* Hide text when minimized */
+.sidenav .nav-link-text {
+  display: inline-block;
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.sidenav.minimized .nav-link-text {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.sidenav .navbar-brand span {
+  display: inline-block;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.sidenav.minimized .navbar-brand span {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-60px);
+}
+#gambar {
+  transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+}
+
+#gambar.minimized {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-20px); /* Geser ke kiri sebesar 20px */
+}
+
+
+
+.sidenav.minimized .nav-item:hover .nav-link-text {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Hover Effect */
+.btn-custom:hover .sidenav-toggler-line {
+  background-color: gray; /* Warna garis saat hover */
+  transform: scale(1.1); /* Sedikit memperbesar garis */
+}
+/* Button Styling */
+#toggle-sidebar {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+}
+
+/* Ensure the button is always visible */
+#toggle-sidebar .sidenav-toggler-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+}
+
+#toggle-sidebar .sidenav-toggler-line {
+  width: 30px;
+  height: 3px;
+  margin: 3px 0;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+/* Change the color on hover */
+#toggle-sidebar:hover .sidenav-toggler-line {
+  background-color: #f0f0f0;
+}
+
+/* When sidebar is minimized, keep the button visible */
+.sidenav.minimized + .col-md-6 #toggle-sidebar {
+  display: block;
+}

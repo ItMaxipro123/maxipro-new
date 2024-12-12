@@ -89,16 +89,31 @@
           <p>
 
                 {{$invoice_data['msg']['commercialinvoice']['address']}}<br>
-
                 {{$invoice_data['msg']['commercialinvoice']['city']}}<br>
-
                 {{$invoice_data['msg']['commercialinvoice']['phone']}}
+
 
                 </p>
 
+                <p>
+                </p>
+                <p>
+
+                </p>
 
           </td>
 
+        </tr>
+        <tr>
+          <td>
+          </td>
+
+
+        </tr>
+        <tr>
+          <td>
+
+          </td>
         </tr>
 
       </table>
@@ -122,8 +137,7 @@
                     <td valign="top" style="text-align: left;width:100%;">
 
                     <p style="margin-bottom: 12px;
-                                              line-height: 1.5;">PT. Maxipro Group Indonesia<br>
-                        Jl. Waspada 42, Kel. Bongkaran Kec. Pabean Cantian Surabaya Indonesia 
+                                              line-height: 1.5;">PT. Maxipro Group Indonesia<br>Jl. Waspada 42, Kel. Bongkaran Kec. Pabean Cantian Surabaya Indonesia 
                         <br>+62818757777<br>
                     </p>
 
@@ -241,7 +255,7 @@
               @php
               $allqty =  $allqty+ $result['qty'];
               $allpkgs = $allpkgs + $result['pkgs'];
-              $alltotal = $alltotal + $result['total_price_usd'];
+              $alltotal = $alltotal + $result['total_price_without_tax'];
               @endphp
               <td style="text-align: center;"><p style="margin: 0;margin-bottom: 12px;
               line-height: 2;">{{$number++}}</p></td>
@@ -262,9 +276,9 @@
               line-height: 2;">{{number_format($result['pkgs'])}}</p></td>
 
               <td style="text-align: right;"><p style="margin: 0;margin-bottom: 12px;
-              line-height: 2;">{{ $matauang_simbol }} {{ number_format($result['unit_price_usd'],2) }}</p></td>
+              line-height: 2;">{{ $matauang_simbol }} {{ number_format($result['unit_price_without_tax'],2) }}</p></td>
               <td style="text-align: right;"><p style="margin: 0;margin-bottom: 12px;
-              line-height: 2;">{{ $matauang_simbol }} {{ number_format($result['total_price_usd'],2) }}</p></td>
+              line-height: 2;">{{ $matauang_simbol }} {{ number_format($result['total_price_without_tax'],2) }}</p></td>
 
 
 

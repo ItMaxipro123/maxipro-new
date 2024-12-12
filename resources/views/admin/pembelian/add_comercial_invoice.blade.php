@@ -2,7 +2,7 @@
 
 
 @section('title')
-Commercial Invoice    | PT. Maxipro Group Indonesia
+Add Commercial Invoice    | PT. Maxipro Group Indonesia
 @endsection
 @section('link')
 <link href="{{ asset('css/comercialinvoice.css') }}" rel="stylesheet">
@@ -16,11 +16,55 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
 @section('content')
 
 <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg wider">
-    
-    <div class="container-fluid">
-        <h4 id="judulRestok"><i class="fas fa-database"></i> &nbsp Add Commercial Invoice</h4>
-        <small class="display-block" id="subjudul">Add Commercial Invoice {{ $username['data']['teknisi']['name'] }}</small>
-        
+    <div class="row">
+        <div class="col-md-6">
+
+            <div class="container-fluid">
+                <h4 id="judulRestok"><i class="fas fa-database"></i> &nbsp Add Commercial Invoice</h4>
+                <small class="display-block" id="subjudul">Add Commercial Invoice {{ $username['data']['teknisi']['name'] }}</small>
+            </div>
+
+        </div>
+        <div class="col-md-6">
+                <!-- navbar untuk membuka sidebar -->
+                <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" data-scroll="true">
+                    <div class="container-fluid py-1 px-3">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+
+
+                                </ol>
+                                <h6 class="font-weight-bolder mb-0"></h6>
+                            </nav>
+                            <div  id="navbar">
+                                <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+                                
+                                </div>
+                                    <ul class="navbar-nav  justify-content-end">
+                                
+                                
+                                        <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+                                            <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
+                                                <div class="sidenav-toggler-inner">
+                                                <i class="sidenav-toggler-line"></i>
+                                                <i class="sidenav-toggler-line"></i>
+                                                <i class="sidenav-toggler-line"></i>
+                                                </div>
+                                            </a>
+                                        </li>
+
+                                
+                                
+
+                                
+                                
+                                    </ul>
+
+                            </div>
+                    </div>
+                </nav>
+
+        </div>
     </div>
 
 
@@ -28,14 +72,31 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
     <div class="container-fluid py-4 h-100">
         <div class="row h-100 align-items-center">
             <div class="col-md-12">
+                        <div class="row">
+                                        <div class="col-md-12">
+
+                                            <div class="btn-group" style="float: right; margin-right:30px;">
+                                                <button type="button" class="btn btn-warning filter" id="clearFilterBtn" onclick="window.location.href = 'data_comercialinvoice';">Kembali</button>
+
+                                            </div>
+
+                                        </div>
+                        </div>
                 <div id="content" class="card p-0 p-md-4 wider">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="d-flex justify-content-end">
                     
+                            <a href="javascript:void(0)" onclick="tambahImportData(this)" name="tambahButton" class="btn btn-large btn-primary btn-tambah">Import Data</a>
+                        </div>
+                    </div>
+                </div>
                    
 
           
                     <!-- modal import barang  -->
                     <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-xl">
+                        <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="modalLabel">Import From Order Pembelian</h5>
@@ -44,73 +105,83 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                            <table id="table-tambah-comercial-invoice" class="table table-striped">
-                                                    <thead>
-                                                        <div class="row mb-2">
-                                                            <div class="col-md-3">
-                                                                <label>
-                                                                    <input type="checkbox" id="filterChecked"> Show only checked
-                                                                </label>
-                                                            </div>
-                                                        
+                                            <div class="table-responsive">
 
-                                                            <div class="col-md-3" id="id-search">
-                                                                <label>
-                                                                    Search:
-                                                                </label>
+                                                <table id="table-tambah-comercial-invoice" class="table table-striped">
+                                                        <thead>
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-3">
+                                                                    <label>
+                                                                        <input type="checkbox" id="filterChecked"> Show only checked
+                                                                    </label>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                                    <select id="filter-select" class="form-control select-supplier-tambah">
+                                                                                        <option value="">Supplier</option>
+                                                                                        @foreach(array_unique(array_column($Data['msg']['supplier'], 'name')) as $supplier)
+                                                                                        <option value="{{ $supplier }}">{{ $supplier }}</option>
+                                                                                        @endforeach
+                                                                                    </select>
+                                                                </div>
+    
+                                                                <div class="col-md-3" id="id-search">
+                                                                    <label>
+                                                                        Search:
+                                                                    </label>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <input type="text" id="search-box" class="form-control d-inline-block w-round" placeholder="Cari...">
+                                                                </div>
                                                             </div>
-                                                            <div class="col-md-3">
-                                                                <input type="text" id="search-box" class="form-control d-inline-block w-round" placeholder="Supplier...">
-                                                            </div>
-                                                        </div>
-                                                        <tr>
-                                                            <th scope="col">#</th>
-                                                            <th scope="col">Image</th>
-                                                            <th scope="col">Kode</th>
-                                                            <th scope="col">Nama</th>
-                                                            <th scope="col">Jml Permintaan</th>
-                                                            <th scope="col">Supplier</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @php
-                                                        $number =0;
-                                                        $number2 =0;
-                                                        @endphp
-                                                    
-
-                                                        @foreach($filtered_order as $result)
-                                                        @php
-                                                        $number2++;
-
-                                                        @endphp
-                                                        
-                                                        <form action="" class="form-horizontal" id="importBarang" method="get">
-                                                            @csrf
-                                                            
                                                             <tr>
-                                                                <td style="border: 1px solid #d7d7d7; color: black; text-align: center;">
-                                                                
-                                                            
-                                                                <input type="checkbox" class="kubik-checkbox-tambah" name="checkbox_{{ $number2 }}">
-                                                                <input type="hidden" class="form-control restok-input-tambah"  name="id_restok_{{ $number2 }}" value="{{ $result['restok_id'] }}">
-                                                                
-                                                                        
-                                                                </td>
-                                                                <td style="max-width: 200px;white-space: normal; word-wrap: break-word;"><img src="{{ $Data['msg']['directory_gambar'] }}{{ $result['image'] }}" style="width:200px; height:200px;"></td>
-                                                                <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $result['new_kode'] }}</td>
-                                                                <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $result['name'] }}</td>
-                                                                <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $result['jml_permintaan'] }}</td>
-                                                                <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $result['supplier_name'] }}</td>
-                                                                
+                                                                <th scope="col">#</th>
+                                                                <th scope="col">Image</th>
+                                                                <th scope="col">Kode</th>
+                                                                <th scope="col">Nama</th>
+                                                                <th scope="col">Jml Permintaan</th>
+                                                                <th scope="col">Supplier</th>
                                                             </tr>
-                                                            
-                                                        </form>
+                                                        </thead>
+                                                        <tbody>
+                                                            @php
+                                                            $number =0;
+                                                            $number2 =0;
+                                                            @endphp
                                                         
-                                                    @endforeach
-                                                    
-                                                    </tbody>
-                                            </table>
+    
+                                                            @foreach($order as $result)
+                                                            @php
+                                                            $number2++;
+    
+                                                            @endphp
+                                                            
+                                                            <form action="" class="form-horizontal" id="importBarang" method="get">
+                                                                @csrf
+                                                                
+                                                                <tr>
+                                                                    <td style="border: 1px solid #d7d7d7; color: black; text-align: center;">
+                                                                    
+                                                                
+                                                                    <input type="checkbox" class="kubik-checkbox-tambah" name="checkbox_{{ $number2 }}">
+                                                                    <input type="hidden" class="form-control restok-input-tambah"  name="id_restok_{{ $number2 }}" value="{{ $result['restok_id'] }}">
+                                                                    
+                                                                            
+                                                                    </td>
+                                                                    <td style="max-width: 200px;white-space: normal; word-wrap: break-word;"><img src="{{ $Data['msg']['directory_gambar'] }}{{ $result['image'] }}" style="width:200px; height:200px;"></td>
+                                                                    <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $result['new_kode'] }}</td>
+                                                                    <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $result['name'] }}</td>
+                                                                    <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $result['jml_permintaan'] }}</td>
+                                                                    <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $result['supplier_name'] }}</td>
+                                                                    
+                                                                </tr>
+                                                                
+                                                            </form>
+                                                            
+                                                        @endforeach
+                                                        
+                                                        </tbody>
+                                                </table>
+                                            </div>
                                             <div style="text-align:right; margin-top: 30px;">
                                                     
                                                     <button type="button" id="sendImportBarang" class="btn btn-primary" style="margin-left: auto;">Simpan</button>
@@ -164,30 +235,31 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                                                         </div>
                                                                     </div>
                                                                     <div class="row">
-                                                                        <div class="col-md-2">
-                                                                            <div style="position: relative; width: 100%; margin-top:10px;">
-                                                                                <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Database <span style="color: red;">(Wajib Diisi)</span></label>
-                                                                                
-                                                                                <select style="border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control database-tambah" id="database_tambah_id" name="database_tambah_name" required>
+                                                                        <div class="col-md-2 col-12"> <!-- col-12 makes it 100% width on smaller screens -->
+                                                                            <div class="form-group" style="margin-top:10px; width: 100%;">
+                                                                                <label class="control-label" style="font-size: 15px; width: auto;" for="database_tambah_id">
+                                                                                    Database <span style="color: red;">(Wajib Diisi)</span>
+                                                                                </label>
+                                                                                <select style="width: 100%; border: 1px solid #696868; color: black; padding: 10px;" class="form-control database-tambah" id="database_tambah_id" name="database_tambah_name" required>
                                                                                     <option value="">Database</option>
                                                                                     <option value="PT">PT</option>
                                                                                     <option value="UD">UD</option>
                                                                                 </select>
-
                                                                             </div>
                                                                         </div>
-                                                                        <div class="col-md-10">
+                                                                        <div class="col-md-10 col-12"> <!-- col-12 makes it 100% width on smaller screens -->
                                                                             <div class="form-group" style="margin-top:10px;">
-                                                                                <label for="startDateTglRequest">Tanggal Request <span style="color: red;">(Wajib Diisi)</span></label>
-                                                                                <input type="text" style="height:55px;" class="form-control custom-border" id="tgl_request_tambah" name="tgl_request" placeholder= "Pilih Tanggal" required >
+                                                                                <label for="tgl_request_tambah">Tanggal Request <span style="color: red;">(Wajib Diisi)</span></label>
+                                                                                <input type="text" class="form-control custom-border" style="width: 100%; height: 40px;" id="tgl_request_tambah" name="tgl_request" placeholder="Pilih Tanggal" required>
                                                                             </div>
                                                                         </div>
                                                                     </div>
+
                                                             
                                                                     <div class="form-group" style="margin-bottom: 20px;margin-top: 10px;">
                                                                             <label class="col-lg-3 control-label" style="font-size: 15px;width: 100%">Supplier <span style="color: red;">(Wajib Diisi)</span></label>
 
-                                                                            <select class="form-control supplier-supplier" id="product-supplier-edit-filter" name="tambah_supplier">
+                                                                            <select class="form-control supplier-supplier" id="supplier-select2" name="tambah_supplier">
                                                                             
                                                                             <option value="">Supplier</option>
                                                                                 @php
@@ -208,7 +280,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                                                                     }
                                                                                 @endphp
                                                                                 @foreach($Data['msg']['supplier'] as $index => $supplier)
-                                                                                <option value="{{ $supplier['id'] }}" data-company="{{ $supplier['company'] }}" {{ $supplier['name'] == $filtered_order[0]['supplier_name']  ? 'selected' : '' }}>
+                                                                                <option value="{{ $supplier['id'] }}" data-company="{{ $supplier['company'] }}" >
                                                                                 {{ $supplier['name'] }}
                                                                                 @endforeach
                                                                             
@@ -219,26 +291,31 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                                                         <div class="col-md-4">
                                                                                 <div style="position: relative; width: 100%;">
                                                                                     <label class="col-lg-3 control-label" style="font-size: 15px;width: 100%;width: 100%" for="">Nama Perusahaan <span style="color: red;">(Wajib Diisi) </span></label>
-                                                                                    <input type="text" class="form-control" id="company-name" name="company_name" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;" value="{{ $filtered_order[0]['supplier_company'] }}">
+                                                                                    <input type="hidden" class="form-control" id="company-name" name="company_name"  value="">
+                                                                                    <label class="col-lg-3 control-label" id="label_company"style="font-size: 15px;width: 100%;" for=""></label>
+                                                                                    
                                                                                 </div>
                                                                         </div>
                                                                         <div class="col-md-4">
                                                                             <div style="position: relative; width: 100%;">
                                                                                 <label class="col-lg-3 control-label" style="font-size: 15px;width: 100%" for="">Alamat Perusahaan</label>
-                                                                                <textarea type="text" class="form-control" id="address_company" name="address_company" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;" >{{ $filtered_order[0]['supplier_address'] }}</textarea>
+                                                                                <textarea type="text" class="form-control" id="address_company" name="address_company" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;display:none;" ></textarea>
+                                                                                <label class="col-lg-3 control-label" id="label_address"style="font-size: 15px;width: 100%;" for=""></label>
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-md-4">
                                                                             <div style="position: relative; width: 100%;">
                                                                                 <label class="col-lg-3 control-label" style="font-size: 15px;width: 100%" for="">Kota Perusahaan</label>
-                                                                                <input type="text" class="form-control" name="city_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;" value="{{ $filtered_order[0]['supplier_city'] }}">
+                                                                                <input type="hidden" class="form-control" name="city_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;" value="">
+                                                                                <label class="col-lg-3 control-label" id="label_city"style="font-size: 15px;width: 100%;" for=""></label>
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                             
                                                                     <div style="position: relative; width: 100%;">
                                                                         <label class="col-lg-3 control-label" style="font-size: 15px;" for="">No. Telp</label>
-                                                                        <input type="number" class="form-control" name="telp_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;width: 32%" value="{{ $filtered_order[0]['supplier_telp'] }}" >
+                                                                        <input type="hidden" class="form-control" name="telp_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;width: 32%" value="" >
+                                                                        <label class="col-lg-3 control-label" id="label_handphone"style="font-size: 15px;width: 100%;" for=""></label>
                                                                     </div>
 
                                                 </form>
@@ -265,11 +342,11 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                                                     <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
                                                                         
                                                                         <div class="row">
-                                                                            <div style="padding-top: 15px;" class="col-md-1">
+                                                                            <div style="padding-top: 15px;" class="col-lg-1">
                                                                                 <label for="kodebaranglabel">Incoterms</label>
                                                                     
                                                                             </div>
-                                                                            <div class="col-md-11" style="padding-right: 600px;">
+                                                                            <div class="col-lg-6">
                                                                                 <select style="border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control incoterms-tambah" id="incoterms-tambah-id" name="incoterms_tambah">
                                                                                     <option value="">Select Incoterms</option>
                                                                                         <option value="FOB">FOB </option>
@@ -284,11 +361,11 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                                                     <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
                                                                         
                                                                         <div class="row">
-                                                                            <div style="padding-top: 10px;" class="col-md-1">
+                                                                            <div style="padding-top: 10px;" class="col-lg-1">
                                                                                 <label for="kodebaranglabel">Location</label>
                                                                     
                                                                             </div>
-                                                                            <div class="col-md-11" style="padding-right: 600px;">
+                                                                            <div class="col-lg-6">
                                                                                 <input type="text" class="form-control custom-border" style="border: 1px solid #ced4da;padding-left:10px;" id="location_id_tab" name="location_name_tab" placeholder="Location">
                                                                             </div>
                                                                         </div>
@@ -303,21 +380,17 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                                                     <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
                                                                         
                                                                         <div class="row">
-                                                                            <div style="padding-top: 15px;" class="col-md-1">
-                                                                                <label for="kodebaranglabel">Bank Supplier</label>
+                                                                            <div style="padding-top: 15px;" class="col-lg-1">
+                                                                                <label for="banksupplierlabel">Bank Supplier</label>
                                                                     
                                                                             </div>
-                                                                            <div class="col-md-11" style="padding-right: 600px;">
-                                                                                <select style="border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control banksupplier-tambah" id="banksupplier-tambah-id" name="banksupplier_edit">
-                                                                                        <option value="0">Pilih Bank Supplier</option>
-                                                                                    
-                                                                                        
-                                                                                        <option value=""></option>
-                                                                                        
-
-                                                                                    
-
+                                                                            <div class="col-lg-6">
+                                                                                <select style="border: 1px solid #696868; color: black; padding: 10px;" 
+                                                                                        class="select select2 select-search form-control banksupplier-tambah" 
+                                                                                        id="banksupplier-tambah-id" name="banksupplier_edit">
+                                                                                    <option value="0">Pilih Bank Supplier</option>
                                                                                 </select>
+
                                                                             </div>
                                                                         </div>
                                                                         
@@ -326,11 +399,11 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                                                     <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
                                                                         
                                                                         <div class="row">
-                                                                            <div style="padding-top: 15px;" class="col-md-1">
+                                                                            <div style="padding-top: 15px;" class="col-lg-1">
                                                                                 <label for="kodebaranglabel">Currency</label>
                                                                     
                                                                             </div>
-                                                                            <div class="col-md-11" style="padding-right: 600px;">
+                                                                            <div class="col-lg-6">
                                                                                 <select style="border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control currency-tambah" id="currency-tambah-id" name="currency_tambah">
                                                                                         <option value="0">Pilih Currency</option>
                                                                                         
@@ -348,11 +421,11 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                                                     <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
                                                                         
                                                                         <div class="row">
-                                                                            <div style="padding-top: 10px;" class="col-md-1">
+                                                                            <div style="padding-top: 10px;" class="col-lg-1">
                                                                                 <label for="kodebaranglabel">Bank Name</label>
                                                                     
                                                                             </div>
-                                                                            <div class="col-md-11" style="padding-right: 600px;">
+                                                                            <div class="col-lg-6">
 
 
                                                                                 <input type="text" class="form-control custom-border" id="bank_name_id_tab" name="bank_name_name_tab" style="border: 1px solid #ced4da; width: 100%; padding-left:10px;" placeholder="Bank Name">
@@ -365,11 +438,11 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                                                     <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
                                                                         
                                                                         <div class="row">
-                                                                            <div style="padding-top: 10px;" class="col-md-1">
+                                                                            <div style="padding-top: 10px;" class="col-lg-1">
                                                                                 <label for="kodebaranglabel">Bank Address</label>
                                                                     
                                                                             </div>
-                                                                            <div class="col-md-11" style="padding-right: 600px;">
+                                                                            <div class="col-lg-6">
 
 
                                                                                 <input type="text" class="form-control custom-border" style="border: 1px solid #ced4da; width: 100%; padding-left:10px;" id="bankAddress_id_tab_tambah" name="bankAddress_name_tab_tambah" placeholder="Bank Address">
@@ -382,11 +455,11 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                                                     <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
                                                                         
                                                                         <div class="row">
-                                                                            <div style="padding-top: 10px;" class="col-md-1">
+                                                                            <div style="padding-top: 10px;" class="col-lg-1">
                                                                                 <label for="kodebaranglabel">Swift Code</label>
                                                                     
                                                                             </div>
-                                                                            <div class="col-md-11" style="padding-right: 600px;">
+                                                                            <div class="col-lg-6">
 
 
                                                                                 <input type="text" class="form-control custom-border" style="border: 1px solid #ced4da; width: 100%; padding-left:10px;" id="swiftCode_id_tab_tambah" name="swiftCode_name_tab_tambah" placeholder="Swift Code">
@@ -399,11 +472,11 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                                                     <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
                                                                         
                                                                         <div class="row">
-                                                                            <div style="padding-top: 10px;" class="col-md-1">
+                                                                            <div style="padding-top: 10px;" class="col-lg-1">
                                                                                 <label for="kodebaranglabel">Account No</label>
                                                                     
                                                                             </div>
-                                                                            <div class="col-md-11" style="padding-right: 600px;">
+                                                                            <div class="col-lg-6">
 
 
                                                                                 <input type="text" class="form-control custom-border" id="accountNo_id_tab_tambah" name="accountNo_name_tab_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left:10px;" placeholder="Account No">
@@ -416,11 +489,11 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                                                     <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
                                                                         
                                                                         <div class="row">
-                                                                            <div style="padding-top: 10px;" class="col-md-1">
+                                                                            <div style="padding-top: 10px;" class="col-lg-1">
                                                                                 <label for="kodebaranglabel">Beneficiary Name</label>
                                                                     
                                                                             </div>
-                                                                            <div class="col-md-11" style="padding-right: 600px;">
+                                                                            <div class="col-lg-6">
 
 
                                                                                 <input type="text" class="form-control custom-border" id="beneficiaryName_id_tab_tambah" name="beneficiaryName_name_tab_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left:10px;"placeholder="Beneficiary Name">
@@ -433,11 +506,11 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                                                     <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
                                                                         
                                                                         <div class="row">
-                                                                            <div style="padding-top: 10px;" class="col-md-1">
+                                                                            <div style="padding-top: 10px;" class="col-lg-1">
                                                                                 <label for="kodebaranglabel" style="width: 100%;">Beneficiary Address</label>
                                                                     
                                                                             </div>
-                                                                            <div class="col-md-11" style="padding-right: 600px;">
+                                                                            <div class="col-lg-6" >
 
 
                                                                                 <input type="text" class="form-control custom-border" id="beneficiaryAddress_id_tab_tambah" name="beneficiaryAddress_name_tab_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left:10px;" placeholder="Beneficiary Address">
@@ -474,12 +547,12 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="../assets/js/commercial-invoice/select_choices.js"></script> 
-<script src="../assets/js/commercial-invoice/import_barang.js"></script> 
+
 <!-- DataTables JavaScript -->
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <!-- DataTables Bootstrap 4 Integration -->
 
-
+<script src="../assets/js/commercial-invoice/commercial_invoice.js"></script> 
 <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
@@ -489,17 +562,27 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
 
 <script>
     $(document).ready(function() {
-        console.log('masuk')
-        // Update company name on supplier change
-        $('#product-supplier-edit-filter').change(function() {
-            var selectedOption = $(this).find('option:selected');
-            console.log('selectedOption',selectedOption)
-            var companyName = selectedOption.data('company');
-            // $('#company-name').val(companyName);
+        
+        $('#supplier-select2').select2({
+                placeholder: "Pilih Supplier", // Optional placeholder
+                allowClear: true, // Optional, to allow clearing the selection
+                width: '100%',
+                height: '100%' 
         });
+       // Update company name on supplier change
+        let ajaxTimeout;
+        var $database = $('.database-tambah')
+        $database.select2({
+            placeholder: "Pilih Database"
+        })
+        var $incoterms = $('.incoterms-tambah')
+            $incoterms.select2({
+                placeholder: "Select Incoterms",
+        })
 
-        // Trigger change event to set initial value
-        $('#product-supplier-edit-filter').trigger('change');
+      
+
+
     });
 </script>
 <script>
@@ -525,11 +608,15 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
     var without_tax_arr=[];
     var tot_price_without_tax_usd =[];
     var tot_price_without_tax_usd_import =[];
+    function tambahImportData(element) {
+        event.preventDefault();
+        
+        
+        $('#myModal').modal('show'); // Tampilkan modal
+     
+    }
     $(document).ready(function() {
-        // $('#banksupplier-tambah-id').select2({
-        //         placeholder: 'Pilih Bank Supplier',
-        //         allowClear: true
-        //     });
+     
         $('#sendImportBarang').click(function(event) {
             
             event.preventDefault();
@@ -548,109 +635,91 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                     formData.valuerestok.push(1); 
                 }
             });
-                    console.log('formdata',formData)
+                    
             $.ajax({
                 type: 'GET',
                 url: '{{ route('admin.pembelian_importbarang_comercial_invoice') }}',
                 data: formData,
                 success: function(response) {
-                  
-                    var $select = $('#banksupplier-tambah-id').get(0); // Get the raw DOM element
-                    var choices = new Choices($select, {
-                        removeItemButton: true, // Optional: Adds a button to remove items
-                        searchEnabled: true // Optional: Enables search functionality
-                    });
-                    
-                    // Clear all existing options
-                    choices.clearStore();
-                    
-                    // Add default option
-                    choices.setChoices([{
-                        value: '0',
-                        label: 'Pilih Bank Supplier',
-                        selected: true,
-                        
-                    }], 'value', 'label', true);
-                    
-                    // Add new options
-                    var choicesArray = response.supplierbank.map(function(item) {
-                        return {
-                            value: item.id,
-                            label: item.bank_name
-                        };
-                    });
-                    
-                    choices.setChoices(choicesArray, 'value', 'label');
-                    $select.addEventListener('change', function() {
-                        var selectedValue = choices.getValue(true); // Get the selected value after change
-                        console.log('Selected value:', selectedValue);
+                    console.log('response',response)
+                    // console.log('response',response.orderpembelian[0].id_supplier)
+                    $('#supplier-select2')
+    .val(response.orderpembelian[0].id_supplier)
+    .trigger('change')
+    .change(function() {
+        // clearTimeout(ajaxTimeout); // Cancel any previous timeout
 
-                        // Find the selected object from the response array
-                        var selectedSupplier = response.supplierbank.find(function(item) {
-                            return item.id == selectedValue;
+        var selectedOption = $(this).find('option:selected');
+        var selectedId = selectedOption.val();
+
+        // Delay AJAX request by 300 ms to avoid unnecessary calls
+        // ajaxTimeout = setTimeout(function() {
+            $.ajax({
+                url: '{{ route('admin.pembelian_comercial_invoice') }}',
+                data: {
+                    id: selectedId,
+                    menu: 'select_supplier'
+                },
+                success: function(response) {
+                    // Helper function to return a safe default string
+                    function getValidString(value, defaultValue = 'N/A') {
+                        return (typeof value === 'string' && value.trim() !== '') ? value : defaultValue;
+                    }
+
+                    // Update form fields with fallback values
+                    $('[name="company_name"]').val(getValidString(response.msg.new_supplier.company));
+                    $('[name="address_company"]').val(getValidString(response.msg.new_supplier.address));
+                    $('[name="city_tambah"]').val(getValidString(response.msg.new_supplier.city));
+                    $('[name="telp_tambah"]').val(getValidString(response.msg.new_supplier.telp));
+
+                    // Update labels with response data
+                    $('#label_company').text(response.msg.new_supplier.company);
+                    $('#label_address').text(response.msg.new_supplier.address);
+                    $('#label_city').text(response.msg.new_supplier.city);
+                    $('#label_handphone').text(response.msg.new_supplier.telp);
+
+                    // Update bank supplier dropdown
+                    var $bankSelect = $('#banksupplier-tambah-id');
+                    $bankSelect.empty().append(new Option('Pilih Bank Supplier', '0', true, true));
+                    
+                    response.msg.bank_supplier.forEach(function(item) {
+                        $bankSelect.append(new Option(item.bank_name, item.id));
+                    });
+                    
+                    // Trigger change to update the select2 display
+                    $bankSelect.trigger('change');
+                    
+                    // Bank selection change handler
+                    $bankSelect.on('change', function() {
+                        var selectedBankId = $(this).val();
+                        var selectedSupplier = response.msg.bank_supplier.find(function(item) {
+                            return item.id == selectedBankId;
                         });
 
-                        // Log the selected object or use it in your code
                         if (selectedSupplier) {
-                            console.log('Selected supplier details:', selectedSupplier);
-                            $('#beneficiaryAddress_id_tab_tambah').val(selectedSupplier.beneficiary_address)
-                            $('#beneficiaryName_id_tab_tambah').val(selectedSupplier.beneficiary_name)
-                            $('#accountNo_id_tab_tambah').val(selectedSupplier.account_number)
-                            $('#swiftCode_id_tab_tambah').val(selectedSupplier.swiftcode)
-                            $('#bankAddress_id_tab_tambah').val(selectedSupplier.bank_address)
-                            $('#bank_name_id_tab').val(selectedSupplier.bank_name)
+                            $('#beneficiaryAddress_id_tab_tambah').val(selectedSupplier.beneficiary_address);
+                            $('#beneficiaryName_id_tab_tambah').val(selectedSupplier.beneficiary_name);
+                            $('#accountNo_id_tab_tambah').val(selectedSupplier.account_number);
+                            $('#swiftCode_id_tab_tambah').val(selectedSupplier.swiftcode);
+                            $('#bankAddress_id_tab_tambah').val(selectedSupplier.bank_address);
+                            $('#bank_name_id_tab').val(selectedSupplier.bank_name);
                             $('#currency-tambah-id').val(selectedSupplier.id_matauang).trigger('change');
-                            $('.currency-tambah').each(function() {
-                                const element = this;
-                                if (element.choices) { 
-                                    
-                                    element.choices.destroy(); // Hancurkan instance Choices.js yang ada
-                                }
-                            });
-
-                            // Inisialisasi ulang Choices.js
-                            const currencySelect = new Choices('#currency-tambah-id', {
-                                searchEnabled: true,
-                                itemSelectText: '', // Hilangkan teks "Press to select"
-                            });
-
-                            // Setelah inisialisasi ulang, set nilai dropdown ke selectedSupplier.id_matauang
-                            $('#currency-tambah-id').val(selectedSupplier.id_matauang).trigger('change');
-
-                            // Perbarui instance Choices.js dengan nilai baru
-                            currencySelect.setChoiceByValue(selectedSupplier.id_matauang);
                         } else {
-       
                             console.log('No matching supplier found.');
-                            $('#beneficiaryAddress_id_tab_tambah').val('')
-                            $('#beneficiaryName_id_tab_tambah').val('')
-                            $('#accountNo_id_tab_tambah').val('')
-                            $('#swiftCode_id_tab_tambah').val('')
-                            $('#bankAddress_id_tab_tambah').val('')
-                            $('#bank_name_id_tab').val('')
+                            $('#beneficiaryAddress_id_tab_tambah').val('');
+                            $('#beneficiaryName_id_tab_tambah').val('');
+                            $('#accountNo_id_tab_tambah').val('');
+                            $('#swiftCode_id_tab_tambah').val('');
+                            $('#bankAddress_id_tab_tambah').val('');
+                            $('#bank_name_id_tab').val('');
                             $('#currency-tambah-id').val('0').trigger('change');
-                            $('.currency-tambah').each(function() {
-                                const element = this;
-                                if (element.choices) {
-                                    console.log('destroy') 
-                                    element.choices.destroy(); // Hancurkan instance Choices.js yang ada
-                                }
-                            });
-
-                            // Inisialisasi ulang Choices.js
-                            const currencySelect = new Choices('#currency-tambah-id', {
-                                searchEnabled: true,
-                                itemSelectText: '', // Hilangkan teks "Press to select"
-                            });
-
-                            // Setelah inisialisasi ulang, set nilai dropdown ke selectedSupplier.id_matauang
-                            $('#currency-tambah-id').val('0').trigger('change');
-
-                            // Perbarui instance Choices.js dengan nilai baru
-                            currencySelect.setChoiceByValue('0');
-
                         }
                     });
+                }
+            });
+        // }, 300); // Delay in milliseconds
+    });
+
                     var contentContainer = $('#content-container2');
                     contentContainer.empty();
                     var contentContainer2 = $('#content-container3');
@@ -665,15 +734,56 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                     var totalPriceUsd=0;
                     var qty_input7  =0;
                     var tdElement =0;
-                    response.orderpembelian.forEach(function(order,index) {
+                    var hs_codehistory =[];
+                    var id_barang_hs_codehistory =[];
+                    var number_hs_codehistory=[]
+                    var date_hs_code_history=[]
+                    response.hscodehistory.forEach(function(hscodehistory,key1){
 
-                        
-                
+                    
+                                // Assuming the response date is in a parseable format
+                                var dateString = hscodehistory.commercialinvoice.date;
+                                var date = new Date(dateString);
+    
+                                // Format the date to "DD/MM/YYYY"
+                                var day = date.getDate().toString().padStart(2, '0'); // Day with leading zero
+                                var monthsIndo = [
+                                    "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+                                    "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+                                ];
+                                // var month = (date.getMonth() + 1).toString().padStart(2, '0'); // Month with leading zero
+                                var month = monthsIndo[date.getMonth()]; // Month in Indonesian
+                                var year = date.getFullYear();
+    
+                                var DateFormat = `${day} ${month} ${year}`;
+                                
+                                var id_barang_restok = hscodehistory.restok.id_barang;
+                                id_barang_hs_codehistory.push(id_barang_restok)
+                                number_hs_codehistory.push(hscodehistory.hs_code)
+                                date_hs_code_history.push(DateFormat)
+                            
+                                response.matauang.forEach(function(matauang,key) {
+                                            if(matauang.id==response.hscodehistory[key1].commercialinvoice.id_matauang){
+                                                var merge = matauang.simbol +''+hscodehistory.unit_price_without_tax+ ' - '+ DateFormat
+                                                hs_codehistory.push(merge)
+                                            }
+                                            else if(response.hscodehistory[key1].commercialinvoice.id_matauang==0){
+                                                var merge2 = ''+hscodehistory.unit_price_without_tax+ ' - '+ DateFormat
+                                                hs_codehistory.push(merge2)
+                                            }
+                    
+                                });
+                    })
+                    // console.log('item',date_hs_code_history)
+                    
+                    response.orderpembelian.forEach(function(order,index) {
+                           
+                    
 
                             
                                 var productName = order.product.name;
                                 var gambarName ='https://maxipro.id/images/barang/'+order.product.image;
-                                console.log(gambarName)
+                                // console.log(gambarName)
                                 
                                 var newTable1 = $('<table>');
                                 var inputDetailElement = $('<input />').attr({
@@ -804,13 +914,23 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                 var selectHsCode = $('<select style="width:100%;border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control hscode-import">' +
                                                 '<option value="">Pilih Hs Code</option>' +            
                                                 '</select>'); // Membuat elemen select
+                                id_barang_hs_codehistory.forEach(function(item, urutan) {
+                                    if (item === order.id_barang) {
+                                        // Create new option for each matching Hs Code
+                                        var optionElement = $('<option>').attr({
+                                            'value': number_hs_codehistory[urutan] // Set value to the item ID or another identifying attribute
+                                        }).text(number_hs_codehistory[urutan]+' - '+date_hs_code_history[urutan]); // Set the display text from hs_codehistory array
+                                        selectHsCode.append(optionElement);
+                                    }
+                                });
                                     newTdHsCode.append(selectHsCode);
+                                    
                                 var newTdHsCode2 = $('<td style="border: 1px solid #d7d7d7;">');
                             
                                 var inputHsCode = $('<input />').attr({
-                                    'id': 'hscode-import-edit',
+                                    'id': 'hscode-import-edit'+index,
                                     'name': 'hscode-input_' + (index),  
-                                    'class': 'form-control hscode_import',    
+                                    'class': 'form-control hscode_input',    
                                     'placeholder': '',        
                                     'type': 'text',
                                     // 'value': newTdBrand,
@@ -974,7 +1094,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                     'class': 'form-control height_p_import',  
                                     'placeholder': '',        
                                     'type': 'text',
-                                    'value': order.product.height_p            
+                                    'value': order.product.height_p * 100        
                                 }).css({
                                     'border': '1px solid #696868',
                                     'color' : 'black',
@@ -998,12 +1118,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                     'padding' : '10px',
                                     'width': '100%'           // Sesuaikan dengan kebutuhan Anda
                                 });
-                                // .on('change', updateQuantity2); // Attach change event
-
-                                // Initialize qty_qty2 with current values
-                                // console.log('inputElement7',parseFloat(inputElement7.val()))
-                                // qty_qty2[index] = parseFloat(inputElement7.val()) || 0;
-                                // updateQuantity2();
+                             
                                 newTd7Tr3Table2.append(inputElement7);
                             
                             
@@ -1118,8 +1233,45 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                     'padding' : '10px',
                                     'width': '100%'           
                                 });
-                                newTd11Tr3Table2.append(inputElement11);
+                                // Create the <select> element with specified attributes and styles
+                                var selectElement = $('<select>').attr({
+                                    'id': 'select-more-unit-price-without-tax' + index,
+                                    'name': 'select_more_unit_price_without_tax'
+                                }).css({
+                                    'border': '1px solid #696868',
+                                    'color': 'black',
+                                    'padding': '10px',
+                                    'width': '100%' // Full width to match the input
+                                });
+
+                                // Create the default "Show More" option and append it to the <select> only once
+                                var defaultOption = $('<option>').attr({
+                                    'value': '',
+                                    
+                                }).html('&#xf078; Show More');
+                                selectElement.append(defaultOption);
                                 
+                                // Loop through id_barang_hs_codehistory and add options if the value matches order.id_barang
+                                id_barang_hs_codehistory.forEach(function(item, urutan) {
+                                    
+                                    if (item === order.id_barang) {
+                                        // Create a new <option> element with the necessary attributes and append it
+                                        var optionElement = $('<option>').attr({
+                                            'value': item // Set the value to the item's ID
+                                        }).text(hs_codehistory[urutan]); // Display the date or other identifier in the option text
+                                        selectElement.append(optionElement);
+                                    }
+                                });
+
+                                // Append the fully populated <select> element to your desired parent element
+                                newTd11Tr3Table2.append(selectElement);
+
+
+                                
+
+                                newTd11Tr3Table2.append(inputElement11);
+                                newTd11Tr3Table2.append(selectElement);
+
                                 var newTd12Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
                                 var inputElement12 = $('<input />').attr({
                                     'id': 'unit_price_usd_import'+index,          
@@ -1329,7 +1481,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                             qty_Value : $('#qty_import' + currentIndex).val(),
                                             
                                         };
-                                        console.log('formData',formData);
+                                        // console.log('formData',formData);
                                         $.ajax({
                                             url: '', // Ganti dengan URL tujuan Anda
                                             type: 'GET',
@@ -1353,19 +1505,19 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
 
                                 contentContainer.append(newTable2, newTrLast2)
                         
-                            var selectElement = $('.hscode-import'); // Pilih elemen select
-                            const choices = new Choices(selectElement[0], {
-                                searchEnabled: true,
-                                itemSelectText: '',
-                            });
+                                // const choices = new Choices(selectHsCode[0], {
+                                //     searchEnabled: true,
+                                //     itemSelectText: ''
+                                // });
 
-                            selectElement.on('change', function(event) {
-                                const selectedValue = event.target.value;
-                                const inputElement = document.getElementById('hscode-import-edit'); // Ganti dengan ID yang sesuai
-                                if (inputElement) {
-                                    inputElement.value = selectedValue;
-                                }
-                            });
+                                // Event listener to update input based on select choice
+                                selectHsCode.on('change', function(event) {
+                                    var selectedValue = event.target.value;
+                                    var inputElement = $('#hscode-import-edit' + index); // Use unique ID for each input
+                                    if (inputElement.length) {
+                                        inputElement.val(selectedValue); // Update the input with the selected value
+                                    }
+                                });
                         
                     });
                     
@@ -1559,7 +1711,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                             var Qty_Qty2 = qty_qty2.reduce(function(acc, curr) {
                                                 return acc + curr;
                             }, 0);
-                            console.log('qty_qty2',Qty_Qty2)
+                            // console.log('qty_qty2',Qty_Qty2)
                             var element = document.getElementById('qty-td-tambah');
                             element.textContent = Qty_Qty2
                         }
@@ -1574,7 +1726,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                 return acc + curr;
                             }, 0);
                             var tot_qty = parseFloat(totalCBM2);
-                            console.log('calculateTotalCBM',tot_qty)
+                            // console.log('calculateTotalCBM',tot_qty)
                             $('#total_cbm_tambah').text(tot_qty.toFixed(2));    
 
                         }
@@ -1593,7 +1745,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
       const invoiceInput = document.querySelector('input[name="invoice_no_tambah"]');
       const contractInput = document.querySelector('input[name="contract_no_tambah"]');
       const packingInput = document.querySelector('input[name="packing_no_tambah"]');
-        console.log('invoiceInput',invoiceInput)
+        // console.log('invoiceInput',invoiceInput)
       if (this.checked) {
         
         modeadminInput.value = 1;
@@ -1639,38 +1791,43 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
             };
             
             // import
+             $('.hscode_input').each(function() {
+                
+                var id = $(this).attr('name');
+                formData[id] = $(this).val();
+            });
              $('.restok_import_tambah').each(function() {
-                console.log('masuk restok import')
+                // console.log('masuk restok import')
                 var id = $(this).attr('name');
                 formData[id] = $(this).val();
             });
             $('.hscode_import').each(function() {
-                console.log('masuk hscode_import')
+                // console.log('masuk hscode_import')
                 var id = $(this).attr('name');
                 formData[id] = $(this).val();
             });
             $('.model_import').each(function() {
-                console.log('masuk brand_import')
+                // console.log('masuk brand_import')
                 var id = $(this).attr('name');
                 formData[id] = $(this).val();
             });
 
             
             $('.brand_import').each(function() {
-                console.log('masuk brand_import')
+                // console.log('masuk brand_import')
                 var id = $(this).attr('name');
                 formData[id] = $(this).val();
             });
 
             $('.chinese_import').each(function() {
-                console.log('masuk chinese_import')
+                // console.log('masuk chinese_import')
                 var id = $(this).attr('name');
                 formData[id] = $(this).val();
             });
             
 
             $('.english_import').each(function() {
-                console.log('masuk english_import')
+                // console.log('masuk english_import')
                 var id = $(this).attr('name');
                 formData[id] = $(this).val();
             });
@@ -1735,7 +1892,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                 var id = $(this).attr('name');
                 formData[id] = $(this).val();
             });
-            console.log(formData);
+            // console.log(formData);
             
             if(!$('#database_tambah_id').val().trim()) {
                 Swal.fire({
@@ -1759,13 +1916,13 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                 });
             }
             else{
-
+                // console.log('formdData',formData)
                 $.ajax({
                     url: '{{ route('admin.pembelian_tambah_comercial_invoice') }}', // Ganti dengan route yang sesuai
                     method: 'GET', // Ubah menjadi POST jika endpoint kamu mengharuskannya
                     data: formData,
                     success: function(response) {
-                        console.log(response)
+                        // console.log(response)
                         if (Object.keys(response).length === 0) {
                             Swal.fire({
                                 icon: 'error',

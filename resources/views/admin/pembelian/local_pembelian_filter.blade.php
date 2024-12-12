@@ -20,7 +20,7 @@ LOCAL   | PT. Maxipro Group Indonesia
 <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg wider">
     
     <div class="container-fluid">
-        <h4 id="judulLcl" style="margin-top: 40px;margin-bottom: 40px;"><i class="fas fa-database"></i> &nbsp LOCAL</h4>
+        <h4 id="judulLocal" style="margin-top: 40px;margin-bottom: 40px;"><i class="fas fa-database"></i> &nbsp LOCAL</h4>
         <small class="display-block" style="position: absolute; top: 70px; left: 50px;" id="subjudulLcl">LOCAL {{ $username['data']['teknisi']['name'] }}</small>
         
     </div>
@@ -35,7 +35,7 @@ LOCAL   | PT. Maxipro Group Indonesia
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-12">
-                               <!-- <a href="javascript:void(0)" id="tambah_lcl" onclick="tambahRestok()" name="tambahButton" class="btn btn-large btn-primary btn-tambah">Add LCL</a> -->
+                               <a href="javascript:void(0)" id="tambah_lcl" onclick="tambahRestok()" name="tambahButton" class="btn btn-large btn-primary btn-tambah">Add LOCAL</a>
                                <input type="hidden" id="lclValue" value="0">
                                 <div class="d-flex justify-content-end">
                                    
@@ -1156,37 +1156,6 @@ LOCAL   | PT. Maxipro Group Indonesia
                                     </td>
                                     <td style="border: 1px solid #d7d7d7;">
                                         
-                                        <button type="button" 
-                                            
-                                                data-id="{{ $data['id'] }}" 
-                                                name="editButton" 
-                                                class="btn btn-large btn-info btn-edit" 
-                                                style="width: 35px; height: 38px; padding: 9px 10px;" 
-                                                title="Edit">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        
-                                        
-                                        <button type="button" 
-                                                onclick="rejectOrderPembelian(this)" 
-                                                data-id="{{ $data['id'] }}" 
-                                                name="{{ $data['invoice'] }}" 
-                                                class="btn btn-large btn-info btn-danger" 
-                                                style="width: 35px; height: 38px; padding: 9px 10px;" 
-                                                title="Reject Order">
-                                            <i class="fas fa-times"></i>
-                                        </button>
-
-                                        <button type="button" 
-                                                onclick="deleteOrderPembelian(this)" 
-                                                data-id="{{ $data['id'] }}" 
-                                                name="{{ $data['invoice'] }}" 
-                                                class="btn btn-large btn-info btn-danger" 
-                                                style="width: 35px; height: 38px; padding: 9px 10px;" 
-                                                title="Delete">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-
                                     </td>
                                 </tr>
 
@@ -1254,7 +1223,7 @@ LOCAL   | PT. Maxipro Group Indonesia
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <!-- DataTables Bootstrap 4 Integration -->
 <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+
 <!-- Choices.js JS -->
 <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
@@ -1367,15 +1336,7 @@ LOCAL   | PT. Maxipro Group Indonesia
                                 onclick="editInvoice(this)">
                             <i class="fas fa-edit"></i>
                         </button>
-                        <button type="button" 
-                                onclick="rejectOrderPembelian(this)" 
-                                data-id="${data.id}" 
-                                name="${data.invoice}" 
-                                class="btn btn-large btn-info btn-danger" 
-                                style="width: 35px; height: 38px; padding: 9px 10px;" 
-                                title="Reject Order">
-                            <i class="fas fa-times"></i>
-                        </button>
+                   
                         <button type="button" 
                                 onclick="deleteOrderPembelian(this)" 
                                 data-id="${data.id}" 
@@ -1564,13 +1525,13 @@ LOCAL   | PT. Maxipro Group Indonesia
             cancelButtonText: 'Batal'
         }).then((result) => {
             if (result.isConfirmed) {
-                var url = "{{ route('admin.pembelian_lcl') }}";
+                var url = "{{ route('admin.pembelian_local') }}";
                 $('#reload-icon').show();
                 $.ajax({
                     url: url,
                     type: 'GET',
                     data: {
-                        menu:'delete_lcl',
+                        menu:'delete_local',
                         invoice: restokName
                     },
                     success: function(response) {
@@ -1669,7 +1630,7 @@ LOCAL   | PT. Maxipro Group Indonesia
     });
 </script>
 
-<script src="../assets/js/lcl/lcl.js"></script>
+<script src="../assets/js/local/local.js"></script>
 
 <!-- digunakan untuk pick date filter -->
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -2754,7 +2715,7 @@ LOCAL   | PT. Maxipro Group Indonesia
                                                 clickConvert = true;
                                                 newBoolHargaBelumPpn = true;
                                                 statusConvertRupiah =1;
-                                                $('#col-matauang-choices').remove();
+                                                $('#col-select-matauang').remove();
                                                 var newDivContent2 = `
                                                     <div class="col-md-6" id="">
                                                     <div class="row" id="padding-top">
@@ -3211,7 +3172,7 @@ LOCAL   | PT. Maxipro Group Indonesia
                                                 clickConvert = true;
                                                 newBoolHargaBelumPpn = true;
                                                 statusConvertRupiah =1;
-                                                $('#col-matauang-choices').remove();
+                                                $('#col-select-matauang').remove();
                                                 var newDivContent2 = `
                                                     <div class="col-md-6" id="">
                                                     <div class="row" id="padding-top">
@@ -3454,8 +3415,9 @@ LOCAL   | PT. Maxipro Group Indonesia
                             td_total:total_elementValueText,
                             td_discount:discount_save,
                             td_discount_nominal:discount_nominal_save,
-                            valuecategoryconvert:valueCategory
-                            
+                            valuecategoryconvert:valueCategory,
+                            category_transaksi:'local',
+                            category_comercial_invoice:'local',
                         };
                         
                         $.ajax({
@@ -3466,7 +3428,7 @@ LOCAL   | PT. Maxipro Group Indonesia
                             Swal.fire({
                                 icon:'success',
                                 title:'Success',
-                                text:'LCL Berhasil Ditambahkan'
+                                text:'LOCAL Berhasil Ditambahkan'
                             }).then((result)=>{
                             if(result.isConfirmed){
                                 window.location.reload();
@@ -3649,13 +3611,13 @@ LOCAL   | PT. Maxipro Group Indonesia
             // Example: You can now use this ID in an AJAX request or any other logic
             $.ajax({
                 type: 'GET',
-                url: '{{ route('admin.pembelian_lcl') }}',
+                url: '{{ route('admin.pembelian_local') }}',
                 data: { 
                     menu:'edit',
                     invoice: invoice },
                 success: function(response) {
                     id_pembelian_savelcl=response.msg.pembelianlcl.id
-                    console.log(id_pembelian_savelcl)
+                    $('main.main-content').removeClass('wider ps ps--active-y');
                     if (window.dataTableInstance) {
                         window.dataTableInstance.destroy();
                     }
@@ -3667,8 +3629,8 @@ LOCAL   | PT. Maxipro Group Indonesia
                     $('#tambah_lcl').remove();
                     $('#tab-nav').show();
                     $('#master-tab').trigger('click'); // Show master content by default
-                    $('#judulLcl').html('<i class="fas fa-database"></i> &nbsp Edit LCL');
-                    document.title='Edit LCL   | PT. Maxipro Group Indonesia'
+                    $('#judulLcl').html('<i class="fas fa-database"></i> &nbsp Edit Local');
+                    document.title='Edit Local   | PT. Maxipro Group Indonesia'
                     
                     //menambah ekspedisi
                   

@@ -96,7 +96,7 @@
                     <div class="col-md-2">
                     
                         <div style="position: relative; width: 100%; margin-top:10px;">
-                            <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Database2222 <span style="color: red;">(Wajib Diisi)</span></label>
+                            <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Database <span style="color: red;">(Wajib Diisi)</span></label>
                             
                             <select style="border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control database-edit" id="database_id" name="database_name"  required>
                                 <option value="">Database</option>

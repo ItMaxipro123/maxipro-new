@@ -7,7 +7,7 @@
 </div>
 
 <div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="importModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                     <h5 class="modal-title" id="importModalLabel">Import Data</h5>
@@ -426,7 +426,7 @@
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <!-- DataTables Bootstrap 4 Integration -->
 <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+
 <!-- Choices.js JS -->
 <!-- <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
@@ -710,6 +710,7 @@
                                     
                                     var num_key=0;
                                     var tot_freight_cost=0
+                                    var tot_freight_cost_new=0
                                     var tot_insurance=0
                                     var priceUSDTotalChanged=0;
                                 
@@ -1531,11 +1532,12 @@
                                     });
                                     newTd2Tr1Table3.append(inputTd2Tr1Table3)
                                     newTr1Table3.append(newTd1Tr1Table3,newTd2Tr1Table3)
-                                    // inputTd2Tr1Table3.on('input', function() {
-                                        
-                                    //     calculatewithouttaxarr();
-                                    //     calculatewithouttaxusdarr();
-                                    // })
+                                    inputTd2Tr1Table3.on('input', function() {
+                                        tot_freight_cost = parseFloat($(this).val())
+                                        sum_freight_cost(tot_freight_cost,tot_insurance)
+                                  
+                                    })
+                                    
                                     var newTr2Table3 = $('<tr>')
                                     var newTd1Tr2Table3 = $('<td>').css({
                                         'border': '1px solid #696868',
@@ -1555,11 +1557,41 @@
                                         value: tot_insurance,
                                         class: 'form-control custom-border', 
                                     });
-                                    // inputTd2Tr2Table3.on('input', function() {
-                                    //     calculatewithouttaxarr();
+                                    inputTd2Tr2Table3.on('input', function() {
+                                        tot_insurance=parseFloat($(this).val())
+                                        sum_freight_cost(tot_freight_cost,tot_insurance)
+                                    })
+
+                                    function sum_freight_cost(tot_freight_cost,tot_insurance) {
+                                        console.log('masuk sum');
                                         
-                                    //     calculatewithouttaxusdarr();
-                                    // })
+                                        // Remove the existing element first
+                                        $('#custom-tot-price-without-tax-td-tambah').remove();
+
+                                        // Re-create the new <td> with updated value
+                                        var newTd2Tr4Table4 = $('<td>').attr({
+                                            'id': 'custom-tot-price-without-tax-td-tambah',
+                                        }).css({
+                                            'border': '1px solid #696868', 
+                                            'color': 'black',
+                                            'padding-left': '20px'
+                                        }).text(parseFloat(totalPriceRmb + tot_freight_cost+tot_insurance).toFixed(2));
+
+                                        // Append the new <td> to the specified row or parent
+                                        newTr4Table4.append(newTd1Tr4Table4, newTd2Tr4Table4);
+
+                                        $('#custom-tot-price-without-tax-usd-td-tambah').remove();
+                                        var newTd2Tr5Table4 = $('<td>').attr({
+                                            'id':'custom-tot-price-without-tax-usd-td-tambah'
+                                        }).css({
+                                            'border': '1px solid #696868', 
+                                            'color': 'black',
+                                            'padding-left': '20px'
+                                        }).text((totalPriceUsd+tot_freight_cost+tot_insurance).toFixed(2));
+                                        newTr5Table4.append(newTd1Tr5Table4,newTd2Tr5Table4)
+
+
+                                    }
                                     newTd2Tr2Table3.append(inputTd2Tr2Table3)
                                     newTr2Table3.append(newTd1Tr2Table3,newTd2Tr2Table3)
                                     newTable3.append(newTr1Table3,newTr2Table3)
@@ -1644,7 +1676,7 @@
                                         'border': '1px solid #696868', 
                                         'color': 'black',
                                         'padding-left': '20px'
-                                    }).text(totalPriceRmb.toFixed(2));
+                                    }).text(parseFloat(totalPriceRmb+tot_freight_cost+tot_insurance).toFixed(2));
 
                                     
                                     newTr4Table4.append(newTd1Tr4Table4,newTd2Tr4Table4)
@@ -1661,7 +1693,7 @@
                                         'border': '1px solid #696868', 
                                         'color': 'black',
                                         'padding-left': '20px'
-                                    }).text(totalPriceUsd.toFixed(2));
+                                    }).text((totalPriceUsd+tot_freight_cost+tot_insurance).toFixed(2));
                                     newTr5Table4.append(newTd1Tr5Table4,newTd2Tr5Table4)
                                     newDiv2Table4.append(newTr1Table4,newTr2Table4,newTr3Table4,newTr4Table4,newTr5Table4)
                                 

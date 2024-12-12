@@ -288,7 +288,7 @@ FCL Container    | PT. Maxipro Group Indonesia
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <!-- DataTables Bootstrap 4 Integration -->
 <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+
 <!-- Choices.js JS -->
 <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
@@ -298,7 +298,11 @@ FCL Container    | PT. Maxipro Group Indonesia
 <!-- untuk load datatable -->
 <script>
    
+   var currentScrollPosition = $(window).scrollTop();
+   var bottomScrollPosition = $(document).height() - $(window).height() - $(window).scrollTop();
 
+   console.log('currentScroll',currentScrollPosition)
+   console.log('bottomScrollPosition',bottomScrollPosition)
         //button clear Filter 
     $('#clearFilterBtn').on('click', function() {
 
@@ -308,6 +312,8 @@ FCL Container    | PT. Maxipro Group Indonesia
 
     //untuk membuat datatable
     $(document).ready(function() {
+        
+
         var table= $('#tabe-stok').DataTable({
 
             "dom": '<"top"lf>rt<"bottom"ip><"clear">', // Mengatur posisi elemen filter/search
@@ -408,32 +414,37 @@ FCL Container    | PT. Maxipro Group Indonesia
     function editInvoice(element) {
         event.preventDefault();
         var invoice = $(element).data('id');
-        // console.log('invoice',invoice)
+
+
         $.ajax({
-            type:'GET',
-            url:'{{ route('admin.pembelian_fcl') }}',
+            type: 'GET',
+            url: '{{ route('admin.pembelian_fcl') }}',
             data: {
-                menu:'update',
+                menu: 'update',
                 invoice: invoice,
             },
-            success: function(response){
-            //   console.log('response',response);
-                $('.btn-tambah').remove()
-          
-              if (window.dataTableInstance) {
-                        window.dataTableInstance.destroy();
-              }
-              $('#tabe-stok').remove()
-              $('.radio-button-container').remove()
-              $('#clearFilterBtn').remove()
-              $('#FilterBtn').remove()
-              $('#Formedit').html(response);
-              $('#judulFcl').html('<i class="fas fa-database"></i> &nbsp Edit FCL');
-              document.title='Edit FCL   | PT. Maxipro Group Indonesia'
-              $('#editFclContainer').show()
+            success: function(response) {
+                $('main.main-content').removeClass('wider ps ps--active-y');
+                $('.btn-tambah').remove();
+                
+                if (window.dataTableInstance) {
+                    window.dataTableInstance.destroy();
+                }
+                $('#tabe-stok').remove();
+                $('.radio-button-container').remove();
+                $('#clearFilterBtn').remove();
+                $('#FilterBtn').remove();
+                $('#Formedit').html(response);
+                $('#judulFcl').html('<i class="fas fa-database"></i> &nbsp Edit FCL');
+                document.title = 'Edit FCL | PT. Maxipro Group Indonesia';
+                $('#editFclContainer').show();
+
+                
             }
-        })
+        });
     }
+
+
     // proses pengecekan stok
     $(document).ready(function() {
         
@@ -580,7 +591,7 @@ FCL Container    | PT. Maxipro Group Indonesia
                                         
                                         // status: $('select[name=status]').val()
                                     };
-                                //   console.log(formData)
+                                        //   console.log(formData)
                                     // Mengirim permintaan AJAX
                                     $.ajax({
                                         type: 'GET',
@@ -705,7 +716,7 @@ FCL Container    | PT. Maxipro Group Indonesia
             success: function(response) {
     
                 $('.btn-tambah').remove()
-          
+                // $('main.main-content').removeClass('wider ps ps--active-y');
                 if (window.dataTableInstance) {
                         window.dataTableInstance.destroy();
                     }
@@ -846,77 +857,77 @@ FCL Container    | PT. Maxipro Group Indonesia
     }
 
     function detailFcl(element) {
-    event.preventDefault();
-    
-    // Scroll halaman ke atas sebelum mengirim AJAX request
-    window.scrollTo(0, 0); 
+        event.preventDefault();
+        
+        // Scroll halaman ke atas sebelum mengirim AJAX request
+        window.scrollTo(0, 0); 
 
-    var invoice = $(element).data('id');
-    var restokName = $(element).attr('name');
-    console.log('invoice', invoice);
+        var invoice = $(element).data('id');
+        var restokName = $(element).attr('name');
+        
 
-    $.ajax({
-        url: '{{ route('admin.pembelian_fcl') }}',
-        data: {
-            invoice: invoice,
-            menu: 'detail_fcl'
-        },
-        success: function(response) {
-            // Menghapus elemen yang tidak dibutuhkan
-            $('aside.sidenav').remove();
-            $('.btn-tambah').remove();
+        $.ajax({
+            url: '{{ route('admin.pembelian_fcl') }}',
+            data: {
+                invoice: invoice,
+                menu: 'detail_fcl'
+            },
+            success: function(response) {
+                // Menghapus elemen yang tidak dibutuhkan
+                $('aside.sidenav').remove();
+                $('.btn-tambah').remove();
 
-            if (window.dataTableInstance) {
-                window.dataTableInstance.destroy();
+                if (window.dataTableInstance) {
+                    window.dataTableInstance.destroy();
+                }
+
+                $('#tabe-stok').remove();
+                $('.radio-button-container').remove();
+                $('#clearFilterBtn').remove();
+                $('#FilterBtn').remove();
+
+                // Mengisi div detail dengan response
+                $('#divDetail').html(response);
+                $('#detailFclContainer').css({
+                    'background-image': 'url(https://i.pinimg.com/originals/e4/5f/54/e45f54e2cc5516e2210c34453db5ab6e.jpg)',
+                    'background-size': 'cover',
+                    'background-position': 'center',
+                    'background-repeat': 'no-repeat',
+                    'min-height': '100vh',       // Membuat elemen memenuhi tinggi viewport
+                    'min-width':'100vh',
+                    'display': 'flex',           // Mengaktifkan flexbox
+                    'flex-direction': 'column',  // Susunan elemen secara vertikal
+                    'justify-content': 'center', // Posisi elemen di tengah secara vertikal
+                    'align-items': 'center'      // Posisi elemen di tengah secara horizontal
+                });
+                $('#detailFclContainer').show();
+
+                $('#judulFcl').hide();
+                $('.display-block').hide();
+                document.title = 'Detail FCL   | PT. Maxipro Group Indonesia';
+                $('.container-fluid').hide();
+
+                // Menyembunyikan card
+                $('.card').css({
+                    'display': 'none'
+                });
+                
+
+                // Atur tampilan main agar background image memenuhi halaman
+                // $('main.main-content').css({
+                //     'background-image': 'url(https://i.pinimg.com/originals/e4/5f/54/e45f54e2cc5516e2210c34453db5ab6e.jpg)',
+                //     'background-size': 'cover',
+                //     'background-position': 'center',
+                //     'background-repeat': 'no-repeat',
+                //     'min-height': '100vh', // Agar main content memenuhi viewport
+                //     'display': 'flex',      // Mengaktifkan flexbox untuk alignment
+                //     'flex-direction': 'column', // Vertikal stack
+                //     'justify-content': 'center', // Center vertikal
+                //     'align-items': 'center' // Center horizontal
+                // });
             }
-
-            $('#tabe-stok').remove();
-            $('.radio-button-container').remove();
-            $('#clearFilterBtn').remove();
-            $('#FilterBtn').remove();
-
-            // Mengisi div detail dengan response
-            $('#divDetail').html(response);
-$('#detailFclContainer').css({
-    'background-image': 'url(https://i.pinimg.com/originals/e4/5f/54/e45f54e2cc5516e2210c34453db5ab6e.jpg)',
-    'background-size': 'cover',
-    'background-position': 'center',
-    'background-repeat': 'no-repeat',
-    'min-height': '100vh',       // Membuat elemen memenuhi tinggi viewport
-    'min-width':'100vh',
-    'display': 'flex',           // Mengaktifkan flexbox
-    'flex-direction': 'column',  // Susunan elemen secara vertikal
-    'justify-content': 'center', // Posisi elemen di tengah secara vertikal
-    'align-items': 'center'      // Posisi elemen di tengah secara horizontal
-});
-$('#detailFclContainer').show();
-
-            $('#judulFcl').hide();
-            $('.display-block').hide();
-            document.title = 'Detail FCL   | PT. Maxipro Group Indonesia';
-            $('.container-fluid').hide();
-
-            // Menyembunyikan card
-            $('.card').css({
-                'display': 'none'
-            });
-            
-
-            // Atur tampilan main agar background image memenuhi halaman
-            // $('main.main-content').css({
-            //     'background-image': 'url(https://i.pinimg.com/originals/e4/5f/54/e45f54e2cc5516e2210c34453db5ab6e.jpg)',
-            //     'background-size': 'cover',
-            //     'background-position': 'center',
-            //     'background-repeat': 'no-repeat',
-            //     'min-height': '100vh', // Agar main content memenuhi viewport
-            //     'display': 'flex',      // Mengaktifkan flexbox untuk alignment
-            //     'flex-direction': 'column', // Vertikal stack
-            //     'justify-content': 'center', // Center vertikal
-            //     'align-items': 'center' // Center horizontal
-            // });
-        }
-    });
-}
+        });
+    }
 
 
     $('#tambahModal').on('hidden.bs.modal', function () {
@@ -1071,7 +1082,7 @@ $('#detailFclContainer').show();
                        var id = $('#edit_supplier').data('id');
                        $('#reload-icon').show();
 
-            // console.log(supplier,id);
+            
             // Kirim data menggunakan AJAX
             $.ajax({
                 url: "{{ route('admin.pembelian_select_supplier_order_pembelian') }}",

@@ -106,9 +106,13 @@
                   @endphp
                   @foreach($data2['nama_supplier'] as $index => $result)
                   @if ($result !== $previousSupplier)
-                  <p>
-                    To: {{ $result }}
-                  </p>
+                  <p style="line-height: 0.25;">To: {{ $result }}</p>
+<p style="text-align:left; text-indent: 15px; line-height: 0.25;">{{ $Data['msg']['supplier'][0]['company'] }}</p>
+<p style="text-align:left; text-indent: 18px; line-height: 0.25;">{{ $Data['msg']['supplier'][0]['address'] }}</p>
+<p style="text-align:left; text-indent: 18px; line-height: 0.25;">{{ $Data['msg']['supplier'][0]['city'] }}</p>
+<p style="text-align:left; text-indent: 18px; line-height: 0.25;">{{ $Data['msg']['supplier'][0]['telp'] }}</p>
+
+
                   @endif
                   @php
                   $previousSupplier = $result;
@@ -119,6 +123,7 @@
 
 
               </tr>
+           
 
             </table>
 

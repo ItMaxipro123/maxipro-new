@@ -1065,7 +1065,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
      
     }
     
-
+    
     //Untuk Mereset data input checkbox dan total kubik di modal hitung kubk
     document.getElementById('tambahModal').addEventListener('hidden.bs.modal', function () {
         var checkboxes = document.querySelectorAll('.kubik-checkbox-tambah'); //Inisiasi variabel yang mengambil value select dari class kubik-checkbox-tambah

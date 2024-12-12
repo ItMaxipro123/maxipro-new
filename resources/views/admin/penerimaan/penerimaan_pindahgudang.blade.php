@@ -8,143 +8,15 @@ Penerimaan Pindah Gudang   | PT. Maxipro Group Indonesia
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+<link rel="stylesheet" href="{{ asset('css/penerimaan/pindahgudang.css') }}">
 @endsection
-@section('style')
 
-<style>
-    .flatpickr-input {
-        border: 1px solid #ccc;
-        padding: 5px;
-        border-radius: 4px;
-    }
-
-    .dataTables_wrapper .dataTables_paginate .paginate_button.previous {
-        width: auto;
-        /* Atur lebar tombol menjadi otomatis */
-        padding-right: 0px;
-        /* Berikan padding di sisi kanan tombol */
-
-    }
-
-    /* Ganti warna latar belakang tabel */
-    #tabe-stok {
-        background-color: #f0f0f0;
-        /* Ganti dengan warna yang Anda inginkan */
-
-    }
-
-    .dataTables_filter input[type="search"] {
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        /* Opsional: untuk membuat sudut border melengkung */
-        padding: 5px;
-        /* Opsional: untuk memberi jarak antara border dan teks */
-    }
-
-
-    /* CSS untuk gaya select2 custom */
-    .select2-container--custom .select2-selection--single {
-        height: calc(2.25rem + 2px);
-        padding: .375rem .75rem;
-        background-color: #fff;
-        border: 1px solid #ced4da;
-        border-radius: .25rem;
-        width: 100%;
-    }
-
-    .empty-row {
-        border: none;
-    }
-
-    .select2-container--custom .select2-selection--single {
-        height: calc(2.25rem + 2px);
-        padding: .375rem .75rem;
-        background-color: #fff;
-        border: 1px solid #ced4da;
-        border-radius: .25rem;
-        width: 100%;
-    }
-
-    .empty-row {
-        border: none;
-    }
-
-    .select2-container--custom .select2-selection--single .select2-selection__arrow {
-        right: 10px;
-    }
-
-    .select2-container--custom .select2-selection--single .select2-selection__rendered {
-        color: #495057;
-        line-height: 1.5;
-        text-align: center;
-        font-size: 14px;
-    }
-
-    .select2-container--custom .select2-selection--single .select2-selection__placeholder {
-        color: #6c757d;
-    }
-
-    .select2-container--custom .select2-selection--single:focus {
-        border-color: #80bdff;
-        outline: 0;
-        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-    }
-
-    .select2-container--custom .select2-results__options {
-        overflow-y: auto;
-
-        max-height: 200px;
-
-    }
-
-    #overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        /* Warna gelap dengan opasitas */
-        z-index: 9999;
-        /* Layer di atas semua konten */
-        display: none;
-        /* Default tidak ditampilkan */
-    }
-
-    #overlay i {
-        color: white;
-        /* Warna ikon */
-        font-size: 50px;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        /* Sesuaikan ukuran ikon sesuai kebutuhan */
-    }
-
-
-    /* Style untuk tombol Delete */
-    .btn-delete {
-        width: 25%;
-        /* Lebar default */
-    }
-
-    /* Mengatur lebar tombol saat layar berukuran kecil (misalnya pada perangkat mobile) */
-    @media only screen and (max-width: 600px) {
-        .btn-delete {
-            width: 50%;
-            /* Mengisi lebar penuh */
-        }
-    }
-</style>
-
-@endsection
 @section('content')
 
 <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg wider">
     <div id="overlay"> <i class="fas fa-spinner fa-spin"></i> </div>
     <div class="container-fluid">
-        <h4 id="judulStok" style="margin-top: 40px;margin-bottom: 40px;"><i class="fas fa-database"></i> &nbsp Penerimaan Pindah Gudang</h4>
+        <h4 id="judulPindahgudang" style="margin-top: 40px;margin-bottom: 40px;"><i class="fas fa-database"></i> &nbsp Penerimaan Pindah Gudang</h4>
 
         <small class="display-block" style="position: absolute; top: 70px; left: 50px;">Penerimaan Pindah Gudang {{ $username['data']['teknisi']['name'] }}</small>
     </div>
@@ -159,13 +31,17 @@ Penerimaan Pindah Gudang   | PT. Maxipro Group Indonesia
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-12">
-                         <a href="javascript:void(0)" onclick="tambahPenawaran(this)" name="tambahButton" class="btn btn-large btn-primary btn-tambah">Add Penerimaan Pindah Gudang</a>
+                         <a href="javascript:void(0)" onclick="tambahPindahGudang(this)" name="tambahButton" class="btn btn-large btn-primary btn-tambah">Add Penerimaan Pindah Gudang</a>
 
                                 <div class="d-flex justify-content-end">
 
                                   
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-info" style="width: 10%; margin-right: 5px;" id="openModalBtn">Filter</button>
+                                        <button type="button" class="btn btn-info" style="width: 10%; margin-right: 5px;" id="filterBtn">Filter</button>
+
+                                    </div>
+                                    <div class="btn-group" id="divBack" style="display:none;">
+                                        <button type="button" class="btn btn-warning" style="width: 10%; margin-right: 5px;" id="backBtn">Kembali</button>
 
                                     </div>
                                     <div class="btn-group">
@@ -194,7 +70,7 @@ Penerimaan Pindah Gudang   | PT. Maxipro Group Indonesia
                                     <form id="dateForm">
                                         <div class="form-group">
                                             <label for="enableDatepicker">Centang untuk Aktifkan Tanggal:</label>
-                                            <input type="checkbox" id="checkdatevalue">
+                                            <input type="checkbox" id="checkdatevalue" {{ $Data['msg']['checkdatevalue'] == 'checked' ? 'checked' : '' }}>
                                         </div>
                                         <div class="form-group">
                                             <label for="startDatepicker">Pilih Periode Awal:</label>
@@ -216,69 +92,51 @@ Penerimaan Pindah Gudang   | PT. Maxipro Group Indonesia
                                     <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
                                     <!-- code diatas untuk modal bootstrap 4 -->
 
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    
                                     <!-- code diatas untuk modal bootstrap 5 -->
 
-                                    <button type="button" class="btn btn-primary" id="saveChangesBtn">Save changes</button>
+                                    <button type="button" class="btn btn-primary" id="saveChangesBtn">Save</button>
 
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <table id="tabe-stok" class="table table-bordered table-striped">
-                        <thead>
+                    <div class="table-responsive">
+                        <table id="tabe-stok" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Tanggal Terima</th>
+                                    <th>Kode</th>
+                                    <th>User</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php $num = 1; @endphp
+                                @foreach($Data['msg']['penerimaan'] as $index => $data)
+                                    @php
+                                    \Carbon\Carbon::setLocale('id'); // Set locale ke Bahasa Indonesia
+                                    $formattedDate = \Carbon\Carbon::parse($data['tgl_terima'])->translatedFormat('d F Y');
+                                    @endphp
+                                    <tr>
+                                        <td>{{ $num }}</td>
+                                        <td>{{ $formattedDate }}</td>
+                                        <td>{{ $data['kode'] }}</td>
+                                        @foreach($Data['msg']['teknisi'] as $index => $result)
+                                            @if($data['id_teknisi'] == $result['id'])
+                                                <td>{{ $result['name'] }}</td>
+                                            @endif
+                                        @endforeach
+                                        <td></td>
+                                    </tr>
+                                    @php $num++; @endphp
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
 
-                        </thead>
-                        <tbody>
-                            @php
-                            $num =1;
-                            @endphp
-                            <!-- Table data will be populated here -->
-                            @foreach($Data['msg']['penerimaan'] as $index => $data)
-                            
-                            @php
-                            \Carbon\Carbon::setLocale('id'); // Set locale ke Bahasa Indonesia
-                            $formattedDate = \Carbon\Carbon::parse($data['tgl_terima'])->translatedFormat('d F Y');
-                            @endphp
-                            <tr>
-                                <td>{{ $num }}</td>
-                                <td>{{ $formattedDate }}</td>
-                                <td>{{ $data['kode'] }}</td>
-                                
-                                @if($data['category']=='fcl')
-                                <td>INV-{{ $data['fcl']['invoice_no'] }}</td>
-                                @else
-                                <td>{{ $data['lcl']['invoice'] }}</td>
-
-                                @endif
-                                <td>{{ $data['gudang']['name'] }}</td>
-                                <td>{{ $data['teknisi']['name'] }}</td>
-                                <td>
-                                    <input type="text" name="invoicebee" value="{{ $data['invoicebee'] }}">
-                                </td>
-                                <td>
-                                    <span style=" background-color: red;  font-weight: bold; text-transform: uppercase;">
-                                       <p style="background-color: red; color:white; text-align:center; font-weight:bold;"> {{ $data['category_import'] }}</p>
-                                    </span>
-                                </td>
-
-
-                                <td>
-                                    <a href="javascript:void(0)" onclick="updatePenawaran(this)" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-secondary btn-edit">Edit</a>
-                                     <a href="{{ route('admin.detailview_penawaran_filter', ['id' => $data['id']]) }}" class="btn btn-large btn-info btn-detail">Detail</a>
-                                   
-                                   <a href="javascript:void(0)" onclick="deletePenawaran(this)" data-id="{{ $data['id'] }}" name="{{ $data['name_db'] }}" class="btn btn-large btn-primary btn-delete">Delete</a>
-                                
-                                </td>
-                            </tr>
-                            @php $num++
-                            @endphp
-                            @endforeach
-
-                        </tbody>
-
-                    </table>
 
 
                     <!-- modal tambah penerimaan pindah gudang-->
@@ -456,10 +314,17 @@ Penerimaan Pindah Gudang   | PT. Maxipro Group Indonesia
                         </div>
                     </div>
 
+                    <div id="tambahPembelianContainer" style="display: none;" class="col-sm-12" style="margin-top: 15px;">
+                            
+                                                <form action=""id="Formtambah"></form>
+                                        
+                    </div>
+
 
                 </div>
             </div>
         </div>
+        
     </div>
 </main>
 
@@ -475,7 +340,7 @@ Penerimaan Pindah Gudang   | PT. Maxipro Group Indonesia
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <!-- DataTables Bootstrap 4 Integration -->
 <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+
 <!-- Choices.js JS -->
 <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
@@ -511,18 +376,18 @@ Penerimaan Pindah Gudang   | PT. Maxipro Group Indonesia
         
     });
     
-document.addEventListener('DOMContentLoaded', function() {
-    const element = document.getElementById('id_pembelian_select1');
-    const choices = new Choices(element, {
-        searchEnabled: true,
-        itemSelectText: '',
-        shouldSort: true,
-        sorter: function(a, b) {
-            // Sort options in descending order
-            return b.label.localeCompare(a.label, undefined, {numeric: true});
-        }
+    document.addEventListener('DOMContentLoaded', function() {
+        const element = document.getElementById('id_pembelian_select1');
+        const choices = new Choices(element, {
+            searchEnabled: true,
+            itemSelectText: '',
+            shouldSort: true,
+            sorter: function(a, b) {
+                // Sort options in descending order
+                return b.label.localeCompare(a.label, undefined, {numeric: true});
+            }
+        });
     });
-});
 
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -686,7 +551,7 @@ document.addEventListener('DOMContentLoaded', function() {
              spesification_product_edit: $('textarea[name=spesification_product_tambah]').map(function(){
                 return $(this).val();
              }).get(),
-            // status: $('select[name=status]').val()
+           
         };
         
         // Mengirim permintaan AJAX
@@ -731,8 +596,8 @@ document.addEventListener('DOMContentLoaded', function() {
 <script>
     
     $(document).ready(function() {
-        $('#tabe-stok').DataTable({
-
+            window.dataTableInstance = $('#tabe-stok').DataTable({
+            
             "dom": '<"top"lf>rt<"bottom"ip><"clear">', // Mengatur posisi elemen filter/search
             "language": { // Menyesuaikan teks placeholder
                 "searchPlaceholder": "Cari...",
@@ -743,7 +608,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             },
 
-            columns: [{
+            columns: [
+                {
                     data: 'num',
                     title: 'No'
                 },
@@ -760,10 +626,31 @@ document.addEventListener('DOMContentLoaded', function() {
                     title: 'User'
                 },
                 {
-                    data: 'link',
+                    data: 'null',
                     title: 'Action',
                     render: function(data, type, full, meta) {
-                        return '<a href="' + data + '</a>';
+                        let code=full.code
+                        
+                        return `
+                            <button type="button" 
+                                    data-id="${code}" 
+                                    name="${code}" 
+                                    class="btn btn-large btn-info edit-btn" 
+                                    style="width: 35px; height: 38px; padding: 9px 10px;" 
+                                    title="Edit Penerimaan Pindah Gudang">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button type="button" 
+                                    onclick="deletePindahgudang(this)" 
+                                    data-id="${code}" 
+                                    name="${code}" 
+                                    class="btn btn-large btn-info btn-danger" 
+                                    style="width: 35px; height: 38px; padding: 9px 10px;" 
+                                    title="Hapus Penerimaan Pindah Gudang">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+
+                            `;
                     }
                 }
 
@@ -773,14 +660,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 $('.dataTables_filter input[type="search"]').attr('placeholder', 'Cari ...'); // Menyesuaikan placeholder
             }
         });
+        const currentUrl = window.location.pathname;
+
+        if (currentUrl === '/admin/edit_pindah_gudang') {
+            window.location.href='/admin/penerimaan_pindahgudang'
+        }
     });
 </script>
 
 <script>
-    // Menangani peristiwa klik pada tombol "Filter"
-    document.getElementById('openModalBtn').addEventListener('click', function() {
-        $('#exampleModal').modal('show'); // Menampilkan modal Filter
-    });
+        // Menangani peristiwa klik pada tombol "Filter"
+        document.getElementById('filterBtn').addEventListener('click', function() {
+            $('#exampleModal').modal('show'); // Menampilkan modal Filter
+        });
 
         function detailPenawaran(element) {
           var id = $(element).data('id');
@@ -809,126 +701,176 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
 
-    // Menangani klik pada tombol Edit
-    function updatePenawaran(element) {
-        event.preventDefault();
-        var id = $(element).data('id');
-        console.log(id);
-
-        var url = "{{ route('admin.editview_penawaran_filter') }}";
-
-        $.ajax({
-            url: url,
-            type: 'GET', // Menggunakan metode POST
-            data: {
-
-                id: id
-            },
-            success: function(response) {
-                // Handle response jika sukses
-
-                $('#editForm').html(response);
-                // Tampilkan modal
-                $('#editModal').modal('show');
-               
-            },
-            error: function(xhr, status, error) {
-                // Handle error jika terjadi kesalahan
-                console.error(xhr.responseText);
-                return;
-            }
-        });
-    }
+   
 
     // Menangani klik pada tombol tambah
-    function tambahPenawaran(element) {
+    function tambahPindahGudang(element) {
         event.preventDefault();
-     $('#tambahModal').modal('show'); // Tampilkan modal
+        $.ajax({
+            url:'{{ route('admin.penerimaan_pindahgudang') }}',
+            data: {
+                menu:'create_pindahgudang',
+            },
+            success: function(response){
+                $('#divBack').show()
+                $('#judulPindahgudang').html('<i class="fas fa-database"></i> &nbsp Tambah Penerimaan Pindah Gudang');
+                document.title='Tambah Penerimaan Pindah Gudang   | PT. Maxipro Group Indonesia'
+                $('.btn-tambah').hide();
+                        $('.radio-button-container').hide();
+                        $('#clearFilterBtn').hide();
+                        $('#filterBtn').hide();
+                        
+                        // Menghancurkan DataTable jika ada
+                        if (window.dataTableInstance) {
+                            window.dataTableInstance.destroy();
+                        }
+                        $('#tabe-stok').hide();
+                    $('#tambahPembelianContainer').show()
+                    $('#Formtambah').show()
+                    $('#Formtambah').html(response)
+                    history.pushState({ page: 'tambah_pindah_gudang' }, 'Tambah Pindah Gudang', '{{ route('admin.tambah_pindah_gudangbaru') }}');
+            }
+        })
+    
     }
 
-    function detailKas(element) {
+
+
+    function deletePindahgudang(element) {
         event.preventDefault();
         var id = $(element).data('id');
-        console.log(id);
+        var penawaranName = $(element).attr('name');
 
-        var url = "{{ route('admin.kasdetail') }}";
+        // Menggunakan SweetAlert2 untuk konfirmasi penghapusan
+        Swal.fire({
+            title: 'Konfirmasi',
+            text: "Apakah Anda yakin ingin menghapus penawaran ini " + penawaranName + " ?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, Hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var url = "{{ route('admin.penerimaan_pindahgudang') }}";
 
-        $.ajax({
-            url: url,
-            type: 'GET', // Menggunakan metode POST
-            data: {
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    data: {
+                        id: id,
+                        menu:'delete_pindahgudang'
+                    },
+                    success: function(response) {
+                        // Handle response jika sukses
+                        console.log(response);
 
-                id: id
-            },
-            success: function(response) {
-                // Handle response jika sukses
+                        // Hapus data berdasarkan elemen, element berupa id
+                        $(element).closest('tr').remove();
 
-                $('#detailForm').html(response);
-                // Tampilkan modal
-                $('#detailModal').modal('show');
-                
-               
-            },
-            error: function(xhr, status, error) {
-                // Handle error jika terjadi kesalahan
-                console.error(xhr.responseText);
-                return;
+                        // Tampilkan SweetAlert2 ketika berhasil dihapus
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil',
+                            text: 'Data berhasil dihapus!',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error jika terjadi kesalahan
+                        console.error(xhr.responseText);
+                        return;
+                    }
+                });
             }
         });
     }
+    
+        $(document).on('click', '.edit-btn', function(event) {
+                event.preventDefault();
+                var code = $(this).data('id');
+                
 
+                $.ajax({
+                    url: '{{ route('admin.edit_pindah_gudangbaru') }}', // Route baru
+                    data: {
+                        menu: 'edit_view',
+                        code: code
+                    },
+                    success: function(response) {
+                        $('main.main-content').removeClass('wider ps ps--active-y');
+                        $('small.display-block').css('top', '30px');
+                        // Ganti konten dari form dengan response dari server
+                        $('#Formtambah').show();
+                        $('#Formtambah').html(response);
+                        
+                        // Ubah judul dan ikon
+                        $('#judulPindahgudang').html('<i class="fas fa-database"></i> &nbsp Edit Penerimaan Pindah Gudang');
+                        document.title = 'Edit Penerimaan Pindah Gudang | PT. Maxipro Group Indonesia';
 
-    function deletePenawaran(element) {
-    event.preventDefault();
-    var id = $(element).data('id');
-    var penawaranName = $(element).attr('name');
+                        // Menghapus elemen yang tidak dibutuhkan
+                        $('.btn-tambah').hide();
+                        $('.radio-button-container').hide();
+                        $('#clearFilterBtn').hide();
+                        $('#filterBtn').hide();
+                        
+                        // Menghancurkan DataTable jika ada
+                        if (window.dataTableInstance) {
+                            window.dataTableInstance.destroy();
+                        }
+                        $('#tabe-stok').hide();
+                    
+                        $('#divBack').show()
+                        // Tampilkan container pembelian
+                        $('#tambahPembelianContainer').show();
 
-    // Menggunakan SweetAlert2 untuk konfirmasi penghapusan
-    Swal.fire({
-        title: 'Konfirmasi',
-        text: "Apakah Anda yakin ingin menghapus penawaran ini " + penawaranName + " ?",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Ya, Hapus!',
-        cancelButtonText: 'Batal'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            var url = "{{ route('admin.hapus_penawaran_filter') }}";
-
+                        // Update URL tanpa refresh
+                        history.pushState({ code: code }, 'Edit Pindah Gudang', '{{ route('admin.edit_pindah_gudangbaru') }}' );
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('AJAX Error:', error);
+                        alert('Terjadi kesalahan saat memuat data. Silakan coba lagi.');
+                    }
+                });
+        });
+        
+     
+        $(document).on('click', '#backBtn', function() {
+            // Memuat konten penerimaan_pindahgudang tanpa refresh
             $.ajax({
-                url: url,
-                type: 'GET',
-                data: {
-                    id: id
-                },
+                url: '{{ route('admin.penerimaan_pindahgudang') }}', // Route untuk penerimaan_pindahgudang
                 success: function(response) {
-                    // Handle response jika sukses
-                    console.log(response);
+                    // Ganti konten dari form dengan response dari server
+                    $('#Formtambah').hide();
 
-                    // Hapus data berdasarkan elemen, element berupa id
-                    $(element).closest('tr').remove();
+                    $('.btn-tambah').show();
+                        $('.radio-button-container').show();
+                        $('#clearFilterBtn').show();
+                        $('#filterBtn').show();
 
-                    // Tampilkan SweetAlert2 ketika berhasil dihapus
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil',
-                        text: 'Data berhasil dihapus!',
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
+                    // Sembunyikan tombol Kembali
+                    $('#divBack').hide();
+                    $('#tabe-stok').show();
+                    if (!$.fn.DataTable.isDataTable('#tabe-stok')) {
+                        window.dataTableInstance = $('#tabe-stok').DataTable({
+                            // Konfigurasi DataTable Anda di sini
+                        });
+                    }
+                    history.pushState({ page: 'penerimaan_pindahgudang' }, 'Penerimaan Pindah Gudang', '{{ route('admin.penerimaan_pindahgudang') }}');
+                    // Ubah judul dan ikon jika perlu
+                    $('#judulPindahgudang').html('<i class="fas fa-database"></i> &nbsp Penerimaan Pindah Gudang');
+                    document.title = 'Penerimaan Pindah Gudang | PT. Maxipro Group Indonesia';
+
+                    // Jika Anda ingin membersihkan elemen lain, lakukan di sini
                 },
                 error: function(xhr, status, error) {
-                    // Handle error jika terjadi kesalahan
-                    console.error(xhr.responseText);
-                    return;
+                    console.error('AJAX Error:', error);
+                    alert('Terjadi kesalahan saat memuat data. Silakan coba lagi.');
                 }
             });
-        }
-    });
-}
-
+        });
 
 </script>
 
@@ -936,66 +878,80 @@ document.addEventListener('DOMContentLoaded', function() {
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 
-<!-- untuk mengaktifkan input tanggal di filter -->
+
 
 <script>
          // untuk mengaktifkan input tanggal di form tambah 
   
-       document.addEventListener('DOMContentLoaded', function() {
-        const checkdatevaluetambah = document.getElementById('checkdatevaluetambah');
-        const tgl_request = document.getElementById('tgl_request');
-        
-        // Inisialisasi Flatpickr pada saat DOM dimuat
-        flatpickr(tgl_request, {
-            dateFormat: 'Y-m-d'
-        });
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkdatevaluetambah = document.getElementById('checkdatevaluetambah');
+            const tgl_request = document.getElementById('tgl_request');
+            
+            // Inisialisasi Flatpickr pada saat DOM dimuat
+            flatpickr(tgl_request, {
+                dateFormat: 'Y-m-d'
+            });
 
-        // Atur event listener untuk perubahan pada checkbox
-        checkdatevaluetambah.addEventListener('change', function() {
-            // Jika checkbox dicentang, biarkan tgl_request aktif
-            if (checkdatevaluetambah.checked) {
-                tgl_request.disabled = false;
-            } else {
-                // Jika tidak, tetap biarkan tgl_request aktif
-                tgl_request.disabled = true;
-            }
+            // Atur event listener untuk perubahan pada checkbox
+            checkdatevaluetambah.addEventListener('change', function() {
+                // Jika checkbox dicentang, biarkan tgl_request aktif
+                if (checkdatevaluetambah.checked) {
+                    tgl_request.disabled = false;
+                } else {
+                    // Jika tidak, tetap biarkan tgl_request aktif
+                    tgl_request.disabled = true;
+                }
+            });
         });
-    });
 
        // untuk mengaktifkan input tanggal di filter 
-     document.addEventListener('DOMContentLoaded', function() {
-        const checkdatevalue = document.getElementById('checkdatevalue');
-        const tgl_awal = document.getElementById('tgl_awal');
-        const tgl_akhir = document.getElementById('tgl_akhir');
-        console.log(checkdatevalue);
-        // Atur event listener untuk perubahan pada checkbox
-        checkdatevalue.addEventListener('change', function() {
-            // Jika checkbox dicentang, aktifkan kedua datepicker
-            if (checkdatevalue.checked) {
-                checkdatevalue.value = 'checked';
-                tgl_awal.disabled = false;
-                tgl_akhir.disabled = false;
-                // Inisialisasi Flatpickr
-                flatpickr(tgl_awal, {
-                    dateFormat: 'Y-m-d'
-                });
-                flatpickr(tgl_akhir, {
-                    dateFormat: 'Y-m-d'
-                });
-            } else {
-                // Jika tidak, nonaktifkan kedua datepicker
-                tgl_awal.disabled = true;
-                tgl_akhir.disabled = true;
-                // Hapus Flatpickr instance jika sudah ada
-                if (tgl_awal._flatpickr) {
-                    tgl_awal._flatpickr.destroy();
-                }
-                if (tgl_akhir._flatpickr) {
-                    tgl_akhir._flatpickr.destroy();
-                }
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkdatevalue = document.getElementById('checkdatevalue');
+            const tgl_awal = document.getElementById('tgl_awal');
+            const tgl_akhir = document.getElementById('tgl_akhir');
+            var checked_json = @json($Data['msg']['checkdatevalue']);
+        
+            if (checked_json=='checked') {
+                    checkdatevalue.value = 'checked';
+                    tgl_awal.disabled = false;
+                    tgl_akhir.disabled = false;
+                    // Inisialisasi Flatpickr
+                    flatpickr(tgl_awal, {
+                        dateFormat: 'Y-m-d'
+                    });
+                    flatpickr(tgl_akhir, {
+                        dateFormat: 'Y-m-d'
+                    });
             }
+            // Atur event listener untuk perubahan pada checkbox
+            checkdatevalue.addEventListener('change', function() {
+                // Jika checkbox dicentang, aktifkan kedua datepicker
+                if (checkdatevalue.checked) {
+                    checkdatevalue.value = 'checked';
+                    tgl_awal.disabled = false;
+                    tgl_akhir.disabled = false;
+                    // Inisialisasi Flatpickr
+                    flatpickr(tgl_awal, {
+                        dateFormat: 'Y-m-d'
+                    });
+                    flatpickr(tgl_akhir, {
+                        dateFormat: 'Y-m-d'
+                    });
+                } else {
+                    checkdatevalue.value = 'unchecked';
+                    // Jika tidak, nonaktifkan kedua datepicker
+                    tgl_awal.disabled = true;
+                    tgl_akhir.disabled = true;
+                    // Hapus Flatpickr instance jika sudah ada
+                    if (tgl_awal._flatpickr) {
+                        tgl_awal._flatpickr.destroy();
+                    }
+                    if (tgl_akhir._flatpickr) {
+                        tgl_akhir._flatpickr.destroy();
+                    }
+                }
+            });
         });
-    });
 </script>
 
 <!-- untuk memproses input tanggal di filter -->
@@ -1035,9 +991,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     console.log(data);
 
                     // Memuat ulang halaman
-
-                    var reloadUrl = "{{ route('admin.penerimaan_pindahgudang_filter') }}" + '?' + '&checkdatevalue=' + encodeURIComponent(checkdatevalue) + '&tgl_awal=' + encodeURIComponent(tgl_awal) + '&tgl_akhir=' + encodeURIComponent(tgl_akhir)+'&kode=' + encodeURIComponent(kode);
-                    window.location.href = reloadUrl;
+                    if (checkdatevalue === 'checked') {
+                        var reloadUrl = "{{ route('admin.penerimaan_pindahgudang_filter') }}" + '?' + '&checkdatevalue=' + encodeURIComponent(checkdatevalue) + '&tgl_awal=' + encodeURIComponent(tgl_awal) + '&tgl_akhir=' + encodeURIComponent(tgl_akhir)+'&kode=' + encodeURIComponent(kode);
+                        window.location.href = reloadUrl;
+                    }else{
+                        var reloadUrl = "{{ route('admin.penerimaan_pindahgudang_filter') }}" + '?' + '&checkdatevalue=' + encodeURIComponent(checkdatevalue) + '&kode=' + encodeURIComponent(kode);
+                        window.location.href = reloadUrl;
+                    }
 
                 })
                 .catch(error => {

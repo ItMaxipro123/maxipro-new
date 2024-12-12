@@ -16,13 +16,59 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
 @endsection
 @section('content')
 
-<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg wider">
-    
-    <div class="container-fluid">
-        <h4 id="judulRestok"><i class="fas fa-database"></i> &nbsp Commercial Invoice</h4>
-        <small class="display-block" id="subjudul">Commercial Invoice {{ $username['data']['teknisi']['name'] }}</small>
+<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg wider" style="max-width: 100%; overflow-x: hidden;">
+    <div class="row">
         
+        <div class="col-md-6">
+            <div class="container-fluid">
+                <h4 id="judulRestok" style="display:none;"><i class="fas fa-database"></i> &nbsp Commercial Invoice</h4>
+                
+                <small class="display-block" id="subjudul">Commercial Invoice {{ $username['data']['teknisi']['name'] }}</small>
+              
+            </div>
+        </div>
+        <div class="col-md-6" style="margin-top:20px;">
+                 <!-- navbar untuk membuka sidebar -->
+                <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" data-scroll="true" style="display:none;">
+                    <div class="container-fluid py-1 px-3">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+
+
+                                </ol>
+                                <h6 class="font-weight-bolder mb-0"></h6>
+                            </nav>
+                            <div  id="navbar">
+                                <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+                                
+                                </div>
+                                    <ul class="navbar-nav  justify-content-end">
+                                
+                                
+                                        <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+                                            <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
+                                                <div class="sidenav-toggler-inner">
+                                                <i class="sidenav-toggler-line"></i>
+                                                <i class="sidenav-toggler-line"></i>
+                                                <i class="sidenav-toggler-line"></i>
+                                                </div>
+                                            </a>
+                                        </li>
+
+                                
+                                
+
+                                
+                                
+                                    </ul>
+
+                            </div>
+                    </div>
+                </nav>
+        </div>
+
     </div>
+    
 
 
 
@@ -32,9 +78,19 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                 <div id="content" class="card p-0 p-md-4 wider">
                     
                     <div class="col-md-12">
+                                <div class="row btn-back" style="display:none;">
+
+                                    <div class="btn-group" style="float: right; margin-right:30px;">
+                                                    <!-- <button type="button" class="btn btn-warning filter" id="backbtn" onclick="window.location.href = 'data_comercialinvoice';">Kembali</button> -->
+                                                <div class="col-md-12 d-flex justify-content-end">
+                                                    <button type="button" id="backbtn" class="btn btn-large btn-warning" onclick="window.location.href = 'data_comercialinvoice';">Kembali</button>
+                                                    <!-- <button type="button" class="btn btn-large btn-warning"  id="backBtn">Kembali</button> -->
+                                                </div>
+                                    </div>
+                                </div>
                         <div class="row">
-                            <div class="col-md-12">
-                                <a href="javascript:void(0)" id="tambahComercialLocal" name="tambahButton" class="btn btn-large btn-primary btn-tambah">Add Commercial Invoice</a>
+                            <div class="col-md-12" id="div_tambahComercialQuestion" style="display:none;">
+                                <a href="javascript:void(0)" id="tambahComercialQuestion" name="tambahButton" class="btn btn-large btn-primary btn-tambah">Add Commercial Invoice</a>
                                 <div class="d-flex justify-content-end">
 
                                   
@@ -47,10 +103,14 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
 
                                     </div>
                                 </div>
+                                    
+                            </div>
+                            <div class="col-md-12">
+
                                 <ul id="tab-nav" class="nav nav-tabs fade show" style="display: none;">
                                     <li class="nav-item"><a class="nav-link active" href="#" id="master-tab">Master</a></li>
                                     
-                                    <li class="nav-item"><a class="nav-link" href="#" id="ekspedisi-tab">Ekspedisi</a></li>
+                                    <!-- <li class="nav-item"><a class="nav-link" href="#" id="ekspedisi-tab">Ekspedisi</a></li> -->
                                 </ul>
 
                             </div>
@@ -60,6 +120,11 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
 
 
                     </div>
+
+                  
+
+
+
                     <!-- Modal Filter-->
                     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
@@ -74,20 +139,21 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                 <div class="modal-body">
                                     <form id="dateForm">
                                         <div class="form-group">
-                                            <label for="enableDatepicker">Centang untuk Aktifkan Tanggal:</label>
+                                            <label for="checkdatevalue">Centang untuk Aktifkan Tanggal:</label>
                                             <input type="checkbox" id="checkdatevalue">
                                         </div>
                                         <div class="form-group">
-                                            <label for="startDatepicker">Pilih Periode Awal:</label>
+                                            <label for="tgl_awal">Pilih Periode Awal:</label>
                                             <input type="text" value="{{ $Data['msg']['tgl_awal'] }}" class="form-control" id="tgl_awal" disabled>
                                         </div>
                                         <div class="form-group">
-                                            <label for="endDatepicker">Pilih Periode Akhir:</label>
+                                            <label for="tgl_akhir">Pilih Periode Akhir:</label>
                                             <input type="text" value="{{ $Data['msg']['tgl_akhir'] }}" class="form-control" id="tgl_akhir" disabled>
                                         </div>
                                         
                                          <div class="form-group">
-                                            <label for="namabaranglabel">Nama Perusahaan</label>
+                                            <label for="id_nama_perusahaan">Nama Perusahaan</label>
+                                       
                                             <input type="text" class="form-control barang" placeholder="Nama Perusahaan" name="nama_barang" id="id_nama_perusahaan">
                                         </div>
                                         
@@ -105,11 +171,17 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                         </div>
                     </div>
 
-                    <div class="radio-button-container">
+                    <div class="radio-button-container" style="display:none;">
                         <label>
-                            <div class="color-box bg-light-yellow"></div>            <div class="color-box " id="color-list-order"></div>
+                            <div class="color-box " id="color-list-order"></div>
+                            <input type="radio" name="filter" value="order_pembelian" id="filter-status" {{ $Data['msg']['requested_check'] == 'order_pembelian' ? 'checked' : '' }}>
+                             Order Pembelian
+                            
+                        </label>
+                        <label>
+                            <div class="color-box bg-light-yellow"></div>
                             <input type="radio" name="filter" value="requested" id="filter-status" {{ $Data['msg']['requested_check'] == 'requested' ? 'checked' : '' }}>
-                            Requested & From Order Pembelian
+                            Requested
                             
                         </label>
                         <label>
@@ -134,123 +206,32 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                        
                     </div>
                     
-                    <div id="reload-icon">
-                        <i class="fas fa-sync-alt"></i> Reloading...
-                    </div>
-                  
-                        <table id="tabe-stok">
-                            <thead>
-                            
-                            </thead>
-                            <tbody>
-                                @php
-                                $num =1;
-                                $maxLengthSupplier = $Data['msg']['row_counts_supplier'];
-                                $maxLengthPenjualan = $Data['msg']['total_rows_penjualan'];
-                                $sumTot = $maxLengthSupplier + $maxLengthPenjualan;
-                                $listSupplier = $Data['msg']['grouped_by_supplier'];
-                                $penjualanData = $Data['msg']['penjualan'];
-                                @endphp
-                                @if($Data['msg']['requested_check'] == 'requested')    
-                                  @for ($i = 0; $i < $maxLengthSupplier; $i++)
+                        <div id="reload-icon">
+                            <i class="fas fa-sync-alt"></i> Reloading...
+                        </div>
+                        <div class="table-responsive">
+
+                            <table id="tabe-stok" style="display:none;">
+                                <thead>
+                                
+                                </thead>
+                                <tbody>
                                     @php
-                                        // Ambil nama supplier berdasarkan indeks
-                                        $supplierName = array_keys($listSupplier)[$i] ?? null;
-                                        $details = $supplierName ? $listSupplier[$supplierName] : [];
+                                    $num =1;
+                                    $maxLengthSupplier = $Data['msg']['row_counts_supplier'];
+                                    $maxLengthPenjualan = $Data['msg']['total_rows_penjualan'];
+                                    $sumTot = $maxLengthSupplier + $maxLengthPenjualan;
+                                    $listSupplier = $Data['msg']['grouped_by_supplier'];
+                                    $penjualanData = $Data['msg']['penjualan'];
                                     @endphp
-
-                                    @if ($supplierName)
-                                        <tr id="color-list-order">
-                                            <td>{{ $num }}</td>
-                                            <td id="td-2"></td>
-                                            <td id="td-2"></td>
-                                            <td id="td-2">{{ $supplierName }}</td>
-                                            <td id="td-2"></td>
-                                            <td id="td-2">{{ $details[0]['supplier_telp'] }}</td>
-                                            <td id="td-2"></td>
-                                            <td id="td-2"></td>
-                                            <td id="td-2"></td>
-                                            <td>
-                                                <a href="{{ route('admin.pembelian_add_comercial_invoice', ['name' => $supplierName]) }}" class="btn btn-info" style="width: 35px; height: 38px; padding: 9px 10px;" title="Add Comercial">+</a>
-                                            </td>
-                                        </tr>
-                                        @php
-                                            $num++;
-                                        @endphp
-                                    @endif
-                                  @endfor
-                                  @for ($i = 0; $i < $maxLengthPenjualan; $i++)
-                                    @if (isset($penjualanData[$i]))
-                                        @php
-                                        $data = $penjualanData[$i];
-                                        \Carbon\Carbon::setLocale('id'); // Set locale ke Bahasa Indonesia
-                                        $formattedDate = \Carbon\Carbon::parse($data['date'])->translatedFormat('d F Y');
-                                        $rowStyle = '';
-                                        if ($data['status'] == 'requested') {
-                                            $rowStyle = 'background-color: #fff17a;';
-                                        } elseif ($data['status'] == 'process') {
-                                            $rowStyle = 'background-color: #97ebfb;';
-                                        } elseif ($data['status'] == 'complete') {
-                                            $rowStyle = 'background-color: #6cf670;';
-                                        } elseif ($data['status'] == 'reject') {
-                                            $rowStyle = 'background-color: #feb3aa;';
-                                        }
-                                        @endphp
-                                        
-                                        <tr style="{{ $rowStyle }}">
-                                            <td id="td-1">{{ $num }}</td>
-                                            <td id="td-2">{{ $formattedDate }}</td>
-                                            <td id="td-2">INV-{{ $data['invoice_no'] }}</td>
-                                            <td id="td-2">{{ $data['supplier']['name'] }}</td>
-                                            <td id="td-2">{{ $data['supplier']['company'] }}</td>
-                                            @php
-                                            $total = 0;
-                                            $total_usd = 0;
-                                            foreach ($data['detail'] as $index_detail => $result) {
-                                                $total += $result['total_price_without_tax'];
-                                                $total_usd += $result['total_price_usd'];
-                                            }
-                                            @endphp
-                                            <td id="td-1">{{ $data['supplier']['telp'] }}</td>
-                                            <td id="td-1">{{ $data['matauang']['simbol'] }} {{ $data['matauang']['kode'] == 'USD' ? ($total_usd + $data['freight_cost'] + $data['insurance']) : ($total + $data['freight_cost'] + $data['insurance']) }}</td>
-                                            
-                                            
-                                            <td id="td-3">   
-                                                <select id="select_category_{{ $i }}" class="form-control select_select_category" data-id_commercial="{{ $data['id'] }}" style="background-color: white">
-                                                    <option value="0">Pilih Kategori</option>
-                                                    <option value="fcl" {{ $data['category_comercial_invoice'] == 'fcl' ? 'selected' : '' }}>FCL</option>
-                                                    
-                                                    
-                                                    
-                                                </select>
-                                            </td>
-                                           
-                                            <td id="td-2">
-                                                @if ($data['status'] == 'requested')
-                                                    <a href="javascript:void(0)" onclick="detailComercialInvoice(this)" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-info btn-light" style="width: 35px; height: 38px; padding: 9px 10px;" title="Detail Commercial Invoice"><i class="fas fa-eye"></i></a>
-                                                    <a href="javascript:void(0)" onclick="updateComercialInvoice(this)" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-info btn-edit" style="width: 35px; height: 38px; padding: 9px 10px;" title="Edit"><i class="fas fa-edit"></i></a>
-                                                @else
-                                                    <a href="javascript:void(0)" onclick="updateRestokFailed(this); return false;" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-info btn-edit" style="width: 35px; height: 38px; padding: 9px 10px;" title="Edit"><i class="fas fa-edit"></i></a>
-                                                @endif
-                                                
-                                                    <a href="javascript:void(0)" onclick="deleteComercialInvoice(this)" data-id="{{ $data['id'] }}" name="{{ $data['invoice_no'] }}" class="btn btn-large btn-info btn-danger" style="width: 35px; height: 38px; padding: 9px 10px;" title="Delet2e"><i class="fas fa-trash-alt"></i></a>
-                                            </td>
-                                            <td>
-                                            </td>
-                                        </tr>
-                                        @php
-                                        $num++;
-                                        @endphp
-                                    @endif
-                                  @endfor
-
-                            @else
-                                @for ($i = 0; $i < $maxLengthPenjualan; $i++)
-                                    @if (isset($penjualanData[$i]))
+                                @if($Data['msg']['requested_check'] == 'requested')    
+                                    
+                                    @for ($i = 0; $i < $maxLengthPenjualan; $i++)
+                                        @if (isset($penjualanData[$i]))
                                             @php
                                             $data = $penjualanData[$i];
                                             \Carbon\Carbon::setLocale('id'); // Set locale ke Bahasa Indonesia
-                                            $formattedDate = \Carbon\Carbon::parse($data['date'])->translatedFormat('d F Y');
+                                            $formattedDate = \Carbon\Carbon::parse($data['date'])->translatedFormat('d M Y');
                                             $rowStyle = '';
                                             if ($data['status'] == 'requested') {
                                                 $rowStyle = 'background-color: #fff17a;';
@@ -279,381 +260,152 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                                 @endphp
                                                 <td id="td-1">{{ $data['supplier']['telp'] }}</td>
                                                 <td id="td-1">{{ $data['matauang']['simbol'] }} {{ $data['matauang']['kode'] == 'USD' ? ($total_usd + $data['freight_cost'] + $data['insurance']) : ($total + $data['freight_cost'] + $data['insurance']) }}</td>
-                                                   
-                                            @if(!$data['fcl'])
-                                            <td id="td-3">LCL</td>
-                                            @else
-                                            <td id="td-3">FCL</td>
-                                            @endif
                                                 
+                                                
+                                                <td id="td-3">   
+                                                    <div class="custom-select-wrapper">
+                                                        <select id="select_category_{{ $i }}" class="form-control select_select_category" data-id_commercial="{{ $data['id'] }}">
+                                                            <option value="0">Pilih Kategori</option>
+                                                            <option value="fcl" {{ $data['category_comercial_invoice'] == 'fcl' ? 'selected' : '' }}>FCL</option>
+                                                            <option value="lcl" {{ $data['category_comercial_invoice'] == 'lcl' ? 'selected' : '' }}>LCL</option>
+                                                            <option value="local" {{ $data['category_comercial_invoice'] == 'local' ? 'selected' : '' }}>LOCAL</option>
+                                                        </select>
+                                                        <i class="fas fa-chevron-down dropdown-icon"></i> <!-- Ikon panah dari Font Awesome -->
+                                                    </div>
+                                                </td>
+                                            
                                                 <td id="td-2">
                                                     @if ($data['status'] == 'requested')
-                                                    <a href="javascript:void(0)" onclick="updateComercialInvoice(this)" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-info btn-edit" style="width: 35px; height: 38px; padding: 9px 10px;" title="Edit"><i class="fas fa-edit"></i></a>
+                                                        <a href="javascript:void(0)" onclick="detailComercialInvoice(this)" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-info btn-light" style="width: 35px; height: 38px; padding: 9px 10px;" title="Detail Commercial Invoice"><i class="fas fa-eye"></i></a>
+                                                        <a href="javascript:void(0)" onclick="updateComercialInvoice(this)" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-info btn-edit" style="width: 35px; height: 38px; padding: 9px 10px;" title="Edit"><i class="fas fa-edit"></i></a>
                                                     @else
-                                                    <a href="javascript:void(0)" onclick="updateRestokFailed(this); return false;" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-info btn-edit" style="width: 35px; height: 38px; padding: 9px 10px;" title="Edit"><i class="fas fa-edit"></i></a>
+                                                        <a href="javascript:void(0)" onclick="updateRestokFailed(this); return false;" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-info btn-edit" style="width: 35px; height: 38px; padding: 9px 10px;" title="Edit"><i class="fas fa-edit"></i></a>
                                                     @endif
-                                                    <a href="javascript:void(0)" onclick="rejectOrderPembelian(this)" data-id="{{ $data['id'] }}" name="{{ $data['invoice_no'] }}" class="btn btn-large btn-info btn-danger" style="width: 35px; height: 38px; padding: 9px 10px;" title="Reject Order"><i class="fas fa-times"></i></a>
-                                                    <a href="javascript:void(0)" onclick="deleteComercialInvoice(this)" data-id="{{ $data['id'] }}" name="{{ $data['invoice_no'] }}" class="btn btn-large btn-info btn-danger" style="width: 35px; height: 38px; padding: 9px 10px;" title="Delete5"><i class="fas fa-trash-alt"></i></a>
+                                                    
+                                                        <a href="javascript:void(0)" onclick="deleteComercialInvoice(this)" data-id="{{ $data['id'] }}" name="{{ $data['invoice_no'] }}" class="btn btn-large btn-info btn-danger" style="width: 35px; height: 38px; padding: 9px 10px;" title="Delete"><i class="fas fa-trash-alt"></i></a>
                                                 </td>
-                                                <td>
-                                                </td>
+                                            
                                             </tr>
                                             @php
                                             $num++;
                                             @endphp
-                                    @endif
-                                @endfor
-                            @endif
-                            </tbody>
-                        </table>
+                                        @endif
+                                    @endfor
+                                @elseif($Data['msg']['requested_check'] =='order_pembelian')
+                                    @for ($i = 0; $i < $maxLengthSupplier; $i++)
+                                        @php
+                                            // Ambil nama supplier berdasarkan indeks
+                                            $supplierName = array_keys($listSupplier)[$i] ?? null;
+                                            $details = $supplierName ? $listSupplier[$supplierName] : [];
+                                        @endphp
 
+                                        @if ($supplierName)
+                                            <tr id="color-list-order">
+                                                <td>{{ $num }}</td>
+                                                <td id="td-2"></td>
+                                                <td id="td-2"></td>
+                                                <td id="td-2">{{ $supplierName }}</td>
+                                                <td id="td-2"></td>
+                                                <td id="td-2">{{ $details[0]['supplier_telp'] }}</td>
+                                                <td id="td-2"></td>
+                                                <td id="td-2"></td>
+                                                
+                                                <td>
+                                                    <a href="{{ route('admin.pembelian_add_comercial_invoice_supplier', ['name' => $supplierName]) }}" class="btn btn-info" style="width: 35px; height: 38px; padding: 9px 10px;" title="Add Comercial">+</a>
+                                                </td>
+                                            </tr>
+                                            @php
+                                                $num++;
+                                            @endphp
+                                        @endif
+                                    @endfor
+                                @else
+                                    @for ($i = 0; $i < $maxLengthPenjualan; $i++)
+                                        @if (isset($penjualanData[$i]))
+                                                @php
+                                                $data = $penjualanData[$i];
+                                                \Carbon\Carbon::setLocale('id'); // Set locale ke Bahasa Indonesia
+                                                $formattedDate = \Carbon\Carbon::parse($data['date'])->translatedFormat('d F Y');
+                                                $rowStyle = '';
+                                                if ($data['status'] == 'requested') {
+                                                    $rowStyle = 'background-color: #fff17a;';
+                                                } elseif ($data['status'] == 'process') {
+                                                    $rowStyle = 'background-color: #97ebfb;';
+                                                } elseif ($data['status'] == 'complete') {
+                                                    $rowStyle = 'background-color: #6cf670;';
+                                                } elseif ($data['status'] == 'reject') {
+                                                    $rowStyle = 'background-color: #feb3aa;';
+                                                }
+                                                @endphp
+                                                
+                                                <tr style="{{ $rowStyle }}">
+                                                    <td id="td-1">{{ $num }}</td>
+                                                    <td id="td-2">{{ $formattedDate }}</td>
+                                                    <td id="td-2">INV-{{ $data['invoice_no'] }}</td>
+                                                    <td id="td-2">{{ $data['supplier']['name'] }}</td>
+                                                    <td id="td-2">{{ $data['supplier']['company'] }}</td>
+                                                    @php
+                                                    $total = 0;
+                                                    $total_usd = 0;
+                                                    foreach ($data['detail'] as $index_detail => $result) {
+                                                        $total += $result['total_price_without_tax'];
+                                                        $total_usd += $result['total_price_usd'];
+                                                    }
+                                                    @endphp
+                                                    <td id="td-1">{{ $data['supplier']['telp'] }}</td>
+                                                    <td id="td-1">{{ $data['matauang']['simbol'] }} {{ $data['matauang']['kode'] == 'USD' ? ($total_usd + $data['freight_cost'] + $data['insurance']) : ($total + $data['freight_cost'] + $data['insurance']) }}</td>
+                                                    
+                                                @if(!$data['fcl'])
+                                                <td id="td-3">LCL</td>
+                                                @else
+                                                <td id="td-3">FCL</td>
+                                                @endif
+                                                    
+                                                    <td id="td-2">
+                                                        <a href="javascript:void(0)" onclick="detailComercialInvoice(this)" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-info btn-light" style="width: 35px; height: 38px; padding: 9px 10px;" title="Detail Commercial Invoice"><i class="fas fa-eye"></i></a>
+                                                        @if ($data['status'] == 'requested')
+                                                        <a href="javascript:void(0)" onclick="updateComercialInvoice(this)" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-info btn-edit" style="width: 35px; height: 38px; padding: 9px 10px;" title="Edit"><i class="fas fa-edit"></i></a>
+                                                        @else
+                                                        <a href="javascript:void(0)" onclick="updateRestokFailed(this); return false;" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-info btn-edit" style="width: 35px; height: 38px; padding: 9px 10px;" title="Edit"><i class="fas fa-edit"></i></a>
+                                                        @endif
+                                                        
+                                                        <a href="javascript:void(0)" onclick="rejectOrderPembelian(this)" data-id="{{ $data['id'] }}" name="{{ $data['invoice_no'] }}" class="btn btn-large btn-info btn-danger" style="width: 35px; height: 38px; padding: 9px 10px;" title="Reject Order"><i class="fas fa-times"></i></a>
+                                                        <a href="javascript:void(0)" onclick="deleteComercialInvoice(this)" data-id="{{ $data['id'] }}" name="{{ $data['invoice_no'] }}" class="btn btn-large btn-info btn-danger" style="width: 35px; height: 38px; padding: 9px 10px;" title="Delete5"><i class="fas fa-trash-alt"></i></a>
+                                                    </td>
+                                                    
+                                                </tr>
+                                                @php
+                                                $num++;
+                                                @endphp
+                                        @endif
+                                    @endfor
+                                @endif
+                                </tbody>
+                            </table>
+                        </div>
 
+                        <!-- element untuk view edit  -->
+                        <div id="editFclContainer" class="col-sm-12" style="margin-top: 15px;display: none;">
+                                    <div class="row">
+                                        <div class="col-md-12">
+
+                                        <div class="btn-group" style="float: right;">
+                                            <button type="button" class="btn btn-warning filter" id="backbutton" onclick="location.reload();">Kembali</button>
+                                        </div>
+
+                                        </div>
+                                    </div>
+                            <form action=""id="Formedit"></form>
+                    
+                        </div>
                   
                     
-                    <!-- modal tambah commercial invoice -->
-                    <!-- <div class="col-sm-12" style="margin-top: 15px;">
-                        
-              
-
-                        <div class="modal fade" id="tambahModal" tabindex="-1" role="dialog" aria-labelledby="tambahModal" aria-hidden="true">
-                           <div class="modal-dialog" role="document" style="max-width: 2200px;padding-left: 250px;">
-
-                                <div class="modal-content">
-                                    
-                                    <div class="modal-header">
-                                        
-                                       <h5 class="modal-title" id="exampleModalLabel">Tambah Comercial Invoice</h5>
-
-                                    </div>
-                                    
-                                    <div class="modal-body">
-                                        
-                                        <form id="FormTambah">
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div style="position: relative; width: 100%;">
-                                                    <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Custom Kode</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div style="position: relative; width: 100%;">
-                                                        <input type="checkbox" id="customCodeCheckbox_modal" class="styled customcode_modal">
-                                                        <input type="hidden" name="modeadmin_tambah_modal" value="0">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4" style="text-align: right;">
-                                                <a href="javascript:void(0)" onclick="importData(event)" name="importButton" class="btn btn-large btn-info btn-edit" style="width: 140px; height: 38px; padding: 9px 10px;">Import Data </a>
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div style="position: relative; width: 100%;">
-                                                    <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Invoice Number</label>
-                                                    <input type="number" class="form-control" name="invoice_no_tambah_modal" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;" placeholder="AUTO" disabled>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div style="position: relative; width: 100%;">
-                                                    <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Contract Number</label>
-                                                    <input type="number" class="form-control" name="contract_no_tambah_modal" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;" placeholder="AUTO" disabled>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div style="position: relative; width: 100%;">
-                                                    <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Packing Number</label>
-                                                    <input type="number" class="form-control" name="packing_no_tambah_modal" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;" placeholder="AUTO" disabled>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-2">
-                                                    <div style="position: relative; width: 100%; margin-top:10px;">
-                                                        <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Database <span style="color: red;">(Wajib Diisi)</span></label>
-                                                        
-                                                        <select style="border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control database-tambah" id="database_tambah_id" name="database_tambah_name" required>
-                                                            <option value="">Database</option>
-                                                            <option value="PT">PT</option>
-                                                            <option value="UD">UD</option>
-                                                        </select>
-
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-10">
-                                                    <div class="form-group" style="margin-top:10px;">
-                                                        <label for="startDateTglRequest">Tanggal Request <span style="color: red;">(Wajib Diisi)</span></label>
-                                                        <input type="text" style="height:55px;" class="form-control custom-border" id="tgl_request_tambah" name="tgl_request" placeholder= "Pilih Tanggal" required >
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group" style="margin-bottom: 20px;margin-top: 10px;">
-                                                    <label class="col-lg-3 control-label" style="font-size: 15px;width: 100%">Supplier <span style="color: red;">(Wajib Diisi)</span></label>
-
-                                                    <select class="select select2 select-search form-control" id="product-supplier-edit-filter" name="tambah_supplier">
-                                                    <option value="">Supplier</option>
-                                                    @foreach($Data['msg']['supplier'] as $index => $supplier)
-                                                    <option value="{{ $supplier['id'] }}">{{ $supplier['name'] }}</option>
-                                                    @endforeach
-                                                    
-                                                </select>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                        <div style="position: relative; width: 100%;">
-                                                            <label class="col-lg-3 control-label" style="font-size: 15px;width: 100%;width: 100%" for="">Nama Perusahaan <span style="color: red;">(Wajib Diisi)</span></label>
-                                                            <input type="text" class="form-control" name="company_name" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;" placeholder="Nama Perusahaan">
-                                                        </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div style="position: relative; width: 100%;">
-                                                        <label class="col-lg-3 control-label" style="font-size: 15px;width: 100%" for="">Alamat Perusahaan</label>
-                                                        <textarea type="text" class="form-control" name="address_company" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;" placeholder="Alamat Perusahaan"></textarea>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div style="position: relative; width: 100%;">
-                                                        <label class="col-lg-3 control-label" style="font-size: 15px;width: 100%" for="">Kota Perusahaan</label>
-                                                        <input type="text" class="form-control" name="city_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;" placeholder="Kota Perusahaan">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            
-                                            
-
-                                            
-
-                                           
-
-
-                                        </form>
-
-                                        <form action="" class="form-horizontal" id="sendImportForm" method="get">
-                                            @csrf
-                                            <div style="margin-top:20px;position: relative; width: 100%;">
-                                                 <div id="content-container2"></div>
-                                                 <div id="content-container3"></div>
-                                             </div>
-                                        </form>
-
-                                        <form action="" class="form-horizontal" id="FormTambah2" method="get">
-                                            @csrf
-                                           
-
-                                            
-                                            
-                                            <div class="form-group" style="padding-top: 100px; padding-left: 20px;">
-                                                <h4>NOTES</h4>
-                                                <hr style="border: none; border-top: 1px solid #000; margin-top: 20px;">
-                                            </div>
-
-                                            <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                
-                                                <div class="row">
-                                                    <div style="padding-top: 15px;" class="col-md-1">
-                                                        <label for="kodebaranglabel">Incoterms</label>
-                                            
-                                                    </div>
-                                                    <div class="col-md-11" style="padding-right: 600px;">
-                                                        <select style="border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control incoterms-tambah" id="incoterms-tambah-id" name="incoterms_tambah">
-                                                            <option value="">Select Incoterms</option>
-                                                                <option value="FOB">FOB </option>
-                                                                <option value="CIF">CIF </option>
-                                                                <option value="EXWORK">EXWORK </option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                
-                                            </div>
-
-                                            <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                
-                                                <div class="row">
-                                                    <div style="padding-top: 10px;" class="col-md-1">
-                                                        <label for="kodebaranglabel">Location</label>
-                                            
-                                                    </div>
-                                                    <div class="col-md-11" style="padding-right: 600px;">
-                                                        <input type="text" class="form-control custom-border" style="border: 1px solid #ced4da;padding-left:10px;" id="location_id_tab" name="location_name_tab" placeholder="Location">
-                                                    </div>
-                                                </div>
-                                                
-                                            </div>
-
-                                            <div class="form-group" style="padding-top: 100px; padding-left: 20px;">
-                                                <h4>PAYMENT</h4>
-                                                <hr style="border: none; border-top: 1px solid #000; margin-top: 20px;">
-                                            </div>
-
-                                            <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                
-                                                <div class="row">
-                                                    <div style="padding-top: 15px;" class="col-md-1">
-                                                        <label for="kodebaranglabel">Bank Supplier</label>
-                                            
-                                                    </div>
-                                                    <div class="col-md-11" style="padding-right: 600px;">
-                                                        <select style="border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control banksupplier-tambah" id="banksupplier-tambah-id" name="banksupplier_edit">
-                                                                <option value="0">Pilih Bank Supplier</option>
-                                                            
-
-                                                                <option value=""></option>
-
-                                                            
-
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                
-                                            </div>
-
-                                            <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                
-                                                <div class="row">
-                                                    <div style="padding-top: 15px;" class="col-md-1">
-                                                        <label for="kodebaranglabel">Currency</label>
-                                            
-                                                    </div>
-                                                    <div class="col-md-11" style="padding-right: 600px;">
-                                                        <select style="border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control currency-tambah" id="currency-tambah-id" name="currency_tambah">
-                                                                <option value="0">Pilih Currency</option>
-                                                                
-                                                                @foreach($Data['msg']['matauang'] as $index => $mt_uang)    
-                                                                <option value="{{ $mt_uang['id'] }}"> ({{ $mt_uang['simbol'] }}) {{ $mt_uang['kode'] }} - {{ $mt_uang['name'] }} </option>
-                                                                @endforeach
-                                                                
-                                                            
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                
-                                            </div>
                 
-                                            <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                
-                                                <div class="row">
-                                                    <div style="padding-top: 10px;" class="col-md-1">
-                                                        <label for="kodebaranglabel">Bank Name</label>
-                                            
-                                                    </div>
-                                                    <div class="col-md-11" style="padding-right: 600px;">
-
-
-                                                        <input type="text" class="form-control custom-border" id="bank_name_id_tab" name="bank_name_name_tab" style="border: 1px solid #ced4da; width: 100%; padding-left:10px;" placeholder="Bank Name">
-
-                                                    </div>
-                                                </div>
-                                                
-                                            </div>
-
-                                            <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                
-                                                <div class="row">
-                                                    <div style="padding-top: 10px;" class="col-md-1">
-                                                        <label for="kodebaranglabel">Bank Address</label>
-                                            
-                                                    </div>
-                                                    <div class="col-md-11" style="padding-right: 600px;">
-
-
-                                                        <input type="text" class="form-control custom-border" style="border: 1px solid #ced4da; width: 100%; padding-left:10px;" id="bankAddress_id_tab_tambah" name="bankAddress_name_tab_tambah" placeholder="Bank Address">
-
-                                                    </div>
-                                                </div>
-                                                
-                                            </div>
-
-                                            <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                
-                                                <div class="row">
-                                                    <div style="padding-top: 10px;" class="col-md-1">
-                                                        <label for="kodebaranglabel">Swift Code</label>
-                                            
-                                                    </div>
-                                                    <div class="col-md-11" style="padding-right: 600px;">
-
-
-                                                        <input type="text" class="form-control custom-border" style="border: 1px solid #ced4da; width: 100%; padding-left:10px;" id="swiftCode_id_tab_tambah" name="swiftCode_name_tab_tambah" placeholder="Swift Code">
-
-                                                    </div>
-                                                </div>
-                                                
-                                            </div>
-
-                                            <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                
-                                                <div class="row">
-                                                    <div style="padding-top: 10px;" class="col-md-1">
-                                                        <label for="kodebaranglabel">Account No</label>
-                                            
-                                                    </div>
-                                                    <div class="col-md-11" style="padding-right: 600px;">
-
-
-                                                        <input type="text" class="form-control custom-border" id="accountNo_id_tab_tambah" name="accountNo_name_tab_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left:10px;" placeholder="Account No">
-
-                                                    </div>
-                                                </div>
-                                                
-                                            </div>
-
-                                            <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                
-                                                <div class="row">
-                                                    <div style="padding-top: 10px;" class="col-md-1">
-                                                        <label for="kodebaranglabel">Beneficiary Name</label>
-                                            
-                                                    </div>
-                                                    <div class="col-md-11" style="padding-right: 600px;">
-
-
-                                                        <input type="text" class="form-control custom-border" id="beneficiaryName_id_tab_tambah" name="beneficiaryName_name_tab_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left:10px;"placeholder="Beneficiary Name">
-
-                                                    </div>
-                                                </div>
-                                                
-                                            </div>
-
-                                            <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                
-                                                <div class="row">
-                                                    <div style="padding-top: 10px;" class="col-md-1">
-                                                        <label for="kodebaranglabel" style="width: 100%;">Beneficiary Address</label>
-                                            
-                                                    </div>
-                                                    <div class="col-md-11" style="padding-right: 600px;">
-
-
-                                                        <input type="text" class="form-control custom-border" id="beneficiaryAddress_id_tab_tambah" name="beneficiaryAddress_name_tab_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left:10px;" placeholder="Beneficiary Address">
-
-                                                    </div>
-                                                </div>
-                                                
-                                            </div>
-
-                                            <div class="form-group" style="display: flex;padding-top:30px; text-align:end;">
-                                                <button type="button" id="submitButtonForm2" class="btn btn-primary" style="margin-left: auto;">Simpan</button>
-                                            </div>
-                                        </form>
-
-                                    </div>
-                                    <div class="modal-footer">
-                                        
-                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="window.location.href = '{{ route('admin.pembelian_comercial_invoice') }}'">Close</button>
-
-                                    </div>
-
-
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
 
                     <!-- modal edit commercial invoice -->
                     <div id="editcomercial" class="col-sm-12" style="margin-top: 15px;">
                         <div id="overlay" style="display: none;"></div>
-                        <!-- <div id="tabe-stok"></div> -->
+                        
 
                         <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
                            <div class="modal-dialog" role="document" style="max-width: 2200px;padding-left: 250px;">
@@ -668,7 +420,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                     <!-- Isi modal -->
                                     <div class="modal-body">
                                         
-                                        <form id="Formedit">
+                                        <form id="Formedit2">
 
                                         </form>
                                         
@@ -686,224 +438,131 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                     
                     <!-- view tambah comercial invoice kategori local -->
                     <div id="addcomerialinvoicelocal" style="display: none;" class="col-sm-12" style="margin-top: 15px;">
+                                    
+                                    <!-- modal import data barang -->
+                                    <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="modalLabel">Import From Order Pembelian</h5>
+                                                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                    
+                                                </div>
+                                                <div class="modal-body">
+                                                            <div class="table-responsive">
 
-                                              
-
-                                    <!--<form action="" class="form-horizontal" id="sendImportForm" method="get">
-                                                                    @csrf
-                                                                    <div style="margin-top:20px;position: relative; width: 100%;">
-                                                                        <div id="content-container2"></div>
-                                                                        <div id="content-container3"></div>
-                                                                    </div>
-                                    </form>
-
-                                    <form action="" class="form-horizontal" id="FormTambah2" method="get">
-                                                                    @csrf
-                                                                
-
-                                                                    
-                                                                    
-                                                                    <div class="form-group" style="padding-top: 100px; padding-left: 20px;">
-                                                                        <h4>NOTES</h4>
-                                                                        <hr style="border: none; border-top: 1px solid #000; margin-top: 20px;">
-                                                                    </div>
-
-                                                                    <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                                        
-                                                                        <div class="row">
-                                                                            <div style="padding-top: 15px;" class="col-md-1">
-                                                                                <label for="kodebaranglabel">Incoterms</label>
-                                                                    
-                                                                            </div>
-                                                                            <div class="col-md-11" style="padding-right: 600px;">
-                                                                                <select style="border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control incoterms-tambah" id="incoterms-tambah-id" name="incoterms_tambah">
-                                                                                    <option value="">Select Incoterms</option>
-                                                                                        <option value="FOB">FOB </option>
-                                                                                        <option value="CIF">CIF </option>
-                                                                                        <option value="EXWORK">EXWORK </option>
-                                                                                </select>
-                                                                            </div>
-                                                                        </div>
-                                                                        
-                                                                    </div>
-
-                                                                    <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                                        
-                                                                        <div class="row">
-                                                                            <div style="padding-top: 10px;" class="col-md-1">
-                                                                                <label for="kodebaranglabel">Location</label>
-                                                                    
-                                                                            </div>
-                                                                            <div class="col-md-11" style="padding-right: 600px;">
-                                                                                <input type="text" class="form-control custom-border" style="border: 1px solid #ced4da;padding-left:10px;" id="location_id_tab" name="location_name_tab" placeholder="Location">
-                                                                            </div>
-                                                                        </div>
-                                                                        
-                                                                    </div>
-
-                                                                    <div class="form-group" style="padding-top: 100px; padding-left: 20px;">
-                                                                        <h4>PAYMENT</h4>
-                                                                        <hr style="border: none; border-top: 1px solid #000; margin-top: 20px;">
-                                                                    </div>
-
-                                                                    <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                                        
-                                                                        <div class="row">
-                                                                            <div style="padding-top: 15px;" class="col-md-1">
-                                                                                <label for="kodebaranglabel">Bank Supplier</label>
-                                                                    
-                                                                            </div>
-                                                                            <div class="col-md-11" style="padding-right: 600px;">
-                                                                                <select style="border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control banksupplier-tambah" id="banksupplier-tambah-id" name="banksupplier_edit">
-                                                                                        <option value="0">Pilih Bank Supplier</option>
-                                                                                    
-                                                                                        
-                                                                                        <option value=""></option>
-                                                                                        
-
-                                                                                    
-
-                                                                                </select>
-                                                                            </div>
-                                                                        </div>
-                                                                        
-                                                                    </div>
-
-                                                                    <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                                        
-                                                                        <div class="row">
-                                                                            <div style="padding-top: 15px;" class="col-md-1">
-                                                                                <label for="kodebaranglabel">Currency</label>
-                                                                    
-                                                                            </div>
-                                                                            <div class="col-md-11" style="padding-right: 600px;">
-                                                                                <select style="border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control currency-tambah" id="currency-tambah-id" name="currency_tambah">
-                                                                                        <option value="0">Pilih Currency</option>
-                                                                                        
-                                                                                        @foreach($Data['msg']['matauang'] as $index => $mt_uang)    
-                                                                                        <option value="{{ $mt_uang['id'] }}"> ({{ $mt_uang['simbol'] }}) {{ $mt_uang['kode'] }} - {{ $mt_uang['name'] }} </option>
+                                                            
+                                                                <table id="table-tambah-comercial-invoice" class="table table-striped">
+                                                                        <thead>
+                                                                            <div class="row mb-2">
+                                                                                <div class="col-md-3">
+                                                                                    <label>
+                                                                                        <input type="checkbox" id="filterChecked"> Show only checked
+                                                                                    </label>
+                                                                                </div>
+                                                                                <div class="col-md-3">
+                                                                                    <select id="filter-select" class="form-control select-supplier-tambah">
+                                                                                        <option value="">Supplier</option>
+                                                                                        @foreach(array_unique(array_column($Data['msg']['supplier'], 'name')) as $supplier)
+                                                                                        <option value="{{ $supplier }}">{{ $supplier }}</option>
                                                                                         @endforeach
-                                                                                        
+                                                                                    </select>
+                                                                                </div>
+
+                                                                                <div class="col-md-3" id="id-search">
+                                                                                    <label for="search-box">
+                                                                                        Search:
+                                                                                    </label>
+                                                                                </div>
+                                                                                <div class="col-md-3">
+                                                                                    <input type="text" id="search-box" class="form-control d-inline-block w-round" placeholder="Cari...">
+                                                                                </div>
+                                                                            </div>
+                                                                            <tr>
+                                                                                <th scope="col">#</th>
+                                                                                <th scope="col">Image</th>
+                                                                                <th scope="col">Kode</th>
+                                                                                <th scope="col">Nama</th>
+                                                                                <th scope="col">Jml Permintaan</th>
+                                                                                <th scope="col">Supplier</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            @php
+                                                                            $number =0;
+                                                                            $number2 =0;
+                                                                            @endphp
+                                                                        
+
+                                                                            @foreach($Data['msg']['listorder'] as $index => $result)
+                                                                            @php
+                                                                            $number2++;
+
+                                                                            @endphp
+                                                                            <form action="" class="form-horizontal" id="importBarang" method="get">
+                                                                                @csrf
+                                                                                
+                                                                                <tr>
+                                                                                    <td style="border: 1px solid #d7d7d7; color: black; text-align: center;">
                                                                                     
-                                                                                </select>
-                                                                            </div>
-                                                                        </div>
+                                                                                
+                                                                                    
+                                                                                    
+                                                                                    <input type="checkbox" class="kubik-checkbox-tambah" name="checkbox_{{ $number2 }}" data-supplier-name="{{ $result['supplier_name'] }}">
+                                                                                    <input type="hidden" class="form-control restok-input-tambah" name="id_restok_{{ $number2 }}" value="{{ $result['restok_id'] }}">
+                                                                                            
+                                                                                    </td>
+                                                                                    <td style="max-width: 200px;white-space: normal; word-wrap: break-word;"><img src="{{ $Data['msg']['directory_gambar'] }}{{ $result['image'] }}" style="width:200px; height:200px;"></td>
+                                                                                    <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $result['new_kode'] }}</td>
+                                                                                    <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $result['name'] }}</td>
+                                                                                    <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $result['jml_permintaan'] }}</td>
+                                                                                    <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $result['supplier_name'] }}</td>
+                                                                                    
+                                                                                </tr>
+                                                                                
+                                                                            </form>
+                                                                        @endforeach
                                                                         
-                                                                    </div>
-                                        
-                                                                    <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                                        
-                                                                        <div class="row">
-                                                                            <div style="padding-top: 10px;" class="col-md-1">
-                                                                                <label for="kodebaranglabel">Bank Name</label>
+                                                                        </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div style="text-align:right; margin-top: 30px;">
                                                                     
-                                                                            </div>
-                                                                            <div class="col-md-11" style="padding-right: 600px;">
+                                                                    <button type="button" id="sendImportBarang" class="btn btn-primary" style="margin-left: auto;">Simpan</button>
+                                                            </div>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                   
+                                    <!-- button add import data -->
+                                    <div class="row" id="padding-top">
+                                        <div class="col-md-12 d-flex justify-content-end">
+                                            <button type="button" id="importData" class="btn btn-large btn-info">Import Data</button>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                                    <div class="col-md-12">
 
+                                                        <div class="btn-group" style="float: right; margin-right:30px;">
+                                                            <button type="button" class="btn btn-warning filter" id="clearFilterBtn" onclick="window.location.href = 'data_comercialinvoice';">Kembali</button>
 
-                                                                                <input type="text" class="form-control custom-border" id="bank_name_id_tab" name="bank_name_name_tab" style="border: 1px solid #ced4da; width: 100%; padding-left:10px;" placeholder="Bank Name">
+                                                        </div>
 
-                                                                            </div>
-                                                                        </div>
-                                                                        
-                                                                    </div>
-
-                                                                    <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                                        
-                                                                        <div class="row">
-                                                                            <div style="padding-top: 10px;" class="col-md-1">
-                                                                                <label for="kodebaranglabel">Bank Address</label>
-                                                                    
-                                                                            </div>
-                                                                            <div class="col-md-11" style="padding-right: 600px;">
-
-
-                                                                                <input type="text" class="form-control custom-border" style="border: 1px solid #ced4da; width: 100%; padding-left:10px;" id="bankAddress_id_tab_tambah" name="bankAddress_name_tab_tambah" placeholder="Bank Address">
-
-                                                                            </div>
-                                                                        </div>
-                                                                        
-                                                                    </div>
-
-                                                                    <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                                        
-                                                                        <div class="row">
-                                                                            <div style="padding-top: 10px;" class="col-md-1">
-                                                                                <label for="kodebaranglabel">Swift Code</label>
-                                                                    
-                                                                            </div>
-                                                                            <div class="col-md-11" style="padding-right: 600px;">
-
-
-                                                                                <input type="text" class="form-control custom-border" style="border: 1px solid #ced4da; width: 100%; padding-left:10px;" id="swiftCode_id_tab_tambah" name="swiftCode_name_tab_tambah" placeholder="Swift Code">
-
-                                                                            </div>
-                                                                        </div>
-                                                                        
-                                                                    </div>
-
-                                                                    <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                                        
-                                                                        <div class="row">
-                                                                            <div style="padding-top: 10px;" class="col-md-1">
-                                                                                <label for="kodebaranglabel">Account No</label>
-                                                                    
-                                                                            </div>
-                                                                            <div class="col-md-11" style="padding-right: 600px;">
-
-
-                                                                                <input type="text" class="form-control custom-border" id="accountNo_id_tab_tambah" name="accountNo_name_tab_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left:10px;" placeholder="Account No">
-
-                                                                            </div>
-                                                                        </div>
-                                                                        
-                                                                    </div>
-
-                                                                    <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                                        
-                                                                        <div class="row">
-                                                                            <div style="padding-top: 10px;" class="col-md-1">
-                                                                                <label for="kodebaranglabel">Beneficiary Name</label>
-                                                                    
-                                                                            </div>
-                                                                            <div class="col-md-11" style="padding-right: 600px;">
-
-
-                                                                                <input type="text" class="form-control custom-border" id="beneficiaryName_id_tab_tambah" name="beneficiaryName_name_tab_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left:10px;"placeholder="Beneficiary Name">
-
-                                                                            </div>
-                                                                        </div>
-                                                                        
-                                                                    </div>
-
-                                                                    <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                                        
-                                                                        <div class="row">
-                                                                            <div style="padding-top: 10px;" class="col-md-1">
-                                                                                <label for="kodebaranglabel" style="width: 100%;">Beneficiary Address</label>
-                                                                    
-                                                                            </div>
-                                                                            <div class="col-md-11" style="padding-right: 600px;">
-
-
-                                                                                <input type="text" class="form-control custom-border" id="beneficiaryAddress_id_tab_tambah" name="beneficiaryAddress_name_tab_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left:10px;" placeholder="Beneficiary Address">
-
-                                                                            </div>
-                                                                        </div>
-                                                                        
-                                                                    </div>
-
-                                                                    <div class="form-group" style="display: flex;padding-top:30px; text-align:end;">
-                                                                        <button type="button" id="submitButtonForm2" class="btn btn-primary" style="margin-left: auto;">Simpan</button>
-                                                                    </div>
-                                    </form>        -->
+                                                    </div>
+                                    </div>
+                                    
 
                                     <div class="row" id="row-supplier">
                                         <form id="FormTambah">
                                             <div class="row">
                                                 <div class="col-md-4">
                                                     <div style="position: relative; width: 100%;">
-                                                        <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Custom Kode</label>
+                                                        <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="customCodeCheckbox">Custom Kode</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
@@ -918,19 +577,19 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                             <div class="row">
                                                 <div class="col-md-4">
                                                     <div style="position: relative; width: 100%;">
-                                                        <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Invoice Number</label>
+                                                        <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="invoice_no_tambah">Invoice Number</label>
                                                         <input type="number" class="form-control" id="invoice_no_tambah" name="invoice_no_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;" placeholder="AUTO" disabled>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div style="position: relative; width: 100%;">
-                                                        <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Contract Number</label>
+                                                        <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="contract_no_tambah">Contract Number</label>
                                                         <input type="number" class="form-control" id="contract_no_tambah" name="contract_no_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;" placeholder="AUTO" disabled>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div style="position: relative; width: 100%;">
-                                                        <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Packing Number</label>
+                                                        <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="packing_no_tambah">Packing Number</label>
                                                         <input type="number" class="form-control" id="packing_no_tambah" name="packing_no_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;" placeholder="AUTO" disabled>
                                                     </div>
                                                 </div>
@@ -947,11 +606,11 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                             <div class="row" id="padding-top">
                                                 <div class="col-md-3">
 
-                                                    <label id="label" for="">Database <span style="color:red">*</span></label>
+                                                    <label for="database_tambah_id">Database <span style="color:red">*</span></label>
                                                 </div>
                                                 <div class="col-md-9">
 
-                                                        <select style="border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control database-tambah" id="database_tambah_id" name="database_tambah_name" required>
+                                                        <select style="border: 1px solid #696868; color: black; padding: 10px; width:100%" class="form-control database-tambah" id="database_tambah_id" name="database_tambah_name" required>
                                                                                     <option value="">Database</option>
                                                                                     <option value="PT">PT</option>
                                                                                     <option value="UD">UD</option>
@@ -964,13 +623,15 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                         <div class="col-md-6" id="col-supplier">
                                             <div class="row" id="padding-top">
                                                 <div class="col-md-3">
-                                                    <label id="label" for="">Supplier <span style="color:red">*</span></label>
+                                                    <label id="label" class="supplier_label" for="select_supplier">Supplier <span style="color:red">*</span></label>
                                                 </div>
                                                 <div class="col-md-9">
-
-                                                    <select class="form-control pilih-supplier" style="width: 100%;" name="supplier_select" id="select_supplier">
+                                                    <label for="" class="select_supplier_label"></label>
+                                                    <select class="form-control pilih-supplier" style="width: 100%; display: none;" name="supplier_select" id="select_supplier">
                                                         <option value="">Pilih Supplier</option>
-
+                                                        @foreach($Data['msg']['supplier'] as $index_supplier => $result_supplier)
+                                                        <option value="{{ $result_supplier['id'] }}">{{ $result_supplier['name'] }}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
                                             </div>
@@ -985,11 +646,11 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                                                         <div class="col-md-6">
                                                                             <div class="row" id="padding-top">
                                                                                 <div class="col-md-3">
-                                                                                    <label class="col-lg-3 control-label" style="font-size: 15px;width: 100%;width: 100%" for="">Nama Perusahaan <span style="color:red">*</span></label>
+                                                                                    <label class="col-lg-3 control-label" style="font-size: 15px;width: 100%;width: 100%" for="company-name">Nama Perusahaan <span style="color:red">*</span></label>
                                                                                 </div>
                                                                                 <div class="col-md-9">
-
-                                                                                    <input type="text" class="form-control" id="company-name" name="company_name" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;" value="">
+                                                                                    <label for="label_name_company" id="label_name_company"></label>
+                                                                                    <input type="hidden" class="form-control" id="company-name" name="company_name" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;" value="">
                                                                                 </div>
                                                                                 
                                                                             </div>
@@ -997,15 +658,15 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                                                         <div class="col-md-6">
                                                                             <div class="row" id="padding-top">
                                                                                 <div class="col-md-3">
-
-                                                                                    <label class="col-lg-3 control-label" style="font-size: 15px;width: 100%" for="">Alamat Perusahaan</label>
+                                                                                    <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="address_company">Alamat Perusahaan</label>
                                                                                 </div>
                                                                                 <div class="col-md-9">
-
-                                                                                    <textarea type="text" class="form-control" id="address_company" name="address_company" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;" ></textarea>
+                                                                                    <label for="label_name_address" id="label_name_address"></label>
+                                                                                    <textarea class="form-control" id="address_company" name="address_company" style="display: none; border: 1px solid #ced4da; width: 100%; padding-left:20px;"></textarea>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
+
                                                                        
                                     </div>
                                     
@@ -1016,20 +677,20 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                                             <label class="col-lg-3 control-label" style="font-size: 15px;width: 100%" for="">Kota Perusahaan</label>
                                                         </div>
                                                         <div class="col-md-9">
-                                                            
-                                                            <input type="text" class="form-control" id="city" name="city" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;" placeholder="Kota Perusahaan">
+                                                            <label for="label_city" id="label_city"></label>
+                                                            <input type="hidden" class="form-control" id="city" name="city" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;" placeholder="Kota Perusahaan">
                                                         </div>                                                            
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="row" id="padding-top">
-                                                        <div class="col-md-3">
+                                                        <div class="col-md-6">
 
                                                             <label class="col-lg-3 control-label" style="font-size: 15px;" for="">No. Telp</label>
                                                         </div>
-                                                        <div class="col-md-9">
-
-                                                            <input type="number" class="form-control" id="telp" name="telp" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;width: 100%" placeholder="Telp. Perusahaan">
+                                                        <div class="col-md-6">
+                                                            <label for="label_telp" id="label_telp"></label>
+                                                            <input type="hidden" class="form-control" id="telp" name="telp" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;width: 100%" placeholder="Telp. Perusahaan">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1042,7 +703,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                                 <div class="row" id="padding-top">
                                                     <div class="col-md-3">
                                                         
-                                                        <label id="label" for="">No. Referensi</label>
+                                                        <label id="label" for="input-input">No. Referensi</label>
                                                     </div>
                                                     <div class="col-md-9">
 
@@ -1054,10 +715,10 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                         <div class="col-md-6" id="col-select">
                                             <div class="row" id="padding-top">
                                                 <div class="col-md-3">
-                                                <label id="label" for="">Mata Uang</label>
+                                                <label id="label" for="select_matauang">Mata Uang</label>
                                                 </div>
                                                 <div class="col-md-9">
-
+                                                    <!-- yg digunakan class untuk select2 -->
                                                     <select name="select_namematauang" class="form-control pilih-matauang" style="width:100%;" id="select_matauang">
 
                                                             <option value="">Pilih Mata Uang</option>
@@ -1077,7 +738,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                                 <div class="row" id="padding-top">
                                                     <div class="col-md-3">
                                                         
-                                                        <label id="label" for="">Tanggal Transaksi <span style="color:red">*</span></label>
+                                                        <label id="label" for="tgl_request">Tanggal Transaksi <span style="color:red">*</span></label>
                                                     </div>
                                                     <div class="col-md-9">
 
@@ -1089,14 +750,14 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                         <div class="col-md-6" id="col-select">
                                             <div class="row" id="padding-top">
                                                 <div class="col-md-3">
-                                                    <label id="label" for="">Kategori</label>
+                                                    <label id="label" for="banksupplier-tambah-id">Bank Supplier</label>
                                                 </div>
                                                 <div class="col-md-9">
-                                                    <select name="" id="kategori_local">
-                                                        <option value="">Pilih Kategori</option>
-                                                        <option value="lcl">LCL</option>
-                                                        <option value="local">LOCAL</option>
-                                                    </select>
+                                                        <select style="border: 1px solid #696868; color: black; padding: 10px;" 
+                                                                                        class="select select2 select-search form-control banksupplier-tambah" 
+                                                                                        id="banksupplier-tambah-id" name="banksupplier_edit">
+                                                                <option value="0">Pilih Bank Supplier</option>
+                                                        </select>
                                                 </div>
                                             </div>
                                         </div>
@@ -1108,7 +769,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                                 <div class="row" id="padding-top">
                                                     <div class="col-md-2">
                                                         
-                                                        <label id="label" for="">Termin <span style="color:red">*</span></label>
+                                                        <label id="label" for="select_termin_cash">Termin <span style="color:red">*</span></label>
                                                     </div>
                                                     <div class="col-md-3">
 
@@ -1166,7 +827,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
 
                                     <div class="row" id="padding-top">
                                         <div class="col-md-6">
-                                            <div class="row">
+                                            <div class="row div-bebas">
                                                 <div class="col-md-3">
                                                     <label for="">Item</label>
                                                 </div>
@@ -1215,14 +876,31 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                                     </div>
                                                 </div>
                                             </div>
+                                            
+                                            <div class="form-group" id="padding-top">
+                                                <div class="row">
+                                                    <div class="col-12 col-md-3">
+                                                        <label for="select_incoterms">Incoterms</label>
+                                                    </div>
+                                                    <div class="col-12 col-md-9">
+                                                        <select class="form-control pilih-incoterms" style="width:100%;" name="" id="select_incoterms">
+                                                            <option value="">Pilih Incoterms</option>
+                                                            <option value="FOB">FOB</option>
+                                                            <option value="CIF">CIF</option>
+                                                            <option value="EXWORK">EXWORK</option>
+                                                          
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
 
                                             <div class="form-group" id="padding-top">
                                                 <div class="row">
                                                     <div class="col-12 col-md-3">
-                                                        <label for="text_area">Location</label>
+                                                        <label for="input-input">Location</label>
                                                     </div>
                                                     <div class="col-12 col-md-9">
-                                                        <!-- <textarea class="form-control" name="" id="text_area" rows="3"placeholder="Keterangan"></textarea> -->
+                                                        
                                                         <input type="text" class="form-control location" id="input-input" name="location" placeholder="Location">
                                                     </div>
                                                 </div>
@@ -1246,11 +924,11 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                         <div class="col-12 col-md-6">
                                             <table class="table table-striped">
                                                 <tr id="border">
-                                                    <td id="border">Subtotal(Rp)</td>
+                                                    <td id="border"  class="element_subtotal">Subtotal </td>
                                                     <td id="border" class="sutotal_element">0</td>
                                                 </tr>
                                                 <tr id="border">
-                                                    <td id="border">Discount Percent (Rp)</td>
+                                                    <td id="border"  class="element_discount_percent">Discount Percent </td>
                                                     <td id="border">
                                                         <div style="display: flex; align-items: center;">
                                                             <input type="number" class="form-control" id="discount_percent" value="0">
@@ -1259,27 +937,50 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                                     </td>
                                                 </tr>
                                                 <tr id="border">
-                                                    <td id="border">Discount Nominal(Rp)</td>
+                                                    <td id="border" class="element_discount_nominal">Discount Nominal</td>
                                                     <td id="border" ><input type="number" class="form-control" id="discount_nominal" value="0"></td>
                                                 </tr>
                                                 <tr id="border">
-                                                    <td id="border">PPN 11%(Rp)</td>
-                                                    <td id="border" class="ppn_element">0</td>
+                                                    <td id="border">Freight Cost</td>
+                                                    <td id="border">
+                                                        <div style="display: flex; align-items: center;">
+                                                            <input type="number" class="form-control" id="freightcost_element" value="0">
+                                                            
+                                                        </div>
+                                                    </td>
                                                 </tr>
                                                 <tr id="border">
-                                                    <td id="border">Total (Rp)</td>
+                                                    <td id="border">Insurance</td>
+                                                    <td id="border">
+
+                                                        <div style="display: flex; align-items: center;">
+                                                                <input type="number" class="form-control" id="insurance_element" value="0">
+                                                                
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr id="border">
+                                                    <td id="border"  class="element_total">Total </td>
                                                     <td id="border" class="total_element">0</td>
                                                 </tr>
                                            </table>
                                         </div>
                                     </div>
-
-                                    <div class="row">
+                                    
+                                    <div class="row sendSave" style="display:none;">
                                         <div style="text-align:right; margin-top: 30px;">
                                     
                                                 <button type="button" id="sendSave" class="btn btn-primary" style="margin-left: auto;">Simpan</button>
                                         </div>
                                     </div>
+                                     
+                                    <div class="row sendSaveImport" style="display:none;">
+                                        <div style="text-align:right; margin-top: 30px;">
+                                    
+                                                <button type="button" id="sendSaveImport" class="btn btn-primary" style="margin-left: auto;">Simpan</button>
+                                        </div>
+                                    </div>
+                                    
                     </div>
                     
                     <!-- view content tambah ekspedisi -->
@@ -1417,7 +1118,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                 <div class="row" id="padding-top">
                                     <div class="col-md-3">
 
-                                        <label id="label" for="">Resi <span id="required-star">*</span></label>
+                                        <label id="label" for="resi_label">Resi <span id="required-star">*</span></label>
                                     </div>
                                     <div class="col-md-9">
 
@@ -1437,7 +1138,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                                         <div class="row" id="padding-top">
                                                             <div class="col-md-3">
                                                                 
-                                                                <label id="label" for="">Keterangan <span id="required-star">*</span></label>
+                                                                <label id="label" for="keterangan">Keterangan <span id="required-star">*</span></label>
                                                             </div>
                                                             <div class="col-md-9">
 
@@ -1556,7 +1257,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label for="">Keterangan</label>
+                                                        <label for="text_area">Keterangan</label>
                                                         <textarea class="form-control edit_keterangan" name="" id="text_area" rows="3"placeholder="Keterangan"></textarea>
                                                     </div>
 
@@ -1577,107 +1278,114 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
         </div>
     </div>
 
-    <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalLabel">Import From2 Order Pembelian</h5>
-                    
-                </div>
-                <div class="modal-body">
-                            <table id="table-tambah-comercial-invoice" class="table table-striped">
-                                    <thead>
-                                        <div class="row mb-2">
-                                            <div class="col-md-3">
-                                                <label>
-                                                    <input type="checkbox" id="filterChecked"> Show only checked
-                                                </label>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <select id="filter-select" class="form-control select-supplier-tambah">
-                                                    <option value="">Supplier</option>
-                                                    @foreach(array_unique(array_column($Data['msg']['supplier'], 'name')) as $supplier)
-                                                    <option value="{{ $supplier }}">{{ $supplier }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
 
-                                            <div class="col-md-3" id="id-search">
-                                                <label>
-                                                    Search:
-                                                </label>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <input type="text" id="search-box" class="form-control d-inline-block w-round" placeholder="Supplier...">
-                                            </div>
+      <!-- Modal Question After Click Add Commercial invoice -->
+                                        
+                <div class="modal fade" id="comercialQuestionModal" tabindex="-1" aria-labelledby="comercialQuestionPickModalLabel" aria-hidden="true" style="margin-top:200px;">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="comercialQuestionPickModalLabel">Add Commercial Invoice</h5>
+                                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                </div>
+                                <div class="modal-body text-center">
+                                    
+                                    <!-- Two buttons inside the modal body -->
+                                    <div class="row">
+                                        <div class="col-md-6" style="text-align:center;">
+
+                                            <button type="button" id="tambahComercialLclLocal" class="btn btn-primary me-2" id="optionOne">Add Comercial Invoice Lcl / Local</button>
                                         </div>
-                                        <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">Image</th>
-                                            <th scope="col">Kode</th>
-                                            <th scope="col">Nama</th>
-                                            <th scope="col">Jml Permintaan</th>
-                                            <th scope="col">Supplier</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @php
-                                        $number =0;
-                                        $number2 =0;
-                                        @endphp
-                                    
+                                        <div class="col-md-6" style="text-align:center;">
 
-                                        @foreach($Data['msg']['listorder'] as $index => $result)
-                                        @php
-                                        $number2++;
-
-                                        @endphp
-                                        <form action="" class="form-horizontal" id="importBarang" method="get">
-                                            @csrf
-                                            
-                                            <tr>
-                                                <td style="border: 1px solid #d7d7d7; color: black; text-align: center;">
-                                                
-                                            
-                                                <input type="checkbox" class="kubik-checkbox-tambah" name="checkbox_{{ $number2 }}">
-                                                <input type="hidden" class="form-control restok-input-tambah"  name="id_restok_{{ $number2 }}" value="{{ $result['restok_id'] }}">
-                                                
-                                                        
-                                                </td>
-                                                <td style="max-width: 200px;white-space: normal; word-wrap: break-word;"><img src="{{ $Data['msg']['directory_gambar'] }}{{ $result['image'] }}" style="width:200px; height:200px;"></td>
-                                                <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $result['new_kode'] }}</td>
-                                                <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $result['name'] }}</td>
-                                                <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $result['jml_permintaan'] }}</td>
-                                                <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $result['supplier_name'] }}</td>
-                                                
-                                            </tr>
-                                            
-                                        </form>
-                                    @endforeach
-                                    
-                                    </tbody>
-                            </table>
-                            <div style="text-align:right; margin-top: 30px;">
-                                    
-                                    <button type="button" id="sendImportBarang" class="btn btn-primary" style="margin-left: auto;">Simpan</button>
+                                            <a href="{{ route('admin.pembelian_add_comercial_invoice') }}" id="tambahComercialInvoice" class="btn btn-info me-2" id="optionTwo">Add Commercial Invoice</a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+                        </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                
+                <!-- modal untuk memilih import atau tidak -->
+                <div class="modal fade" id="comercialQuestionPickModal" tabindex="-1" aria-labelledby="comercialQuestionPickModalLabel" aria-hidden="true" style="margin-top:200px;">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="comercialQuestionPickModalLabel">Add Commercial Invoice</h5>
+                                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                </div>
+                                <div class="modal-body text-center">
+                                    
+                                    <!-- Two buttons inside the modal body -->
+                                    <div class="row">
+                                        <div class="col-md-6" style="text-align:center;">
+
+                                            <button type="button" id="tambahComercialLclLocalPick" class="btn btn-primary me-2 with-import">Import Order Pembelian</button>
+                                        </div>
+                                        <div class="col-md-6" style="text-align:center;">
+                                            
+                                            <button type="button" id="no-import" class="btn btn-danger me-2">No Import</button>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                 </div>
-            </div>
-        </div>
-    </div>
+                
+                <!-- Bootstrap Modal -->
+                <div class="modal fade" id="unitpriceModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="title_modal_import" id="modalLabel">Price History</h5>
+                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- Modal body content here -->
+                                <div class="table responsive">
+
+                                    <table class="table">
+                                        <thead>
+                                            <th>
+                                             HsCode
+                                            </th>
+                                            <th id="price_import">
+                                                Price
+                                            </th>
+                                            <th>
+                                                Tanggal
+                                            </th>
+                                        </thead>
+                                        <tbody class="tbody-harga-belum-ppn">
     
-     
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- You can add form fields, text, or any other content here -->
+                            </div>
+                            <div class="modal-footer">
+                  
+                                <button type="button" data-bs-dismiss="modal" class="btn btn-primary">Simpan</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                   
     
 
 </main>
         
-<div id="detailFclContainer"  style="display: none;" class="col-sm-12" style="margin-top: 15px;">
+                <div id="detailFclContainer"  style="display: none;" class="col-sm-12" style="margin-top: 15px;">
                             <div id="divDetail"></div>
-                    </div>
+                </div>
     
 @endsection
 
@@ -1688,7 +1396,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
-<!-- <script src="../assets/js/commercial-invoice/select_choices.js"></script>  -->
+
 <script src="../assets/js/commercial-invoice/commercial_invoice.js"></script> 
 <!-- DataTables JavaScript -->
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
@@ -1702,8 +1410,16 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
-<!-- untuk load datatable -->
+
 <script>
+
+    document.getElementById('importData').addEventListener('click', function() {
+        console.log('modal impor data')
+        // Show the modal
+       $('#importModal').modal('show')
+
+    })
+
     document.addEventListener('DOMContentLoaded', function() {
         // Initialize Choices.js on the select element
         const element = document.getElementById('id_jenis');
@@ -1712,7 +1428,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
             itemSelectText: '',
         });
 
-        // Enable/disable date inputs based on checkbox state
+        
         
     });
 
@@ -1723,8 +1439,640 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
             window.location.href = '{{ route('admin.pembelian_comercial_invoice') }}'; 
     })
 
-    //untuk proses inisiasi datatable & aksi tambah comercial local/lcl
+    
     $(document).ready(function() {
+            var discount_percent_td=0
+            var discount_nominal=0
+            
+          
+            var english_import=[]
+            var china_import=[]
+            var model_import=[]
+            var brand_import=[]
+            var length_m_import=[]
+            var length_p_import=[]
+            var width_m_import=[]
+            var width_p_import=[]
+            var height_m_import=[]
+            var height_p_import=[]
+            var qty_import=[]
+            var nw_import=[]
+            var gw_import=[]
+            var cbm_import=[]
+            var price_import=[]
+            var priceusd_import=[]
+            var use_name_import=[]
+            var total_import=[]
+            var totalusd_import=[]
+            var use_import=[]
+            var idrestok_import=[]
+            var disc_import=[]
+            var hs_import=[]
+            var status_ppn_import=[]
+            var status_include_ppn_import=[]
+            var gudang_import=[]
+            var restok_import=[]
+            var freight_cost_import=0
+            var insurance_import =0
+            var bank_name_import=''
+            var bank_address_import=''
+            var swift_code_import=''
+            var account_import=''
+            var beneficiary_name_import=''
+            var beneficiary_address_import=''
+            var category_barang='';
+            var simbol_mt_import='';
+            // $('#select_supplier').select2({
+            //             placeholder: "Pilih Supplier",
+            //             allowClear: true,
+            //             width: '100%' // Adjust width to fit the select element
+            // });
+            $('.pilih-matauang').select2({
+                        placeholder: "Pilih Mata Uang",
+                        allowClear: true,
+                        width: '100%' // Adjust width to fit the select element
+            });
+            $('#banksupplier-tambah-id').select2({
+                        placeholder: "Pilih Bank Supplier",
+                        allowClear: true,
+                        width: '100%' // Adjust width to fit the select element
+            });
+            $('#select_termin_cash').select2({
+                       
+                        allowClear: true,
+                        width: '100%' // Adjust width to fit the select element
+            });
+        //memproses untuk menampikan barang menggunakan import di menu import
+        $('#sendImportBarang').click(function(event) {
+            
+            var bank_supplier_tambah_id = $('#banksupplier-tambah-id');
+            var table_container_import =$('.container-import');
+            event.preventDefault();
+            table_container_import.empty()
+            var selectedCheckboxes = $('.kubik-checkbox-tambah:checked');
+            var formData = {
+                
+                idrestok: [],
+                valuerestok: []
+            };
+            var firstSupplierName = null;
+            var hasDifferentSupplier = false;
+         
+            // console.log('formData',formData)
+            selectedCheckboxes.each(function(index) {
+                
+                var hiddenInputValue = $(this).next('input[type="hidden"]').val();
+                console.log('hiddenInputValue',hiddenInputValue)
+                formData.idrestok.push(hiddenInputValue);
+                if (hiddenInputValue) {
+                    formData.valuerestok.push(1); 
+                }
+                var supplierName = $(this).data('supplier-name');
+                console.log('Supplier Name:', supplierName);
+                if (firstSupplierName === null) {
+                    firstSupplierName = supplierName; // Set the first supplier name for comparison
+                } else if (firstSupplierName !== supplierName) {
+                    hasDifferentSupplier = true;
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Supplier Berbeda',
+                        text: 'Pilih Supplier Yang Sama!',
+                        confirmButtonText: 'Okay'
+                    });
+                    return false; // Exit loop early if supplier names differ
+                }
+            });
+            if (hasDifferentSupplier) {
+                return; // Do not proceed to AJAX if supplier names are different
+            }
+            var directory_import='https://maxipro.id/images/barang/'
+            
+            $.ajax({
+                type: 'GET',
+                url: '{{ route('admin.pembelian_importbarang_comercial_invoice') }}',
+                data: formData,
+                success: function(response) {
+                    $('#banksupplier-tambah-id').empty()
+                    // $('#select_matauang').empty()
+                    
+                    console.log('response import',response)
+                    category_barang=response.orderpembelian[0].category
+                    response.supplierbank.forEach((supplier) => {
+
+                        const option = $('<option>', {
+                            value: supplier.id, // Assuming 'id' is the key you want to set as value
+                            text: supplier.bank_name, // Assuming 'name' is the key you want to display
+                            selected: supplier.id
+                        });
+                        $('#banksupplier-tambah-id').append(option);
+                        $('#select_matauang').val(supplier.id_matauang).trigger('change');
+                        bank_name_import=supplier.bank_name
+                        bank_address_import = supplier.bank_address
+                        swift_code_import = supplier.bank_address
+                        account_import = supplier.account_number
+                        beneficiary_name_import = supplier.beneficiary_name
+                        beneficiary_address_import = supplier.beneficiary_address
+                        response.matauang.forEach((mt_uang)=>{
+                            if(mt_uang.id==supplier.id_matauang){
+                                console.log('mt uang',mt_uang.simbol)
+                                simbol_mt_import=mt_uang.simbol
+                            }
+                        })
+                    });
+                    $('.element_subtotal').text('Subtotal ('+simbol_mt_import+')')
+                    $('.element_discount_percent').text('Discount Percent ('+simbol_mt_import+')')
+                                        $('.element_discount_nominal').text('Discount Nominal ('+simbol_mt_import+')')
+                                        
+                                        $('.element_total').text('Total ('+simbol_mt_import+')')
+                    response.supplier.forEach((supplier_supplier) => {
+                        $('#select_supplier').val(supplier_supplier.id).trigger('change');
+                        $('.select_supplier_label').text(supplier_supplier.name)
+                        $('#label_name_company').text(supplier_supplier.company)
+                        $('#company-name').val(supplier_supplier.company)
+                        $('#label_name_address').text(supplier_supplier.address)
+                        $('#address_company').val(supplier_supplier.address)
+                        $('#label_city').text(supplier_supplier.city)
+                        $('#city').val(supplier_supplier.city)
+                        $('#label_telp').text(supplier_supplier.telp)
+                        $('#telp').val(supplier_supplier.telp)
+                    })
+                    var id_barang_hs_codehistory =[];
+                    var number_hs_codehistory=[]
+                    var date_hs_code_history=[]
+                    var hs_codehistory =[];
+                    response.hscodehistory.forEach(function(hscodehistory,key1){
+                        var dateString = hscodehistory.commercialinvoice.date;
+                        var date = new Date(dateString);
+    
+                                // Format the date to "DD/MM/YYYY"
+                        var day = date.getDate().toString().padStart(2, '0'); // Day with leading zero
+                        var monthsIndo = [
+                                    "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+                                    "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+                            ];
+                                // var month = (date.getMonth() + 1).toString().padStart(2, '0'); // Month with leading zero
+                        var month = monthsIndo[date.getMonth()]; // Month in Indonesian
+                        var year = date.getFullYear();
+    
+                        var DateFormat = `${day} ${month} ${year}`;
+
+                        var id_barang_restok = hscodehistory.restok.id_barang;
+                        id_barang_hs_codehistory.push(id_barang_restok)
+                        
+                      
+                        number_hs_codehistory.push(hscodehistory.hs_code)
+                        date_hs_code_history.push(DateFormat)
+                        response.matauang.forEach(function(matauang,key) {
+                                            if(matauang.id==response.hscodehistory[key1].commercialinvoice.id_matauang){
+                                                var merge = matauang.simbol +''+hscodehistory.unit_price_without_tax
+                                                hs_codehistory.push(merge)
+                                            }
+                                            else if(response.hscodehistory[key1].commercialinvoice.id_matauang==0){
+                                                var merge2 = ''+hscodehistory.unit_price_without_tax
+                                                hs_codehistory.push(merge2)
+                                            }
+                    
+                        });
+                    })
+                    
+                    response.orderpembelian.forEach((import_item, itemIndexImport) => {
+                        restok_import.push(import_item.id)
+                        use_name_import.push('')
+                        console.log('res item',import_item.product.image)
+                        var trProductImport = $('<tr>');
+                                    var imgProductImport = $('<img class="img-fluid" style="max-width: 20%%; height: auto;">');
+                                    imgProductImport.attr('src',directory_import+import_item.product.image)
+                                    var tdProductImport = $('<td>').css({
+                                            'padding': 'auto',
+                                            'width': '10%'
+                                    });                     
+                                    tdProductImport.append(imgProductImport);
+                                    var td1ProductImport = $('<td>').css({
+                                            'padding': 'auto',
+                                            'width': '15%',  
+                                    });
+                                    var td2ProductImport = $('<td>').css({
+                                            'padding': 'auto',
+                                            'width': '15%',  
+                                    });
+                                    var td3ProductImport = $('<td>').css({
+                                            'padding': 'auto',
+                                            'width': '5%',  
+                                    });
+                                    var td4ProductImport = $('<td>').css({
+                                            'padding': 'auto',
+                                            'width': '5%',  
+                                    });
+                                    var td5ProductImport = $('<td>').css({
+                                            'padding': 'auto',
+                                            'width': '5%',  
+                                    });
+                                    var td6ProductImport = $('<td>').css({
+                                            'padding': 'auto',
+                                            'width': '15%',  
+                                    });
+                                    var td7ProductImport = $('<td>').css({
+                                            'padding': 'auto',
+                                            'width': '2%',  
+                                    });
+                                    var td8ProductImport = $('<td>').css({
+                                            'padding': 'auto',
+                                            'width': '15%',  
+                                    });
+                                    
+                                    var td9ProductImport = $('<td>').css({
+                                            'padding': 'auto',
+                                            'width': '5%',  
+                                    });
+
+                                    //get centang include ppn
+                                    $('#flexCheckDefaultTermasukkPPN').on('change', function() {
+                                                    if ($(this).is(':checked')) {
+                                                        console.log('centang tambah')
+                                                        $(this).val(1);
+                                                        $(this).prop('checked', true);
+                                                    } else {
+                                                        $(this).val(0);  // Jika Anda ingin mengatur nilai saat tidak tercentang
+                                                        $(this).prop('checked', false);
+                                                    }
+                                        
+                                    });
+                                    
+                                      // td discount percent
+            $('#freightcost_element').change(function(){
+                                        console.log('freight_cost',$(this).val())
+                                        freight_cost_import=$(this).val()
+                                        updateSubtotal(); 
+            })
+            $('#insurance_element').change(function(){
+                                        console.log('insurance',$(this).val())
+                                        insurance_import=$(this).val()
+                                        updateSubtotal(); 
+            })
+            $('#discount_percent').change(function(){
+                                        console.log('discount Percent',$(this).val())
+                                        discount_percent_td=$(this).val()
+                                        updateSubtotal(); 
+            })
+            // td discount nominal
+            $('#discount_nominal').change(function(){
+                                        console.log('discount nominal',$(this).val())
+                                        discount_nominal=$(this).val()
+                                        updateSubtotal(); 
+            })
+                                    //tidak ditampilkan
+                                    var inputhiddenenglishProductImport = $('<input>', {
+                                            type: 'text', 
+                                            class: 'form-control', 
+                                            value:import_item.product.name_english,
+                                            id:'name_english'+itemIndexImport
+                                    });
+                                    var inputhiddenenglishProductImport = $('<input>', {
+                                            type: 'text', 
+                                            class: 'form-control', 
+                                            value:import_item.product.name_china,
+                                            id:'name_china'+itemIndexImport
+                                    });
+                                    english_import.push(import_item.product.name_english)
+                                    china_import.push(import_item.product.name_china)
+                                    model_import.push(import_item.product.model)
+                                    brand_import.push(import_item.product.merk)
+                                    length_m_import.push(import_item.product.long || 0);
+                                    length_p_import.push(import_item.product.long_p || 0);
+                                    width_m_import.push(import_item.product.width || 0);
+                                    width_p_import.push(import_item.product.width_p || 0);
+                                    height_m_import.push(import_item.product.height || 0);
+                                    height_p_import.push(import_item.product.height_p || 0);
+                                    gw_import.push(import_item.product.weight || 0);
+                                    nw_import.push(import_item.product.nett_weight || 0);
+                                    cbm_import.push(import_item.product.cbm || 0);
+                                 
+                                    var inputtd1ProductImport = $('<input>', {
+                                            type: 'text', 
+                                            class: 'form-control', 
+                                            value:import_item.product.name,
+                                            id:'name'+itemIndexImport
+                                    });
+                                    inputtd1ProductImport.css({
+                                            'border': '1px solid #696868', 
+                                            'color': 'black', 
+                                            'padding': '10px',
+                                            'width': '100%' 
+                                    });
+                                    td1ProductImport.append(inputtd1ProductImport);
+
+                                    var inputtd2ProductImport = $('<input>', {
+                                            type: 'text', 
+                                            class: 'form-control', 
+                                            value:0,
+                                            id:'price_asal'+itemIndexImport
+                                    });
+                                    inputtd2ProductImport.css({
+                                            'border': '1px solid #696868', 
+                                            'color': 'black', 
+                                            'padding': '10px',
+                                            'width': '100%' 
+                                    });
+                                    td2ProductImport.append(inputtd2ProductImport);
+                                    
+
+                                    var tbody_harga_belum_ppn = $('.tbody-harga-belum-ppn');
+                                    var modalButton = $('<button>', {
+                                        type: 'button',
+                                        class: 'btn btn-primary',
+                                        text: 'View Price',
+                                        'data-bs-toggle': 'modal',
+                                        'data-bs-target': '#unitpriceModal' // Replace 'unitpriceModal' with the actual ID of your modal
+                                    });
+                                    modalButton.css({
+                                        'margin-top': '10px', // Adjust this value as needed
+                                        'display': 'block' // Ensures button takes up its own line within the td
+                                    });
+                                    
+                                    modalButton.on('click', function () {
+                                        // Clear previous content in tbody
+                                        $('.tbody-harga-belum-ppn').empty();
+                                        $('#title_modal_import').text('Price History')
+                                        $('#price_import').show()
+                                        // Loop through `id_barang_hs_codehistory` to find matching data
+                                        id_barang_hs_codehistory.forEach(function(item, urutan) {
+                                            if (item === import_item.id_barang) {
+                                                // Create a new table row with the matching hs_codehistory data
+                                                var newRow = $('<tr>');
+                                                
+                                                // Append data cells
+                                                newRow.append($('<td>').text(number_hs_codehistory[urutan])); // Assuming `number_hs_codehistory` is an array
+                                                newRow.append($('<td>').text(hs_codehistory[urutan])); // Display hs_codehistory data
+                                                newRow.append($('<td>').text(date_hs_code_history[urutan])); // Display date_hs_code_history data
+                                                
+                                                // Create a checkbox that, when checked, retrieves `number_hs_codehistory`
+                                                var checkbox = $('<input>', {
+                                                    type: 'checkbox',
+                                                    class: 'hs-code-checkbox', // Optional class for easy identification
+                                                    'data-number': hs_codehistory[urutan].substring(1), // Store the hs_code number in data attribute
+                                                    change: function() { // Event to handle checking the checkbox
+                                                        if (this.checked) {
+                                                            inputtd2ProductImport.val($(this).data('number'));
+                                                        }
+                                                    }
+                                                });
+                                                
+                                                // Append the checkbox inside a td
+                                                newRow.append($('<td>').append(checkbox));
+                                                
+                                                // Append the new row to tbody_harga_belum_ppn
+                                                tbody_harga_belum_ppn.append(newRow);
+                                            }
+                                        });
+                                    });
+
+                                    td2ProductImport.append(modalButton);
+                                    var inputtd3ProductImport = $('<input>', {
+                                            type: 'text', 
+                                            class: 'form-control', 
+                                            value:0,
+                                            id:'qty_qty'+itemIndexImport
+                                    });
+                                    inputtd3ProductImport.css({
+                                            'border': '1px solid #696868', 
+                                            'color': 'black', 
+                                            'padding': '10px',
+                                            'width': '100%' 
+                                    });
+                                    td3ProductImport.append(inputtd3ProductImport)
+                                    
+                                    var inputtd4ProductImport = $('<input>', {
+                                            type: 'text', 
+                                            class: 'form-control', 
+                                            value:0,
+                                            id:'disc'+itemIndexImport
+                                    });
+                                    inputtd4ProductImport.css({
+                                            'border': '1px solid #696868', 
+                                            'color': 'black', 
+                                            'padding': '10px',
+                                            'width': '100%' 
+                                    });
+                                    td4ProductImport.append(inputtd4ProductImport)
+                                    var inputtd5ProductImport = $('<input>', {
+                                            type: 'text', 
+                                            class: 'form-control', 
+                                            value:0,
+                                            id:'subtotal'+itemIndexImport
+                                    });
+                                    inputtd5ProductImport.css({
+                                            'border': '1px solid #696868', 
+                                            'color': 'black', 
+                                            'padding': '10px',
+                                            'width': '100%' 
+                                    });
+                                    td5ProductImport.append(inputtd5ProductImport)
+                                    
+                                    var inputtd6ProductImport = $('<input>', {
+                                            type: 'text', 
+                                            class: 'form-control', 
+                                            value:0,
+                                            id:'hs_code_import_locallcl'+itemIndexImport
+                                    });
+                                    inputtd6ProductImport.css({
+                                            'border': '1px solid #696868', 
+                                            'color': 'black', 
+                                            'padding': '10px',
+                                            'width': '100%' 
+                                    });
+                                    td6ProductImport.append(inputtd6ProductImport)
+                                    
+                                    var modalButtonHscode = $('<button>', {
+                                        type: 'button',
+                                        class: 'btn btn-primary',
+                                        text: 'View HsCode',
+                                        'data-bs-toggle': 'modal',
+                                        'data-bs-target': '#unitpriceModal' // Replace 'unitpriceModal' with the actual ID of your modal
+                                    });
+                                    
+                                    modalButtonHscode.css({
+                                        'margin-top': '10px', // Adjust this value as needed
+                                        'display': 'block' // Ensures button takes up its own line within the td
+                                    });
+                                    
+                                    modalButtonHscode.on('click', function () {
+                                        // Clear previous content in tbody
+                                        $('.tbody-harga-belum-ppn').empty();
+                                        $('#price_import').hide()    
+                                        // Loop through `id_barang_hs_codehistory` to find matching data
+                                        id_barang_hs_codehistory.forEach(function(item, urutan) {
+                                            if (item === import_item.id_barang) {
+                                                // Create a new table row with the matching hs_codehistory data
+                                                var newRow = $('<tr>');
+                                                $('#title_modal_import').text('Hscode History')
+                                                // Append data cells
+                                                newRow.append($('<td>').text(number_hs_codehistory[urutan])); // Assuming `number_hs_codehistory` is an array
+                                                // newRow.append($('<td>').text(hs_codehistory[urutan])); // Display hs_codehistory data
+                                                newRow.append($('<td>').text(date_hs_code_history[urutan])); // Display date_hs_code_history data
+                                                
+                                                // Create a checkbox that, when checked, retrieves `number_hs_codehistory`
+                                                var checkbox = $('<input>', {
+                                                    type: 'checkbox',
+                                                    class: 'hs-code-checkbox', // Optional class for easy identification
+                                                    'data-nomorhscode': number_hs_codehistory[urutan], // Store the hs_code number in data attribute
+                                                    change: function() { // Event to handle checking the checkbox
+                                                        if (this.checked) {
+                                                            console.log('number hs code',$(this).data('nomorhscode'))
+                                                            inputtd6ProductImport.val($(this).data('nomorhscode'));
+                                                            hs_import[itemIndexImport]=inputtd6ProductImport.val()
+                                                        }
+                                                    }
+                                                });
+                                                
+                                                // Append the checkbox inside a td
+                                                newRow.append($('<td>').append(checkbox));
+                                                
+                                                // Append the new row to tbody_harga_belum_ppn
+                                                tbody_harga_belum_ppn.append(newRow);
+                                            }
+                                        });
+                                    });
+                                    td6ProductImport.append(modalButtonHscode)
+                                    var checkboxElementProductImport = $('<input>', {
+                                        type: 'checkbox',
+                                        id: 'checkboxId_' + itemIndexImport,
+                                        value: 0
+                                    }).css({
+                                        'border': '1px solid #696868',
+                                    }).on('change', function() {
+                                        var newValue = this.checked ? 1 : 0;
+                                        $(this).val(newValue);
+
+                                        // changeHistory[itemIndexImport] = newValue;
+                                        status_ppn_import[itemIndexImport] = newValue
+                                        console.log('status_ppn_import',newValue);
+                                    
+                                    });
+                                    status_ppn_import[itemIndexImport]=0
+                                    td7ProductImport.append(checkboxElementProductImport)
+
+                                    var selecttd7ProductImport = $('<select>', {
+                                        class: 'form-control',
+                                        id: 'gudang_import_locallcl' + itemIndexImport
+                                    });
+
+                                    selecttd7ProductImport.css({
+                                        'border': '1px solid #696868', 
+                                        'color': 'black', 
+                                        'padding': '10px',
+                                        'width': '100%' 
+                                    });
+                                    var defaultOptionImport = $('<option>', {
+                                        value: '',
+                                        text: 'Pilih Gudang' // Default text
+                                    }).attr('disabled', 'disabled').attr('selected', 'selected'); // Disabled and selected
+                                    selecttd7ProductImport.append(defaultOptionImport);
+                                    response.gudang.forEach(function(import_gudang,index_gudang) {
+                                        var optionElementGudang = $('<option>', {
+                                            
+                                            
+                                            value: import_gudang.id,
+                                            text: import_gudang.name
+
+                                        });
+                                        selecttd7ProductImport.append(optionElementGudang);
+                                    });
+
+                                    td8ProductImport.append(selecttd7ProductImport)
+                                    selecttd7ProductImport.select2({
+                                        placeholder: 'Pilih Gudang',
+                                        width: '100%' // Ensure Select2 takes the full width
+                                    });
+                                    selecttd7ProductImport.on('change', function() {
+                                        gudang_import[itemIndexImport] = $(this).val(); // Set gudang_import to the selected value
+                                        // console.log('Selected Gudang ID:', gudang_import); // Log for debugging
+                                    });
+                                    var deleteButtonImport = $('<button>',{
+                                        text: 'X',
+                                        class: 'btn btn-danger btn-sm'
+                                    }).css({
+                                        'border': 'none',
+                                        'color':'white',
+                                        'background-color': '#dc3545',
+                                        'padding': '5px 10px',
+                                        'cursor': 'pointer'
+                                    }).on('click',function(){
+                                        $(this).closest('tr').remove();
+                                    })
+                                    td9ProductImport.append(deleteButtonImport)
+                    
+                                    function updateSubtotal() {
+                                        // Get the values of inputtd2 and inputtd3, parse them as floats to handle calculations
+                                        var price = parseFloat(inputtd2ProductImport.val()) || 0;
+                                        price_import[itemIndexImport]=price
+                                        priceusd_import[itemIndexImport]=price*0.15
+                                        var qty = parseFloat(inputtd3ProductImport.val()) || 0;
+                                        qty_import[itemIndexImport]=qty
+                                        var discount_import = parseFloat(inputtd4ProductImport.val()) || 0;
+                                        disc_import[itemIndexImport] = discount_import
+                                        // Calculate subtotal and update inputtd5
+                                        var subtotal = price * qty;
+                                        inputtd5ProductImport.val(subtotal-discount_import);
+                                        total_import[itemIndexImport] = inputtd5ProductImport.val()
+                                        totalusd_import[itemIndexImport] = parseFloat((inputtd5ProductImport.val())*0.15)
+                                        var sumTotalImport = 0;
+                        
+                                        for (var i = 0; i < total_import.length; i++) {
+                                            sumTotalImport += parseFloat(total_import[i]);  // Ensures each value is treated as a number
+                                        }
+
+                                        console.log('total_import', total_import);
+                                        console.log('discount_nominal lg',discount_nominal);
+                                        $('.sutotal_element').text(sumTotalImport)     
+                                        if (discount_percent_td !== 0) {
+                                            finalTotal = sumTotalImport * ((100 - parseFloat(discount_percent_td)) / 100);
+                                            $('.total_element').text(finalTotal-discount_nominal+parseFloat(freight_cost_import)+parseFloat(insurance_import))               
+                                        }else{
+                                            $('.total_element').text(sumTotalImport-discount_nominal+parseFloat(freight_cost_import)+parseFloat(insurance_import))
+                                        }
+                                        
+                                    }
+                                    function updateHs() {
+                                        var hs = parseFloat(inputtd6ProductImport.val())
+                                        hs_import[itemIndexImport] = hs
+                                    }
+                                    
+                                    
+                                    // Attach input event listeners to inputtd2ProductImport and inputtd3ProductImport
+                                    inputtd2ProductImport.on('input', updateSubtotal);
+                                    inputtd3ProductImport.on('input', updateSubtotal);
+                                    inputtd4ProductImport.on('input', updateSubtotal);
+
+                                    inputtd6ProductImport.on('input', updateHs);
+
+                                    trProductImport.append(tdProductImport,td1ProductImport,td2ProductImport,td3ProductImport,td4ProductImport,td5ProductImport,td6ProductImport,td7ProductImport,td8ProductImport,td9ProductImport)
+
+
+                                    table_container_import.append(trProductImport)
+                    })
+                }
+            })
+                
+        })
+        
+        
+        if (window.location.pathname === '/admin/data_comercialinvoice') {
+            // Append or display the <h4> element if condition is met
+            
+            $('#navbarBlur').css('display', 'block');
+            $('#judulRestok').css('display', 'block');
+            $('#div_tambahComercialQuestion').css('display', 'block');
+            $('.radio-button-container').css('display', 'block');
+            $('#tabe-stok').show();
+
+
+            
+        }
+        // if (window.location.pathname === '/admin/addcomercialinvoicelcllocal') {
+        //     // Append or display the <h4> element if condition is met
+        //     $('#judulRestok').css('display', 'block');
+        //     $('#comercialQuestionPickModal').modal('hide'); // Show the Bootstrap modal
+        // }
         
         var lastSelectedValue = $('input[type=radio][name=filter]:checked').val();
 
@@ -1732,38 +2080,131 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
         var id_lcl;
 
         //untuk membuat datatable
-        var table = $('#tabe-stok').DataTable({
-            "dom": '<"top"lf>rt<"bottom"ip><"clear">',
-            "language": {
-                "searchPlaceholder": "Cari...",
-                "search": "Cari:",
-                "paginate": {
-                    "previous": "back",
-                    "next": "next"
+        var tableInitialized = false;
+        if (!tableInitialized) {
+            console.log('masuk tabe stok lagi')
+            var table = $('#tabe-stok').DataTable({
+                "dom": '<"top"lf>rt<"bottom"ip><"clear">',
+                "language": {
+                    "searchPlaceholder": "Cari...",
+                    "search": "Cari:",
+                    "paginate": {
+                        "previous": "back",
+                        "next": "next"
+                    }
+                },
+                columns: [
+                    { data: 'num', title: 'No' },
+                    { data: 'date', title: 'Tanggal' },
+                    { data: 'invoice', title: 'Invoice' },
+                    { data: 'supplier', title: 'Supplier' },
+                    { data: 'company', title: 'Nama Perusahaan' },
+                    { data: 'telp', title: 'No. Telp' },
+                    { data: 'total', title: 'Total' },
+                    { data: 'category', title: 'Kategori' },
+                    { data: 'link2', title: 'Action' },
+                    
+                ],
+                "initComplete": function(settings, json) {
+                    $('.dataTables_filter input[type="search"]').attr('placeholder', 'Cari ...');
+                    initializeSelect2();
                 }
-            },
-            columns: [
-                { data: 'num', title: 'No' },
-                { data: 'date', title: 'Tanggal' },
-                { data: 'invoice', title: 'Invoice' },
-                { data: 'supplier', title: 'Supplier' },
-                { data: 'company', title: 'Nama Perusahaan' },
-                { data: 'telp', title: 'No. Telp' },
-                { data: 'total', title: 'Total' },
-                { data: 'category', title: 'Kategori' },
-                { data: 'link2', title: 'Action' },
-                { data: 'link', title: 'Action Add' }
-            ],
-            "initComplete": function(settings, json) {
-                $('.dataTables_filter input[type="search"]').attr('placeholder', 'Cari ...');
-                initializeSelect2();
-            }
-        });
-        //aksi tambah comercial local/lcl
-        $('#tambahComercialLocal').on('click', function() {
+            });
+            window.dataTableInstance = table;
+              //initialize select2 category
+            function initializeSelect2() {
+                
 
+                //proses mengirim memilih kategory
+                $('.select_select_category').on('change', function() {
+                    var selectedValue = $(this).val();
+                    var idCommercial = $(this).data('id_commercial');
+                    var $currentRow = $(this).closest('tr');
+                    $('#reload-icon').show(); //icon reload ditampilkan
+                
+                    if (selectedValue) {
+                        $.ajax({
+                            url: '{{ route('admin.pembelian_selectcategory_comercial_invoice') }}',
+                            method: 'GET',
+                            data: {
+                                selected_value: selectedValue,
+                                id_commercial: idCommercial
+                            },
+                            success: function(response) {
+                                
+                                $('#reload-icon').hide();
+                                if (response.msg === 'Lcl berhasil ditambahkan') {
+                                    console.log('Response from server lcl:', response);
+                                    $currentRow.remove();
+                                }
+                            },
+                            error: function(error) {
+                                console.error('Error:', error);
+                            }
+                        });
+                    }
+                });
+            }
+            tableInitialized = true;
+            // initialize Select2 setelah tiap membuat datatable (e.g., page change)
+            table.on('draw', function() {
+                initializeSelect2();
+                var previousPage = 0;
+
+                    // Menggunakan event draw untuk mendeteksi perubahan halaman
+                    table.on('draw', function() {
+                    var currentPage = table.page.info().page;
+
+                 
+
+                    // Cek apakah halaman sebelumnya sama dengan halaman sekarang
+                    if (currentPage === previousPage) {
+                        // location.reload(); // Reload halaman jika berada di halaman yang sama
+                    }
+
+                    // Update halaman sebelumnya
+                    previousPage = currentPage;
+                });
+            });
+        }
+        //aksi tambah comercial local/lcl
+        $('#tambahComercialQuestion').on('click', function() {
+            $('#comercialQuestionModal').modal('show'); // Show the Bootstrap modal
+        })
+        
+        //view untuk menampikan add lcl/local
+        $('#tambahComercialLclLocal').on('click', function() {
+            $('#comercialQuestionModal').modal('hide'); // Show the Bootstrap modal
+            $('#comercialQuestionPickModal').modal('show'); // Show the Bootstrap modal
+            
+            // $('#tambahComercialQuestion').hide(); 
+            
+        });
+        //add invoice with import
+        $('#tambahComercialLclLocalPick').on('click', function() {
+                        $('.sendSaveImport').show();
+                        $('.div-bebas').css('display','none')
+                        $('#tambahComercialQuestion').hide()
+                        history.pushState({ page: 'addcomercialinvoicelcllocal' }, 'Add Commercial Invoice Lcl/Local', '{{ route('admin.pembelian_comercial_invoice_add') }}');
+                        getData();
+        });
+        // //add invoice no import
+        $('#no-import').on('click',function(){
+                        console.log('masuk block no import')
+                        $('.select_supplier_label').css('display','none')
+                        $('#select_supplier').show()
+                        $('.sendSave').show();
+                        $('#importData').hide()
+                        $('#tambahComercialQuestion').hide()
+                        history.pushState({ page: 'addcomercialinvoicelcllocalnoimport' }, 'Add Commercial Invoice Lcl/Local', '{{ route('admin.pembelian_comercial_invoice_add_no_import') }}');
+                        getData();
+        })
+        
+        function getData(){
+            
+            $('#comercialQuestionPickModal').modal('hide'); // Show the Bootstrap modal
             $('#pembayaran-tab').on('click', function() {
-                console.log('masuk pembayaran')        
+                  
                 $('.tab-content').hide();
                 $('#pembayaran-content').show();
                 
@@ -2137,7 +2578,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
             });
 
             $('#master-tab').on('click', function() {
-                console.log('masuk master')
+                
                 $('.tab-content').hide();
                 // $('#master-content').show();
                 $('#addcomerialinvoicelocal').css('display','block')
@@ -2147,14 +2588,20 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
          
             // Destroy the existing DataTable instance
             table.destroy();
+            
             $('#tabe-stok').remove();
             $('.radio-button-container').remove()
             $('.filter').remove()
-            $('#tambahComercialLocal').remove()
+            $('#tambahComercialLclLocal').remove()
             $('#tab-nav').show();
             $('#master-tab').trigger('click'); 
+            $('.btn-back').show();
             $('#judulRestok').html('<i class="fas fa-database"></i> &nbsp Add Commercial Invoice Kategori LCL/Local');
+            $('#subjudul').html('Add Commercial Invoice Kategori LCL/Local {{ $username["data"]["teknisi"]["name"] }}');
+            $('#judulRestok').css('display', 'block');
+            $('#comercialQuestionPickModal').modal('hide'); // Show the Bootstrap modal
             $('#addcomerialinvoicelocal').css('display','block')
+            document.title='Add Commercial Invoice Lcl/Local   | PT. Maxipro Group Indonesia'
             
             $.ajax({
                 url:'{{ route('admin.pembelian_comercial_invoice') }}',
@@ -2163,114 +2610,142 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                     menu:'create_local'
                 },
                 success: function(response){
-                
-                    const selectSupplier = $('#select_supplier');
-                    selectSupplier.empty();
+                    
+                        
+                    
+                   
+                    // const selectSupplier = $('#select_supplier');
+                    // selectSupplier.empty();
 
-                    // Tambahkan opsi default
-                    selectSupplier.append('<option value="">Pilih Supplier</option>');
+                    // // Tambahkan opsi default
+                    // selectSupplier.append('<option value="">Pilih Supplier</option>');
 
-                    // Loop melalui response.msg.new_supplier dan tambahkan opsi ke select
-                    response.msg.new_supplier.forEach(function(supplier) {
-                        selectSupplier.append(
-                            `<option value="${supplier.id}">${supplier.name}</option>`
-                        );
-                    });
+                    // // Loop melalui response.msg.new_supplier dan tambahkan opsi ke select
+                    // response.msg.new_supplier.forEach(function(supplier) {
+                    //     selectSupplier.append(
+                    //         `<option value="${supplier.id}">${supplier.name}</option>`
+                    //     );
+                    // });
                     
   
-                    selectSupplier.on('change', function(event) {
-                        const selectedValueSupplier = event.target.value;
-                        const inputElementSelectedSupplier = document.getElementById('select_supplier'); // Ganti dengan ID yang sesuai
-                        if (inputElementSelectedSupplier) {
-                            inputElementSelectedSupplier.value = selectedValueSupplier;
-                            console.log('selected_value',selectedValueSupplier)
-                        }
-                        $.ajax({
-                            type:'GET',
-                            url:'{{ route('admin.pembelian_fcl') }}',
-                            data:{
-                                menu:'select_supplier',
-                                select_id_supplier:selectedValueSupplier
-                            },
-                            success: function(response){
-                                console.log('response', response.filtered_supplier);
-                                for (const key in response.filtered_supplier) { 
+                    // selectSupplier.on('change', function(event) {
+                    //     const selectedValueSupplier = event.target.value;
+                    //     const inputElementSelectedSupplier = document.getElementById('select_supplier'); // Ganti dengan ID yang sesuai
+                    //     if (inputElementSelectedSupplier) {
+                    //         inputElementSelectedSupplier.value = selectedValueSupplier;
+                    //         console.log('selected_value',selectedValueSupplier)
+                    //     }
+                    //     $.ajax({
+                    //         type:'GET',
+                    //         url:'{{ route('admin.pembelian_fcl') }}',
+                    //         data:{
+                    //             menu:'select_supplier',
+                    //             select_id_supplier:selectedValueSupplier
+                    //         },
+                    //         success: function(response){
+                    //             console.log('response', response.filtered_supplier);
+                    //             for (const key in response.filtered_supplier) { 
                     
-                                        const supplier = response.filtered_supplier[key];
+                    //                     const supplier = response.filtered_supplier[key];
                                         
-                                        if (supplier) {
-                                           console.log('supplier address',supplier)
-                                            $('#company-name').val(supplier.company)
-                                            $('#address_company').val(supplier.address);
-                                            $('#city').val(supplier.city);
-                                            $('#telp').val(supplier.telp);
-                                        }
-                                         else {
-                                            // console.log(`Address not found for key ${key}`);
-                                            $('#company-name').val('')
-                                            $('#address_company').val('');
-                                            $('#city').val('');
-                                            $('#telp').val('');
-                                        }
+                    //                     if (supplier) {
+                    //                        console.log('supplier address',supplier)
+                    //                         $('#company-name').val(supplier.company)
+                    //                         $('#address_company').val(supplier.address);
+                    //                         $('#city').val(supplier.city);
+                    //                         $('#telp').val(supplier.telp);
+                    //                     }
+                    //                      else {
+                    //                         // console.log(`Address not found for key ${key}`);
+                    //                         $('#company-name').val('')
+                    //                         $('#address_company').val('');
+                    //                         $('#city').val('');
+                    //                         $('#telp').val('');
+                    //                     }
                                     
-                                }
-                            },
-                        })
-                    })
+                    //             }
+                    //         },
+                    //     })
+                    // })
 
-                    // Inisialisasi Choices.js
-                    const choices_supplier = new Choices(selectSupplier[0], {
-                        placeholderValue: 'Pilih Supplier',
-                        searchEnabled: true,
-                        removeItemButton: true,
-                        shouldSort: false,
-                    });
+                    // // Inisialisasi Choices.js
+                    // const choices_supplier = new Choices(selectSupplier[0], {
+                    //     placeholderValue: 'Pilih Supplier',
+                    //     searchEnabled: true,
+                    //     removeItemButton: true,
+                    //     shouldSort: false,
+                    // });
 
                     //inisiasi Choices.js matauang
-                    const choices_matauang = new Choices($('.pilih-matauang')[0], {
+                    // const choices_matauang = new Choices($('.pilih-matauang')[0], {
                     
-                        itemSelectText: '',   // Removes "Press to select" text
-                        shouldSort: false     // Keeps the original order of options
-                    });
+                    //     itemSelectText: '',   // Removes "Press to select" text
+                    //     shouldSort: false     // Keeps the original order of options
+                    // });
 
-                    const choices_kategori = new Choices($('#kategori_local')[0], {
+                    // const choices_kategori = new Choices($('#kategori_local')[0], {
                     
-                        itemSelectText: '',   // Removes "Press to select" text
-                        shouldSort: false     // Keeps the original order of options
-                    });
+                    //     itemSelectText: '',   // Removes "Press to select" text
+                    //     shouldSort: false     // Keeps the original order of options
+                    // });
                     
+                    // const select_termin_rekening = $('#select_termin_rekening');
+                    // select_termin_rekening.empty();
+
+    
+                    // response.msg.account.forEach(function(rekening) {
+                    //     select_termin_rekening.append(
+                    //         `<option value="${rekening.id}">${rekening.name}</option>`
+                    //     );
+                    // });
+
+                    // // Inisialisasi Choices.js
+                    // const choices_rekening = new Choices(select_termin_rekening[0], {                   
+                    //     searchEnabled: true,
+                    //     removeItemButton: true,
+                    //     shouldSort: false,
+                    // });
+
+                    // const select_termin_cash = $('#select_termin_cash');
+                    // select_termin_cash.empty();
+
+    
+                    // response.msg.termin.forEach(function(termin) {
+                    //     select_termin_cash.append(
+                    //         `<option value="${termin.id}">${termin.name}</option>`
+                    //     );
+                    // });
+
+                    // Inisialisasi Choices.js
+                    // const choices_termin = new Choices(select_termin_cash[0], {                   
+                    //     searchEnabled: true,
+                    //     removeItemButton: true,
+                    //     shouldSort: false,
+                    // });
+
                     const select_termin_rekening = $('#select_termin_rekening');
                     select_termin_rekening.empty();
 
-    
+                    // Append options from response
                     response.msg.account.forEach(function(rekening) {
                         select_termin_rekening.append(
                             `<option value="${rekening.id}">${rekening.name}</option>`
                         );
                     });
 
-                    // Inisialisasi Choices.js
-                    const choices_rekening = new Choices(select_termin_rekening[0], {                   
-                        searchEnabled: true,
-                        removeItemButton: true,
-                        shouldSort: false,
+                    // Initialize Select2
+                    select_termin_rekening.select2({
+                        placeholder: "Pilih Rekening",
+                        allowClear: true,
+                        width: '100%', // Ensure it takes up the full width
+                        minimumResultsForSearch: Infinity // Enables the search only if there are enough items
                     });
 
-                    const select_termin_cash = $('#select_termin_cash');
-                    select_termin_cash.empty();
-
-    
-                    response.msg.termin.forEach(function(termin) {
-                        select_termin_cash.append(
-                            `<option value="${termin.id}">${termin.name}</option>`
-                        );
-                    });
-
-                    // Inisialisasi Choices.js
-                    const choices_termin = new Choices(select_termin_cash[0], {                   
-                        searchEnabled: true,
-                        removeItemButton: true,
-                        shouldSort: false,
+                    $('#select_incoterms').select2({
+                        placeholder: "Pilih Incoterms",
+                        allowClear: true,
+                        width: '100%', // Ensure it takes up the full width
+                        minimumResultsForSearch: Infinity // Enables the search only if there are enough items
                     });
                 
                     const item_barang = $('.item-barang');
@@ -2278,7 +2753,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
 
                     item_barang.append('<option value="">Pilih Item</option>');
                         response.msg.product.forEach(function(product) {
-                        item_barang.append(
+                            item_barang.append(
                                 `<option value="${product.id}">${product.name}</option>`
                             );
                         });
@@ -2290,12 +2765,12 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                             shouldSort: false,
                         });
                 
-                    const pilih_cabang = $('.pilih-cabang');
-                    pilih_cabang.empty();
+                        const pilih_cabang = $('.pilih-cabang');
+                        pilih_cabang.empty();
 
         
                         response.msg.cabang.forEach(function(cabang) {
-                        pilih_cabang.append(
+                            pilih_cabang.append(
                                 `<option value="${cabang.id}">${cabang.name}</option>`
                             );
                         });
@@ -2399,6 +2874,8 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                 var idBarangRestok ;
                 var idSupplierRestok;
                 var restok_id=[];
+            
+            // menampilkan data ketika memilih item di noimport
             document.getElementById('select_barang').addEventListener('change',function(){
                 var pilihBarang = this.value
                 
@@ -2893,23 +3370,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                 $('.sutotal_element').text(val + val_select);
                                 var subtotal_element= $('.sutotal_element').text()
                                 console.log('subtotal element',subtotal_element)
-                                // $('#flexCheckDefault').on('change', function() {
-                                //     // Memeriksa apakah checkbox dicentang
-                                //     var isChecked = $(this).prop('checked');
-                                    
-                                //     if (isChecked) {
-                                //         console.log('centang masuk')
-                                //         ppnValue = (val + val_select) * 0.11;
-                                //         $('.ppn_element').text((ppnValue * valueDiscount).toFixed(2));
-                                //         $('.total_element').text(((((val + val_select) * valueDiscount) - valueNominalDiscount)+ppnValue).toFixed(2));
-                                        
-                                //     } else {
-                                //         console.log('centang tidak masuk')
-                                //         $('.ppn_element').text(0);
-                                //         $('.total_element').text((((val + val_select))).toFixed(2));
-                                //         return
-                                //     }
-                                // });
+                               
                                 if ($('#flexCheckDefault').prop('checked')) {
                         
                                     ppnValue = (val + val_select) * 0.11;
@@ -2972,13 +3433,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                 jmlPermintaanRestok=response.msg.restok.jml_permintaan
                                 laststokRestok=response.msg.restok.last_stok
                                 keteranganRestok=response.msg.restok.keterangan
-                                
-                                // console.log('idBarangRestok:', idBarangRestok);
-                                // console.log('idTeknisiRestok:', idTeknisiRestok);
-                                // console.log('idSupplierRestok:', idSupplierRestok);
-                                // console.log('jmlPermintaanRestok:', jmlPermintaanRestok);
-                                // console.log('laststokRestok:', laststokRestok);
-                                // console.log('keteranganRestok:', keteranganRestok);
+                           
                             }
                             else{
                                 idBarangRestok=0;
@@ -2987,14 +3442,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                 jmlPermintaanRestok=0
                                 laststokRestok=0
                                 keteranganRestok=0
-                                // console.log('kosong')
-
-                                // console.log('idBarangRestok:', idBarangRestok);
-                                // console.log('idTeknisiRestok:', idTeknisiRestok);
-                                // console.log('idSupplierRestok:', idSupplierRestok);
-                                // console.log('jmlPermintaanRestok:', jmlPermintaanRestok);
-                                // console.log('laststokRestok:', laststokRestok);
-                                // console.log('keteranganRestok:', keteranganRestok);
+                                
                             }
                         }
                 })
@@ -3011,7 +3459,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                     product:idBarangRestok
                 }
 
-                
+                console.log('formDataSendRestok',formDataSendRestok)
        
                 //restok
                 $.ajax({
@@ -3046,6 +3494,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                                     keterangan:$('#text_area').val(),
                                                     kategori:$('#kategori_local').val(),
                                                     termin:$('#select_termin_cash').val(),
+                                                    account_lcl:$('#select_termin_rekening').val(),
                                                     account:$('#select_termin_rekening').val(),
                                                     cabang:$('.pilih-cabang').val(),
                                                     status_ppn:$('#flexCheckDefault').val(),
@@ -3121,48 +3570,122 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                 
                 
             })
-        
-        });
 
-        //initialize select2 category
-        function initializeSelect2() {
-            $('.select_select_category').select2({
-                placeholder: '-',
-                allowClear: true,
-                width: 'resolve' // Adjust width as needed
-            });
-
-            //proses mengirim memilih kategory
-            $('.select_select_category').on('change', function() {
-                var selectedValue = $(this).val();
-                var idCommercial = $(this).data('id_commercial');
+            //mengirim data menggunakan import ketika di simpan
+            $('#sendSaveImport').on('click', function(){
                 
-                $('#reload-icon').show(); //icon reload ditampilkan
-            
-                if (selectedValue) {
-                    $.ajax({
-                        url: '{{ route('admin.pembelian_selectcategory_comercial_invoice') }}',
-                        method: 'GET',
-                        data: {
-                            selected_value: selectedValue,
-                            id_commercial: idCommercial
-                        },
-                        success: function(response) {
-                            console.log('Response from server:', response);
-                            $('#reload-icon').hide();
-                        },
-                        error: function(error) {
-                            console.error('Error:', error);
-                        }
-                    });
-                }
-            });
+               
+                
+                                                var formDataSend = {
+                                                    category_barang:category_barang,
+                                                    database:$('#database_tambah_id').val(),
+                                                    supplier:$('.pilih-supplier').val(),
+                                                    modeadmin:$('input[name="modeadmin_tambah"]').val()||"",
+                                                    invoice_no:$('#invoice_no_tambah').val()||"",
+                                                    packing_no:$('#packing_no_tambah').val()||"",
+                                                    contract_no:$('#contract_no_tambah').val()||"",
+                                                    address_company:$('#address_company').val()||"",
+                                                    city:$('#city').val()||"",
+                                                    name:$('#company-name').val()||"",
+                                                    telp:$('#telp').val()||"",
+                                                    no_referensi:$('.no-referensi').val()||"",
+                                                    tgl_transaksi:$('#tgl_request').val(),
+                                                    matauang:$('.pilih-matauang').val(),
+                                                    keterangan:$('#text_area').val(),
+                                                    kategori:$('#kategori_local').val(),
+                                                    termin:$('#select_termin_cash').val(),
+                                                    account:$('#select_termin_rekening').val(),
+                                                    cabang:$('.pilih-cabang').val(),
+                                                    status_ppn:$('#flexCheckDefault').val(),
+                                                    include_ppn:$('#flexCheckDefaultTermasukkPPN').val(),
+                                                    td_subtotal:$('.sutotal_element').text(),
+                                                    discount_percent:$('#discount_percent').val(),
+                                                    discount_nominal:$('#discount_nominal').val(),
+                                                    ppn_11:$('.ppn_element').text(),
+                                                    total:$('.total_element').text(),
+                                                    bank_supplier:$('#banksupplier-tambah-id').val(),
+                                                    id_item:iditem_select,
+                                                    
+                                                    harga_asal:harga_asal_select,
+                                                    qty:qty_import,
+                                                    disc:disc_import,
+                                                    subtotal:total_import,
+                                                    subtotal_usd:totalusd_import,
+                                                    ppn:status_ppn_import,
+                                                    td_ppn_harga:td_ppn_select,
+                                                    gudang:selectedValuesArray,
+                                                    restok:restok_import,
+                                                    location:$('.location').val(),
+                                                    incoterms:$('#select_incoterms').val(),
+                                                    length_m:length_m_import,
+                                                    length_p:length_p_import,
+                                                    width_m:width_m_import,
+                                                    width_p:width_p_import,
+                                                    height_m:height_m_import,
+                                                    height_p:height_p_import,
+                                                    brand:brand_import,
+                                                    model:model_import,
+                                                    chinese_name:china_import,
+                                                    english_name:english_import,
+                                                    nett_weight:nw_import,
+                                                    gross_weight:gw_import,
+                                                    cbm:cbm_import,
+                                                    hs_code:hs_import,
+                                                    category_comercial_invoice:$('#kategori_local').val(),
+                                                    unit_price_without_taxt:price_import,
+                                                    unit_price_without_taxt_usd:priceusd_import,
+                                                    gudang:gudang_import,
+                                                    use_name:use_name_import,
+                                                    supplierbank:$('#banksupplier-tambah-id').val(),
+                                                    freight_cost:freight_cost_import,
+                                                    insurance:insurance_import,
+                                                    
+                                                    bank_name:bank_name_import,
+                                                    bank_address:bank_address_import,
+                                                    swift_code:swift_code_import,
+                                                    account_no:account_import,
+                                                    beneficiary_name:beneficiary_name_import,
+                                                    beneficiary_address:beneficiary_address_import
+                                                }
+                                                console.log('formDatasend',formDataSend)
+                                                // comercial invoice
+                                                $.ajax({
+                                                    type: 'GET',
+                                                    url: '{{ route('admin.pembelian_tambah_comercial_invoice_new') }}',
+                                                    data: {
+                                                        menu:'tambah_lcl_local',
+                                                        form:formDataSend
+                                                    },
+                                                    success: function(response) {
+                                                    console.log('response succes',response)
+                                                    id_lcl = response.idpembelianlcl
+                                                    // console.log('id_lcl',id_lcl)
+                                                        Swal.fire({
+                                                        icon:'success',
+                                                        title:'Success',
+                                                        text:response.msg
+                                                    }).then((result)=>{
+                                                    if(result.isConfirmed){
+                                                        // window.location.reload();
+                                                    }
+                                                    });
+                                                    },error: function(xhr, status, error) {
+                                                        console.log('Terjadi kesalahan:',error);
+                                                    }
+                                                })
+                
+            })
         }
-
-        // initialize Select2 setelah tiap membuat datatable (e.g., page change)
-        table.on('draw', function() {
-            initializeSelect2();
-        });
+        if (window.location.pathname === '/admin/addcomercialinvoicelcllocal' ) {
+            console.log('window.location.pathname',window.location.pathname)
+            
+            reloadaddcomerciallcl();
+        }
+        else if(window.location.pathname === '/admin/addcomercialinvoicelcllocalnoimport'){
+            
+            reloadaddcomerciallcl();
+        }
+      
 
         if (lastSelectedValue == 'requested') {
             console.log('lastselect', lastSelectedValue);
@@ -3220,60 +3743,29 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                 }
             });
         }
-        var currentPage = table.page.info().page; // inisiasi halaman pertama
-        var previousPage = currentPage; // inisiasi halaman sebelumnya dari halaman sekarang
-
-        // Reload the page when the "previous" button or an earlier page index is clicked
-        $(document).on('click', '.paginate_button', function() {
-            previousPage = currentPage;
-
-            // Get the new current page
-            currentPage = table.page.info().page;
-
-            console.log('previous', previousPage);
-            console.log('current', currentPage);
-
-            // Get the target page from button text
-            var targetPage = $(this).text().trim();
-            console.log('target', targetPage);
-
-            // Check if the "previous" button was clicked or if we're previous page same with targetpage
-            if ($(this).hasClass('previous') || currentPage == 0 || previousPage==targetPage) {
-                location.reload(); // Reload the page
-            }
-            
-    
-        });
+      
     });
 
 </script>
+<script>
+     function reloadaddcomerciallcl(){
+        if(window.location.pathname === '/admin/addcomercialinvoicelcllocal'){
+            
+                $('#tambahComercialLclLocalPick').click();
+            
+        }
+        else if(window.location.pathname === '/admin/addcomercialinvoicelcllocalnoimport'){
 
+            
+                $('#no-import').click();
+        }
+       }
+</script>
 <script>
     // Menangani peristiwa klik pada tombol "Filter"
     document.getElementById('openModalBtn').addEventListener('click', function() {
         $('#exampleModal').modal('show'); // Menampilkan modal Filter
     });
-
-
-   
-    // Menangani klik pada tombol tambah
-    // function tambahRestok(element) {
-    //     event.preventDefault();
-    //     console.log('masuk modal tambah');
-        
-    //     $('#tambahModal').modal('show'); // Tampilkan modal
-
-    // }
-
-
-    //Untuk Mereset data input checkbox dan total kubik di modal hitung kubk
-    // document.getElementById('tambahModal').addEventListener('hidden.bs.modal', function () {
-    //     var checkboxes = document.querySelectorAll('.kubik-checkbox-tambah'); //Inisiasi variabel yang mengambil value select dari class kubik-checkbox-tambah
-    //     checkboxes.forEach(function(checkbox) { //Untuk mengambil input checkbox sesuai urutan berdasarkan array
-    //         checkbox.checked = false; //Untuk menonaktifkan input checkbox
-    //     });
-    //     document.getElementById('total-kubik').textContent = 0; //menset nilai total-kubik menjadi 0
-    // });
     
      //untuk mengaktifkan checkbox agar dapat mencustom nomor invoice
     document.getElementById('customCodeCheckbox').addEventListener('click', function() {
@@ -3300,7 +3792,6 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
     function detailComercialInvoice(element){
         event.preventDefault();
         var id = $(element).data('id');
-        console.log('id',id)
 
 
         $('#overlay').fadeIn();
@@ -3339,7 +3830,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                     'align-items': 'center'      // Posisi elemen di tengah secara horizontal
                 });
                 $('#detailFclContainer').show();
-                $('#judulFcl').hide()
+                $('#judulComercialInvoice').hide()
                 $('.display-block').hide()
                 document.title='Detail FCL   | PT. Maxipro Group Indonesia'
                 $('.container-fluid').hide()
@@ -3370,7 +3861,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
             
 
             // Tampilkan elemen overlay dengan efek fade-in sebelum mengirim permintaan AJAX
-            $('#overlay').fadeIn();
+            // $('#overlay').fadeIn();
 
             var url = "{{ route('admin.pembelian_editview_comercial_invoice') }}";
 
@@ -3381,13 +3872,27 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                     id_product: id
                 },
                 success: function(response) {
+                    $('main.main-content').removeClass('wider ps ps--active-y');
+                    $('.btn-tambah').remove();
+                    
+                    if (window.dataTableInstance) {
+                        window.dataTableInstance.destroy();
+                    }
+                    $('#tabe-stok').remove();
+                    $('.radio-button-container').hide();
+                    $('#openModalBtn').hide();
+                    $('#clearFilterBtn').hide();
+                    
+                    $('#judulRestok').html('<i class="fas fa-database"></i> &nbsp Edit Commercial Invoice');
+                    $('#subjudul').html('Edit Commercial Invoice {{ $username["data"]["teknisi"]["name"] }}');
                     // Sembunyikan elemen overlay dengan efek fade-out setelah mendapatkan respons
-                    $('#overlay').fadeOut();
-
+                    // $('#overlay').fadeOut();
+                    document.title='Edit Commercial Invoice   | PT. Maxipro Group Indonesia'
                     // Handle response jika sukses
                     $('#Formedit').html(response);
                     // Tampilkan modal
-                    $('#editModal').modal('show');
+                    // $('#editModal').modal('show');
+                    $('#editFclContainer').show();
                 },
                 error: function(xhr, status, error) {
                     // Sembunyikan elemen overlay dengan efek fade-out jika terjadi kesalahan
@@ -3898,6 +4403,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
         
        
     });
+
 
 </script>
 @endsection

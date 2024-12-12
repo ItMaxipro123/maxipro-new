@@ -1,22 +1,64 @@
 $('#tab-nav .nav-link').on('click', function(e) {
     e.preventDefault();
-    $('#tab-nav .nav-link').removeClass('active');
-    $(this).addClass('active');
-    $('.tab-content').hide();
 
-    var tabId = $(this).attr('id');
-    switch(tabId) {
-        case 'master-tab':
-            $('#master-content').show();
-            break;
-        case 'pembayaran-tab':
-            $('#pembayaran-content').show();
-            break;
-        case 'ekspedisi-tab':
-            $('#ekspedisi-content').show();
-            break;
+    // Check if document.title is not 'Buat LOCAL | PT. Maxipro Group Indonesia'
+    if (!document.title.startsWith('Buat LCL')) {
+        console.log('document.title ',document.title )
+        $('#tab-nav .nav-link').removeClass('active');
+        $(this).addClass('active');
+        $('.tab-content').hide();
+
+        var tabId = $(this).attr('id');
+        switch(tabId) {
+            case 'master-tab':
+                $('#master-content').show();
+                break;
+            case 'pembayaran-tab':
+                $('#label-lcl').show()
+                $('#pembayaran-content').show();
+                break;
+            case 'ekspedisi-tab':
+                $('#ekspedisi-content').show();
+                break;
+        }
+    }
+    else{
+        $('#tab-nav .nav-link').removeClass('active');
+        $(this).addClass('active');
+        $('.tab-content').hide();
+        $('#label-lcl').show();
+        var tabId = $(this).attr('id');
+        switch(tabId) {
+            case 'master-tab':
+                $('#master-content').show();
+                break;
+            case 'pembayaran-tab':
+                $('.form-no-lcl').html(`
+                    <div id="label-lcl" style="display: block;">
+                        <label for="">
+                            <h3>Belum Ada LCL</h3>
+                        </label>
+                    </div>
+                  
+                `);
+                
+                $('#pembayaran-content').hide();
+                break;
+            case 'ekspedisi-tab':
+                $('.form-no-lcl').html(`
+                    <div id="label-lcl" style="display: block;">
+                        <label for="">
+                            <h3>Belum Ada LCL</h3>
+                        </label>
+                    </div>
+                  
+                `);
+                $('#ekspedisi-content').hide();
+                break;
+        }
     }
 });
+
 $(document).ready(function() {
     //untuk berpindah tab di tambah LCL
     window.tambahRestok = function() {
@@ -130,13 +172,23 @@ $(document).ready(function() {
         var selectedValue = $(this).val(); // Get the selected value
 
         if (selectedValue === 'default') {
+        
             // Disable the input field if "Default" is selected
             $('#input_nominal').prop('disabled', true);
             $('#saveConvert').prop('disabled', true);
         } else {
-            // Enable the input field if "Custom" is selected
-            $('#input_nominal').prop('disabled', false);
-            $('#saveConvert').prop('disabled', false);
+            var nominal=$('#input_nominal').val()
+            // console.log('a',a);
+            if(nominal >0){
+
+                $('#saveConvert').prop('disabled', true);
+            }
+            else{
+
+                // Enable the input field if "Custom" is selected
+                $('#input_nominal').prop('disabled', false);
+                $('#saveConvert').prop('disabled', false);
+            }
         }
     });
 });

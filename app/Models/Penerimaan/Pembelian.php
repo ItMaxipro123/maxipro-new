@@ -139,6 +139,54 @@ class Pembelian extends Model
             throw $e;  // Rethrow the exception after logging it
         } 
     }
+    public static function addEkspedisi($teknisi_cookie,$form){
+        
+        try {
+            $client = new Client(['verify' => false]);
+
+            $headers = [
+                'Cookie' => $teknisi_cookie
+            ];
+            
+            // dd($fomSend);
+            $response = $client->request('POST', 'https://maxipro.id/TeknisiAPI/penerimaan_pembelian_addekspedisi', [
+                'headers' => $headers,
+                'form_params' =>$form
+            ]);
+
+            $data = $response->getBody()->getContents();
+            
+            return json_decode($data, true);
+        } catch (\Exception $e) {
+            // Log the error message
+            Log::error('Error fetching dokumen: ' . $e->getMessage());
+            throw $e;  // Rethrow the exception after logging it
+        } 
+    }
+    public static function deleteEkspedisi($teknisi_cookie,$id){
+        
+        try {
+            $client = new Client(['verify' => false]);
+
+            $headers = [
+                'Cookie' => $teknisi_cookie
+            ];
+            
+            
+            $response = $client->request('delete', 'https://maxipro.id/TeknisiAPI/penerimaan_pembelian_hapusekspedisi/'.$id, [
+                'headers' => $headers,
+                
+            ]);
+
+            $data = $response->getBody()->getContents();
+            
+            return json_decode($data, true);
+        } catch (\Exception $e) {
+            // Log the error message
+            Log::error('Error fetching dokumen: ' . $e->getMessage());
+            throw $e;  // Rethrow the exception after logging it
+        } 
+    }
 
     public static function importLcl($teknisi_cookie,$id){
         // dd('id model',$id);
@@ -167,6 +215,7 @@ class Pembelian extends Model
     }
 
     public static function tambahPembelian($teknisi_cookie,$form){
+        // dd('a');
         
         
         $formParams = [
@@ -214,9 +263,10 @@ class Pembelian extends Model
             $id_array,
             $category_detail_array
         );
-        // dd($finalArray);        
-
+        
+        // dd($finalArray);
         try {
+            
             $client = new Client(['verify' => false]);
 
             $headers = [
@@ -227,7 +277,7 @@ class Pembelian extends Model
                 'form_params' => $finalArray,
                 'headers' => $headers,
             ]);
-
+            
             $data = $response->getBody()->getContents();
             
             return json_decode($data, true);
@@ -312,7 +362,7 @@ class Pembelian extends Model
     }
 
     public static function editViewPembelian($teknisi_cookie,$code){
-        // dd($code);
+        
         try {
             $client = new Client(['verify' => false]);
 

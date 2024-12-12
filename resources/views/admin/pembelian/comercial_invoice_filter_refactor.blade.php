@@ -17,12 +17,58 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
 @section('content')
 
 <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg wider">
-    
-    <div class="container-fluid">
-        <h4 id="judulRestok"><i class="fas fa-database"></i> &nbsp Commercial Invoice</h4>
-        <small class="display-block" id="subjudul">Commercial Invoice {{ $username['data']['teknisi']['name'] }}</small>
+    <div class="row">
         
+        <div class="col-md-6">
+            <div class="container-fluid">
+                <h4 id="judulRestok" style="display:none;"><i class="fas fa-database"></i> &nbsp Commercial Invoice</h4>
+                
+                <small class="display-block" id="subjudul">Commercial Invoice {{ $username['data']['teknisi']['name'] }}</small>
+              
+            </div>
+        </div>
+        <div class="col-md-6" style="margin-top:20px;">
+                 <!-- navbar untuk membuka sidebar -->
+                <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" data-scroll="true" style="display:none;">
+                    <div class="container-fluid py-1 px-3">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+
+
+                                </ol>
+                                <h6 class="font-weight-bolder mb-0"></h6>
+                            </nav>
+                            <div  id="navbar">
+                                <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+                                
+                                </div>
+                                    <ul class="navbar-nav  justify-content-end">
+                                
+                                
+                                        <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+                                            <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
+                                                <div class="sidenav-toggler-inner">
+                                                <i class="sidenav-toggler-line"></i>
+                                                <i class="sidenav-toggler-line"></i>
+                                                <i class="sidenav-toggler-line"></i>
+                                                </div>
+                                            </a>
+                                        </li>
+
+                                
+                                
+
+                                
+                                
+                                    </ul>
+
+                            </div>
+                    </div>
+                </nav>
+        </div>
+
     </div>
+    
 
 
 
@@ -32,9 +78,19 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                 <div id="content" class="card p-0 p-md-4 wider">
                     
                     <div class="col-md-12">
+                                <div class="row btn-back" style="display:none;">
+
+                                    <div class="btn-group" style="float: right; margin-right:30px;">
+                                                <!-- <button type="button" class="btn btn-warning filter" id="backbtn" onclick="window.location.href = 'data_comercialinvoice';">Kembali</button> -->
+                                                <div class="col-md-12 d-flex justify-content-end">
+                                                    <button type="button" id="backbtn" class="btn btn-large btn-warning" onclick="window.location.href = 'data_comercialinvoice_filter';">Kembali</button>
+                                                    <!-- <button type="button" class="btn btn-large btn-warning"  id="backBtn">Kembali</button> -->
+                                                </div>
+                                    </div>
+                                </div>
                         <div class="row">
-                            <div class="col-md-12">
-                                <a href="javascript:void(0)" id="tambahComercialLocal" name="tambahButton" class="btn btn-large btn-primary btn-tambah">Add Commercial Invoice</a>
+                            <div class="col-md-12" id="div_tambahComercialQuestion" style="display:none;">
+                                <a href="javascript:void(0)" id="tambahComercialQuestion" name="tambahButton" class="btn btn-large btn-primary btn-tambah">Add Commercial Invoice</a>
                                 <div class="d-flex justify-content-end">
 
                                   
@@ -47,6 +103,10 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
 
                                     </div>
                                 </div>
+                                    
+                            </div>
+                            <div class="col-md-12">
+
                                 <ul id="tab-nav" class="nav nav-tabs fade show" style="display: none;">
                                     <li class="nav-item"><a class="nav-link active" href="#" id="master-tab">Master</a></li>
                                     
@@ -60,6 +120,11 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
 
 
                     </div>
+
+                  
+
+
+
                     <!-- Modal Filter-->
                     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
@@ -105,11 +170,17 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                         </div>
                     </div>
 
-                    <div class="radio-button-container">
+                    <div class="radio-button-container" style="display:none;">
                         <label>
-                            <div class="color-box bg-light-yellow"></div>            <div class="color-box " id="color-list-order"></div>
+                            <div class="color-box " id="color-list-order"></div>
+                            <input type="radio" name="filter" value="order_pembelian" id="filter-status" {{ $Data['msg']['requested_check'] == 'order_pembelian' ? 'checked' : '' }}>
+                             Order Pembelian
+                            
+                        </label>
+                        <label>
+                            <div class="color-box bg-light-yellow"></div>
                             <input type="radio" name="filter" value="requested" id="filter-status" {{ $Data['msg']['requested_check'] == 'requested' ? 'checked' : '' }}>
-                            Requested & From Order Pembelian
+                            Requested
                             
                         </label>
                         <label>
@@ -134,119 +205,28 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                        
                     </div>
                     
-                    <div id="reload-icon">
-                        <i class="fas fa-sync-alt"></i> Reloading...
-                    </div>
-                  
-                        <table id="tabe-stok">
-                            <thead>
-                            
-                            </thead>
-                            <tbody>
-                                @php
-                                $num =1;
-                                $maxLengthSupplier = $Data['msg']['row_counts_supplier'];
-                                $maxLengthPenjualan = $Data['msg']['total_rows_penjualan'];
-                                $sumTot = $maxLengthSupplier + $maxLengthPenjualan;
-                                $listSupplier = $Data['msg']['grouped_by_supplier'];
-                                $penjualanData = $Data['msg']['penjualan'];
-                                @endphp
-                                @if($Data['msg']['requested_check'] == 'requested')    
-                                  @for ($i = 0; $i < $maxLengthSupplier; $i++)
+                        <div id="reload-icon">
+                            <i class="fas fa-sync-alt"></i> Reloading...
+                        </div>
+                        <div class="table-responsive">
+
+                            <table id="tabe-stok" style="display:none;">
+                                <thead>
+                                
+                                </thead>
+                                <tbody>
                                     @php
-                                        // Ambil nama supplier berdasarkan indeks
-                                        $supplierName = array_keys($listSupplier)[$i] ?? null;
-                                        $details = $supplierName ? $listSupplier[$supplierName] : [];
+                                    $num =1;
+                                    $maxLengthSupplier = $Data['msg']['row_counts_supplier'];
+                                    $maxLengthPenjualan = $Data['msg']['total_rows_penjualan'];
+                                    $sumTot = $maxLengthSupplier + $maxLengthPenjualan;
+                                    $listSupplier = $Data['msg']['grouped_by_supplier'];
+                                    $penjualanData = $Data['msg']['penjualan'];
                                     @endphp
-
-                                    @if ($supplierName)
-                                        <tr id="color-list-order">
-                                            <td>{{ $num }}</td>
-                                            <td id="td-2"></td>
-                                            <td id="td-2"></td>
-                                            <td id="td-2">{{ $supplierName }}</td>
-                                            <td id="td-2"></td>
-                                            <td id="td-2">{{ $details[0]['supplier_telp'] }}</td>
-                                            <td id="td-2"></td>
-                                            <td id="td-2"></td>
-                                            <td id="td-2"></td>
-                                            <td>
-                                                <a href="{{ route('admin.pembelian_add_comercial_invoice', ['name' => $supplierName]) }}" class="btn btn-info" style="width: 35px; height: 38px; padding: 9px 10px;" title="Add Comercial">+</a>
-                                            </td>
-                                        </tr>
-                                        @php
-                                            $num++;
-                                        @endphp
-                                    @endif
-                                  @endfor
-                                  @for ($i = 0; $i < $maxLengthPenjualan; $i++)
-                                    @if (isset($penjualanData[$i]))
-                                        @php
-                                        $data = $penjualanData[$i];
-                                        \Carbon\Carbon::setLocale('id'); // Set locale ke Bahasa Indonesia
-                                        $formattedDate = \Carbon\Carbon::parse($data['date'])->translatedFormat('d F Y');
-                                        $rowStyle = '';
-                                        if ($data['status'] == 'requested') {
-                                            $rowStyle = 'background-color: #fff17a;';
-                                        } elseif ($data['status'] == 'process') {
-                                            $rowStyle = 'background-color: #97ebfb;';
-                                        } elseif ($data['status'] == 'complete') {
-                                            $rowStyle = 'background-color: #6cf670;';
-                                        } elseif ($data['status'] == 'reject') {
-                                            $rowStyle = 'background-color: #feb3aa;';
-                                        }
-                                        @endphp
-                                        
-                                        <tr style="{{ $rowStyle }}">
-                                            <td id="td-1">{{ $num }}</td>
-                                            <td id="td-2">{{ $formattedDate }}</td>
-                                            <td id="td-2">INV-{{ $data['invoice_no'] }}</td>
-                                            <td id="td-2">{{ $data['supplier']['name'] }}</td>
-                                            <td id="td-2">{{ $data['supplier']['company'] }}</td>
-                                            @php
-                                            $total = 0;
-                                            $total_usd = 0;
-                                            foreach ($data['detail'] as $index_detail => $result) {
-                                                $total += $result['total_price_without_tax'];
-                                                $total_usd += $result['total_price_usd'];
-                                            }
-                                            @endphp
-                                            <td id="td-1">{{ $data['supplier']['telp'] }}</td>
-                                            <td id="td-1">{{ $data['matauang']['simbol'] }} {{ $data['matauang']['kode'] == 'USD' ? ($total_usd + $data['freight_cost'] + $data['insurance']) : ($total + $data['freight_cost'] + $data['insurance']) }}</td>
-                                            
-                                            
-                                            <td id="td-3">   
-                                                <select id="select_category_{{ $i }}" class="form-control select_select_category" data-id_commercial="{{ $data['id'] }}" style="background-color: white">
-                                                    <option value="0">Pilih Kategori</option>
-                                                    <option value="fcl" {{ $data['category_comercial_invoice'] == 'fcl' ? 'selected' : '' }}>FCL</option>
-                                                    
-                                                    
-                                                    
-                                                </select>
-                                            </td>
-                                           
-                                            <td id="td-2">
-                                                @if ($data['status'] == 'requested')
-                                                    <a href="javascript:void(0)" onclick="detailComercialInvoice(this)" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-info btn-light" style="width: 35px; height: 38px; padding: 9px 10px;" title="Detail Commercial Invoice"><i class="fas fa-eye"></i></a>
-                                                    <a href="javascript:void(0)" onclick="updateComercialInvoice(this)" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-info btn-edit" style="width: 35px; height: 38px; padding: 9px 10px;" title="Edit"><i class="fas fa-edit"></i></a>
-                                                @else
-                                                    <a href="javascript:void(0)" onclick="updateRestokFailed(this); return false;" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-info btn-edit" style="width: 35px; height: 38px; padding: 9px 10px;" title="Edit"><i class="fas fa-edit"></i></a>
-                                                @endif
-                                                
-                                                    <a href="javascript:void(0)" onclick="deleteComercialInvoice(this)" data-id="{{ $data['id'] }}" name="{{ $data['invoice_no'] }}" class="btn btn-large btn-info btn-danger" style="width: 35px; height: 38px; padding: 9px 10px;" title="Delet2e"><i class="fas fa-trash-alt"></i></a>
-                                            </td>
-                                            <td>
-                                            </td>
-                                        </tr>
-                                        @php
-                                        $num++;
-                                        @endphp
-                                    @endif
-                                  @endfor
-
-                            @else
-                                @for ($i = 0; $i < $maxLengthPenjualan; $i++)
-                                    @if (isset($penjualanData[$i]))
+                                @if($Data['msg']['requested_check'] == 'requested')    
+                                    
+                                    @for ($i = 0; $i < $maxLengthPenjualan; $i++)
+                                        @if (isset($penjualanData[$i]))
                                             @php
                                             $data = $penjualanData[$i];
                                             \Carbon\Carbon::setLocale('id'); // Set locale ke Bahasa Indonesia
@@ -279,381 +259,156 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                                 @endphp
                                                 <td id="td-1">{{ $data['supplier']['telp'] }}</td>
                                                 <td id="td-1">{{ $data['matauang']['simbol'] }} {{ $data['matauang']['kode'] == 'USD' ? ($total_usd + $data['freight_cost'] + $data['insurance']) : ($total + $data['freight_cost'] + $data['insurance']) }}</td>
-                                                   
-                                            @if(!$data['fcl'])
-                                            <td id="td-3">LCL</td>
-                                            @else
-                                            <td id="td-3">FCL</td>
-                                            @endif
                                                 
+                                                
+                                                <td id="td-3">   
+                                                    <div class="custom-select-wrapper">
+                                                        <select id="select_category_{{ $i }}" class="form-control select_select_category" data-id_commercial="{{ $data['id'] }}">
+                                                            <option value="0">Pilih Kategori</option>
+                                                            <option value="fcl" {{ $data['category_comercial_invoice'] == 'fcl' ? 'selected' : '' }}>FCL</option>
+                                                            <option value="lcl" {{ $data['category_comercial_invoice'] == 'lcl' ? 'selected' : '' }}>LCL</option>
+                                                            <option value="local" {{ $data['category_comercial_invoice'] == 'local' ? 'selected' : '' }}>LOCAL</option>
+                                                        </select>
+                                                        <i class="fas fa-chevron-down dropdown-icon"></i> <!-- Ikon panah dari Font Awesome -->
+                                                    </div>
+                                                </td>
+                                            
                                                 <td id="td-2">
                                                     @if ($data['status'] == 'requested')
-                                                    <a href="javascript:void(0)" onclick="updateComercialInvoice(this)" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-info btn-edit" style="width: 35px; height: 38px; padding: 9px 10px;" title="Edit"><i class="fas fa-edit"></i></a>
+                                                        <a href="javascript:void(0)" onclick="detailComercialInvoice(this)" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-info btn-light" style="width: 35px; height: 38px; padding: 9px 10px;" title="Detail Commercial Invoice"><i class="fas fa-eye"></i></a>
+                                                        <a href="javascript:void(0)" onclick="updateComercialInvoice(this)" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-info btn-edit" style="width: 35px; height: 38px; padding: 9px 10px;" title="Edit"><i class="fas fa-edit"></i></a>
                                                     @else
-                                                    <a href="javascript:void(0)" onclick="updateRestokFailed(this); return false;" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-info btn-edit" style="width: 35px; height: 38px; padding: 9px 10px;" title="Edit"><i class="fas fa-edit"></i></a>
+                                                        <a href="javascript:void(0)" onclick="updateRestokFailed(this); return false;" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-info btn-edit" style="width: 35px; height: 38px; padding: 9px 10px;" title="Edit"><i class="fas fa-edit"></i></a>
                                                     @endif
-                                                    <a href="javascript:void(0)" onclick="rejectOrderPembelian(this)" data-id="{{ $data['id'] }}" name="{{ $data['invoice_no'] }}" class="btn btn-large btn-info btn-danger" style="width: 35px; height: 38px; padding: 9px 10px;" title="Reject Order"><i class="fas fa-times"></i></a>
-                                                    <a href="javascript:void(0)" onclick="deleteComercialInvoice(this)" data-id="{{ $data['id'] }}" name="{{ $data['invoice_no'] }}" class="btn btn-large btn-info btn-danger" style="width: 35px; height: 38px; padding: 9px 10px;" title="Delete5"><i class="fas fa-trash-alt"></i></a>
+                                                    
+                                                        <a href="javascript:void(0)" onclick="deleteComercialInvoice(this)" data-id="{{ $data['id'] }}" name="{{ $data['invoice_no'] }}" class="btn btn-large btn-info btn-danger" style="width: 35px; height: 38px; padding: 9px 10px;" title="Delete"><i class="fas fa-trash-alt"></i></a>
                                                 </td>
-                                                <td>
-                                                </td>
+                                            
                                             </tr>
                                             @php
                                             $num++;
                                             @endphp
-                                    @endif
-                                @endfor
-                            @endif
-                            </tbody>
-                        </table>
+                                        @endif
+                                    @endfor
+                                @elseif($Data['msg']['requested_check'] =='order_pembelian')
+                                    @for ($i = 0; $i < $maxLengthSupplier; $i++)
+                                        @php
+                                            // Ambil nama supplier berdasarkan indeks
+                                            $supplierName = array_keys($listSupplier)[$i] ?? null;
+                                            $details = $supplierName ? $listSupplier[$supplierName] : [];
+                                        @endphp
 
+                                        @if ($supplierName)
+                                            <tr id="color-list-order">
+                                                <td>{{ $num }}</td>
+                                                <td id="td-2"></td>
+                                                <td id="td-2"></td>
+                                                <td id="td-2">{{ $supplierName }}</td>
+                                                <td id="td-2"></td>
+                                                <td id="td-2">{{ $details[0]['supplier_telp'] }}</td>
+                                                <td id="td-2"></td>
+                                                <td id="td-2"></td>
+                                                
+                                                <td>
+                                                    <a href="{{ route('admin.pembelian_add_comercial_invoice_supplier', ['name' => $supplierName]) }}" class="btn btn-info" style="width: 35px; height: 38px; padding: 9px 10px;" title="Add Comercial">+</a>
+                                                </td>
+                                            </tr>
+                                            @php
+                                                $num++;
+                                            @endphp
+                                        @endif
+                                    @endfor
+                                @else
+                                    @for ($i = 0; $i < $maxLengthPenjualan; $i++)
+                                        @if (isset($penjualanData[$i]))
+                                                @php
+                                                $data = $penjualanData[$i];
+                                                \Carbon\Carbon::setLocale('id'); // Set locale ke Bahasa Indonesia
+                                                $formattedDate = \Carbon\Carbon::parse($data['date'])->translatedFormat('d F Y');
+                                                $rowStyle = '';
+                                                if ($data['status'] == 'requested') {
+                                                    $rowStyle = 'background-color: #fff17a;';
+                                                } elseif ($data['status'] == 'process') {
+                                                    $rowStyle = 'background-color: #97ebfb;';
+                                                } elseif ($data['status'] == 'complete') {
+                                                    $rowStyle = 'background-color: #6cf670;';
+                                                } elseif ($data['status'] == 'reject') {
+                                                    $rowStyle = 'background-color: #feb3aa;';
+                                                }
+                                                @endphp
+                                                
+                                                <tr style="{{ $rowStyle }}">
+                                                    <td id="td-1">{{ $num }}</td>
+                                                    <td id="td-2">{{ $formattedDate }}</td>
+                                                    <td id="td-2">INV-{{ $data['invoice_no'] }}</td>
+                                                    <td id="td-2">{{ $data['supplier']['name'] }}</td>
+                                                    <td id="td-2">{{ $data['supplier']['company'] }}</td>
+                                                    @php
+                                                    $total = 0;
+                                                    $total_usd = 0;
+                                                    foreach ($data['detail'] as $index_detail => $result) {
+                                                        $total += $result['total_price_without_tax'];
+                                                        $total_usd += $result['total_price_usd'];
+                                                    }
+                                                    @endphp
+                                                    <td id="td-1">{{ $data['supplier']['telp'] }}</td>
+                                                    <td id="td-1">{{ $data['matauang']['simbol'] }} {{ $data['matauang']['kode'] == 'USD' ? ($total_usd + $data['freight_cost'] + $data['insurance']) : ($total + $data['freight_cost'] + $data['insurance']) }}</td>
+                                                    
+                                                @if(!$data['fcl'])
+                                                    @if($data['category_comercial_invoice'] =='local')
+                                                    <td id="td-3">LOCAL</td>
+                                                    @else
+                                                    <td id="td-3">LCL</td>
+                                                    @endif
+                                                @else
+                                                <td id="td-3">FCL</td>
+                                                @endif
+                                                    
+                                                    <td id="td-2">
+                                                        <a href="javascript:void(0)" onclick="detailComercialInvoice(this)" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-info btn-light" style="width: 35px; height: 38px; padding: 9px 10px;" title="Detail Commercial Invoice"><i class="fas fa-eye"></i></a>
+                                                        @if ($data['status'] == 'requested')
+                                                        <a href="javascript:void(0)" onclick="updateComercialInvoice(this)" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-info btn-edit" style="width: 35px; height: 38px; padding: 9px 10px;" title="Edit"><i class="fas fa-edit"></i></a>
+                                                        @else
+                                                        <a href="javascript:void(0)" onclick="updateRestokFailed(this); return false;" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-info btn-edit" style="width: 35px; height: 38px; padding: 9px 10px;" title="Edit"><i class="fas fa-edit"></i></a>
+                                                        @endif
+                                                        
+                                                        <!-- <a href="javascript:void(0)" onclick="rejectOrderPembelian(this)" data-id="{{ $data['id'] }}" name="{{ $data['invoice_no'] }}" class="btn btn-large btn-info btn-danger" style="width: 35px; height: 38px; padding: 9px 10px;" title="Reject Order"><i class="fas fa-times"></i></a> -->
+                                                        <a href="javascript:void(0)" onclick="deleteComercialInvoice(this)" data-id="{{ $data['id'] }}" name="{{ $data['invoice_no'] }}" class="btn btn-large btn-info btn-danger" style="width: 35px; height: 38px; padding: 9px 10px;" title="Delete5"><i class="fas fa-trash-alt"></i></a>
+                                                    </td>
+                                                    
+                                                </tr>
+                                                @php
+                                                $num++;
+                                                @endphp
+                                        @endif
+                                    @endfor
+                                @endif
+                                </tbody>
+                            </table>
+                        </div>
 
+                        <!-- element untuk view edit  -->
+                        <div id="editFclContainer" class="col-sm-12" style="margin-top: 15px;display: none;">
+                                    <div class="row">
+                                        <div class="col-md-12">
+
+                                        <div class="btn-group" style="float: right;">
+                                            <button type="button" class="btn btn-warning filter" id="backbutton" onclick="location.reload();">Kembali</button>
+                                        </div>
+
+                                        </div>
+                                    </div>
+                            <form action=""id="Formedit"></form>
+                    
+                        </div>
                   
                     
-                    <!-- modal tambah commercial invoice -->
-                    <!-- <div class="col-sm-12" style="margin-top: 15px;">
-                        
-              
-
-                        <div class="modal fade" id="tambahModal" tabindex="-1" role="dialog" aria-labelledby="tambahModal" aria-hidden="true">
-                           <div class="modal-dialog" role="document" style="max-width: 2200px;padding-left: 250px;">
-
-                                <div class="modal-content">
-                                    
-                                    <div class="modal-header">
-                                        
-                                       <h5 class="modal-title" id="exampleModalLabel">Tambah Comercial Invoice</h5>
-
-                                    </div>
-                                    
-                                    <div class="modal-body">
-                                        
-                                        <form id="FormTambah">
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div style="position: relative; width: 100%;">
-                                                    <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Custom Kode</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div style="position: relative; width: 100%;">
-                                                        <input type="checkbox" id="customCodeCheckbox_modal" class="styled customcode_modal">
-                                                        <input type="hidden" name="modeadmin_tambah_modal" value="0">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4" style="text-align: right;">
-                                                <a href="javascript:void(0)" onclick="importData(event)" name="importButton" class="btn btn-large btn-info btn-edit" style="width: 140px; height: 38px; padding: 9px 10px;">Import Data </a>
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div style="position: relative; width: 100%;">
-                                                    <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Invoice Number</label>
-                                                    <input type="number" class="form-control" name="invoice_no_tambah_modal" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;" placeholder="AUTO" disabled>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div style="position: relative; width: 100%;">
-                                                    <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Contract Number</label>
-                                                    <input type="number" class="form-control" name="contract_no_tambah_modal" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;" placeholder="AUTO" disabled>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div style="position: relative; width: 100%;">
-                                                    <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Packing Number</label>
-                                                    <input type="number" class="form-control" name="packing_no_tambah_modal" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;" placeholder="AUTO" disabled>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-2">
-                                                    <div style="position: relative; width: 100%; margin-top:10px;">
-                                                        <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Database <span style="color: red;">(Wajib Diisi)</span></label>
-                                                        
-                                                        <select style="border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control database-tambah" id="database_tambah_id" name="database_tambah_name" required>
-                                                            <option value="">Database</option>
-                                                            <option value="PT">PT</option>
-                                                            <option value="UD">UD</option>
-                                                        </select>
-
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-10">
-                                                    <div class="form-group" style="margin-top:10px;">
-                                                        <label for="startDateTglRequest">Tanggal Request <span style="color: red;">(Wajib Diisi)</span></label>
-                                                        <input type="text" style="height:55px;" class="form-control custom-border" id="tgl_request_tambah" name="tgl_request" placeholder= "Pilih Tanggal" required >
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group" style="margin-bottom: 20px;margin-top: 10px;">
-                                                    <label class="col-lg-3 control-label" style="font-size: 15px;width: 100%">Supplier <span style="color: red;">(Wajib Diisi)</span></label>
-
-                                                    <select class="select select2 select-search form-control" id="product-supplier-edit-filter" name="tambah_supplier">
-                                                    <option value="">Supplier</option>
-                                                    @foreach($Data['msg']['supplier'] as $index => $supplier)
-                                                    <option value="{{ $supplier['id'] }}">{{ $supplier['name'] }}</option>
-                                                    @endforeach
-                                                    
-                                                </select>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                        <div style="position: relative; width: 100%;">
-                                                            <label class="col-lg-3 control-label" style="font-size: 15px;width: 100%;width: 100%" for="">Nama Perusahaan <span style="color: red;">(Wajib Diisi)</span></label>
-                                                            <input type="text" class="form-control" name="company_name" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;" placeholder="Nama Perusahaan">
-                                                        </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div style="position: relative; width: 100%;">
-                                                        <label class="col-lg-3 control-label" style="font-size: 15px;width: 100%" for="">Alamat Perusahaan</label>
-                                                        <textarea type="text" class="form-control" name="address_company" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;" placeholder="Alamat Perusahaan"></textarea>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div style="position: relative; width: 100%;">
-                                                        <label class="col-lg-3 control-label" style="font-size: 15px;width: 100%" for="">Kota Perusahaan</label>
-                                                        <input type="text" class="form-control" name="city_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;" placeholder="Kota Perusahaan">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            
-                                            
-
-                                            
-
-                                           
-
-
-                                        </form>
-
-                                        <form action="" class="form-horizontal" id="sendImportForm" method="get">
-                                            @csrf
-                                            <div style="margin-top:20px;position: relative; width: 100%;">
-                                                 <div id="content-container2"></div>
-                                                 <div id="content-container3"></div>
-                                             </div>
-                                        </form>
-
-                                        <form action="" class="form-horizontal" id="FormTambah2" method="get">
-                                            @csrf
-                                           
-
-                                            
-                                            
-                                            <div class="form-group" style="padding-top: 100px; padding-left: 20px;">
-                                                <h4>NOTES</h4>
-                                                <hr style="border: none; border-top: 1px solid #000; margin-top: 20px;">
-                                            </div>
-
-                                            <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                
-                                                <div class="row">
-                                                    <div style="padding-top: 15px;" class="col-md-1">
-                                                        <label for="kodebaranglabel">Incoterms</label>
-                                            
-                                                    </div>
-                                                    <div class="col-md-11" style="padding-right: 600px;">
-                                                        <select style="border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control incoterms-tambah" id="incoterms-tambah-id" name="incoterms_tambah">
-                                                            <option value="">Select Incoterms</option>
-                                                                <option value="FOB">FOB </option>
-                                                                <option value="CIF">CIF </option>
-                                                                <option value="EXWORK">EXWORK </option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                
-                                            </div>
-
-                                            <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                
-                                                <div class="row">
-                                                    <div style="padding-top: 10px;" class="col-md-1">
-                                                        <label for="kodebaranglabel">Location</label>
-                                            
-                                                    </div>
-                                                    <div class="col-md-11" style="padding-right: 600px;">
-                                                        <input type="text" class="form-control custom-border" style="border: 1px solid #ced4da;padding-left:10px;" id="location_id_tab" name="location_name_tab" placeholder="Location">
-                                                    </div>
-                                                </div>
-                                                
-                                            </div>
-
-                                            <div class="form-group" style="padding-top: 100px; padding-left: 20px;">
-                                                <h4>PAYMENT</h4>
-                                                <hr style="border: none; border-top: 1px solid #000; margin-top: 20px;">
-                                            </div>
-
-                                            <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                
-                                                <div class="row">
-                                                    <div style="padding-top: 15px;" class="col-md-1">
-                                                        <label for="kodebaranglabel">Bank Supplier</label>
-                                            
-                                                    </div>
-                                                    <div class="col-md-11" style="padding-right: 600px;">
-                                                        <select style="border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control banksupplier-tambah" id="banksupplier-tambah-id" name="banksupplier_edit">
-                                                                <option value="0">Pilih Bank Supplier</option>
-                                                            
-
-                                                                <option value=""></option>
-
-                                                            
-
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                
-                                            </div>
-
-                                            <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                
-                                                <div class="row">
-                                                    <div style="padding-top: 15px;" class="col-md-1">
-                                                        <label for="kodebaranglabel">Currency</label>
-                                            
-                                                    </div>
-                                                    <div class="col-md-11" style="padding-right: 600px;">
-                                                        <select style="border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control currency-tambah" id="currency-tambah-id" name="currency_tambah">
-                                                                <option value="0">Pilih Currency</option>
-                                                                
-                                                                @foreach($Data['msg']['matauang'] as $index => $mt_uang)    
-                                                                <option value="{{ $mt_uang['id'] }}"> ({{ $mt_uang['simbol'] }}) {{ $mt_uang['kode'] }} - {{ $mt_uang['name'] }} </option>
-                                                                @endforeach
-                                                                
-                                                            
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                
-                                            </div>
                 
-                                            <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                
-                                                <div class="row">
-                                                    <div style="padding-top: 10px;" class="col-md-1">
-                                                        <label for="kodebaranglabel">Bank Name</label>
-                                            
-                                                    </div>
-                                                    <div class="col-md-11" style="padding-right: 600px;">
-
-
-                                                        <input type="text" class="form-control custom-border" id="bank_name_id_tab" name="bank_name_name_tab" style="border: 1px solid #ced4da; width: 100%; padding-left:10px;" placeholder="Bank Name">
-
-                                                    </div>
-                                                </div>
-                                                
-                                            </div>
-
-                                            <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                
-                                                <div class="row">
-                                                    <div style="padding-top: 10px;" class="col-md-1">
-                                                        <label for="kodebaranglabel">Bank Address</label>
-                                            
-                                                    </div>
-                                                    <div class="col-md-11" style="padding-right: 600px;">
-
-
-                                                        <input type="text" class="form-control custom-border" style="border: 1px solid #ced4da; width: 100%; padding-left:10px;" id="bankAddress_id_tab_tambah" name="bankAddress_name_tab_tambah" placeholder="Bank Address">
-
-                                                    </div>
-                                                </div>
-                                                
-                                            </div>
-
-                                            <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                
-                                                <div class="row">
-                                                    <div style="padding-top: 10px;" class="col-md-1">
-                                                        <label for="kodebaranglabel">Swift Code</label>
-                                            
-                                                    </div>
-                                                    <div class="col-md-11" style="padding-right: 600px;">
-
-
-                                                        <input type="text" class="form-control custom-border" style="border: 1px solid #ced4da; width: 100%; padding-left:10px;" id="swiftCode_id_tab_tambah" name="swiftCode_name_tab_tambah" placeholder="Swift Code">
-
-                                                    </div>
-                                                </div>
-                                                
-                                            </div>
-
-                                            <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                
-                                                <div class="row">
-                                                    <div style="padding-top: 10px;" class="col-md-1">
-                                                        <label for="kodebaranglabel">Account No</label>
-                                            
-                                                    </div>
-                                                    <div class="col-md-11" style="padding-right: 600px;">
-
-
-                                                        <input type="text" class="form-control custom-border" id="accountNo_id_tab_tambah" name="accountNo_name_tab_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left:10px;" placeholder="Account No">
-
-                                                    </div>
-                                                </div>
-                                                
-                                            </div>
-
-                                            <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                
-                                                <div class="row">
-                                                    <div style="padding-top: 10px;" class="col-md-1">
-                                                        <label for="kodebaranglabel">Beneficiary Name</label>
-                                            
-                                                    </div>
-                                                    <div class="col-md-11" style="padding-right: 600px;">
-
-
-                                                        <input type="text" class="form-control custom-border" id="beneficiaryName_id_tab_tambah" name="beneficiaryName_name_tab_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left:10px;"placeholder="Beneficiary Name">
-
-                                                    </div>
-                                                </div>
-                                                
-                                            </div>
-
-                                            <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                
-                                                <div class="row">
-                                                    <div style="padding-top: 10px;" class="col-md-1">
-                                                        <label for="kodebaranglabel" style="width: 100%;">Beneficiary Address</label>
-                                            
-                                                    </div>
-                                                    <div class="col-md-11" style="padding-right: 600px;">
-
-
-                                                        <input type="text" class="form-control custom-border" id="beneficiaryAddress_id_tab_tambah" name="beneficiaryAddress_name_tab_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left:10px;" placeholder="Beneficiary Address">
-
-                                                    </div>
-                                                </div>
-                                                
-                                            </div>
-
-                                            <div class="form-group" style="display: flex;padding-top:30px; text-align:end;">
-                                                <button type="button" id="submitButtonForm2" class="btn btn-primary" style="margin-left: auto;">Simpan</button>
-                                            </div>
-                                        </form>
-
-                                    </div>
-                                    <div class="modal-footer">
-                                        
-                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="window.location.href = '{{ route('admin.pembelian_comercial_invoice') }}'">Close</button>
-
-                                    </div>
-
-
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
 
                     <!-- modal edit commercial invoice -->
                     <div id="editcomercial" class="col-sm-12" style="margin-top: 15px;">
                         <div id="overlay" style="display: none;"></div>
-                        <!-- <div id="tabe-stok"></div> -->
+                        
 
                         <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
                            <div class="modal-dialog" role="document" style="max-width: 2200px;padding-left: 250px;">
@@ -668,7 +423,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                     <!-- Isi modal -->
                                     <div class="modal-body">
                                         
-                                        <form id="Formedit">
+                                        <form id="Formedit2">
 
                                         </form>
                                         
@@ -686,217 +441,119 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                     
                     <!-- view tambah comercial invoice kategori local -->
                     <div id="addcomerialinvoicelocal" style="display: none;" class="col-sm-12" style="margin-top: 15px;">
-
-                                              
-
-                                    <!--<form action="" class="form-horizontal" id="sendImportForm" method="get">
-                                                                    @csrf
-                                                                    <div style="margin-top:20px;position: relative; width: 100%;">
-                                                                        <div id="content-container2"></div>
-                                                                        <div id="content-container3"></div>
-                                                                    </div>
-                                    </form>
-
-                                    <form action="" class="form-horizontal" id="FormTambah2" method="get">
-                                                                    @csrf
-                                                                
-
-                                                                    
-                                                                    
-                                                                    <div class="form-group" style="padding-top: 100px; padding-left: 20px;">
-                                                                        <h4>NOTES</h4>
-                                                                        <hr style="border: none; border-top: 1px solid #000; margin-top: 20px;">
-                                                                    </div>
-
-                                                                    <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                                        
-                                                                        <div class="row">
-                                                                            <div style="padding-top: 15px;" class="col-md-1">
-                                                                                <label for="kodebaranglabel">Incoterms</label>
-                                                                    
+                                    
+                                    <!-- modal import data barang -->
+                                    <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-xl">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="modalLabel">Import From Order Pembelian</h5>
+                                                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                    
+                                                </div>
+                                                <div class="modal-body">
+                                                            <table id="table-tambah-comercial-invoice" class="table table-striped">
+                                                                    <thead>
+                                                                        <div class="row mb-2">
+                                                                            <div class="col-md-3">
+                                                                                <label>
+                                                                                    <input type="checkbox" id="filterChecked"> Show only checked
+                                                                                </label>
                                                                             </div>
-                                                                            <div class="col-md-11" style="padding-right: 600px;">
-                                                                                <select style="border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control incoterms-tambah" id="incoterms-tambah-id" name="incoterms_tambah">
-                                                                                    <option value="">Select Incoterms</option>
-                                                                                        <option value="FOB">FOB </option>
-                                                                                        <option value="CIF">CIF </option>
-                                                                                        <option value="EXWORK">EXWORK </option>
+                                                                            <div class="col-md-3">
+                                                                                <select id="filter-select" class="form-control select-supplier-tambah">
+                                                                                    <option value="">Supplier</option>
+                                                                                    @foreach(array_unique(array_column($Data['msg']['supplier'], 'name')) as $supplier)
+                                                                                    <option value="{{ $supplier }}">{{ $supplier }}</option>
+                                                                                    @endforeach
                                                                                 </select>
                                                                             </div>
-                                                                        </div>
-                                                                        
-                                                                    </div>
 
-                                                                    <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                                        
-                                                                        <div class="row">
-                                                                            <div style="padding-top: 10px;" class="col-md-1">
-                                                                                <label for="kodebaranglabel">Location</label>
-                                                                    
+                                                                            <div class="col-md-3" id="id-search">
+                                                                                <label>
+                                                                                    Search:
+                                                                                </label>
                                                                             </div>
-                                                                            <div class="col-md-11" style="padding-right: 600px;">
-                                                                                <input type="text" class="form-control custom-border" style="border: 1px solid #ced4da;padding-left:10px;" id="location_id_tab" name="location_name_tab" placeholder="Location">
+                                                                            <div class="col-md-3">
+                                                                                <input type="text" id="search-box" class="form-control d-inline-block w-round" placeholder="Cari...">
                                                                             </div>
                                                                         </div>
-                                                                        
-                                                                    </div>
-
-                                                                    <div class="form-group" style="padding-top: 100px; padding-left: 20px;">
-                                                                        <h4>PAYMENT</h4>
-                                                                        <hr style="border: none; border-top: 1px solid #000; margin-top: 20px;">
-                                                                    </div>
-
-                                                                    <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                                        
-                                                                        <div class="row">
-                                                                            <div style="padding-top: 15px;" class="col-md-1">
-                                                                                <label for="kodebaranglabel">Bank Supplier</label>
+                                                                        <tr>
+                                                                            <th scope="col">#</th>
+                                                                            <th scope="col">Image</th>
+                                                                            <th scope="col">Kode</th>
+                                                                            <th scope="col">Nama</th>
+                                                                            <th scope="col">Jml Permintaan</th>
+                                                                            <th scope="col">Supplier</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        @php
+                                                                        $number =0;
+                                                                        $number2 =0;
+                                                                        @endphp
                                                                     
-                                                                            </div>
-                                                                            <div class="col-md-11" style="padding-right: 600px;">
-                                                                                <select style="border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control banksupplier-tambah" id="banksupplier-tambah-id" name="banksupplier_edit">
-                                                                                        <option value="0">Pilih Bank Supplier</option>
-                                                                                    
+
+                                                                        @foreach($Data['msg']['listorder'] as $index => $result)
+                                                                        @php
+                                                                        $number2++;
+
+                                                                        @endphp
+                                                                        <form action="" class="form-horizontal" id="importBarang" method="get">
+                                                                            @csrf
+                                                                            
+                                                                            <tr>
+                                                                                <td style="border: 1px solid #d7d7d7; color: black; text-align: center;">
+                                                                                
+                                                                            
+                                                                                <input type="checkbox" class="kubik-checkbox-tambah" name="checkbox_{{ $number2 }}">
+                                                                                <input type="hidden" class="form-control restok-input-tambah"  name="id_restok_{{ $number2 }}" value="{{ $result['restok_id'] }}">
+                                                                                
                                                                                         
-                                                                                        <option value=""></option>
-                                                                                        
-
-                                                                                    
-
-                                                                                </select>
-                                                                            </div>
-                                                                        </div>
-                                                                        
-                                                                    </div>
-
-                                                                    <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                                        
-                                                                        <div class="row">
-                                                                            <div style="padding-top: 15px;" class="col-md-1">
-                                                                                <label for="kodebaranglabel">Currency</label>
+                                                                                </td>
+                                                                                <td style="max-width: 200px;white-space: normal; word-wrap: break-word;"><img src="{{ $Data['msg']['directory_gambar'] }}{{ $result['image'] }}" style="width:200px; height:200px;"></td>
+                                                                                <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $result['new_kode'] }}</td>
+                                                                                <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $result['name'] }}</td>
+                                                                                <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $result['jml_permintaan'] }}</td>
+                                                                                <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $result['supplier_name'] }}</td>
+                                                                                
+                                                                            </tr>
+                                                                            
+                                                                        </form>
+                                                                    @endforeach
                                                                     
-                                                                            </div>
-                                                                            <div class="col-md-11" style="padding-right: 600px;">
-                                                                                <select style="border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control currency-tambah" id="currency-tambah-id" name="currency_tambah">
-                                                                                        <option value="0">Pilih Currency</option>
-                                                                                        
-                                                                                        @foreach($Data['msg']['matauang'] as $index => $mt_uang)    
-                                                                                        <option value="{{ $mt_uang['id'] }}"> ({{ $mt_uang['simbol'] }}) {{ $mt_uang['kode'] }} - {{ $mt_uang['name'] }} </option>
-                                                                                        @endforeach
-                                                                                        
-                                                                                    
-                                                                                </select>
-                                                                            </div>
-                                                                        </div>
-                                                                        
-                                                                    </div>
-                                        
-                                                                    <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                                        
-                                                                        <div class="row">
-                                                                            <div style="padding-top: 10px;" class="col-md-1">
-                                                                                <label for="kodebaranglabel">Bank Name</label>
+                                                                    </tbody>
+                                                            </table>
+                                                            <div style="text-align:right; margin-top: 30px;">
                                                                     
-                                                                            </div>
-                                                                            <div class="col-md-11" style="padding-right: 600px;">
+                                                                    <button type="button" id="sendImportBarang" class="btn btn-primary" style="margin-left: auto;">Simpan</button>
+                                                            </div>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                   
+                                    <!-- button add import data -->
+                                    <div class="row" id="padding-top">
+                                        <div class="col-md-12 d-flex justify-content-end">
+                                            <button type="button" id="importData" class="btn btn-large btn-info">Import Data</button>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                                    <div class="col-md-12">
 
+                                                        <div class="btn-group" style="float: right; margin-right:30px;">
+                                                            <button type="button" class="btn btn-warning filter" id="clearFilterBtn" onclick="window.location.href = 'data_comercialinvoice_filter';">Kembali</button>
 
-                                                                                <input type="text" class="form-control custom-border" id="bank_name_id_tab" name="bank_name_name_tab" style="border: 1px solid #ced4da; width: 100%; padding-left:10px;" placeholder="Bank Name">
+                                                        </div>
 
-                                                                            </div>
-                                                                        </div>
-                                                                        
-                                                                    </div>
-
-                                                                    <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                                        
-                                                                        <div class="row">
-                                                                            <div style="padding-top: 10px;" class="col-md-1">
-                                                                                <label for="kodebaranglabel">Bank Address</label>
-                                                                    
-                                                                            </div>
-                                                                            <div class="col-md-11" style="padding-right: 600px;">
-
-
-                                                                                <input type="text" class="form-control custom-border" style="border: 1px solid #ced4da; width: 100%; padding-left:10px;" id="bankAddress_id_tab_tambah" name="bankAddress_name_tab_tambah" placeholder="Bank Address">
-
-                                                                            </div>
-                                                                        </div>
-                                                                        
-                                                                    </div>
-
-                                                                    <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                                        
-                                                                        <div class="row">
-                                                                            <div style="padding-top: 10px;" class="col-md-1">
-                                                                                <label for="kodebaranglabel">Swift Code</label>
-                                                                    
-                                                                            </div>
-                                                                            <div class="col-md-11" style="padding-right: 600px;">
-
-
-                                                                                <input type="text" class="form-control custom-border" style="border: 1px solid #ced4da; width: 100%; padding-left:10px;" id="swiftCode_id_tab_tambah" name="swiftCode_name_tab_tambah" placeholder="Swift Code">
-
-                                                                            </div>
-                                                                        </div>
-                                                                        
-                                                                    </div>
-
-                                                                    <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                                        
-                                                                        <div class="row">
-                                                                            <div style="padding-top: 10px;" class="col-md-1">
-                                                                                <label for="kodebaranglabel">Account No</label>
-                                                                    
-                                                                            </div>
-                                                                            <div class="col-md-11" style="padding-right: 600px;">
-
-
-                                                                                <input type="text" class="form-control custom-border" id="accountNo_id_tab_tambah" name="accountNo_name_tab_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left:10px;" placeholder="Account No">
-
-                                                                            </div>
-                                                                        </div>
-                                                                        
-                                                                    </div>
-
-                                                                    <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                                        
-                                                                        <div class="row">
-                                                                            <div style="padding-top: 10px;" class="col-md-1">
-                                                                                <label for="kodebaranglabel">Beneficiary Name</label>
-                                                                    
-                                                                            </div>
-                                                                            <div class="col-md-11" style="padding-right: 600px;">
-
-
-                                                                                <input type="text" class="form-control custom-border" id="beneficiaryName_id_tab_tambah" name="beneficiaryName_name_tab_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left:10px;"placeholder="Beneficiary Name">
-
-                                                                            </div>
-                                                                        </div>
-                                                                        
-                                                                    </div>
-
-                                                                    <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                                                                        
-                                                                        <div class="row">
-                                                                            <div style="padding-top: 10px;" class="col-md-1">
-                                                                                <label for="kodebaranglabel" style="width: 100%;">Beneficiary Address</label>
-                                                                    
-                                                                            </div>
-                                                                            <div class="col-md-11" style="padding-right: 600px;">
-
-
-                                                                                <input type="text" class="form-control custom-border" id="beneficiaryAddress_id_tab_tambah" name="beneficiaryAddress_name_tab_tambah" style="border: 1px solid #ced4da; width: 100%; padding-left:10px;" placeholder="Beneficiary Address">
-
-                                                                            </div>
-                                                                        </div>
-                                                                        
-                                                                    </div>
-
-                                                                    <div class="form-group" style="display: flex;padding-top:30px; text-align:end;">
-                                                                        <button type="button" id="submitButtonForm2" class="btn btn-primary" style="margin-left: auto;">Simpan</button>
-                                                                    </div>
-                                    </form>        -->
+                                                    </div>
+                                    </div>
+                                    
 
                                     <div class="row" id="row-supplier">
                                         <form id="FormTambah">
@@ -947,11 +604,11 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                             <div class="row" id="padding-top">
                                                 <div class="col-md-3">
 
-                                                    <label id="label" for="">Database <span style="color:red">*</span></label>
+                                                    <label id="label" for="">Database2 <span style="color:red">*</span></label>
                                                 </div>
                                                 <div class="col-md-9">
 
-                                                        <select style="border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control database-tambah" id="database_tambah_id" name="database_tambah_name" required>
+                                                        <select style="border: 1px solid #696868; color: black; padding: 10px; width:100%" class="form-control database-tambah" id="database_tambah_id" name="database_tambah_name" required>
                                                                                     <option value="">Database</option>
                                                                                     <option value="PT">PT</option>
                                                                                     <option value="UD">UD</option>
@@ -1277,7 +934,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                     <div class="row">
                                         <div style="text-align:right; margin-top: 30px;">
                                     
-                                                <button type="button" id="sendSave" class="btn btn-primary" style="margin-left: auto;">Simpan</button>
+                                                <button type="button" id="sendSave" class="btn btn-primary" style="margin-left: auto;">Simpan2</button>
                                         </div>
                                     </div>
                     </div>
@@ -1577,107 +1234,44 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
         </div>
     </div>
 
-    <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalLabel">Import From2 Order Pembelian</h5>
-                    
-                </div>
-                <div class="modal-body">
-                            <table id="table-tambah-comercial-invoice" class="table table-striped">
-                                    <thead>
-                                        <div class="row mb-2">
-                                            <div class="col-md-3">
-                                                <label>
-                                                    <input type="checkbox" id="filterChecked"> Show only checked
-                                                </label>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <select id="filter-select" class="form-control select-supplier-tambah">
-                                                    <option value="">Supplier</option>
-                                                    @foreach(array_unique(array_column($Data['msg']['supplier'], 'name')) as $supplier)
-                                                    <option value="{{ $supplier }}">{{ $supplier }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
 
-                                            <div class="col-md-3" id="id-search">
-                                                <label>
-                                                    Search:
-                                                </label>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <input type="text" id="search-box" class="form-control d-inline-block w-round" placeholder="Supplier...">
-                                            </div>
+      <!-- Modal Question After Click Add Commercial invoice -->
+                                        
+                <div class="modal fade" id="comercialQuestionModal" tabindex="-1" aria-labelledby="comercialQuestionModalLabel" aria-hidden="true" style="margin-top:200px;">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="comercialQuestionModalLabel">Add Commercial Invoice</h5>
+                                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                </div>
+                                <div class="modal-body text-center">
+                                    
+                                    <!-- Two buttons inside the modal body -->
+                                    <div class="row">
+                                        <div class="col-md-6" style="text-align:center;">
+
+                                            <button type="button" id="tambahComercialLclLocal" class="btn btn-primary me-2" id="optionOne">Add Comercial Invoice Lcl / Local</button>
                                         </div>
-                                        <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">Image</th>
-                                            <th scope="col">Kode</th>
-                                            <th scope="col">Nama</th>
-                                            <th scope="col">Jml Permintaan</th>
-                                            <th scope="col">Supplier</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @php
-                                        $number =0;
-                                        $number2 =0;
-                                        @endphp
-                                    
+                                        <div class="col-md-6" style="text-align:center;">
 
-                                        @foreach($Data['msg']['listorder'] as $index => $result)
-                                        @php
-                                        $number2++;
-
-                                        @endphp
-                                        <form action="" class="form-horizontal" id="importBarang" method="get">
-                                            @csrf
-                                            
-                                            <tr>
-                                                <td style="border: 1px solid #d7d7d7; color: black; text-align: center;">
-                                                
-                                            
-                                                <input type="checkbox" class="kubik-checkbox-tambah" name="checkbox_{{ $number2 }}">
-                                                <input type="hidden" class="form-control restok-input-tambah"  name="id_restok_{{ $number2 }}" value="{{ $result['restok_id'] }}">
-                                                
-                                                        
-                                                </td>
-                                                <td style="max-width: 200px;white-space: normal; word-wrap: break-word;"><img src="{{ $Data['msg']['directory_gambar'] }}{{ $result['image'] }}" style="width:200px; height:200px;"></td>
-                                                <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $result['new_kode'] }}</td>
-                                                <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $result['name'] }}</td>
-                                                <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $result['jml_permintaan'] }}</td>
-                                                <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $result['supplier_name'] }}</td>
-                                                
-                                            </tr>
-                                            
-                                        </form>
-                                    @endforeach
-                                    
-                                    </tbody>
-                            </table>
-                            <div style="text-align:right; margin-top: 30px;">
-                                    
-                                    <button type="button" id="sendImportBarang" class="btn btn-primary" style="margin-left: auto;">Simpan</button>
+                                            <a href="{{ route('admin.pembelian_add_comercial_invoice') }}" id="tambahComercialInvoice" class="btn btn-info me-2" id="optionTwo">Add Commercial Invoice</a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+                        </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    
      
                   
     
 
 </main>
         
-<div id="detailFclContainer"  style="display: none;" class="col-sm-12" style="margin-top: 15px;">
+                <div id="detailFclContainer"  style="display: none;" class="col-sm-12" style="margin-top: 15px;">
                             <div id="divDetail"></div>
-                    </div>
+                </div>
     
 @endsection
 
@@ -1688,7 +1282,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
-<!-- <script src="../assets/js/commercial-invoice/select_choices.js"></script>  -->
+
 <script src="../assets/js/commercial-invoice/commercial_invoice.js"></script> 
 <!-- DataTables JavaScript -->
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
@@ -1702,8 +1296,16 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
-<!-- untuk load datatable -->
+
 <script>
+
+    document.getElementById('importData').addEventListener('click', function() {
+        console.log('modal impor data')
+        // Show the modal
+       $('#importModal').modal('show')
+
+    })
+
     document.addEventListener('DOMContentLoaded', function() {
         // Initialize Choices.js on the select element
         const element = document.getElementById('id_jenis');
@@ -1712,7 +1314,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
             itemSelectText: '',
         });
 
-        // Enable/disable date inputs based on checkbox state
+        
         
     });
 
@@ -1726,42 +1328,125 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
     //untuk proses inisiasi datatable & aksi tambah comercial local/lcl
     $(document).ready(function() {
         
+        if (window.location.pathname === '/admin/data_comercialinvoice_filter') {
+            // Append or display the <h4> element if condition is met
+            
+            $('#navbarBlur').css('display', 'block');
+            $('#judulRestok').css('display', 'block');
+            $('#div_tambahComercialQuestion').css('display', 'block');
+            $('.radio-button-container').css('display', 'block');
+            $('#tabe-stok').show();
+
+
+            
+        }
+        if (window.location.pathname === '/admin/addcomercialinvoicelcllocal') {
+            // Append or display the <h4> element if condition is met
+            $('#judulRestok').css('display', 'block');
+            
+        }
+        
         var lastSelectedValue = $('input[type=radio][name=filter]:checked').val();
 
         //untuk menyimpan id_lcl yang dibuat
         var id_lcl;
 
         //untuk membuat datatable
-        var table = $('#tabe-stok').DataTable({
-            "dom": '<"top"lf>rt<"bottom"ip><"clear">',
-            "language": {
-                "searchPlaceholder": "Cari...",
-                "search": "Cari:",
-                "paginate": {
-                    "previous": "back",
-                    "next": "next"
+        var tableInitialized = false;
+        if (!tableInitialized) {
+            console.log('masuk tabe stok lagi')
+            var table = $('#tabe-stok').DataTable({
+                "dom": '<"top"lf>rt<"bottom"ip><"clear">',
+                "language": {
+                    "searchPlaceholder": "Cari...",
+                    "search": "Cari:",
+                    "paginate": {
+                        "previous": "back",
+                        "next": "next"
+                    }
+                },
+                columns: [
+                    { data: 'num', title: 'No' },
+                    { data: 'date', title: 'Tanggal' },
+                    { data: 'invoice', title: 'Invoice' },
+                    { data: 'supplier', title: 'Supplier' },
+                    { data: 'company', title: 'Nama Perusahaan' },
+                    { data: 'telp', title: 'No. Telp' },
+                    { data: 'total', title: 'Total' },
+                    { data: 'category', title: 'Kategori' },
+                    { data: 'link2', title: 'Action' },
+                    
+                ],
+                "initComplete": function(settings, json) {
+                    $('.dataTables_filter input[type="search"]').attr('placeholder', 'Cari ...');
+                    initializeSelect2();
                 }
-            },
-            columns: [
-                { data: 'num', title: 'No' },
-                { data: 'date', title: 'Tanggal' },
-                { data: 'invoice', title: 'Invoice' },
-                { data: 'supplier', title: 'Supplier' },
-                { data: 'company', title: 'Nama Perusahaan' },
-                { data: 'telp', title: 'No. Telp' },
-                { data: 'total', title: 'Total' },
-                { data: 'category', title: 'Kategori' },
-                { data: 'link2', title: 'Action' },
-                { data: 'link', title: 'Action Add' }
-            ],
-            "initComplete": function(settings, json) {
-                $('.dataTables_filter input[type="search"]').attr('placeholder', 'Cari ...');
-                initializeSelect2();
-            }
-        });
-        //aksi tambah comercial local/lcl
-        $('#tambahComercialLocal').on('click', function() {
+            });
+            window.dataTableInstance = table;
+              //initialize select2 category
+            function initializeSelect2() {
+                
 
+                //proses mengirim memilih kategory
+                $('.select_select_category').on('change', function() {
+                    var selectedValue = $(this).val();
+                    var idCommercial = $(this).data('id_commercial');
+                    
+                    $('#reload-icon').show(); //icon reload ditampilkan
+                
+                    if (selectedValue) {
+                        $.ajax({
+                            url: '{{ route('admin.pembelian_selectcategory_comercial_invoice') }}',
+                            method: 'GET',
+                            data: {
+                                selected_value: selectedValue,
+                                id_commercial: idCommercial
+                            },
+                            success: function(response) {
+                                console.log('Response from server:', response);
+                                $('#reload-icon').hide();
+                            },
+                            error: function(error) {
+                                console.error('Error:', error);
+                            }
+                        });
+                    }
+                });
+            }
+            tableInitialized = true;
+            // initialize Select2 setelah tiap membuat datatable (e.g., page change)
+            table.on('draw', function() {
+                initializeSelect2();
+                var previousPage = 0;
+
+                // Menggunakan event draw untuk mendeteksi perubahan halaman
+                     table.on('draw', function() {
+                    var currentPage = table.page.info().page;
+
+                    console.log('previous', previousPage);
+                    console.log('current', currentPage);
+
+                    // Cek apakah halaman sebelumnya sama dengan halaman sekarang
+                    if (currentPage === previousPage) {
+                        // location.reload(); // Reload halaman jika berada di halaman yang sama
+                    }
+
+                    // Update halaman sebelumnya
+                    previousPage = currentPage;
+                });
+            });
+        }
+        //aksi tambah comercial local/lcl
+        $('#tambahComercialQuestion').on('click', function() {
+            $('#comercialQuestionModal').modal('show'); // Show the Bootstrap modal
+        })
+
+        //view untuk menampikan add lcl/local
+
+        $('#tambahComercialLclLocal').on('click', function() {
+            
+            $('#tambahComercialQuestion').hide(); 
+            $('#comercialQuestionModal').modal('hide'); // Show the Bootstrap modal
             $('#pembayaran-tab').on('click', function() {
                 console.log('masuk pembayaran')        
                 $('.tab-content').hide();
@@ -2137,7 +1822,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
             });
 
             $('#master-tab').on('click', function() {
-                console.log('masuk master')
+                
                 $('.tab-content').hide();
                 // $('#master-content').show();
                 $('#addcomerialinvoicelocal').css('display','block')
@@ -2147,14 +1832,18 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
          
             // Destroy the existing DataTable instance
             table.destroy();
+            
             $('#tabe-stok').remove();
             $('.radio-button-container').remove()
             $('.filter').remove()
-            $('#tambahComercialLocal').remove()
+            $('#tambahComercialLclLocal').remove()
             $('#tab-nav').show();
             $('#master-tab').trigger('click'); 
+            $('.btn-back').show();
             $('#judulRestok').html('<i class="fas fa-database"></i> &nbsp Add Commercial Invoice Kategori LCL/Local');
+            $('#subjudul').html('Add Commercial Invoice Kategori LCL/Local {{ $username["data"]["teknisi"]["name"] }}');
             $('#addcomerialinvoicelocal').css('display','block')
+            document.title='Add Commercial Invoice Lcl/Local   | PT. Maxipro Group Indonesia'
             
             $.ajax({
                 url:'{{ route('admin.pembelian_comercial_invoice') }}',
@@ -2163,7 +1852,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                     menu:'create_local'
                 },
                 success: function(response){
-                
+                    history.pushState({ page: 'addcomercialinvoicelcllocal' }, 'Add Commercial Invoice Lcl/Local', '{{ route('admin.pembelian_comercial_invoice_add') }}');
                     const selectSupplier = $('#select_supplier');
                     selectSupplier.empty();
 
@@ -2278,7 +1967,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
 
                     item_barang.append('<option value="">Pilih Item</option>');
                         response.msg.product.forEach(function(product) {
-                        item_barang.append(
+                            item_barang.append(
                                 `<option value="${product.id}">${product.name}</option>`
                             );
                         });
@@ -2290,12 +1979,12 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                             shouldSort: false,
                         });
                 
-                    const pilih_cabang = $('.pilih-cabang');
-                    pilih_cabang.empty();
+                        const pilih_cabang = $('.pilih-cabang');
+                        pilih_cabang.empty();
 
         
                         response.msg.cabang.forEach(function(cabang) {
-                        pilih_cabang.append(
+                            pilih_cabang.append(
                                 `<option value="${cabang.id}">${cabang.name}</option>`
                             );
                         });
@@ -2893,23 +2582,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                 $('.sutotal_element').text(val + val_select);
                                 var subtotal_element= $('.sutotal_element').text()
                                 console.log('subtotal element',subtotal_element)
-                                // $('#flexCheckDefault').on('change', function() {
-                                //     // Memeriksa apakah checkbox dicentang
-                                //     var isChecked = $(this).prop('checked');
-                                    
-                                //     if (isChecked) {
-                                //         console.log('centang masuk')
-                                //         ppnValue = (val + val_select) * 0.11;
-                                //         $('.ppn_element').text((ppnValue * valueDiscount).toFixed(2));
-                                //         $('.total_element').text(((((val + val_select) * valueDiscount) - valueNominalDiscount)+ppnValue).toFixed(2));
-                                        
-                                //     } else {
-                                //         console.log('centang tidak masuk')
-                                //         $('.ppn_element').text(0);
-                                //         $('.total_element').text((((val + val_select))).toFixed(2));
-                                //         return
-                                //     }
-                                // });
+                               
                                 if ($('#flexCheckDefault').prop('checked')) {
                         
                                     ppnValue = (val + val_select) * 0.11;
@@ -2972,13 +2645,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                 jmlPermintaanRestok=response.msg.restok.jml_permintaan
                                 laststokRestok=response.msg.restok.last_stok
                                 keteranganRestok=response.msg.restok.keterangan
-                                
-                                // console.log('idBarangRestok:', idBarangRestok);
-                                // console.log('idTeknisiRestok:', idTeknisiRestok);
-                                // console.log('idSupplierRestok:', idSupplierRestok);
-                                // console.log('jmlPermintaanRestok:', jmlPermintaanRestok);
-                                // console.log('laststokRestok:', laststokRestok);
-                                // console.log('keteranganRestok:', keteranganRestok);
+                           
                             }
                             else{
                                 idBarangRestok=0;
@@ -2987,14 +2654,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                 jmlPermintaanRestok=0
                                 laststokRestok=0
                                 keteranganRestok=0
-                                // console.log('kosong')
-
-                                // console.log('idBarangRestok:', idBarangRestok);
-                                // console.log('idTeknisiRestok:', idTeknisiRestok);
-                                // console.log('idSupplierRestok:', idSupplierRestok);
-                                // console.log('jmlPermintaanRestok:', jmlPermintaanRestok);
-                                // console.log('laststokRestok:', laststokRestok);
-                                // console.log('keteranganRestok:', keteranganRestok);
+                                
                             }
                         }
                 })
@@ -3011,7 +2671,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                     product:idBarangRestok
                 }
 
-                
+                console.log('formDataSendRestok',formDataSendRestok)
        
                 //restok
                 $.ajax({
@@ -3123,46 +2783,12 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
             })
         
         });
-
-        //initialize select2 category
-        function initializeSelect2() {
-            $('.select_select_category').select2({
-                placeholder: '-',
-                allowClear: true,
-                width: 'resolve' // Adjust width as needed
-            });
-
-            //proses mengirim memilih kategory
-            $('.select_select_category').on('change', function() {
-                var selectedValue = $(this).val();
-                var idCommercial = $(this).data('id_commercial');
-                
-                $('#reload-icon').show(); //icon reload ditampilkan
+        if (window.location.pathname === '/admin/addcomercialinvoicelcllocal') {
             
-                if (selectedValue) {
-                    $.ajax({
-                        url: '{{ route('admin.pembelian_selectcategory_comercial_invoice') }}',
-                        method: 'GET',
-                        data: {
-                            selected_value: selectedValue,
-                            id_commercial: idCommercial
-                        },
-                        success: function(response) {
-                            console.log('Response from server:', response);
-                            $('#reload-icon').hide();
-                        },
-                        error: function(error) {
-                            console.error('Error:', error);
-                        }
-                    });
-                }
-            });
+            // var url_reloadaddcomerciallcl = '/admin/addcomercialinvoicelcllocal';
+            reloadaddcomerciallcl();
         }
-
-        // initialize Select2 setelah tiap membuat datatable (e.g., page change)
-        table.on('draw', function() {
-            initializeSelect2();
-        });
+      
 
         if (lastSelectedValue == 'requested') {
             console.log('lastselect', lastSelectedValue);
@@ -3220,60 +2846,21 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                 }
             });
         }
-        var currentPage = table.page.info().page; // inisiasi halaman pertama
-        var previousPage = currentPage; // inisiasi halaman sebelumnya dari halaman sekarang
-
-        // Reload the page when the "previous" button or an earlier page index is clicked
-        $(document).on('click', '.paginate_button', function() {
-            previousPage = currentPage;
-
-            // Get the new current page
-            currentPage = table.page.info().page;
-
-            console.log('previous', previousPage);
-            console.log('current', currentPage);
-
-            // Get the target page from button text
-            var targetPage = $(this).text().trim();
-            console.log('target', targetPage);
-
-            // Check if the "previous" button was clicked or if we're previous page same with targetpage
-            if ($(this).hasClass('previous') || currentPage == 0 || previousPage==targetPage) {
-                location.reload(); // Reload the page
-            }
-            
-    
-        });
+      
     });
 
 </script>
-
+<script>
+     function reloadaddcomerciallcl(){
+        
+        $('#tambahComercialLclLocal').click();
+       }
+</script>
 <script>
     // Menangani peristiwa klik pada tombol "Filter"
     document.getElementById('openModalBtn').addEventListener('click', function() {
         $('#exampleModal').modal('show'); // Menampilkan modal Filter
     });
-
-
-   
-    // Menangani klik pada tombol tambah
-    // function tambahRestok(element) {
-    //     event.preventDefault();
-    //     console.log('masuk modal tambah');
-        
-    //     $('#tambahModal').modal('show'); // Tampilkan modal
-
-    // }
-
-
-    //Untuk Mereset data input checkbox dan total kubik di modal hitung kubk
-    // document.getElementById('tambahModal').addEventListener('hidden.bs.modal', function () {
-    //     var checkboxes = document.querySelectorAll('.kubik-checkbox-tambah'); //Inisiasi variabel yang mengambil value select dari class kubik-checkbox-tambah
-    //     checkboxes.forEach(function(checkbox) { //Untuk mengambil input checkbox sesuai urutan berdasarkan array
-    //         checkbox.checked = false; //Untuk menonaktifkan input checkbox
-    //     });
-    //     document.getElementById('total-kubik').textContent = 0; //menset nilai total-kubik menjadi 0
-    // });
     
      //untuk mengaktifkan checkbox agar dapat mencustom nomor invoice
     document.getElementById('customCodeCheckbox').addEventListener('click', function() {
@@ -3339,7 +2926,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                     'align-items': 'center'      // Posisi elemen di tengah secara horizontal
                 });
                 $('#detailFclContainer').show();
-                $('#judulFcl').hide()
+                $('#judulComercialInvoice').hide()
                 $('.display-block').hide()
                 document.title='Detail FCL   | PT. Maxipro Group Indonesia'
                 $('.container-fluid').hide()
@@ -3370,7 +2957,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
             
 
             // Tampilkan elemen overlay dengan efek fade-in sebelum mengirim permintaan AJAX
-            $('#overlay').fadeIn();
+            // $('#overlay').fadeIn();
 
             var url = "{{ route('admin.pembelian_editview_comercial_invoice') }}";
 
@@ -3381,13 +2968,27 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                     id_product: id
                 },
                 success: function(response) {
+                    $('main.main-content').removeClass('wider ps ps--active-y');
+                    $('.btn-tambah').remove();
+                    
+                    if (window.dataTableInstance) {
+                        window.dataTableInstance.destroy();
+                    }
+                    $('#tabe-stok').remove();
+                    $('.radio-button-container').hide();
+                    $('#openModalBtn').hide();
+                    $('#clearFilterBtn').hide();
+                    
+                    $('#judulRestok').html('<i class="fas fa-database"></i> &nbsp Edit Commercial Invoice');
+                    $('#subjudul').html('Edit Commercial Invoice {{ $username["data"]["teknisi"]["name"] }}');
                     // Sembunyikan elemen overlay dengan efek fade-out setelah mendapatkan respons
-                    $('#overlay').fadeOut();
-
+                    // $('#overlay').fadeOut();
+                    document.title='Edit Commercial Invoice   | PT. Maxipro Group Indonesia'
                     // Handle response jika sukses
                     $('#Formedit').html(response);
                     // Tampilkan modal
-                    $('#editModal').modal('show');
+                    // $('#editModal').modal('show');
+                    $('#editFclContainer').show();
                 },
                 error: function(xhr, status, error) {
                     // Sembunyikan elemen overlay dengan efek fade-out jika terjadi kesalahan
@@ -3898,6 +3499,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
         
        
     });
+
 
 </script>
 @endsection

@@ -18,8 +18,11 @@ $('#tab-nav .nav-link').on('click', function(e) {
     }
 });
 // Initialize Choices.js on the select element
-   $(document).ready(function() {
-                    
+$(document).ready(function() {
+    $('#database_tambah_id').select2({
+        placeholder: "Pilih Database", // Optional placeholder
+        allowClear: true // Optional, allows clearing the selection
+    });
     // Initialize Choices.js on the select element
     const element = document.getElementById('product-supplier-edit-filter');
     if (element) {
@@ -29,24 +32,7 @@ $('#tab-nav .nav-link').on('click', function(e) {
         });
     }
 });
-$(document).ready(function() {
-    // Initialize Choices.js for each select element
-    $('.database-tambah').each(function() {
-        const choices = new Choices(this, {
-            searchEnabled: true,
-            itemSelectText: '',
-        });
-  
-        // Handle change event of select element
-        $(this).on('change', function(event) {
-            const selectedValue = event.target.value;
-            const inputElement = document.getElementById('database_id'); // Ganti dengan ID yang sesuai
-            if (inputElement) {
-                inputElement.value = selectedValue;
-            }
-        });
-    });
-  });
+
 
 $(document).ready(function() {
                     
@@ -59,25 +45,7 @@ $(document).ready(function() {
     });
 });
 
- // Initialize Choices.js on the select element
- $(document).ready(function() {
-    // Initialize Choices.js for each select element
-    $('.incoterms-tambah').each(function() {
-        const choices = new Choices(this, {
-            searchEnabled: true,
-            itemSelectText: '',
-        });
-  
-        // Handle change event of select element
-        $(this).on('change', function(event) {
-            const selectedValue = event.target.value;
-            const inputElement = document.getElementById('incoterms-tambah-id'); // Ganti dengan ID yang sesuai
-            if (inputElement) {
-                inputElement.value = selectedValue;
-            }
-        });
-    });
-  });
+
 
     
   $(document).ready(function() {
@@ -116,27 +84,42 @@ $(document).ready(function() {
         dateFormat: "Y-m-d",
         disableMobile: true
     });
+    
     // Initialize DataTable
-    var table = $('#table-tambah-comercial-invoice').DataTable({
+    var table2 = $('#table-tambah-comercial-invoice').DataTable({
         dom: 'lrtip', // Customize the DataTable DOM
-        responsive: true, // Enable responsive mode
+        responsive: false, // Enable responsive mode
+        columnDefs: [
+            { 
+                targets: [3], // Example: Hide the Supplier column on small screens
+                className: 'none'
+            }
+        ]
     });
 
-    // Custom search box
-    $('#search-box').on('keyup', function() {
-        table.search(this.value).draw();
+   // Custom search box
+   $('#search-box').on('keyup', function() {
+        table2.search(this.value).draw();
+    });
+
+    // Checkbox logic to ensure only one checkbox is selected
+    $('.kubik-checkbox-tambah').on('change', function() {
+        if (this.checked) {
+            // Uncheck all other checkboxes
+            $('.kubik-checkbox-tambah').not(this).prop('checked', false);
+        }
     });
 
     // Checkbox filter
     $('#filterChecked').on('change', function() {
         if (this.checked) {
             $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
-                return $(table.row(dataIndex).node()).find('.kubik-checkbox-tambah').is(':checked');
+                return $(table2.row(dataIndex).node()).find('.kubik-checkbox-tambah').is(':checked');
             });
         } else {
             $.fn.dataTable.ext.search.pop();
         }
-        table.draw();
+        table2.draw();
     });
 
     // Supplier filter
@@ -146,10 +129,10 @@ $(document).ready(function() {
 
         if (selectedSupplier) {
             $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
-                return $(table.row(dataIndex).node()).find('td:eq(5)').text() === selectedSupplier;
+                return $(table2.row(dataIndex).node()).find('td:eq(5)').text() === selectedSupplier;
             });
         }
 
-        table.draw();
+        table2.draw();
     });
 });

@@ -1,14 +1,4 @@
-@extends('admin.templates_asetjs')
-@section('link')
 
-<!-- Choices.js CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
-
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-@endsection
-
-@section('style')
 <style>
     .with-border {
         border: 1px solid #696868;
@@ -54,9 +44,7 @@
         padding-left: 20px;
     }
 </style>
-@endsection
 
-@section('content')
    <ul class="nav nav-tabs">
         <li class="nav-item">
             <a class="nav-link active" id="comercial_invoice_tab" href="#comercial_invoice" data-toggle="tab">Comercial Invoice</a>
@@ -68,19 +56,17 @@
 
     <div class="tab-content" style="margin-top: 20px;">
         <div class="tab-pane fade show active" id="comercial_invoice">
-            <div class="row">
-                <div class="col-md-3">
 
-                    <h6 style="margin-bottom: 10px;"> Comercial Invoice</h4>
+                <div class="row">
+                    <div class="col-md-3">
+
+                        <!-- <h6 style="margin-bottom: 10px;"> Comercial Invoice12</h4> -->
+                    </div>
+                    <div class="col-md-9" style="text-align: right;">
+                    <a href="javascript:void(0)"  onclick="importData(event)" name="importButton" class="btn btn-large btn-info btn-edit" style="width: 140px; height: 38px; padding: 9px 10px;">Import Data </a>
+                    </div>
                 </div>
-                <div class="col-md-9" style="text-align: right;">
-                  <a href="javascript:void(0)"  onclick="importData(event)" name="importButton" class="btn btn-large btn-info btn-edit" style="width: 140px; height: 38px; padding: 9px 10px;">Import Data </a>
-                </div>
-            </div>
           
-
-            
-
                 <div class="form-group">
                     <input type="hidden" class="form-control custom-border" id="id_edit" name="id_edit_name" value="{{ $Data['msg']['commercialinvoice']['id'] }}">
                
@@ -89,77 +75,73 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div style="position: relative; width: 100%;">
-                        <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Custom Kode</label>
+                              <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Custom Kode</label>
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div style="position: relative; width: 100%;">
-                        
-                        <label>
-                            <input type="radio" name="modeadmin" value="1" id="modeadmin_1" {{ $Data['msg']['commercialinvoice']['mode_admin'] == '1' ? 'checked' : '' }}>
-                            ON
-                        </label>
-                        <label>
-                            <input type="radio" name="modeadmin" value="0" id="modeadmin_0" {{ $Data['msg']['commercialinvoice']['mode_admin'] == '0' ? 'checked' : '' }}>
-                            OFF
-                        </label>
-                        
-                        </div>
+                                                    <div style="position: relative; width: 100%;">
+                                                        <input type="checkbox" id="customCodeCheckboxEdit" class="styled customcode" {{ $Data['msg']['commercialinvoice']['mode_admin'] == '1' ? 'checked' : '' }}>
+                                                        <input type="hidden" name="modeadmin" value="{{ $Data['msg']['commercialinvoice']['mode_admin'] }}">
+                                                    </div>
                     </div>
+                 
                 </div>
 
                 <div class="row">
                     <div class="col-md-4">
                         <div style="position: relative; width: 100%;">
                         <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="invoice_no">Invoice Number <span style="color: red;">(Wajib Diisi)</span></label>
-                        <input type="number" class="form-control" id="invoice_no" data-id="{{ $Data['msg']['commercialinvoice']['invoice_no'] }}" name="invoice_no_name" value="{{ $Data['msg']['commercialinvoice']['invoice_no'] }}" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;" disabled>
+                        <input type="number" class="form-control" id="invoice_no" data-id="{{ $Data['msg']['commercialinvoice']['invoice_no'] }}" name="invoice_no_name" value="{{ $Data['msg']['commercialinvoice']['invoice_no'] }}" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;"{{ $Data['msg']['commercialinvoice']['mode_admin'] == '0' ? 'disabled' : '' }} >
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div style="position: relative; width: 100%;">
                         <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Contract Number <span style="color: red;">(Wajib Diisi)</span></label>
-                        <input type="number" class="form-control" id="contract_no" data-id="{{ $Data['msg']['commercialinvoice']['contract_no'] }}" name="contract_no_name" value="{{ $Data['msg']['commercialinvoice']['contract_no'] }}" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;" disabled>
+                        <input type="number" class="form-control" id="contract_no" data-id="{{ $Data['msg']['commercialinvoice']['contract_no'] }}" name="contract_no_name" value="{{ $Data['msg']['commercialinvoice']['contract_no'] }}" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;" {{ $Data['msg']['commercialinvoice']['mode_admin'] == '0' ? 'disabled' : '' }} >
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div style="position: relative; width: 100%;">
                         <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Packing Number <span style="color: red;">(Wajib Diisi)</span></label>
-                        <input type="number" class="form-control" id="packing_no" data-id="{{ $Data['msg']['commercialinvoice']['packing_no'] }}" name="packing_no_name" value="{{ $Data['msg']['commercialinvoice']['packing_no'] }}" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;" disabled>
+                        <input type="number" class="form-control" id="packing_no" data-id="{{ $Data['msg']['commercialinvoice']['packing_no'] }}" name="packing_no_name" value="{{ $Data['msg']['commercialinvoice']['packing_no'] }}" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;" {{ $Data['msg']['commercialinvoice']['mode_admin'] == '0' ? 'disabled' : '' }} >
                         </div>
                     </div>
                 </div>
+                
                 <div class="row">
-                    <div class="col-md-2">
-                    
-                        <div style="position: relative; width: 100%; margin-top:10px;">
-                            <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Database <span style="color: red;">(Wajib Diisi)</span></label>
+                            <div class="col-md-2">
                             
-                            <select style="border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control database-edit" id="database_id" name="database_name"  required>
-                                <option value="">Database</option>
-                                <option value="PT" {{ $Data['msg']['commercialinvoice']['name_db'] == 'PT' ? 'selected' : '' }}>PT</option>
-                                <option value="UD" {{ $Data['msg']['commercialinvoice']['name_db'] == 'UD' ? 'selected' : '' }}>UD</option>
-                            </select>
+                                <div style="position: relative; width: 100%; margin-top:10px;">
+                                    <label class="col-lg-3 control-label" style="font-size: 15px; width: 100%" for="">Database <span style="color: red;">(Wajib Diisi)</span></label>
+                                    
+                                    <select style="border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control database-edit" id="database_id" name="database_name"  required>
+                                        <option value="">Database</option>
+                                        <option value="PT" {{ $Data['msg']['commercialinvoice']['name_db'] == 'PT' ? 'selected' : '' }}>PT</option>
+                                        <option value="UD" {{ $Data['msg']['commercialinvoice']['name_db'] == 'UD' ? 'selected' : '' }}>UD</option>
+                                    </select>
 
-                        </div>
-                    
-                    </div>
-                    <div class="col-md-10">
-                        <div class="form-group" style="margin-top:10px;">
-                            <label for="startDateTglRequest">Tanggal Request <span style="color: red;">(Wajib Diisi)</span></label>
-                            <input type="text" style="height:55px;" class="form-control custom-border" id="tgl_request" name="tgl_request_edit" value="{{ $Data['msg']['commercialinvoice']['date'] }}">
-                        </div>
-                    </div>
-                        <div class="form-group" style="margin-bottom: 20px;margin-top: 10px;">
+                                </div>
+                            
+                            </div>
+
+                            <div class="col-md-10">
+                                <div class="form-group" style="margin-top:10px;">
+                                    <label for="startDateTglRequest">Tanggal Request <span style="color: red;">(Wajib Diisi)</span></label>
+                                    <input type="text" style="height:55px;" class="form-control custom-border" id="tgl_request" name="tgl_request_edit" value="{{ $Data['msg']['commercialinvoice']['date'] }}">
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="margin-bottom: 20px;margin-top: 10px;">
                                 <label class="col-lg-3 control-label" style="font-size: 15px;width: 100%">Supplier <span style="color: red;">(Wajib Diisi)</span></label>
         
                                 <select style="border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control" id="supplier-edit-id" name="supplier_supplier" required>
-                                 <option value="supplier_option">Supplier</option>
-                                 @foreach($Data['msg']['supplier'] as $index => $supplier)
-                                 <option value="{{ $supplier['id'] }}" {{ $Data['msg']['commercialinvoice']['id_supplier'] == $supplier['id'] ? 'selected' : ''}} >{{ $supplier['name'] }}</option>
-                                 @endforeach
-                             </select>
-                         </div>
-                    </div>
+                                    <option value="supplier_option">Supplier</option>
+                                    @foreach($Data['msg']['supplier'] as $index => $supplier)
+                                    <option value="{{ $supplier['id'] }}" {{ $Data['msg']['commercialinvoice']['id_supplier'] == $supplier['id'] ? 'selected' : ''}} >{{ $supplier['name'] }}</option>
+                                    @endforeach
+                                 </select>
+                            </div>
+                </div>
                  
                  <div class="row">
                       <div class="col-md-4">
@@ -189,522 +171,515 @@
                     <label class="col-lg-3 control-label" style="font-size: 15px;" for="">No. Telp</label>
                     <input type="number" class="form-control" id="telp_id" name="telp" value="{{ $Data['msg']['commercialinvoice']['phone'] }}" style="border: 1px solid #ced4da; width: 100%; padding-left:20px;width: 32%">
                 </div>
-            <form action="" class="form-horizontal" id="editForm" method="get">
-                @csrf
-                <div style="margin-top:20px;position: relative; width: 100%;">
 
-                    @php
-                        $ascendingIndex = 0;
-                          $data = [];
-                    @endphp
-                    @php
-                                    $tot_without_tax_usd=0;
-                               @endphp
-                    <div id="content-container"></div>
-                    
+                <form action="" class="form-horizontal" id="editForm" method="get">
+                    @csrf
+                    <div style="margin-top:20px;position: relative; width: 100%;">
 
-              
-                      @foreach($Data['msg']['listordercheck'] as $index => $result)
-                        <table id="table-atas2">
-                              <input type="hidden" class="form-control custom-border" id="id_detail_{{ $ascendingIndex }}" name="id_detail_name" value="{{ $Data['msg']['commercialinvoice']['detail'][$ascendingIndex]['id'] }}">
-                              <input type="hidden" class="form-control custom-border" id="id_barang_{{ $ascendingIndex }}" name="id_barang_name" value="{{ $result['id_barang'] }}">
-                              <input type="hidden" class="form-control restok-input" id="restok_{{ $ascendingIndex }}" name="id_restok_name" value="{{ $Data['msg']['commercialinvoice']['detail'][$ascendingIndex]['id_restok'] }}">
-                                <tr>
-                                    <td style="border: 1px solid #696868; color: black;">
-                                        <image src="https://maxipro.id/images/barang/{{ $result['image'] }}" style="width: 350px;height: 320px;">
-                                    </td>
-                                    <td style="border: 1px solid #696868; color: black; width: 100%;">
-                                         <table style="width: 100%;padding-left: 25px; height: 100%;">
-                                                <tr style="border: 1px solid #d7d7d7; color: black;">
-                                                      <td colspan="3" style="border: 1px solid #d7d7d7; color: white; background-color: black; font-weight: bold ">{{ $result['name'] }}</td>
-                                                      <input type="hidden" class="form-control" style="width:100%;border: 1px solid #696868; color: black;padding: 10px;" id="name_barang_{{ $ascendingIndex }}" value="{{ $result['name'] }}">
-                                                </tr>
-                                                <tr>
-                                                    <td style="border: 1px solid #d7d7d7; color: white; background-color: black; font-weight: bold ">Chinese Name <br>中文品名</td>
-                                                    <td colspan="2" style="border: 1px solid #d7d7d7; color: black;">      
-                                                         <input type="text" class="form-control chinese-input" style="width:100%;border: 1px solid #696868; color: black;padding: 10px;" id="chinese_name_{{ $ascendingIndex }}" name="chinese_name_name" value="{{ $result['name_china'] }}">
-                                                     </td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="border: 1px solid #d7d7d7; color: white; background-color: black; font-weight: bold ">English Name <br>英文品名</td>
-                                                    <td colspan="2" style="border: 1px solid #d7d7d7; color: black;">
-                                                         <input class="form-control english-input" style="width:100%;border: 1px solid #696868; color: black;padding: 10px;" type="text" id="english_name_{{ $ascendingIndex }}" value="{{ $result['name_english'] }}" name="english_name_name">
-                                                     </td>
-                                                </tr>
-                                                <tr>
-                                                  <td style="border: 1px solid #d7d7d7; color: white; background-color: black; font-weight: bold ">Model<br>型号</td>
-                                                  <td colspan="2" style="border: 1px solid #d7d7d7; color: black;">
-                                                    <input type="text" class="form-control model-input" style="width:100%;border: 1px solid #696868; color: black;padding: 10px;" value="{{ $Data['msg']['commercialinvoice']['detail'][$ascendingIndex]['model'] }}" id="model_name_{{ $ascendingIndex }}" name="model_name">
-                                                  </td>
-                                                </tr>
+                        @php
+                            $ascendingIndex = 0;
+                            $data = [];
+                        @endphp
+                        @php
+                                        $tot_without_tax_usd=0;
+                                @endphp
+                        <div id="content-container"></div>
+                        
 
-                                                <tr>
-                                                      <td style="border: 1px solid #d7d7d7; color: white; background-color: black; font-weight: bold ">Brand<br>品牌</td>
-                                                      <td colspan="2" style="border: 1px solid #d7d7d7; color: black;">
-                                                           <input type="text" class="form-control brand-input" style="width:100%;border: 1px solid #696868; color: black;padding: 10px;" value="{{ $Data['msg']['commercialinvoice']['detail'][$ascendingIndex]['brand'] }}" id="brand_name_{{ $ascendingIndex }}" name="brand_name_name">
-                                                       </td>
-                                                </tr>
-                                                <tr>
-                                                      <td style="border: 1px solid #d7d7d7; color: white; background-color: black; font-weight: bold ">HS Code<br>海关编码</td>
+                
+                        @foreach($Data['msg']['listordercheck'] as $index => $result)
+                            <div class="table-responsive">
 
-
-                                                    <td style="border: 1px solid #d7d7d7; color: black;">
-                                                        <select style="border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control hscode-edit-filter" id="edit_supplier_id_{{ $ascendingIndex }}" name="edit_supplier_{{ $index }}">
-                                                            <option value="">Pilih Hs Code</option>
-                                                            @foreach($Data['msg']['hscodehistory'] as $index => $hscode)
-                                                            @php
-                                                            \Carbon\Carbon::setLocale('id'); // Set locale ke Bahasa Indonesia
-                                                            $formattedDate = \Carbon\Carbon::parse($hscode['commercialinvoice']['date'])->translatedFormat('d F Y');
-                                                            @endphp
-                                                            <option value="{{ $hscode['hs_code'] }}">{{ $hscode['hs_code'] }} - {{ $formattedDate }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </td>
-
-                                                     <td style="border: 1px solid #d7d7d7; color: black;">
-                                                        <input type="text" class="form-control hs-input" style="width:100%; border: 1px solid #696868; color: black; padding: 10px;" id="hscode-input_{{ $ascendingIndex }}" name="hscode-input-name">
-                                                    </td>
-
-                                                </tr>
-                                                
-                                                <br>
-                                         </table>
-
-                                    </td>
-                                </tr>
-                                <br></br>
-                        </table>
-                       
-                        <table>
-                              <tr>
-                                     <td colspan="3" style="border: 1px solid #d7d7d7; color: white; background-color: black; text-align: center; ">Size(CM) <br>每件尺寸</td>
-                                     <td colspan="3" style="border: 1px solid #d7d7d7; color: white; background-color: black; text-align: center; ">Package Size(CM) <br>每个包装的尺寸</td>
-                                     <td colspan="1"rowspan="2" style="border: 1px solid #d7d7d7;color: white; background-color: black; text-align: center; ">Quantity <br>数量</td>
-                                     <td colspan="1"rowspan="2" style="border: 1px solid #d7d7d7;color: white; background-color: black; text-align: center; ">Nett Weight <br>(KG) <br>净重 </td>
-                                     <td colspan="1"rowspan="2" style="border: 1px solid #d7d7d7;color: white; background-color: black; text-align: center; ">Gross Weight <br>(KG) <br>毛重 </td>
-                                     <td colspan="1"rowspan="2" style="border: 1px solid #d7d7d7;color: white; background-color: black; text-align: center; ">CBM Volume <br>(M3) <br>体积 </td>
-                                     <td colspan="1"rowspan="2" style="border: 1px solid #d7d7d7;color: white; background-color: black; text-align: center; ">Unit Price Without<br> Tax <br>不含税单价 </td>
-                                     <td colspan="1"rowspan="2" style="border: 1px solid #d7d7d7;color: white; background-color: black; text-align: center; ">Unit Price USD</td>
-                                     <td colspan="1"rowspan="2" style="border: 1px solid #d7d7d7;color: white; background-color: black; text-align: center; ">Total Price Without Tax <br>不含税总价</td>
-                                     <td colspan="1"rowspan="2" style="border: 1px solid #d7d7d7;color: white; background-color: black; text-align: center; ">Total Price <br>USD</td>
-                                      <td colspan="1"rowspan="2" style="border: 1px solid #d7d7d7;color: white; background-color: black; text-align: center; ">Use<br>用途</td>
-                                </tr>
-                                <tr>
-                                   <td style="border: 1px solid #d7d7d7; color: white; background-color: black; text-align: center; ">Length(CM) <br>长</td>
-                                   <td style="border: 1px solid #d7d7d7; color: white; background-color: black; text-align: center; ">Width(CM) <br>长</td>
-                                   <td style="border: 1px solid #d7d7d7; color: white; background-color: black; text-align: center; ">Height(CM) <br>长</td>
-                                   <td style="border: 1px solid #d7d7d7; color: white; background-color: black; text-align: center; ">Length(CM) <br>长</td>
-                                   <td style="border: 1px solid #d7d7d7; color: white; background-color: black; text-align: center; ">Width(CM) <br>长</td>
-                                   <td style="border: 1px solid #d7d7d7; color: white; background-color: black; text-align: center; ">Height(CM) <br>长</td>
-                               </tr>
-                               <tr>
-                                   <td style="border: 1px solid #d7d7d7; color: black;">      
-                                       <input type="text" class="form-control long-input" style="width:100%;border: 1px solid #696868; color: black;padding: 10px;" name="long_{{ $ascendingIndex }}" id="long_{{ $ascendingIndex }}" value="{{ round($result['long'] * 100) }}">
-                                   </td>
-                                    <td style="border: 1px solid #d7d7d7; color: black;">      
-                                       <input type="text" class="form-control width-input" style="width:100%;border: 1px solid #696868; color: black;padding: 10px; " name="width_{{ $ascendingIndex }}" id="width_{{ $ascendingIndex }}" value="{{ round($result['width'] * 100) }}">
-                                   </td>
-                                   <td style="border: 1px solid #d7d7d7; color: black;">      
-                                       <input type="text" class="form-control height-input" style="width:100%;border: 1px solid #696868; color: black;padding: 10px; "  name="height_{{ $ascendingIndex }}" id="height_{{ $ascendingIndex }}" value="{{ round($result['height'] * 100) }}">
-                                   </td>
-                                    <td style="border: 1px solid #d7d7d7; color: black;">      
-                                        <input type="text" class="form-control long-p-input calculate-cbm" style="width:100%;border: 1px solid #696868; color: black;padding: 10px; " id="long_p_{{ $ascendingIndex }}" value="{{ round($result['long_p'] * 100) }}">
-                                    </td>
-                                    <td style="border: 1px solid #d7d7d7; color: black;">      
-                                        <input type="text" class="form-control width-p-input calculate-cbm" style="width:100%;border: 1px solid #696868; color: black;padding: 10px; " id="width_p_{{ $ascendingIndex }}" value="{{ round($result['width_p'] * 100) }}">
-                                    </td>
-                                    <td style="border: 1px solid #d7d7d7; color: black;">      
-                                        <input type="text" class="form-control height-p-input calculate-cbm" style="width:100%;border: 1px solid #696868; color: black;padding: 10px; " id="height_p_{{ $ascendingIndex }}" value="{{ round($result['height_p'] * 100) }}">
-                                    </td>
-                                  
-                                    @php
-                                                $id_commercial = array();
-                                                $qty = 0; // Variabel untuk menyimpan jumlah qty
-                                                $id = $Data['msg']['commercialinvoice']['id'];
-                                                $all_qty = array(); // Array untuk menyimpan semua qty untuk ditampilkan di konsol
-                                                $net_weight=0;
-                                                $gross_weight=0;
-                                                $cbm =0;
-                                                $unit_price_without_tax =0;
-                                                $unit_price_usd=0;
-                                                $total_price_usd=0;
-                                                $total_price_without_tax = 0;
-                                                $use_name =0;
-                                                foreach($Data['msg']['hscodehistory'] as $index => $hscode) {
-                                                    $id_commercial[] = $hscode['id_penjualanfromchina'];
-                                                    $all_qty[] = $hscode['qty']; // Menyimpan semua qty untuk ditampilkan di konsol
-                                                    $total_price_usd_loop = $hscode['total_price_usd'];
-                                                    if ($id == $hscode['id_penjualanfromchina']) {
-                                                        $qty += $hscode['qty']; // Menambahkan qty jika id cocok
-                                                        $net_weight += $hscode['nett_weight'];
-                                                        $gross_weight += $hscode['gross_weight'];
-                                                        $cbm += $hscode['cbm'];
-                                                        $unit_price_without_tax += $hscode['unit_price_without_tax'];
-                                                        $total_price_without_tax += $hscode['total_price_without_tax'];
-                                                        $unit_price_usd = $hscode['unit_price_usd'];
+                                <table id="table-atas2">
+                                    <input type="hidden" class="form-control custom-border" id="id_detail_{{ $ascendingIndex }}" name="id_detail_name" value="{{ $Data['msg']['commercialinvoice']['detail'][$ascendingIndex]['id'] }}">
+                                    <input type="hidden" class="form-control custom-border" id="id_barang_{{ $ascendingIndex }}" name="id_barang_name" value="{{ $result['id_barang'] }}">
+                                    <input type="hidden" class="form-control restok-input" id="restok_{{ $ascendingIndex }}" name="id_restok_name" value="{{ $Data['msg']['commercialinvoice']['detail'][$ascendingIndex]['id_restok'] }}">
+                                        <tr>
+                                            <td style="border: 1px solid #696868; color: black;">
+                                                <image src="https://maxipro.id/images/barang/{{ $result['image'] }}" style="width: 350px;height: 320px;">
+                                            </td>
+                                            <td style="border: 1px solid #696868; color: black; width: 100%;">
+                                                <table style="width: 100%;padding-left: 25px; height: 100%;">
+                                                        <tr style="border: 1px solid #d7d7d7; color: black;">
+                                                            <td colspan="3" style="border: 1px solid #d7d7d7; color: white; background-color: black; font-weight: bold ">{{ $result['name'] }}</td>
+                                                            <input type="hidden" class="form-control" style="width:100%;border: 1px solid #696868; color: black;padding: 10px;" id="name_barang_{{ $ascendingIndex }}" value="{{ $result['name'] }}">
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="border: 1px solid #d7d7d7; color: white; background-color: black; font-weight: bold ">Chinese Name <br>中文品名</td>
+                                                            <td colspan="2" style="border: 1px solid #d7d7d7; color: black;">      
+                                                                <input type="text" class="form-control chinese-input" style="width:100%;border: 1px solid #696868; color: black;padding: 10px;" id="chinese_name_{{ $ascendingIndex }}" name="chinese_name_name" value="{{ $Data['msg']['commercialinvoice']['detail'][$index]['name'] }}">
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="border: 1px solid #d7d7d7; color: white; background-color: black; font-weight: bold ">English Name <br>英文品名</td>
+                                                            <td colspan="2" style="border: 1px solid #d7d7d7; color: black;">
+                                                                <input class="form-control english-input" style="width:100%;border: 1px solid #696868; color: black;padding: 10px;" type="text" id="english_name_{{ $ascendingIndex }}" value="{{ $Data['msg']['commercialinvoice']['detail'][$index]['name_english'] }}" name="english_name_name">
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                        <td style="border: 1px solid #d7d7d7; color: white; background-color: black; font-weight: bold ">Model<br>型号</td>
+                                                        <td colspan="2" style="border: 1px solid #d7d7d7; color: black;">
+                                                            <input type="text" class="form-control model-input" style="width:100%;border: 1px solid #696868; color: black;padding: 10px;" value="{{ $Data['msg']['commercialinvoice']['detail'][$ascendingIndex]['model'] }}" id="model_name_{{ $ascendingIndex }}" name="model_name">
+                                                        </td>
+                                                        </tr>
+        
+                                                        <tr>
+                                                            <td style="border: 1px solid #d7d7d7; color: white; background-color: black; font-weight: bold ">Brand<br>品牌</td>
+                                                            <td colspan="2" style="border: 1px solid #d7d7d7; color: black;">
+                                                                <input type="text" class="form-control brand-input" style="width:100%;border: 1px solid #696868; color: black;padding: 10px;" value="{{ $Data['msg']['commercialinvoice']['detail'][$ascendingIndex]['brand'] }}" id="brand_name_{{ $ascendingIndex }}" name="brand_name_name">
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="border: 1px solid #d7d7d7; color: white; background-color: black; font-weight: bold ">HS Code<br>海关编码</td>
+        
+        
+                                                            <td style="border: 1px solid #d7d7d7; color: black;">
+                                                                <select style="border: 1px solid #696868; color: black; padding: 10px;" class="form-control hscode-edit-filter new-hscode-edit-filter_{{ $ascendingIndex }}" id="edit_supplier_id_{{ $ascendingIndex }}" name="edit_supplier_{{ $index }}">
+                                                                    <option value="">Pilih Hs Code </option>
+                                                                    @foreach($Data['msg']['hscodehistory'] as $index2 => $hscode)
+                                                                        @if($result['id_barang']==$hscode['restok']['id_barang'])
+                                                                            @php
+                                                                                \Carbon\Carbon::setLocale('id'); // Set locale ke Bahasa Indonesia
+                                                                                $formattedDate = \Carbon\Carbon::parse($hscode['commercialinvoice']['date'])->translatedFormat('d F Y');
+                                                                            @endphp
+                                                                            <option value="{{ $hscode['hs_code'] }}">{{ $hscode['hs_code'] }} - {{ $formattedDate }}</option>
+                                                                        @endif
+                                                                    @endforeach
+                                                                </select>
+                                                            </td>
+        
+                                                            
+                                                            <td style="border: 1px solid #d7d7d7; color: black;">
+                                                                <input type="text" class="form-control hs-input new-hscode-input_{{ $ascendingIndex }}" style="width:150%; border: 1px solid #696868; color: black; padding: 10px;" id="hscode-input_{{ $ascendingIndex }}" name="hscode-input-name" value="{{ $Data['msg']['commercialinvoice']['detail'][$ascendingIndex]['hs_code'] }}">
+                                                            </td>
+                                                        </tr>
                                                         
-                                                        $use_name = $hscode['use_name'];
-                                                    }
-                                                    $total_price_usd = $total_price_usd+$total_price_usd_loop;
-                                                }
-                                    @endphp
+                                                        <br>
+                                                </table>
+        
+                                            </td>
+                                        </tr>
+                                        <br></br>
+                                </table>
+                            </div>
+                            <div class="table-responsive">
 
-                                   <td colspan="1" style="border: 1px solid #d7d7d7; color: black;">   
+                                <table style="width:100%;">
+                                    <tr>
+                                            <td colspan="3" style="border: 1px solid #d7d7d7; color: white; background-color: black; text-align: center; ">Size(CM) <br>每件尺寸</td>
+                                            <td colspan="3" style="border: 1px solid #d7d7d7; color: white; background-color: black; text-align: center; ">Package Size(CM) <br>每个包装的尺寸</td>
+                                            <td colspan="1"rowspan="2" style="border: 1px solid #d7d7d7;color: white; background-color: black; text-align: center; ">Quantity <br>数量</td>
+                                            <td colspan="1"rowspan="2" style="border: 1px solid #d7d7d7;color: white; background-color: black; text-align: center; ">Nett Weight <br>(KG) <br>净重 </td>
+                                            <td colspan="1"rowspan="2" style="border: 1px solid #d7d7d7;color: white; background-color: black; text-align: center; ">Gross Weight <br>(KG) <br>毛重 </td>
+                                            <td colspan="1"rowspan="2" style="border: 1px solid #d7d7d7;color: white; background-color: black; text-align: center; ">CBM Volume <br>(M3) <br>体积 </td>
+                                            <td colspan="1"rowspan="2" style="border: 1px solid #d7d7d7;color: white; background-color: black; text-align: center; ">Unit Price Without<br> Tax <br>不含税单价 </td>
+                                            <td colspan="1"rowspan="2" style="border: 1px solid #d7d7d7;color: white; background-color: black; text-align: center; ">Unit Price USD</td>
+                                            <td colspan="1"rowspan="2" style="border: 1px solid #d7d7d7;color: white; background-color: black; text-align: center; ">Total Price Without Tax <br>不含税总价</td>
+                                            <td colspan="1"rowspan="2" style="border: 1px solid #d7d7d7;color: white; background-color: black; text-align: center; ">Total Price <br>USD</td>
+                                            <td colspan="1"rowspan="2" style="border: 1px solid #d7d7d7;color: white; background-color: black; text-align: center; ">Use<br>用途</td>
+                                        </tr>
+                                        <tr>
+                                        <td style="border: 1px solid #d7d7d7; color: white; background-color: black; text-align: center; ">Length(CM) <br>长</td>
+                                        <td style="border: 1px solid #d7d7d7; color: white; background-color: black; text-align: center; ">Width(CM) <br>长</td>
+                                        <td style="border: 1px solid #d7d7d7; color: white; background-color: black; text-align: center; ">Height(CM) <br>长</td>
+                                        <td style="border: 1px solid #d7d7d7; color: white; background-color: black; text-align: center; ">Length(CM) <br>长</td>
+                                        <td style="border: 1px solid #d7d7d7; color: white; background-color: black; text-align: center; ">Width(CM) <br>长</td>
+                                        <td style="border: 1px solid #d7d7d7; color: white; background-color: black; text-align: center; ">Height(CM) <br>长</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 1px solid #d7d7d7; color: black;">      
+                                            <input type="text" class="form-control long-input" style="width:100%;border: 1px solid #696868; color: black;padding: 10px;" name="long_{{ $ascendingIndex }}" id="long_{{ $ascendingIndex }}" value="{{ $Data['msg']['commercialinvoice']['detail'][$index]['length_m'] }}">
+                                        </td>
+                                            <td style="border: 1px solid #d7d7d7; color: black;">      
+                                            <input type="text" class="form-control width-input" style="width:100%;border: 1px solid #696868; color: black;padding: 10px; " name="width_{{ $ascendingIndex }}" id="width_{{ $ascendingIndex }}" value="{{ $Data['msg']['commercialinvoice']['detail'][$index]['width_m'] }}">
+                                        </td>
+                                        <td style="border: 1px solid #d7d7d7; color: black;">      
+                                            <input type="text" class="form-control height-input" style="width:100%;border: 1px solid #696868; color: black;padding: 10px; "  name="height_{{ $ascendingIndex }}" id="height_{{ $ascendingIndex }}" value="{{ $Data['msg']['commercialinvoice']['detail'][$index]['height_m'] }}">
+                                        </td>
+                                            <td style="border: 1px solid #d7d7d7; color: black;">      
+                                                <input type="text" class="form-control long-p-input calculate-cbm" style="width:100%;border: 1px solid #696868; color: black;padding: 10px; " id="long_p_{{ $ascendingIndex }}" value="{{ $Data['msg']['commercialinvoice']['detail'][$index]['length_p'] }}">
+                                            </td>
+                                            <td style="border: 1px solid #d7d7d7; color: black;">      
+                                                <input type="text" class="form-control width-p-input calculate-cbm" style="width:100%;border: 1px solid #696868; color: black;padding: 10px; " id="width_p_{{ $ascendingIndex }}" value="{{ $Data['msg']['commercialinvoice']['detail'][$index]['width_p'] }}">
+                                            </td>
+                                            <td style="border: 1px solid #d7d7d7; color: black;">      
+                                                <input type="text" class="form-control height-p-input calculate-cbm" style="width:100%;border: 1px solid #696868; color: black;padding: 10px; " id="height_p_{{ $ascendingIndex }}" value="{{ $Data['msg']['commercialinvoice']['detail'][$index]['height_p'] }}">
+                                            </td>
+                                        
+                                            @php
+                                                        $id_commercial = array();
+                                                        $qty = 0; // Variabel untuk menyimpan jumlah qty
+                                                        $id = $Data['msg']['commercialinvoice']['id'];
+                                                        $all_qty = array(); // Array untuk menyimpan semua qty untuk ditampilkan di konsol
+                                                        $net_weight=0;
+                                                        $gross_weight=0;
+                                                        $cbm =0;
+                                                        $unit_price_without_tax =0;
+                                                        $unit_price_usd=0;
+                                                        $total_price_usd=0;
+                                                        $total_price_without_tax = 0;
+                                                        $use_name =0;
+                                                        foreach($Data['msg']['hscodehistory'] as $index => $hscode) {
+                                                            $id_commercial[] = $hscode['id_penjualanfromchina'];
+                                                            $all_qty[] = $hscode['qty']; // Menyimpan semua qty untuk ditampilkan di konsol
+                                                            $total_price_usd_loop = $hscode['total_price_usd'];
+                                                            if ($id == $hscode['id_penjualanfromchina']) {
+                                                                $qty += $hscode['qty']; // Menambahkan qty jika id cocok
+                                                                $net_weight += $hscode['nett_weight'];
+                                                                $gross_weight += $hscode['gross_weight'];
+                                                                $cbm += $hscode['cbm'];
+                                                                $unit_price_without_tax += $hscode['unit_price_without_tax'];
+                                                                $total_price_without_tax += $hscode['total_price_without_tax'];
+                                                                $unit_price_usd = $hscode['unit_price_usd'];
+                                                                
+                                                                $use_name = $hscode['use_name'];
+                                                            }
+                                                            $total_price_usd = $total_price_usd+$total_price_usd_loop;
+                                                        }
+                                            @endphp
+        
+                                        <td colspan="1" style="border: 1px solid #d7d7d7; color: black;">   
+        
+                                        
+                                        <input type="text" class="form-control calculate-cbm total-price-without-tax" style="width:100%;border: 1px solid #696868; color: black;padding: 10px;" id="qty_{{ $ascendingIndex }}" value="{{ $Data['msg']['commercialinvoice']['detail'][$ascendingIndex]['qty'] }}">
+                                            </td>
+                                            <td colspan="1" style="border: 1px solid #d7d7d7; color: black;">      
+                                            <input type="text" class="form-control nett-weight-input" style="width:100%;border: 1px solid #696868; color: black;padding: 10px; " id="net_weight_{{ $ascendingIndex }}" value="{{ $Data['msg']['commercialinvoice']['detail'][$ascendingIndex]['nett_weight'] }}">
+                                        </td>
+                                            <td colspan="1" style="border: 1px solid #d7d7d7; color: black;">      
+                                            <input type="text" class="form-control gross-weight-input" style="width:100%;border: 1px solid #696868; color: black;padding: 10px; " id="gross_weight_{{ $ascendingIndex }}" value="{{ $Data['msg']['commercialinvoice']['detail'][$ascendingIndex]['gross_weight'] }}">
+                                        </td>
+                                            <td colspan="1" style="border: 1px solid #d7d7d7; color: black;">      
+                                                <input type="text" class="form-control cbm-input" style="width:100%;border: 1px solid #696868; color: black;padding: 10px; " id="cbm_{{ $ascendingIndex }}" value="{{ $Data['msg']['commercialinvoice']['detail'][$ascendingIndex]['cbm'] }}">
+                                            </td>
+                                            <td colspan="1" style="border: 1px solid #d7d7d7; color: black;">
+                                                <!-- Unit Price without Tax Input -->
+                                                <input type="text" class="form-control total-price-without-tax" style="width:100%;border: 1px solid #696868; color: black;padding: 10px;" id="unit_price_without_tax_{{ $ascendingIndex }}" value="{{ $Data['msg']['commercialinvoice']['detail'][$ascendingIndex]['unit_price_without_tax'] }}">
+        
+                                                <select style="border: 1px solid #696868; color: black; padding: 10px;" id="edit-unit-price-without-tax-{{ $ascendingIndex }}" name="edit_unit_price_without_tax">
+                                                <option value="" style="display:none;">&#xf078; Show More</option>
+                                                @foreach($Data['msg']['hscodehistory'] as $index => $hscode)
+                                                @if($result['id_barang']==$hscode['restok']['id_barang'])
+                                                @php
+                                                \Carbon\Carbon::setLocale('id'); // Set locale ke Bahasa Indonesia
+                                                $formattedDate = \Carbon\Carbon::parse($hscode['commercialinvoice']['date'])->translatedFormat('d F Y');
+                                                @endphp
+                                                <option value="" >{{ $Data['msg']['penjualanfromchina'][0]['matauang']['simbol'] }} {{ $hscode['unit_price_without_tax'] }} - {{ $formattedDate }}</option>
+                                                @endif
+                                                @endforeach
+                                                </select>
+        
+                                            </td>
+                                            <td colspan="1" style="border: 1px solid #d7d7d7; color: black;">      
+                                            <input type="text" class="form-control unit-price-usd" style="width:100%;border: 1px solid #696868; color: black;padding: 10px;" id="unit_price_usd_{{ $ascendingIndex }}" value="{{ $Data['msg']['commercialinvoice']['detail'][$ascendingIndex]['unit_price_usd'] }}" disabled>
+                                        </td>
+                                            <td colspan="1" style="border: 1px solid #d7d7d7; color: black;">      
+                                                <!-- Total Price without Tax Input -->
+                                                <input type="text" class="form-control tot-price-without-tax" style="width:100%;border: 1px solid #696868; color: black;padding: 10px;" id="total_price_without_tax_{{ $ascendingIndex }}" value="{{ $Data['msg']['commercialinvoice']['detail'][$ascendingIndex]['total_price_without_tax'] }}" readonly>
+        
+                                        </td>
+                                        
+                                        <td colspan="1" style="border: 1px solid #d7d7d7; color: black;">      
+                                            <input type="text" class="form-control total-price-usd" style="width:100%;border: 1px solid #696868; color: black;padding: 10px;" id="total_price_usd_{{ $ascendingIndex }}" value="{{ $Data['msg']['commercialinvoice']['detail'][$ascendingIndex]['total_price_usd'] }}" disabled>
+                                        </td>
+                                        @php
+                                                $tot_without_tax_usd =  $tot_without_tax_usd +$Data['msg']['commercialinvoice']['detail'][$ascendingIndex]['total_price_usd'];
+                                        @endphp
+                                        <td colspan="1" style="border: 1px solid #d7d7d7; color: black;">      
+                                            <input type="text" class="form-control use-name" style="width: calc(70% - 10px); border: 1px solid #696868; color: black;padding: 10px; display: inline-block; vertical-align: top;" id="use_name_{{ $ascendingIndex }}" value="{{ $Data['msg']['commercialinvoice']['detail'][$ascendingIndex]['use_name'] }}">
+                                            <a href="#" class="delete-input" style="color: red; display: inline-block; vertical-align: top; padding: 10px;">X</a>
+                                        </td>
+        
+                                    </tr>
+                                        
+                                </table>
+                            </div>
 
-                                   
-                                   <input type="text" class="form-control calculate-cbm total-price-without-tax" style="width:100%;border: 1px solid #696868; color: black;padding: 10px;" id="qty_{{ $ascendingIndex }}" value="{{ $Data['msg']['commercialinvoice']['detail'][$ascendingIndex]['qty'] }}">
-                                    </td>
-                                      <td colspan="1" style="border: 1px solid #d7d7d7; color: black;">      
-                                       <input type="text" class="form-control nett-weight-input" style="width:100%;border: 1px solid #696868; color: black;padding: 10px; " id="net_weight_{{ $ascendingIndex }}" value="{{ $Data['msg']['commercialinvoice']['detail'][$ascendingIndex]['nett_weight'] }}">
-                                   </td>
-                                    <td colspan="1" style="border: 1px solid #d7d7d7; color: black;">      
-                                       <input type="text" class="form-control gross-weight-input" style="width:100%;border: 1px solid #696868; color: black;padding: 10px; " id="gross_weight_{{ $ascendingIndex }}" value="{{ $Data['msg']['commercialinvoice']['detail'][$ascendingIndex]['gross_weight'] }}">
-                                   </td>
-                                    <td colspan="1" style="border: 1px solid #d7d7d7; color: black;">      
-                                        <input type="text" class="form-control cbm-input" style="width:100%;border: 1px solid #696868; color: black;padding: 10px; " id="cbm_{{ $ascendingIndex }}" value="{{ $Data['msg']['commercialinvoice']['detail'][$ascendingIndex]['cbm'] }}">
-                                    </td>
-                                    <td colspan="1" style="border: 1px solid #d7d7d7; color: black;">
-                                        <!-- Unit Price without Tax Input -->
-                                        <input type="text" class="form-control total-price-without-tax" style="width:100%;border: 1px solid #696868; color: black;padding: 10px;" id="unit_price_without_tax_{{ $ascendingIndex }}" value="{{ $Data['msg']['commercialinvoice']['detail'][$ascendingIndex]['unit_price_without_tax'] }}">
-
-                                        <select style="border: 1px solid #696868; color: black; padding: 10px;" id="edit-unit-price-without-tax-{{ $ascendingIndex }}" name="edit_unit_price_without_tax">
-                                          <option value="" style="display:none;">&#xf078; Show More</option>
-                                          @foreach($Data['msg']['hscodehistory'] as $index => $hscode)
-                                          @php
-                                          \Carbon\Carbon::setLocale('id'); // Set locale ke Bahasa Indonesia
-                                          $formattedDate = \Carbon\Carbon::parse($hscode['commercialinvoice']['date'])->translatedFormat('d F Y');
-                                          @endphp
-                                          <option value="" >{{ $Data['msg']['penjualanfromchina'][0]['matauang']['simbol'] }} {{ $hscode['unit_price_without_tax'] }} - {{ $formattedDate }}</option>
-                                          @endforeach
-                                        </select>
-
-                                    </td>
-                                     <td colspan="1" style="border: 1px solid #d7d7d7; color: black;">      
-                                       <input type="text" class="form-control unit-price-usd" style="width:100%;border: 1px solid #696868; color: black;padding: 10px;" id="unit_price_usd_{{ $ascendingIndex }}" value="{{ $Data['msg']['commercialinvoice']['detail'][$ascendingIndex]['unit_price_usd'] }}" disabled>
-                                   </td>
-                                    <td colspan="1" style="border: 1px solid #d7d7d7; color: black;">      
-                                        <!-- Total Price without Tax Input -->
-                                        <input type="text" class="form-control tot-price-without-tax" style="width:100%;border: 1px solid #696868; color: black;padding: 10px;" id="total_price_without_tax_{{ $ascendingIndex }}" value="{{ $Data['msg']['commercialinvoice']['detail'][$ascendingIndex]['total_price_without_tax'] }}" readonly>
-
-                                   </td>
-                                
-                                   <td colspan="1" style="border: 1px solid #d7d7d7; color: black;">      
-                                     <input type="text" class="form-control total-price-usd" style="width:100%;border: 1px solid #696868; color: black;padding: 10px;" id="total_price_usd_{{ $ascendingIndex }}" value="{{ $Data['msg']['commercialinvoice']['detail'][$ascendingIndex]['total_price_usd'] }}" disabled>
-                                   </td>
-                                   @php
-                                        $tot_without_tax_usd =  $tot_without_tax_usd +$Data['msg']['commercialinvoice']['detail'][$ascendingIndex]['total_price_usd'];
-                                   @endphp
-                                   <td colspan="1" style="border: 1px solid #d7d7d7; color: black;">      
-                                    <input type="text" class="form-control use-name" style="width: calc(70% - 10px); border: 1px solid #696868; color: black;padding: 10px; display: inline-block; vertical-align: top;" id="use_name_{{ $ascendingIndex }}" value="{{ $Data['msg']['commercialinvoice']['detail'][$ascendingIndex]['use_name'] }}">
-                                    <a href="#" class="delete-input" style="color: red; display: inline-block; vertical-align: top; padding: 10px;">X</a>
-                                  </td>
-
-                               </tr>
-                                
-                        </table>
-
-                        <div class="form-group" style="display: flex; padding-top: 30px; text-align: end;">
-                            <button type="button" id="submitButtonEditComercialInvoice_{{ $ascendingIndex }}" class="btn btn-primary" data-index="{{ $ascendingIndex }}" style="margin-left: auto;">simpan item</button>
-                        </div>
-                        
-                        @php
-                        $data[] = [
-                                'ascendingIndex' => $ascendingIndex,
+                            <div class="form-group" style="display: flex; padding-top: 30px; text-align: end;">
+                                <button type="button" id="submitButtonEditComercialInvoice_{{ $ascendingIndex }}" class="btn btn-primary" data-index="{{ $ascendingIndex }}" style="margin-left: auto;">simpan item</button>
+                            </div>
                             
-                            ];
-                            $ascendingIndex++;
-                        @endphp
-                        @php
-                           $jsonData = json_encode($data);
-                        @endphp
-                     
-                      @endforeach
-         
-                      
-                </div>
-
-              
-
-            </form>
-
-           
-            <form action="" class="form-horizontal" id="editForm2" method="get">
-                @csrf
-                <div style="padding-left: 1000px;">
-                  <table>
-                    <tr>
-                      <td style="border: 1px solid #696868; color: black; width: 75%;"> <!-- Menambahkan padding -->
-                        Freight Cost
-                      </td>
-                      <td style="border: 1px solid #696868; color: black;">
-                        <input type="number" class="form-control freight-cost custom-border" id="freight_cost_id_tab" name="freight_cost" value="{{ $Data['msg']['commercialinvoice']['freight_cost'] }}">
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style="border: 1px solid #696868; color: black;">
-                        Insurance
-                      </td>
-                      <td style="border: 1px solid #696868; color: black;">
-                        <input type="number" class="form-control insurance-classs custom-border" id="insurance_edit_id_tab" name="insurance" value="{{ $Data['msg']['commercialinvoice']['insurance'] }}">
-                      </td>
-                    </tr>
-                  </table>
-                </div>
-
-
-                <div style="padding-left: 1000px; padding-top: 30px;">
-                  <table style="width: 100%">
-                    <tr>
-                      <td colspan="2"style="border: 1px solid #696868; color: black; width: 75%; text-align: center;"> <!-- Menambahkan padding -->
-                      <h5>Total</h5>
-                      </td>
-                      
-                    </tr>
-                    
-                    <tr>
-                      <td style="border: 1px solid #696868; color: black; width: 75%;"> <!-- Menambahkan padding -->
-                       Quantity
-                      </td>
-                      <td class="custom-td" id="qty-td"  style="border: 1px solid #696868; color: black;">
-                        {{ $qty }}
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td style="border: 1px solid #696868; color: black;">
-                        CBM Volume (M3)
-                      </td>
-                      <td class="custom-cbm" id="total_cbm" style="border: 1px solid #696868; color: black;">
-                        {{ $cbm }}
+                            @php
+                            $data[] = [
+                                    'ascendingIndex' => $ascendingIndex,
+                                
+                                ];
+                                $ascendingIndex++;
+                            @endphp
+                            @php
+                            $jsonData = json_encode($data);
+                            @endphp
                         
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td style="border: 1px solid #696868; color: black;">
-                        Total Price Without Tax
-                      </td>
-                      <td style="border: 1px solid #696868; color: black;" id="custom-tot-price-without-tax-td">
-                        {{ $total_price_without_tax + $Data['msg']['commercialinvoice']['freight_cost'] +  $Data['msg']['commercialinvoice']['insurance'] }}
-                        
-                      </td>
-                    </tr>
-                    
-                    <tr>
-                        <td style="border: 1px solid #696868; color: black;">
-                            Total Price Without Tax USD
-                        </td>
-                        <td style="border: 1px solid #696868; color: black;" id="custom-tot-price-without-tax-usd-td">
-                          {{ round($tot_without_tax_usd, 2) + $Data['msg']['commercialinvoice']['freight_cost'] +  $Data['msg']['commercialinvoice']['insurance'] }}
-                            
-                        </td>
-                    </tr>
-
-                  </table>
-                </div>
-
-                <div class="form-group" style="padding-top: 100px; padding-left: 20px;">
-                    <h4>NOTES</h4>
-                    <hr style="border: none; border-top: 1px solid #000; margin-top: 20px;">
-                </div>
-
-                <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                    
-                    <div class="row">
-                        <div style="padding-top: 15px;" class="col-md-1">
-                            <label for="kodebaranglabel">Incoterms</label>
-                   
-                        </div>
-                        <div class="col-md-11" style="padding-right: 600px;">
-
-                            <select style="border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control incoterms-edit" id="incoterms-edit-id" name="incoterms">    
-                            <option value="">Select Incoterms</option>
-                                      <option value="FOB" {{ $Data['msg']['commercialinvoice']['incoterms'] == 'FOB' ? 'selected' : ''}}>FOB </option>
-                                      <option value="CIF" {{ $Data['msg']['commercialinvoice']['incoterms'] == 'CIF' ? 'selected' : ''}}>CIF </option>
-                                      <option value="EXWORK" {{ $Data['msg']['commercialinvoice']['incoterms'] == 'EXWORK' ? 'selected' : ''}}>EXWORK </option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                </div>
-
-                <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                    
-                    <div class="row">
-                        <div style="padding-top: 10px;" class="col-md-1">
-                            <label for="kodebaranglabel">Location</label>
-                   
-                        </div>
-                        <div class="col-md-11" style="padding-right: 600px;">
-                             <input type="text" class="form-control custom-border" id="location_id_tab" name="location" value="{{ $Data['msg']['commercialinvoice']['location'] ?: ''}}" placeholder="{{ $Data['msg']['commercialinvoice']['location'] ?: 'Location' }}">
-                        </div>
-                    </div>
-                    
-                </div>
-
-                <div class="form-group" style="padding-top: 100px; padding-left: 20px;">
-                    <h4>PAYMENT</h4>
-                    <hr style="border: none; border-top: 1px solid #000; margin-top: 20px;">
-                </div>
-
-
-                <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                    
-                    <div class="row">
-                        <div style="padding-top: 15px;" class="col-md-1">
-                            <label for="kodebaranglabel">Bank Supplier</label>
-                   
-                        </div>
-                        <div class="col-md-11" style="padding-right: 600px;">
-                             <select style="border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control banksupplier-edit" id="banksupplier-edit-id" name="supplierbank">
-                                     <option value="0">Pilih Bank Supplier</option>
-                                   @foreach($Data['msg']['supplierbank'] as $result)
-
-                                    <option value="{{$result['id']}}" {{ $Data['msg']['commercialinvoice']['id_supplierbank']  == $result['id'] ? 'selected' : ''}}>({{$result['matauang']['simbol']}}) {{$result['matauang']['kode']}} - {{$result['bank_name']}}</option>
-
-                                  @endforeach
-
-                            </select>
-                        </div>
-                    </div>
-                    
-                </div>
-
-                <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                    
-                    <div class="row">
-                        <div style="padding-top: 15px;" class="col-md-1">
-                            <label for="kodebaranglabel">Currency</label>
-                   
-                        </div>
-                        <div class="col-md-11" style="padding-right: 600px;">
-                             <select style="border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control currency-edit" id="currency-edit-id" name="currency">
-                                     <option value="0">Pilih Currency</option>
-                                       @foreach($Data['msg']['matauang'] as $index => $result)
+                        @endforeach
             
-                                        <option value="{{$result['id']}}" {{$Data['msg']['commercialinvoice']['id_matauang'] == $result['id'] ? 'selected' : ''}}>({{$result['simbol']}}) {{$result['kode']}} - {{$result['name']}}</option>
+                        
+                    </div>
 
-                                      @endforeach
-                                  
-                            </select>
+                
+
+                </form>
+                            
+           
+                <form action="" class="form-horizontal" id="editForm2" method="get">
+                    @csrf
+                    <div class="d-flex justify-content-end">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <tr>
+                                    <td style="border: 1px solid #696868; color: black;width: 75%;">Freight Cost</td>
+                                    <td style="border: 1px solid #696868; color: black;">
+                                        <input type="number" class="form-control freight-cost custom-border" id="freight_cost_id_tab" name="freight_cost" value="{{ $Data['msg']['commercialinvoice']['freight_cost'] }}">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid #696868; color: black;">Insurance</td>
+                                    <td style="border: 1px solid #696868; color: black;">
+                                        <input type="number" class="form-control insurance-classs custom-border" id="insurance_edit_id_tab" name="insurance" value="{{ $Data['msg']['commercialinvoice']['insurance'] }}">
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
-                    
-                </div>
-                @php
-                    $bankName = $Data['msg']['commercialinvoice']['bank_name'];
-                    $bankAddress= $Data['msg']['commercialinvoice']['bank_address'];
-                    $swiftCode= $Data['msg']['commercialinvoice']['swift_code'];
-                    $accountNo= $Data['msg']['commercialinvoice']['account_no'];
-                    $beneficiaryName= $Data['msg']['commercialinvoice']['beneficiary_name'];
-                    $beneficiaryAddress= $Data['msg']['commercialinvoice']['beneficiary_address'];
-
-                @endphp
-                <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                    
-                    <div class="row">
-                        <div style="padding-top: 10px;" class="col-md-1">
-                            <label for="kodebaranglabel">Bank Name</label>
-                   
-                        </div>
-                        <div class="col-md-11" style="padding-right: 600px;">
 
 
-                            <input type="text" class="form-control custom-border" id="bank_name_id_tab" name="bank_name" value="{{ $bankName ?: '' }}" placeholder="{{ $bankName ?: 'Bank Name' }}">
 
-                        </div>
-                    </div>
-                    
-                </div>
-
-                <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                    
-                    <div class="row">
-                        <div style="padding-top: 10px;" class="col-md-1">
-                            <label for="kodebaranglabel">Bank Address</label>
-                   
-                        </div>
-                        <div class="col-md-11" style="padding-right: 600px;">
-
-
-                            <input type="text" class="form-control custom-border" id="bankAddress_id_tab" name="bank_address" value="{{ $bankAddress ?: '' }}" placeholder="{{ $bankAddress ?: 'Bank Address' }}">
-
+                    <div class="d-flex justify-content-end mt-3">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2" class="text-center" style="border: 1px solid #696868; color: black;">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="width: 75%;border: 1px solid #696868; color: black;">Quantity</td>
+                                        <td id="qty-td" style="border: 1px solid #696868; color: black;">{{ $qty }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 1px solid #696868; color: black;">CBM Volume (M<sup>3</sup>)</td>
+                                        <td id="total_cbm" style="border: 1px solid #696868; color: black;">{{ $cbm }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 1px solid #696868; color: black;">Total Price Without Tax</td>
+                                        <td id="custom-tot-price-without-tax-td" style="border: 1px solid #696868; color: black;">
+                                            {{ $total_price_without_tax + $Data['msg']['commercialinvoice']['freight_cost'] +  $Data['msg']['commercialinvoice']['insurance'] }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 1px solid #696868; color: black;">Total Price Without Tax USD</td>
+                                        <td id="custom-tot-price-without-tax-usd-td" style="border: 1px solid #696868; color: black;">
+                                            {{ round($tot_without_tax_usd, 2) + $Data['msg']['commercialinvoice']['freight_cost'] +  $Data['msg']['commercialinvoice']['insurance'] }}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                    
-                </div>
 
-                <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
+
+                    <div class="form-group" style="padding-top: 100px; padding-left: 20px;">
+                        <h4>NOTES</h4>
+                        <hr style="border: none; border-top: 1px solid #000; margin-top: 20px;">
+                    </div>
+
+                    <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
+                        
+                        <div class="row">
+                            <div style="padding-top: 15px;" class="col-md-1">
+                                <label for="kodebaranglabel">Incoterms</label>
                     
-                    <div class="row">
-                        <div style="padding-top: 10px;" class="col-md-1">
-                            <label for="kodebaranglabel">Swift Code</label>
-                   
+                            </div>
+                            <div class="col-lg-6 ">
+
+                                <select style="border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control incoterms-edit" id="incoterms-edit-id" name="incoterms">    
+                                <option value="">Select Incoterms</option>
+                                        <option value="FOB" {{ $Data['msg']['commercialinvoice']['incoterms'] == 'FOB' ? 'selected' : ''}}>FOB </option>
+                                        <option value="CIF" {{ $Data['msg']['commercialinvoice']['incoterms'] == 'CIF' ? 'selected' : ''}}>CIF </option>
+                                        <option value="EXWORK" {{ $Data['msg']['commercialinvoice']['incoterms'] == 'EXWORK' ? 'selected' : ''}}>EXWORK </option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="col-md-11" style="padding-right: 600px;">
+                        
+                    </div>
+
+                    <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
+                        
+                        <div class="row">
+                            <div style="padding-top: 10px;" class="col-md-1">
+                                <label for="kodebaranglabel">Location</label>
+                    
+                            </div>
+                            <div class="col-lg-6 ">
+                                <input type="text" style="width:100%;" class="form-control custom-border" id="location_id_tab" name="location" value="{{ $Data['msg']['commercialinvoice']['location'] ?: ''}}" placeholder="{{ $Data['msg']['commercialinvoice']['location'] ?: 'Location' }}">
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    <div class="form-group" style="padding-top: 100px; padding-left: 20px;">
+                        <h4>PAYMENT</h4>
+                        <hr style="border: none; border-top: 1px solid #000; margin-top: 20px;">
+                    </div>
 
 
-                            <input type="text" class="form-control custom-border" id="swiftCode_id_tab" name="swift_code" value="{{ $swiftCode ?: '' }}" placeholder="{{ $swiftCode ?: 'Swift Code' }}">
+                    <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
+                        
+                        <div class="row">
+                            <div style="padding-top: 15px;" class="col-md-1">
+                                <label for="kodebaranglabel">Bank Supplier</label>
+                    
+                            </div>
+                            <div class="col-lg-6 ">
+                                <select style="border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control banksupplier-edit" id="banksupplier-edit-id" name="supplierbank">
+                                        <option value="0">Pilih Bank Supplier</option>
+                                    @foreach($Data['msg']['supplierbank'] as $result)
 
+                                        <option value="{{$result['id']}}" {{ $Data['msg']['commercialinvoice']['id_supplierbank']  == $result['id'] ? 'selected' : ''}}>({{$result['matauang']['simbol']}}) {{$result['matauang']['kode']}} - {{$result['bank_name']}}</option>
+
+                                    @endforeach
+
+                                </select>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
+                        
+                        <div class="row">
+                            <div style="padding-top: 15px;" class="col-md-1">
+                                <label for="kodebaranglabel">Currency</label>
+                    
+                            </div>
+                            <div class="col-lg-6 ">
+                                <select style="border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control currency-edit" id="currency-edit-id" name="currency">
+                                        <option value="0">Pilih Currency</option>
+                                        @foreach($Data['msg']['matauang'] as $index => $result)
+                
+                                            <option value="{{$result['id']}}" {{$Data['msg']['commercialinvoice']['id_matauang'] == $result['id'] ? 'selected' : ''}}>({{$result['simbol']}}) {{$result['kode']}} - {{$result['name']}}</option>
+
+                                        @endforeach
+                                    
+                                </select>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    @php
+                        $bankName = $Data['msg']['commercialinvoice']['bank_name'];
+                        $bankAddress= $Data['msg']['commercialinvoice']['bank_address'];
+                        $swiftCode= $Data['msg']['commercialinvoice']['swift_code'];
+                        $accountNo= $Data['msg']['commercialinvoice']['account_no'];
+                        $beneficiaryName= $Data['msg']['commercialinvoice']['beneficiary_name'];
+                        $beneficiaryAddress= $Data['msg']['commercialinvoice']['beneficiary_address'];
+
+                    @endphp
+                    <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
+                        
+                        <div class="row">
+                            <div style="padding-top: 10px;" class="col-md-1">
+                                <label for="kodebaranglabel">Bank Name</label>
+                    
+                            </div>
+                            <div class="col-lg-6 ">
+
+
+                                <input type="text" style="width:100%;" class="form-control custom-border" id="bank_name_id_tab" name="bank_name" value="{{ $bankName ?: '' }}" placeholder="{{ $bankName ?: 'Bank Name' }}">
+
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
+                        
+                        <div class="row">
+                            <div style="padding-top: 10px;" class="col-md-1">
+                                <label for="kodebaranglabel">Bank Address</label>
+                    
+                            </div>
+                            <div class="col-lg-6 ">
+
+
+                                <input type="text" style="width:100%;" class="form-control custom-border" id="bankAddress_id_tab" name="bank_address" value="{{ $bankAddress ?: '' }}" placeholder="{{ $bankAddress ?: 'Bank Address' }}">
+
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
+                        
+                        <div class="row">
+                            <div style="padding-top: 10px;" class="col-md-1">
+                                <label for="kodebaranglabel">Swift Code</label>
+                    
+                            </div>
+                            <div class="col-lg-6 ">
+
+
+                                <input type="text" style="width:100%;" class="form-control custom-border" id="swiftCode_id_tab" name="swift_code" value="{{ $swiftCode ?: '' }}" placeholder="{{ $swiftCode ?: 'Swift Code' }}">
+
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
+                        
+                        <div class="row">
+                            <div style="padding-top: 10px;" class="col-md-1">
+                                <label for="kodebaranglabel">Account No</label>
+                    
+                            </div>
+                            <div class="col-lg-6 ">
+
+
+                                <input type="text" style="width:100%;" class="form-control custom-border" id="accountNo_id_tab" name="account_no" value="{{ $accountNo ?: '' }}" placeholder="{{ $accountNo ?: 'Account No' }}">
+
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
+                        
+                        <div class="row">
+                            <div style="padding-top: 10px;" class="col-lg-1">
+                                <label for="kodebaranglabel">Beneficiary Name</label>
+                    
+                            </div>
+                            <div class="col-lg-6 ">
+
+
+                                <input type="text" style="width:100%;" class="form-control custom-border" id="beneficiaryName_id_tab" name="beneficiary_name" value="{{ $beneficiaryName ?: '' }}" placeholder="{{ $beneficiaryName ?: 'Beneficiary Name' }}">
+
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    <div class="form-group" style="padding-top: 30px; padding-left: 20px; width: 100%;">
+                        <div class="row">
+                            <div style="padding-top: 10px;" class="col-lg-1">
+                                <label for="kodebaranglabel">Beneficiary Address</label>
+                            </div>
+                            <div class="col-lg-6 ">
+                                <input type="text" class="form-control custom-border" id="beneficiaryAddress_id_tab" 
+                                    name="beneficiary_address" 
+                                    value="{{ $beneficiaryAddress ?: '' }}" 
+                                    placeholder="{{ $beneficiaryAddress ?: 'Beneficiary Address' }}">
+                            </div>
                         </div>
                     </div>
-                    
-                </div>
-
-                <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                    
-                    <div class="row">
-                        <div style="padding-top: 10px;" class="col-md-1">
-                            <label for="kodebaranglabel">Account No</label>
-                   
-                        </div>
-                        <div class="col-md-11" style="padding-right: 600px;">
 
 
-                            <input type="text" class="form-control custom-border" id="accountNo_id_tab" name="account_no" value="{{ $accountNo ?: '' }}" placeholder="{{ $accountNo ?: 'Account No' }}">
-
-                        </div>
+                    <div class="form-group" style="display: flex;padding-top:30px; text-align:end;">
+                        <button type="button" id="submitButtonFormNotes" class="btn btn-primary" style="margin-left: auto;">Simpan Comercial Invoice</button>
                     </div>
-                    
-                </div>
 
-                <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                    
-                    <div class="row">
-                        <div style="padding-top: 10px;" class="col-md-1">
-                            <label for="kodebaranglabel">Beneficiary Name</label>
-                   
-                        </div>
-                        <div class="col-md-11" style="padding-right: 600px;">
-
-
-                            <input type="text" class="form-control custom-border" id="beneficiaryName_id_tab" name="beneficiary_name" value="{{ $beneficiaryName ?: '' }}" placeholder="{{ $beneficiaryName ?: 'Beneficiary Name' }}">
-
-                        </div>
-                    </div>
-                    
-                </div>
-
-                <div class="form-group" style="padding-top: 30px; padding-left: 20px;">
-                    
-                    <div class="row">
-                        <div style="padding-top: 10px;" class="col-md-1">
-                            <label for="kodebaranglabel">Beneficiary Address</label>
-                   
-                        </div>
-                        <div class="col-md-11" style="padding-right: 600px;">
-
-
-                            <input type="text" class="form-control custom-border" id="beneficiaryAddress_id_tab" name="beneficiary_address" value="{{ $beneficiaryAddress ?: '' }}" placeholder="{{ $beneficiaryAddress ?: 'Beneficiary Address' }}">
-
-                        </div>
-                    </div>
-                    
-                </div>
-                <div class="form-group" style="display: flex;padding-top:30px; text-align:end;">
-                    <button type="button" id="submitButtonFormNotes" class="btn btn-primary" style="margin-left: auto;">Simpan</button>
-                </div>
-            </form>
+                </form>
             
               
            
@@ -734,47 +709,48 @@
                    @php
                     $totalQtyArray = [];
                    @endphp
-                     @foreach($Data['msg']['commercialinvoice']['detail'] as $key => $result)
-                        @php
-                            $totalQty = 0;
-                              $id_penjualanfromchina = null;
-                        @endphp
-
-                        @foreach($Data['msg']['packinglist'] as $packingList)
+                        @foreach($Data['msg']['commercialinvoice']['detail'] as $key => $result_detail)
                             @php
-                                $sumQtyPacking = 0;
+                                $totalQty = 0;
+                                $id_penjualanfromchina = null;
                             @endphp
 
-                            @foreach($packingList['detail'] as $detail)
-                                @if($result['id'] == $detail['id_penjualanfromchinadetail'])
-                                    @php
-                                        $sumQtyPacking += $detail['qty'];
-                                    @endphp
-                                @endif
+                            @foreach($Data['msg']['packinglist'] as $packingList)
+                                @php
+                                    $sumQtyPacking = 0;
+                                @endphp
+
+                                @foreach($packingList['detail'] as $detail)
+                                    @if($result_detail['id'] == $detail['id_penjualanfromchinadetail'])
+                                        @php
+                                            $sumQtyPacking += $detail['qty'];
+                                        @endphp
+                                    @endif
+                                @endforeach
+
+                                @php
+                                    $totalQty += $sumQtyPacking;
+                                    $id_penjualanfromchina = $packingList['id_penjualanfromchina'];
+                                @endphp
                             @endforeach
 
+                            <!-- Menyimpan nomor urutan -->
                             @php
-                                $totalQty += $sumQtyPacking;
-                                $id_penjualanfromchina = $packingList['id_penjualanfromchina'];
+                                $sequenceNumber = $key + 1;
                             @endphp
-                        @endforeach
-
-                        <!-- Menyimpan nomor urutan -->
-                        @php
-                            $sequenceNumber = $key + 1;
-                        @endphp
                       
-                    <tr>
-                        <td style="padding-left:20px;border: 1px solid #696868; color: black;">
-                            {{ $sequenceNumber }}
-                        </td>
-                        <td style="padding-left:20px;border: 1px solid #696868; color: black;">
-                            {{ $result['name_english'] }}
-                        </td>
-                        <td style="padding-left:20px;border: 1px solid #696868; color: black;" data-id="{{ $result['id'] }}" data-nilai="{{ $result['qty'] }}">
-                            {{ $result['qty'] - $totalQty}} 
-                        </td>
-                    </tr>
+                            <tr>
+                                <td style="padding-left:20px;border: 1px solid #696868; color: black;">
+                                    {{ $sequenceNumber }}
+                                </td>
+                                <td style="padding-left:20px;border: 1px solid #696868; color: black;">
+                                    {{ $result_detail['name_english'] }}
+                                </td>
+                                <td style="padding-left:20px;border: 1px solid #696868; color: black;" data-id="{{ $result_detail['id'] }}" data-nilai="{{ $result_detail['qty'] }}">
+                                  
+                                    {{ $result_detail['qty'] - $totalQty}} 
+                                </td>
+                            </tr>
                        @endforeach
 
 
@@ -784,191 +760,219 @@
                
                 
             </form>
-               @php
-                   $totalPacking =0;
-                   $indexSelect = 0;
-                   $indexqty=0;
-                  @endphp
-                  @if($Data['msg']['packinglist'] && count($Data['msg']['packinglist']) > 0)
-                       <div class="tab-pane fade show" id="packing_list2"style="margin-top: 20px;">
-                          <div  id="newInputContainer2" style="padding-top: 20px;">
-                              @foreach($Data['msg']['packinglist'] as $index => $packing)
-                                @php
-                                $totalPacking +=1;
-                                @endphp
+                    @php
+                        $totalPacking =0;
+                        $indexSelect = 0;
+                        $indexqty=0;
+                        $id_detail_packinglist=[];
+                        $detailIndexNew=0;
+                    @endphp
+                    @if($Data['msg']['packinglist'] && count($Data['msg']['packinglist']) > 0)
+                        <div class="tab-pane fade show" id="packing_list2"style="margin-top: 20px;">
+                            <div  id="newInputContainer2" style="padding-top: 20px;">
+                                    @foreach($Data['msg']['packinglist'] as $urutan_packinglist => $row_packinglist)
+                                            @foreach($row_packinglist['detail'] as $urutan_detail => $row_detail)
+                                                @php
+                                                    $id_detail_packinglist[] =$row_detail['id_penjualanfromchinadetail'];
+                                           
+                                                @endphp
+                                            @endforeach
+                                                
+                                    @endforeach
+                                   
+                                @foreach($Data['msg']['packinglist'] as $index => $packing)
+                                    @php
+                                        $totalPacking +=1;
+                                    @endphp
                                 
 
-                                  @if($index+1 < 2)
-                                    <div style="padding-top: 10px;" class="col-md-6">
+                                    @if($index+1 < 2)
+                                        <div style="padding-top: 10px;" class="col-md-6">
 
 
-                                        <label for="kodebaranglabel">Packing {{ $index+1 }}</label>
-                                        <!-- untuk number_packing -->
-                                        <input type="hidden" class="form-control" style="border: 1px solid #696868; color: black; padding-left: 10px; " name="id_packingList" value="{{ $result['id_penjualanfromchina'] }}">
+                                            <label for="kodebaranglabel">Packing {{ $index+1 }}</label>
+                                            <!-- untuk number_packing -->
+                                            <input type="hidden" class="form-control" style="border: 1px solid #696868; color: black; padding-left: 10px; " name="id_packingList" value="{{ $result_detail['id_penjualanfromchina'] }}">
 
-                                        <input type="hidden" class="form-control" style="border: 1px solid #696868; color: black; padding-left: 10px;" name="number_packing_edit[]" value="{{ $index }}">
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <input type="text" class="form-control" style="border: 1px solid #696868; color: black; padding-left: 10px;width: 100%" name="name_packing_edit[]" value="{{ $packing['name'] }}">
+                                            <input type="hidden" class="form-control" style="border: 1px solid #696868; color: black; padding-left: 10px;" name="number_packing_edit[]" value="{{ $index }}">
                                         </div>
-                                        <div class="col-md-6">
-                                            <button type="button" class="btn btn-warning" >Tidak Bisa Delete</button>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <input type="text" class="form-control" style="border: 1px solid #696868; color: black; padding-left: 10px;width: 100%" name="name_packing_edit[]" value="{{ $packing['name'] }}">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <button type="button" class="btn btn-warning" >Tidak Bisa Delete</button>
+                                            </div>
+                                            
+                                        </div>
+                                    @else
+                                        <div class="packing-group">
+                                                        <div style="padding-top: 10px;" class="col-md-6">
+
+
+                                                                <label for="kodePacking">Packing {{ $index+1 }}</label>
+                                                                <!-- untuk number_packing -->
+                                                            
+                                                                <input type="hidden" class="form-control" style="border: 1px solid #696868; color: black; padding-left: 10px;" name="number_packing_edit[]" value="{{ $index }}">
+                                                        </div>
+                                                        <div class="row">
+                                                                <div class="col-md-6">
+                                                                <input type="text" class="form-control" style="border: 1px solid #696868; color: black; padding-left: 10px;width: 100%" name="name_packing_edit[]" value="{{ $packing['name'] }}">   
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                        <button type="button" class="btn btn-danger"  onclick="deletePacking(this, {{ $index }})" >Delete </button>
+                                                                </div>
+                                                        </div>
                                         </div>
                                         
-                                    </div>
-                                  @else
-                                  <div class="packing-group">
-                                                <div style="padding-top: 10px;" class="col-md-6">
-
-
-                                                        <label for="kodePacking">Packing {{ $index+1 }}</label>
-                                                        <!-- untuk number_packing -->
-                                                    
-                                                        <input type="hidden" class="form-control" style="border: 1px solid #696868; color: black; padding-left: 10px;" name="number_packing_edit[]" value="{{ $index }}">
-                                                </div>
-                                                <div class="row">
-                                                        <div class="col-md-6">
-                                                        <input type="text" class="form-control" style="border: 1px solid #696868; color: black; padding-left: 10px;width: 100%" name="name_packing_edit[]" value="{{ $packing['name'] }}">   
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                                <button type="button" class="btn btn-danger"  onclick="deletePacking(this, {{ $index }})" >Delete </button>
-                                                        </div>
-                                                </div>
-                                 </div>
-                                      
-                                  @endif
+                                    @endif
                                  
                                     <br>
 
                                     <div class="packing-group2" id="packingDetails{{ $index }}">
-                                      @foreach($packing['detail'] as $detailIndex => $detail)
-                                      <div class="row" id="detailRow{{ $index }}{{ $detailIndex }}">
+                                        @foreach($packing['detail'] as $detailIndex => $detail)
+                                            <div class="row" id="detailRow{{ $index }}{{ $detailIndex }}">
 
-                                        <div class="col-md-4">
+                                                <div class="col-md-4">
 
+                                                
+                                                @foreach($Data['msg']['commercialinvoice']['detail'] as $key => $result2)
+                                                    
+                                                    @php
+                                                        $totalQty = 0;
+                                                    @endphp
 
-                                          @foreach($Data['msg']['commercialinvoice']['detail'] as $key => $result)
-                                          @php
-                                          $totalQty = 0;
-                                          @endphp
+                                                    @foreach($Data['msg']['packinglist'] as $packingList)
+                                                        @php
+                                                            $sumQtyPacking = 0;
+                                                        @endphp
 
-                                          @foreach($Data['msg']['packinglist'] as $packingList)
-                                          @php
-                                          $sumQtyPacking = 0;
-                                          @endphp
+                                                        @foreach($packingList['detail'] as $detail)
+                                                            @if($result2['id'] == $detail['id_penjualanfromchinadetail'])
+                                                                    @php
+                                                                        
+                                                                        $sumQtyPacking += $detail['qty'];
+                                                                    @endphp
+                                                            @endif
+                                                        @endforeach
 
-                                          @foreach($packingList['detail'] as $detail)
-                                          @if($result['id'] == $detail['id_penjualanfromchinadetail'])
-                                          @php
-                                          $sumQtyPacking += $detail['qty'];
-                                          @endphp
-                                          @endif
-                                          @endforeach
+                                                        @php
+                                                            $totalQty += $sumQtyPacking;
+                                                        @endphp
+                                                    @endforeach
 
-                                          @php
-                                          $totalQty += $sumQtyPacking;
-                                          @endphp
-                                          @endforeach
+                                                    <!-- Menyimpan nomor urutan -->
+                                                    @php
+                                                        $sequenceNumber = $key + 1;
+                                                    @endphp
 
-                                          <!-- Menyimpan nomor urutan -->
-                                          @php
-                                          $sequenceNumber = $key + 1;
-                                          @endphp
+                                                
+                                                @endforeach
+                                                @php
+                                               
+                                                if($detailIndexNew<$detailIndex){
+                                                    $detailIndexNew = $detailIndex+1;
+                                                }
+                                                else{
+                                                    $detailIndexNew += 1;
 
-                                        
-                                         @endforeach
-                                         <select style="border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control" id="id_itempacking" name="itempacking_edit[]">
-                                           <option value="0">Pilih Item</option>
+                                                }
+                                                @endphp
+                                                
+                                                <select style="border: 1px solid #696868; color: black; padding: 10px;" class="form-control" id="id_itempacking" name="itempacking_edit[]">
+                                                <option value="0">Pilih Item</option>
 
-                                            
-                                           <option value="{{$result['id']}}" {{$result['id_penjualanfromchina'] == $packingList['id_penjualanfromchina'] ? 'selected' : ''}}> {{$result['name_english']}}</option>
-
-                                         </select>
-                                        </div>
-                                        <div class="col-md-4">
-                                         
-                                               <input type="text" id="qtylabel{{ $index }}{{ $detailIndex }}" class="form-control" style="border: 1px solid #696868; color: black; padding-left: 10px;" name="qtyitempacking[{{ $index }}][{{ $detailIndex }}]" value="{{ $Data['msg']['packinglist'][$index]['detail'][$detailIndex]['qty'] }}">
-                                        </div>
-                                      <div class="col-md-4">
-                                        @if($index+1 ==1 && $detailIndex < 1)
-                                        <button type="button" class="btn btn-warning" >Tidak Bisa Delete</button>
-                                        @else
-                                         <button type="button" class="btn btn-danger" onclick="removeDetailRow({{ $index }}, {{ $detailIndex }})">Delete</button>
-                                        @endif
+                                                    @foreach($Data['msg']['commercialinvoice']['detail'] as $key2 => $result_option)
+                                                        <option value="{{  $result_option['id'] }}" {{ $id_detail_packinglist[$detailIndexNew-1] == $result_option['id'] ? 'selected' : ''  }}> {{ $result_option['name_english'] }} </option>
+                                                    @endforeach
+                                                </select>
+                                                </div>
+                                                <div class="col-md-4">
+                                                
+                                                    <input type="text" id="qtylabel{{ $index }}{{ $detailIndex }}" class="form-control" style="border: 1px solid #696868; color: black; padding-left: 10px;" name="qtyitempacking[{{ $index }}][{{ $detailIndex }}]" value="{{ $Data['msg']['packinglist'][$index]['detail'][$detailIndex]['qty'] }}">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    @if($index+1 ==1 && $detailIndex < 1)
+                                                    <button type="button" class="btn btn-warning" >Tidak Bisa Delete</button>
+                                                    @else
+                                                    <button type="button" class="btn btn-danger" onclick="removeDetailRow({{ $index }}, {{ $detailIndex }})">Delete</button>
+                                                    @endif
+                                                
+                                                </div>
+                                            </div>
                                        
-                                      </div>
+                                        @endforeach
+                                        @php
+                                            $indexSelect = $index;
+                                            $indexqty = $detailIndex ?? 0;
+                                            $packing =$packing['name'];
+                                        @endphp
                                     </div>
-                                       
-                                    @endforeach
-                                    @php
-                                    $indexSelect = $index;
-                                    $indexqty = $detailIndex ?? 0;
-                                    $packing =$packing['name'];
-                                    @endphp
-                                  </div>
+
                                   <button type="button" id="button_tambah_{{ $index }}" class="btn btn-primary add-btn" style="margin-top: 20px;" onclick="addDetailRow({{ $index }})">Tambah Kolom</button>
                                 
-                              @endforeach
-                          </div>
+                                @endforeach
+                            </div>
                         </div>
-                    @php
-                          $totalQtyArray[] = [
-                              'sequenceNumber' => $totalPacking,
-                              'totalQty' => $totalQty,
-                              'name_english' =>  $result['name_english'],
-                              'id' =>  $result['id'],
-                              'id_penjualanfromchina' => $result['id_penjualanfromchina'],
-                              'id_penjualanfromchina_list' => $id_penjualanfromchina,
-                              'index_number_pack'=>$indexSelect,
-                              'index_qtyitem'=>$indexSelect+1,
-                              'index_qtyitem2' =>$indexqty,
-                              'packing' =>$packing
-                          ];
 
-                          $totalQtyJson = json_encode($totalQtyArray);
-                    @endphp
-                  @else
-                   @php
-                      $totalQtyArrayWithoutPacking = [];
-    
-                      foreach($Data['msg']['commercialinvoice']['detail'] as $index => $withoutPacking) {
-                        $totalQtyArrayWithoutPacking[] = [
-                          'name_english' => $withoutPacking['name_english'],
-                          'id' => $withoutPacking['id'],
-                          'id_penjualanfromchina' => $result['id_penjualanfromchina'],
-                          
-                        ];
-                      }
+                        @php
+                            $totalQtyArray[] = [
+                                'sequenceNumber' => $totalPacking,
+                                'totalQty' => $totalQty,
+                                'name_english' =>  $result_detail['name_english'],
+                                'id' =>  $result_detail['id'],
+                                'id_penjualanfromchina' => $result_detail['id_penjualanfromchina'],
+                                'id_penjualanfromchina_list' => $id_penjualanfromchina,
+                                'index_number_pack'=>$indexSelect,
+                                'index_qtyitem'=>$indexSelect+1,
+                                'index_qtyitem2' =>$indexqty,
+                                'packing' =>$packing
+                            ];
 
-                          $totalQtyJsonWithoutPacking  = json_encode($totalQtyArrayWithoutPacking);
-                   @endphp
-                  @endif
+                            $totalQtyJson = json_encode($totalQtyArray);
+                            
+                        @endphp
+                    @else
+                        @php
+                            $totalQtyArrayWithoutPacking = [];
+            
+                            foreach($Data['msg']['commercialinvoice']['detail'] as $index => $withoutPacking) {
+                                $totalQtyArrayWithoutPacking[] = [
+                                'name_english' => $withoutPacking['name_english'],
+                                'id' => $withoutPacking['id'],
+                                'id_penjualanfromchina' => $result_detail['id_penjualanfromchina'],
+                                
+                                ];
+                            }
 
-                  <div class="tab-pane fade show" id="packing_list3"style="margin-top: 20px;">
+                                $totalQtyJsonWithoutPacking  = json_encode($totalQtyArrayWithoutPacking);
+                        @endphp
+                    @endif
+
+                    <div class="tab-pane fade show" id="packing_list3"style="margin-top: 20px;">
                       <div id="newInputContainer" style="padding-top: 20px;"></div>
                       
                     
                         @if(isset($totalQtyJson) && $totalQtyJson)
-                      <div class="form-group" id="form_input_add" style="display: flex; justify-content: flex-end; padding-top: 30px;">
-                                <button type="button" class="btn btn-success" onclick="addNewInput()">Add Input</button>
-                      </div>
+                            <div class="form-group" id="form_input_add" style="display: flex; justify-content: flex-end; padding-top: 30px;">
+                                        <button type="button" class="btn btn-success" onclick="addNewInput()">Add Input</button>
+                            </div>
 
-                      <div class="form-group" id="button_save_add" style="display: flex;padding-top:30px; text-align:end;">
-                              <button type="button" id="submitButtonPacking" class="btn btn-primary" style="margin-left: auto;">Simpan Packing List</button>
-                      </div>
+                            <div class="form-group" id="button_save_add" style="display: flex;padding-top:30px; text-align:end;">
+                                    <button type="button" id="submitButtonPacking" class="btn btn-primary" style="margin-left: auto;">Simpan Packing List</button>
+                            </div>
 
-                          @else
-                      <div class="form-group" id="form_input_add2" style="display: flex; justify-content: flex-end; padding-top: 30px;">
-                              <button type="button" class="btn btn-success" onclick="addNewInputWithoutPacklingList()">Add Input Without PackingList</button>
-                      </div>
+                        @else
+                            <div class="form-group" id="form_input_add2" style="display: flex; justify-content: flex-end; padding-top: 30px;">
+                                    <button type="button" class="btn btn-success" onclick="addNewInputWithoutPacklingList()">Add Input Without PackingList</button>
+                            </div>
 
-                      <div class="form-group" id="button_save_add2" style="display: flex;padding-top:30px; text-align:end;">
-                              <button type="button" id="submitButtonWithoutPacking" class="btn btn-primary" style="margin-left: auto;">Simpan Packing List</button>
-                      </div>
-                          @endif
-                  </div>
+                            <div class="form-group" id="button_save_add2" style="display: flex;padding-top:30px; text-align:end;">
+                                    <button type="button" id="submitButtonWithoutPacking" class="btn btn-primary" style="margin-left: auto;">Simpan Packing List</button>
+                            </div>
+                        @endif
+                    </div>
         </div>
 
     </div>
@@ -982,67 +986,70 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Image</th>
-                                <th scope="col">Kode</th>
-                                <th scope="col">Nama</th>
-                                <th scope="col">Jml Permintaan</th>
-                                <th scope="col">Supplier</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @php
-                            $number =0;
-                            $number2 =0;
-                            @endphp
-                            @foreach($Data['msg']['listordercheck'] as $index => $resultordercheck)
-                                @php
-                                $number++;
-                                $isChecked = (boolean) $resultordercheck;
-                                @endphp
-                            <tr>
-                                <td style="border: 1px solid #d7d7d7; color: black; text-align: center;">
-                                    <input type="checkbox" class="kubik-checkbox" name="checkbox_{{ $number }}" {{ $isChecked ? 'checked' : '' }}>
-                                </td>
-                                <td style="max-width: 200px;white-space: normal; word-wrap: break-word;"><img src="{{ $Data['msg']['directory_gambar'] }}{{ $resultordercheck['image'] }}" style="width:200px; height:200px;"></td>
-                                <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $resultordercheck['new_kode'] }}</td>
-                                <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $resultordercheck['name'] }}</td>
-                                <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $resultordercheck['jml_permintaan'] }}</td>
-                                <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $resultordercheck['supplier_name'] }}</td>
-                                
-                            </tr>    
-                            @endforeach
+                    <div class="table-responsive">
 
-                            @foreach($Data['msg']['listorder'] as $index => $result)
-                            @php
-                            $number2++;
-                            @endphp
-                            <form action="" class="form-horizontal" id="importBarang" method="get">
-                                @csrf
-                                <input type="hidden" name="id_product" value="{{ $Data['msg']['idcommercial'] }}" >
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Image</th>
+                                    <th scope="col">Kode</th>
+                                    <th scope="col">Nama</th>
+                                    <th scope="col">Jml Permintaan</th>
+                                    <th scope="col">Supplier</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php
+                                $number =0;
+                                $number2 =0;
+                                @endphp
+                                @foreach($Data['msg']['listordercheck'] as $index => $resultordercheck)
+                                    @php
+                                    $number++;
+                                    $isChecked = (boolean) $resultordercheck;
+                                    @endphp
                                 <tr>
                                     <td style="border: 1px solid #d7d7d7; color: black; text-align: center;">
-                                    
-                                    <input type="checkbox" class="kubik-checkbox2" name="checkbox2_{{ $number2 }}">
-                                    <input type="hidden" name="number_{{ $number2 }}" value="{{ $result['restok_id'] }}">
-                                        
+                                        <input type="checkbox" class="kubik-checkbox" name="checkbox_{{ $number }}" {{ $isChecked ? 'checked' : '' }}>
                                     </td>
-                                    <td style="max-width: 200px;white-space: normal; word-wrap: break-word;"><img src="{{ $Data['msg']['directory_gambar'] }}{{ $result['image'] }}" style="width:200px; height:200px;"></td>
-                                    <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $result['new_kode'] }}</td>
-                                    <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $result['name'] }}</td>
-                                    <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $result['jml_permintaan'] }}</td>
-                                    <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $result['supplier_name'] }}</td>
+                                    <td style="max-width: 200px;white-space: normal; word-wrap: break-word;"><img src="{{ $Data['msg']['directory_gambar'] }}{{ $resultordercheck['image'] }}" style="width:200px; height:200px;"></td>
+                                    <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $resultordercheck['new_kode'] }}</td>
+                                    <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $resultordercheck['name'] }}</td>
+                                    <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $resultordercheck['jml_permintaan'] }}</td>
+                                    <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $resultordercheck['supplier_name'] }}</td>
                                     
-                                </tr>
-                                
-                            </form>
-                           @endforeach
-                          
-                        </tbody>
-                    </table>
+                                </tr>    
+                                @endforeach
+    
+                                @foreach($Data['msg']['listorder'] as $index => $result)
+                                @php
+                                $number2++;
+                                @endphp
+                                <form action="" class="form-horizontal" id="importBarang" method="get">
+                                    @csrf
+                                    <input type="hidden" name="id_product" value="{{ $Data['msg']['idcommercial'] }}" >
+                                    <tr>
+                                        <td style="border: 1px solid #d7d7d7; color: black; text-align: center;">
+                                        
+                                        <input type="checkbox" class="kubik-checkbox2" name="checkbox2_{{ $number2 }}">
+                                        <input type="hidden" name="number_{{ $number2 }}" value="{{ $result['restok_id'] }}">
+                                            
+                                        </td>
+                                        <td style="max-width: 200px;white-space: normal; word-wrap: break-word;"><img src="{{ $Data['msg']['directory_gambar'] }}{{ $result['image'] }}" style="width:200px; height:200px;"></td>
+                                        <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $result['new_kode'] }}</td>
+                                        <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $result['name'] }}</td>
+                                        <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $result['jml_permintaan'] }}</td>
+                                        <td style="max-width: 200px;white-space: normal; word-wrap: break-word;">{{ $result['supplier_name'] }}</td>
+                                        
+                                    </tr>
+                                    
+                                </form>
+                               @endforeach
+                              
+                            </tbody>
+                        </table>
+                    </div>
                             <div style="text-align:right;">
                                     
                                     <button type="button" id="sendData" class="btn btn-primary" style="margin-left: auto;">Simpan</button>
@@ -1057,11 +1064,7 @@
         
     <!-- note -->
      
- 
-@endsection
 
-
-@section('script')
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -1069,7 +1072,7 @@
 <script src="../assets/js/edit-commercial-invoice/select_choices.js"></script> 
 
 
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+
 <!-- Choices.js JS -->
 <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -1093,9 +1096,34 @@
     var insurance_out =0;
     var jsonData = {!! $jsonData !!};      //  data JSON di JavaScript
     // console.log('jsonData',jsonData.length)
+    var array_history_hscode = []
+    var number_history_hscode = []
+    var date_history_hscode = []
+    var unit_price_without_tax_history_hscode=[]
+            
     $(document).ready(function() {
-       
-      
+
+        $('.hscode-edit-filter').change(function() {
+            //untuk mengambil nilai yang dipilih dari kelas hscode-edit-filter
+            var selectedValue = $(this).val();
+            console.log('selectedValue:', selectedValue);
+            
+            // untuk mengambil index ke berapa dari kelas hscode-edit-filter
+            var index = $('.hscode-edit-filter').index(this);
+            console.log('Element index:', index);
+
+            
+            $('.new-hscode-input_'+index).val(selectedValue); //untuk mengupdate nilain input hscode
+        });
+
+        // $('.new-hscode-edit-filter_0').change(function() {
+        //     // Get the selected value from the select element
+        //     var selectedValue = $(this).val();
+        //     console.log('selectedValue',selectedValue)
+        //     // Update the value of the corresponding input field
+        //     $('.new-hscode-input_{{ $ascendingIndex }}').val(selectedValue);
+        // });
+        
 
 
         // Select semua input dengan class .calculate-cbm
@@ -1174,6 +1202,7 @@
             
               
         });
+        
         $('.insurance-classs').on('input', function() {
             
          
@@ -1187,6 +1216,7 @@
    
               
         });
+
     });
 </script>
 <script>
@@ -1209,7 +1239,7 @@
 
     @if(isset($totalQtyJson) && $totalQtyJson)
       var totalQtyData = <?php echo $totalQtyJson ? $totalQtyJson : 'null'; ?>;
-
+      console.log('totalQtyJson',totalQtyData)
       var sequenceNumbers = totalQtyData.map(function(item) {
           return item.sequenceNumber;
       });
@@ -1282,6 +1312,7 @@
 
       // Add options to the select element
       totalQtyData.forEach(function(item) {
+        console.log('item',item.name_english)
           var option = document.createElement('option');
           option.value = item.id;
           option.text = item.name_english;
@@ -1397,7 +1428,7 @@
         newInput.placeholder = packing;
         newInput.value=packing;
         // Menambahkan efek placeholder dengan padding kiri
-        // newInput.value = inputArray.length; // Placeholder
+        
         newInput.addEventListener('focus', function() {
             if (this.value.trim() === packing) {
             
@@ -1418,7 +1449,7 @@
         var newLabel = document.createElement('label');
         var totalValue = inputArray.length;
         var current =0;
-        console.log('total',totalValue)
+        // console.log('total',totalValue)
         totalSum= index_number_pack2.reduce(function(accumulator,currentValue) {
             // console.log('accumulator',accumulator)
             // console.log('currentValue',currentValue)
@@ -1472,6 +1503,9 @@
                 var deleteToRemove = document.getElementById('delete_id');
                 deleteToRemove.parentElement.removeChild(deleteToRemove);
 
+                var newUnputToRemove = document.getElementById('name_packing');
+                newUnputToRemove.parentElement.removeChild(newUnputToRemove);
+
                 var inputToRemove = document.getElementById('number_packing');
                 inputToRemove.parentElement.removeChild(inputToRemove);
             });
@@ -1507,152 +1541,111 @@
         
         // Tambahkan elemen input baru (newInput2) saat tombol tambah ditekan
         addButton.addEventListener('click', function() {
-                var packingDetails = document.getElementById('packingDetails' + indexSelect);
-                
-                //packinglist ketika sudah ada
-                if(packingDetails){
-                        console.log('packingDetails',packingDetails);
-                        var newDetailIndex = packingDetails.children.length / 2; // Calculate new detail index based on existing rows and <br> tags
-                        console.log('newDetailIndex',newDetailIndex);
-                        
-                        var newRow = document.createElement('div');
-                        newRow.className = 'row';
-                        newRow.id = 'detailRow' + indexSelect + newDetailIndex;
+    var packingDetails = document.getElementById('packingDetails' + indexSelect);
 
-                        var newCol = document.createElement('div');
-                        newCol.className = 'col-md-4';
-                        newCol.style.width='180px';
+    if (packingDetails) {
+        var newDetailIndex = packingDetails.children.length / 2;
 
-                        var newSelect = document.createElement('select');
-                        newSelect.className = 'form-control';
-                        newSelect.style = 'border: 1px solid #696868; color: red; padding-left: 10px;';
-                        newSelect.id = 'selectPackingDetails2' + indexSelect + newDetailIndex;
-                        
+        // Create a new row for the packing detail
+        var newRow = document.createElement('div');
+        newRow.className = 'row';
+        newRow.id = 'detailRow' + indexSelect + newDetailIndex;
 
-                        newSelect.name = 'itempacking_edit[]';
-                        
-                        // Add default "Pilih Item" option
-                        var defaultOption = document.createElement('option');
-                        defaultOption.value = '';
-                        defaultOption.text = 'Pilih Item 1';
-                        defaultOption.selected = true;
-                        defaultOption.disabled = true;
-                        newSelect.appendChild(defaultOption);
+        // Column for the select dropdown
+        var newCol = document.createElement('div');
+        newCol.className = 'col-md-4';
+        newCol.style.width = '180px';
 
-                        // Add options to the select element
-                        totalQtyData.forEach(function(item) {
-                            var option = document.createElement('option');
-                            option.value = item.id;
-                            option.text = item.name_english;
-                            if (item.id_penjualanfromchina == item.id_penjualanfromchina_list) {
-                                option.selected = true;
-                            }
-                            newSelect.appendChild(option);
-                        });
+        // Create and style the select element
+        var newSelect = document.createElement('select');
+        newSelect.className = 'form-control';
+        newSelect.style = 'border: 1px solid #696868; color: black; padding-left: 10px; width:205%;';
+        newSelect.id = 'selectPackingDetails2' + indexSelect + newDetailIndex;
+        newSelect.name = 'itempacking_edit[]';
 
-                        newCol.appendChild(newSelect);
-                        var newInput2 = document.createElement('input');
-                                
-                        // Hitung nilai totalSum2 saat ini
-                        var totalSum2 = totalSum - 1;
-                        console.log('totalSum',totalSum2);
-                        
-                        console.log('inputArray',inputArray.length);
-                        console.log('inputArray3', inputArray3);
-                        newInput2.type = 'text';
-                        newInput2.className = 'form-control custom-input';
-                        newInput2.style.border = '1px solid #696868';
-                        newInput2.style.width = '15.4%';
-                        newInput2.style.marginLeft = '24px'; // Menambahkan padding kiri
-                        newInput2.id = 'qtyitempacking' + inputArray2.length;
-                        // console.log('inputArray.lengt', inputArray.length);
-                        if(inputArray.length == inputArray3){
-                            
-                            newInput2.name = 'qtyitempacking'+'['+(totalSum2)+']'+'['+ (inputArray2.length)+']';
-                        }
-                        else{
-                            var set_array = inputArray2.length = 0;
-                            newInput2.name = 'qtyitempacking'+'['+(totalSum2)+']'+'['+ (set_array)+']';
-                        }
+        // Default option for the select
+        var defaultOption = document.createElement('option');
+        defaultOption.value = '0';
+        defaultOption.text = 'Pilih Item 1';
+        defaultOption.selected = true;
+        defaultOption.disabled = true;
+        newSelect.appendChild(defaultOption);
 
-                        
+        // Append options from `totalQtyData`
+        totalQtyData.forEach(function(item) {
+            console.log('name_english',item.name_english)
+            var option = document.createElement('option');
+            option.value = item.id;
+            option.text = item.name_english;
+            if (item.id_penjualanfromchina === item.id_penjualanfromchina_list) {
+                option.selected = true;
+            }
+            newSelect.appendChild(option);
+        });
 
-                        // Menambahkan efek placeholder dengan padding kiri
-                        newInput2.placeholder = 'Qty2'; // Placeholder
-                        newInput2.addEventListener('focus', function() {
-                            if (this.value.trim() === 'Qty') {
-                                this.value = ''; // Hapus placeholder saat input mendapat fokus
-                                this.style.paddingLeft = '20px'; // Tetapkan kembali padding-left jika kosong
-                            }
-                        });
-                        newInput2.addEventListener('blur', function() {
-                            if (this.value.trim() === '') {
-                                this.value = 'Qty'; // Kembalikan placeholder saat input kehilangan fokus
-                                this.style.paddingLeft = '20px'; // Tetapkan kembali padding-left jika kosong
-                            }
-                        });
-                        var divContainer2 = document.createElement('div');
-                        // Posisikan elemen dalam satu baris
-                        divContainer2.style.display = 'flex';
-                        divContainer2.style.alignItems = 'center'; // Posisikan elemen dalam satu baris
-                        divContainer2.style.paddingTop = '12px'; // Tambahkan padding
-                        divContainer2.id ='container2-id';
-                        // Tambahkan elemen input baru ke dalam array
-                        inputArray2.push(newInput2);
-                        var deleteButtonBawah = document.createElement('button');
-                        deleteButtonBawah.innerText = 'Delete';
-                        deleteButtonBawah.className = 'btn btn-danger';
-                        deleteButtonBawah.style.marginLeft = '15px';
-                        deleteButtonBawah.style.marginTop = '12px';
-                        deleteButtonBawah.type = 'button';
-                        deleteButtonBawah.id = 'delete_id_bawah';
-                        deleteButtonBawah.addEventListener('click', function() {
-                        
-                        var deleteButtonBawahlToRemove = document.getElementById('container2-id');
-                        deleteButtonBawahlToRemove.parentNode.removeChild(deleteButtonBawahlToRemove);
+        newCol.appendChild(newSelect);
 
-                    
-                        });
-                        divContainer2.appendChild(newCol);
-                        divContainer2.appendChild(newInput2);
-                        divContainer2.appendChild(deleteButtonBawah);
-                
+        // Create input for quantity
+        var newInput2 = document.createElement('input');
+        newInput2.type = 'text';
+        newInput2.className = 'form-control custom-input';
+        newInput2.style.border = '1px solid #696868';
+        newInput2.style.width = '31.8%';
+        newInput2.style.marginLeft = '220px';
+        newInput2.placeholder = 'Qty';
 
-                        // Initialize Choices.js on the newly created select element
-                        var choices = new Choices(newSelect, {
-                            searchEnabled: true,
-                            itemSelectText: '',
-                            classNames: {
-                                containerInner: 'form-control with-border',
-                                input: 'form-control',
-                                inputCloned: 'form-control',
-                                list: 'form-control',
-                                listItems: 'form-control',
-                                dropdown: 'choices-dropdown-border', // Add CSS class for dropdown
-                            },
-                            searchFields: ['label'],
-                            shouldSort: false,
-                        });
+        // Set the name dynamically based on conditions
+        var totalSum2 = totalSum - 1;
+        if (inputArray.length === inputArray3) {
+            newInput2.name = `qtyitempacking[${totalSum2}][${inputArray2.length}]`;
+        } else {
+            inputArray2.length = 0;
+            newInput2.name = `qtyitempacking[${totalSum2}][0]`;
+        }
 
-                        var dropdownStyle = document.createElement('style');
-                        dropdownStyle.innerHTML = `
-                            .choices .choices__list--dropdown {
-                                border: 1px solid #696868;
-                                z-index: 999; /* Set dropdown z-index */
-                                background-color: white; /* Set background color */
-                            }
-                        `;
-                        document.head.appendChild(dropdownStyle);
-                        // Adjust Choices.js style
-                        newSelect.style.color = 'black';
-                    // Tambahkan elemen input baru ke dalam divContainer
-                    document.getElementById('newInputContainer').insertBefore(divContainer2, addButtonDiv);
-                    
-                }
-                
-        inputArray3= inputArray.length;
-        
-    });
+        // Placeholder effect
+        newInput2.addEventListener('focus', function() {
+            if (this.value.trim() === 'Qty') this.value = '';
+            this.style.paddingLeft = '20px';
+        });
+        newInput2.addEventListener('blur', function() {
+            if (this.value.trim() === '') {
+                this.value = 'Qty';
+                this.style.paddingLeft = '20px';
+            }
+        });
+
+        // Container to hold the select and input elements
+        var divContainer2 = document.createElement('div');
+        divContainer2.style.display = 'flex';
+        divContainer2.style.alignItems = 'center';
+        divContainer2.style.paddingTop = '12px';
+        divContainer2.id = 'container2-id';
+
+        // Add delete button
+        var deleteButtonBawah = document.createElement('button');
+        deleteButtonBawah.innerText = 'Delete';
+        deleteButtonBawah.className = 'btn btn-danger';
+        deleteButtonBawah.style.marginLeft = '15px';
+        deleteButtonBawah.style.marginTop = '12px';
+        deleteButtonBawah.type = 'button';
+        deleteButtonBawah.addEventListener('click', function() {
+            divContainer2.remove(); // Remove the entire container
+        });
+
+        // Append elements to the container and the container to the parent
+        divContainer2.appendChild(newCol);
+        divContainer2.appendChild(newInput2);
+        divContainer2.appendChild(deleteButtonBawah);
+
+        // Append the container to the target div
+        document.getElementById('newInputContainer').insertBefore(divContainer2, addButtonDiv);
+
+        // Update input array tracking
+        inputArray2.push(newInput2);
+        inputArray3 = inputArray.length;
+    }
+});
     }
     var inputCounter = 0;
     var inputArrayWithoutPackingList = [];  // Array untuk menyimpan elemen input
@@ -1757,7 +1750,7 @@
         var inputCounterSame=inputCounter;
                 addButton.addEventListener('click', function() {
                             var deleteButtonBawah = document.createElement('button');
-                            deleteButtonBawah.innerText = 'Delete';
+                            deleteButtonBawah.innerText = 'Delete1';
                             deleteButtonBawah.className = 'btn btn-danger';
                             deleteButtonBawah.style.marginLeft = '15px';
                             deleteButtonBawah.style.marginTop = '22px';
@@ -1771,7 +1764,7 @@
 
                             var newSelect = document.createElement('select');
                             newSelect.className = 'form-control';
-                            newSelect.style = 'border: 1px solid #696868;padding-left: 10px;';
+                            newSelect.style = 'border: 1px solid #696868; color: black; padding-left: 10px;';
                             newSelect.id = 'selectPackingDetails2';
                             newSelect.name='itempacking_edit';
                             newSelect.style.marginTop='10px';
@@ -2014,7 +2007,7 @@
                                     }).then((result) => {
                                     // Jika pengguna menekan tombol "OK", muat ulang halaman
                                     if (result.isConfirmed || result.isDismissed) {
-                                        location.reload();
+                                        // location.reload();
                                     }
                                 });
                                 } else {
@@ -2137,15 +2130,43 @@
                 hs_code_inputs: ''
                 
             };
+            
 
-            $('.hscode-edit-filter').each(function(index) {
-                var hsCode = $(this).val();
-                var hsCodeInput = $('#hscode-input_'+index).val(); // Mengambil input yang sesuai urutannya dengan select
+            // $('.hscode-edit-filter').each(function(index) {
+            //     var hsCode = $(this).val();
+            //     var hsCodeInput = $('#hscode-input_'+index).val(); // Mengambil input yang sesuai urutannya dengan select
                 
-                // Menyimpan nilai ke formData
-                formData.hs_code = hsCode;
-                formData.hs_code_input = hsCodeInput;
+            //     // Menyimpan nilai ke formData
+            //     formData.hs_code = hsCode;
+            //     formData.hs_code_input = hsCodeInput;
+            // });
+            
+            // Initialize Choices.js and set up change event to update input
+            $('.hscode-edit-filter').each(function(index) {
+                var selectElement = this;
+
+                // Destroy existing Choices instance if it exists to avoid duplicates
+                if (selectElement.choicesInstance) {
+                    selectElement.choicesInstance.destroy();
+                }
+
+                // Initialize Choices.js on the select element
+                var choicesInstance = new Choices(selectElement, {
+                    shouldSort: false,           // Keep the order as per the original options
+                    searchEnabled: true,         // Enable search within the dropdown
+                    placeholder: true,           // Show placeholder as the initial option
+                });
+
+                // Save the instance on the element to manage it if needed
+                selectElement.choicesInstance = choicesInstance;
+
+                // When an option is selected, update the corresponding input
+                $(selectElement).on('change', function() {
+                    var selectedValue = $(this).val();
+                    $('#hscode-input_' + index).val(selectedValue); // Update the input with the selected value
+                });
             });
+
             console.log(formData);
             $.ajax({
                 url: '{{ route('admin.pembelian_update_formatas_comercial_invoice') }}',
@@ -2191,7 +2212,7 @@
                 date: $('input[name=tgl_request_edit]').val(),
                 beneficiary_name: $('input[name=beneficiary_name]').val(),
                 beneficiary_address: $('input[name=beneficiary_address]').val(),
-                modeadmin: $('input[name="modeadmin"]:checked').val(),
+                modeadmin: $('input[name="modeadmin"]').val(),
                 invoice_no: $('input[name=invoice_no_name]').val(),
                 contract_no: $('input[name=contract_no_name]').val(),
                 packing_no: $('input[name=packing_no_name]').val(),
@@ -2404,12 +2425,7 @@
                                             title: 'Success!',
                                             text: 'Comercial invoice berhasil diedit!',
                                         })
-                                        // .then((result) => {
-                                        //     // Jika pengguna menekan tombol "OK", muat ulang halaman
-                                        //     if (result.isConfirmed || result.isDismissed) {
-                                        //         location.reload();
-                                        //     }
-                                        // });
+                                      
                 },
                 error: function(xhr, status, error) {
                     // Tangani kesalahan di sini
@@ -2434,6 +2450,7 @@
             event.preventDefault();
 
             var selectedCheckboxes = $('.kubik-checkbox2:checked');
+            console.log('selectedCheckBoxes',selectedCheckboxes);
             var formData = {
                 id_product: $('input[name=id_product]').val(),
                 idrestok: [],
@@ -2450,8 +2467,8 @@
                 }
             });
 
-        
-            console.log('formData', formData);
+            console.log('form data import',formData)
+            
 
             // Mengirim permintaan AJAX
             $.ajax({
@@ -2459,8 +2476,40 @@
                 url: '{{ route('admin.pembelian_importbarang_comercial_invoice') }}',
                 data: formData,
                 success: function(response) {
-                    console.log('Data berhasil dikirim:', response);
-
+                    
+            
+                    array_history_hscode = [];
+                    number_history_hscode = []
+                    date_history_hscode = []
+                    unit_price_without_tax_history_hscode =[]
+                    var simbol_matauang=0;
+                    // console.log('Data berhasil dikirim:', response);
+                    response.hscodehistory.forEach(function(history,key){
+                        function formatDateToDDMMYYYY(dateString) {
+                            var date = new Date(dateString);
+                            var day = String(date.getDate()).padStart(2, '0');
+                            var monthNames = [
+                                                "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+                                                "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+                                            ];
+                            var month = monthNames[date.getMonth()]; // Get month name
+                            var year = date.getFullYear();
+                            return `${day} ${month} ${year}`;
+                        }
+                        response.matauang.forEach(function(mt_uang,key_mt_uang){
+                            if(mt_uang.id==history.commercialinvoice.id_matauang){
+                                simbol_matauang=mt_uang.simbol;
+                            }
+                        })
+                        // Assuming history.restok.tgl_request is in a standard date format (e.g., "2024-11-07")
+                        var formattedDate = formatDateToDDMMYYYY(history.commercialinvoice.date);  
+                        // console.log(history.restok.id_barang)
+                        array_history_hscode.push(history.restok.id_barang)
+                        number_history_hscode.push(history.hs_code)
+                        date_history_hscode.push(formattedDate);
+                        unit_price_without_tax_history_hscode.push(simbol_matauang + ' '+history.unit_price_without_tax)
+                    })
+                    // console.log('array_history_hscode',array_history_hscode)
                  
                     var contentContainer = $('#content-container');
                     contentContainer.empty();
@@ -2475,15 +2524,14 @@
                     var qty_input7  =0;
                     var tdElement =0;
                     response.orderpembelian.forEach(function(order,index) {
-                        // console.log('Order ' + (index + 1) + ' imagedir: ' + order.product.image);
-                        // console.log('index',index);
+                        
                       
                
     
                         
                         var productName = order.product.name;
                         var gambarName ='https://maxipro.id/images/barang/'+order.product.image;
-                        console.log(gambarName)
+                        // console.log(gambarName)
                         
                         var newTable1 = $('<table>');
                         var inputDetailElement = $('<input />').attr({
@@ -2491,7 +2539,7 @@
                             'name': 'restok_'+(jsonData.length+index),      
                             'class': 'form-control restok_import',    
                             'placeholder': '',        
-                            'type': 'text',          
+                            'type': 'hidden',          
                             'value':order.id
                         }).css({
                             'border': '1px solid #696868',
@@ -2505,7 +2553,7 @@
                             'name': 'inputName',      // Nama untuk elemen input
                             'class': 'form-control',    // Kelas CSS untuk elemen input
                             'placeholder': '',        // Placeholder untuk elemen input
-                            'type': 'text',          // Tipe input
+                            'type': 'hidden',          // Tipe input
                             'value': order.id_barang
                         }).css({
                             'border': '1px solid #696868',
@@ -2611,10 +2659,28 @@
                         var newTd6 = $('<td style="border: 1px solid #d7d7d7; color: white; background-color: black; font-weight: bold;width:25.7%;">');
                             newTd6.html('HS Code<br>海关编码'); 
                         var newTdHsCode = $('<td style="border: 1px solid #d7d7d7;">');
+                        console.log('array_history_hscode',array_history_hscode)
+                        console.log('input_barangElement',input_barangElement.val())
                         var selectHsCode = $('<select style="width:100%;border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control hscode-import">' +
                                         '<option value="">Pilih Hs Code</option>' +            
                                         '</select>'); // Membuat elemen select
-                            newTdHsCode.append(selectHsCode);
+                                        array_history_hscode.forEach(function(hsCode,urutan_hscode) {
+                                            // Add only if the hsCode matches input_barangElement
+                                            // selectHsCode.append('<option value="' + hsCode + '">' + hsCode + '</option>');
+                                            if (hsCode == input_barangElement.val()) {
+                                                // console.log('hsCode',hsCode)
+                                                
+                                                
+                                                selectHsCode.append('<option value="' + number_history_hscode[urutan_hscode] + '">' + number_history_hscode[urutan_hscode] +' - '+date_history_hscode[urutan_hscode] + '</option>');
+                                            } 
+                                            // else {
+                                            // }
+                                        });
+
+                        newTdHsCode.append(selectHsCode);
+
+
+                        newTdHsCode.append(selectHsCode);
                         var newTdHsCode2 = $('<td style="border: 1px solid #d7d7d7;">');
                        
                         var inputHsCode = $('<input />').attr({
@@ -2628,7 +2694,7 @@
                             'border': '1px solid #696868',
                             'color' : 'black',
                             'padding' : '10px',
-                            'width': '100%'           
+                            'width': '150%'           
                         }); 
 
                         newTdHsCode2.append(inputHsCode);
@@ -2784,7 +2850,7 @@
                             'class': 'form-control height_p_import',  
                             'placeholder': '',        
                             'type': 'text',
-                            'value': order.product.height_p            
+                            'value': order.product.height_p * 100           
                         }).css({
                             'border': '1px solid #696868',
                             'color' : 'black',
@@ -2811,13 +2877,13 @@
                         newTd7Tr3Table2.append(inputElement7);
                        
                         var qty_json = <?php echo $qty ? $qty : 'null'; ?>;
-                        console.log('qty_json',qty_json)
+                        // console.log('qty_json',qty_json)
                         tdTotQuantity[index] = parseFloat(inputElement7.val()) || 0;
                         var TotQuantity = tdTotQuantity.reduce(function(acc, curr) {
                             return acc + curr;
                         }, 0);
-                        console.log(tdTotQuantity)
-                        console.log(parseFloat(TotQuantity))
+                        // console.log(tdTotQuantity)
+                        // console.log(parseFloat(TotQuantity))
                         var SumAllTotQuantityOutCBM =parseFloat(TotQuantity); 
                         var tdElement = $('.custom-td'); 
                           
@@ -2918,21 +2984,46 @@
                        
                         inputElement10.on('input', updateCBM); // Tambahkan event listener untuk inputElement10 juga
 
-                        var newTd11Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
+                        var newTd11Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">');
+                        
                         var inputElement11 = $('<input />').attr({
-                            'id': 'unit_price_without_tax_import'+index,          
-                            'name': 'unit_price_without_tax_'+(jsonData.length+index),      
+                            'id': 'unit_price_without_tax_import' + index,          
+                            'name': 'unit_price_without_tax_' + (jsonData.length + index),      
                             'class': 'form-control unit_price_without_tax_import',  
                             'placeholder': '',        
                             'type': 'text',
-                            'value':0
+                            'value': 0
                         }).css({
                             'border': '1px solid #696868',
                             'color' : 'black',
                             'padding' : '10px',
                             'width': '100%'           
                         });
+                        
+                    
+                        var selectElementHistoryUnitPrice = $('<select></select>').attr({
+                            'id': 'edit_supplier_id_' + index,
+                            'name': 'edit_supplier_' + index,
+                            'class': 'select select2 select-search form-control hscode-edit-filter'
+                        }).css({
+                            'border': '1px solid #696868',
+                            'color': 'black',
+                            'padding': '10px'
+                        });
+
+                        // Add the first option
+                        selectElementHistoryUnitPrice.append($('<option></option>').attr('value', '').text('Show More'));
+
+                        
+                        array_history_hscode.forEach(function(hsCode,urutan_hscode) {
+                                            if (hsCode == input_barangElement.val()) {                                               
+                                                selectElementHistoryUnitPrice.append('<option value="' + number_history_hscode[urutan_hscode] + '">' + unit_price_without_tax_history_hscode[urutan_hscode] +' - '+date_history_hscode[urutan_hscode] + '</option>');
+                                            } 
+                        });
+                        
+                        // Append the input and select elements to the td
                         newTd11Tr3Table2.append(inputElement11);
+                        newTd11Tr3Table2.append(selectElementHistoryUnitPrice);
                         
                         var newTd12Tr3Table2 = $('<td style="border: 1px solid #d7d7d7; color: black; ">')
                         var inputElement12 = $('<input />').attr({
@@ -3066,7 +3157,7 @@
                             'display': 'inline-block',
                             'vertical-align': 'top',
                             'padding': '10px'
-                        }).html('Delete');
+                        }).html('X');
                         newTd15Tr3Table2.append(inputElement15);
                         newTd15Tr3Table2.append(deleteLink);
                         
@@ -3144,8 +3235,9 @@
                         });
                         
                         var currentIndex = index;
+                  
                          newButtonSaveItem.on('click', function() {
-                                
+                                // array_history_hscode.empty()
                                 var formData ={
                                     
                                     longValue : $('#long_import' + currentIndex).val(),
@@ -3164,6 +3256,7 @@
                                     data: formData,
                                     
                                     success: function(response) {
+                                       
                                         alert('Data berhasil disimpan!');
                                     },
                                     error: function(xhr, status, error) {
@@ -3175,16 +3268,19 @@
                                         
                         var newTrLast2 = $('<tr>');
                         var newTdLast2 = $('<td colspan="12"><br></td>'); // Menambahkan colspan dan <td> yang benar
+                        var tableWrapper = $('<div>').addClass('table-responsive').append(newTable1);
+                        var tableWrapper2 = $('<div>').addClass('table-responsive').append(newTable2);
                         newTrLast2.append(newTdLast2);
-                        contentContainer.append(newTable1); // Menggunakan newTrLast bukan newTr1
-                        contentContainer.append(newTable2,newDivSaveItem, newTrLast2)
+                        // contentContainer.append(newTable1); // Menggunakan newTrLast bukan newTr1
+                        // contentContainer.append(newTable2,newDivSaveItem, newTrLast2)
+                        contentContainer.append(tableWrapper); // Menggunakan newTrLast bukan newTr1
+                        // tableWrapper2.append(newDivSaveItem)
+                        // tableWrapper2.append(newTrLast2)
+                        contentContainer.append(tableWrapper2)
                         
                             var selectElement = $('.hscode-import'); // Pilih elemen select
-                            const choices = new Choices(selectElement[0], {
-                                searchEnabled: true,
-                                itemSelectText: '',
-                            });
-
+                       
+                            
                             selectElement.on('change', function(event) {
                                 const selectedValue = event.target.value;
                                 const inputElement = document.getElementById('hscode-import-edit'); // Ganti dengan ID yang sesuai
@@ -3197,6 +3293,8 @@
 
                 },
                 error: function(xhr, status, error) {
+                    var contentContainer = $('#content-container');
+                    contentContainer.empty();
                     console.error('Terjadi kesalahan:', error);
                     
                 }
@@ -3239,8 +3337,7 @@
                 element.textContent = total_akhir
     }
     function calculatewithouttaxusdarr(){
-        // console.log('tot_price_without_tax_usd',tot_price_without_tax_usd)
-        // console.log('tot_price_without_tax_usd_import',tot_price_without_tax_usd_import)
+
         var TotWithout_tot_price_without_tax_usd = tot_price_without_tax_usd.reduce(function(acc, curr) {
                             return acc + curr;
         }, 0);
@@ -3252,10 +3349,3 @@
         element.textContent = total_akhir_without_tax_usd.toFixed(2)
     }
 </script>
-
-
-
-
-
-
-@endsection

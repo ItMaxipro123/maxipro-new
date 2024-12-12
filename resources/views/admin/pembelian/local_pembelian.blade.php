@@ -6,7 +6,7 @@ LOCAL   | PT. Maxipro Group Indonesia
 @endsection
 @section('link')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<link rel="stylesheet" href="{{ asset('css/lcl.css') }}">
+<link rel="stylesheet" href="{{ asset('css/local.css') }}">
 
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
@@ -17,10 +17,10 @@ LOCAL   | PT. Maxipro Group Indonesia
 
 @section('content')
 
-<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg wider">
+<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg wider" style="max-width: 100%; overflow-x: hidden;">
     
     <div class="container-fluid">
-        <h4 id="judulLcl" style="margin-top: 40px;margin-bottom: 40px;"><i class="fas fa-database"></i> &nbsp LOCAL</h4>
+        <h4 id="judulLocal" style="margin-top: 40px;margin-bottom: 40px;"><i class="fas fa-database"></i> &nbsp LOCAL</h4>
         <small class="display-block" style="position: absolute; top: 70px; left: 50px;" id="subjudulLcl">LOCAL {{ $username['data']['teknisi']['name'] }}</small>
         
     </div>
@@ -35,7 +35,7 @@ LOCAL   | PT. Maxipro Group Indonesia
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-12">
-                               <!-- <a href="javascript:void(0)" id="tambah_lcl" onclick="tambahRestok()" name="tambahButton" class="btn btn-large btn-primary btn-tambah">Add LCL</a> -->
+                               <a href="javascript:void(0)" id="tambah_lcl" onclick="tambahRestok()" name="tambahButton" class="btn btn-large btn-primary btn-tambah" style="display:none;">Add LOCAL</a>
                                <input type="hidden" id="lclValue" value="0">
                                 <div class="d-flex justify-content-end">
                                    
@@ -63,18 +63,18 @@ LOCAL   | PT. Maxipro Group Indonesia
                                         
                                     <div class="row" id="padding-top">
                                         <div class="col-md-12 d-flex justify-content-end">
-                                        <button type="button" id="importData" class="btn btn-large btn-info">Import Data</button>
+                                        <button type="button" id="backbtn" class="btn btn-large btn-warning" onclick="window.location.href = 'data_localpembelian';">Kembali</button>
                                         </div>
                                     </div>
                                     <div class="row" id="row-supplier">
                                         <div class="col-md-6">
                                             
                                                 <div class="row" id="padding-top">
-                                                    <div class="col-md-3">
+                                                    <div class="col-lg-3">
                                                         
                                                         <label id="label" for="">Database <span style="color:red">*</span></label>
                                                     </div>
-                                                    <div class="col-md-9">
+                                                    <div class="col-lg-9">
 
                                                         <select class="form-control pilih-db" style="width: 100%;" name="" id="select_db" required>
                                                             <option value="">Pilih Database</option>
@@ -87,10 +87,10 @@ LOCAL   | PT. Maxipro Group Indonesia
                                         </div>
                                         <div class="col-md-6" id="col-supplier">
                                             <div class="row" id="padding-top">
-                                                <div class="col-md-3">
+                                                <div class="col-lg-3">
                                                 <label id="label" for="">Supplier</label>
                                                 </div>
-                                                <div class="col-md-9">
+                                                <div class="col-lg-9">
 
                                                     <select class="form-control pilih-supplier" style="width: 100%;" name="supplier_select" id="select_supplier">
                                                         <option value="">Pilih Supplier</option>
@@ -107,23 +107,23 @@ LOCAL   | PT. Maxipro Group Indonesia
                                         <div class="col-md-6">
                                             
                                                 <div class="row" id="padding-top">
-                                                    <div class="col-md-3">
+                                                    <div class="col-lg-3">
                                                         
                                                         <label id="label" for="">No. Referensi</label>
                                                     </div>
-                                                    <div class="col-md-9">
+                                                    <div class="col-lg-9">
 
                                                         <input class="form-control no-referensi"type="text" placeholder="No. Referensi" id="input-input">
                                                     </div>
                                                 </div>
                                             
                                         </div>
-                                        <div class="col-md-6" id="col-select">
+                                        <div class="col-md-6" id="col-select-matauang">
                                             <div class="row" id="padding-top">
-                                                <div class="col-md-3">
+                                                <div class="col-lg-3">
                                                 <label id="label" for="">Mata Uang</label>
                                                 </div>
-                                                <div class="col-md-9">
+                                                <div class="col-lg-9">
 
                                                     <select name="select_namematauang" class="form-control pilih-matauang" style="width:100%;" id="select_matauang">
 
@@ -142,11 +142,11 @@ LOCAL   | PT. Maxipro Group Indonesia
                                         <div class="col-md-6">
                                             
                                                 <div class="row" id="padding-top">
-                                                    <div class="col-md-3">
+                                                    <div class="col-lg-3">
                                                         
                                                         <label id="label" for="">Tanggal Transaksi <span style="color:red">*</span></label>
                                                     </div>
-                                                    <div class="col-md-9">
+                                                    <div class="col-lg-9">
 
                                                         <input class="form-control" id="tgl_request" type="text" placeholder="Tanggal Transaksi" id="input-input">
                                                     </div>
@@ -163,7 +163,7 @@ LOCAL   | PT. Maxipro Group Indonesia
                                                 </div>
                                                 <div class="col-md-6 d-flex justify-content-end">
                                                    
-                                                    <button type="button" id="convert_idr" class="btn btn-large btn-warning">Convert to IDR</button>
+                                                    <button type="button" id="convert_idr" class="btn btn-large btn-danger">Convert to IDR</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -461,14 +461,14 @@ LOCAL   | PT. Maxipro Group Indonesia
                                 <div id="pembayaran-content" class="tab-content" style="display: none;">
                                     
                                     <div id="label-lcl">
-                                        <label  for=""><h3>Belum Ada LCL</h3></label>
+                                        <label  for=""><h3>Belum Ada LOCAL</h3></label>
                                     </div>
                                     
                                     <div id="content-pembayaran">
                                         
                                         <div class="row" id="padding-top">
                                             <div class="col-md-12 d-flex justify-content-end">
-                                            <button type="button" id="importData" class="btn btn-large btn-info">Import Data</button>
+                                            <button type="button" id="backbtn" class="btn btn-large btn-warning" onclick="window.location.href = 'data_localpembelian';">Kembali</button>
                                             </div>
                                         </div>
 
@@ -620,14 +620,14 @@ LOCAL   | PT. Maxipro Group Indonesia
                                 <div id="ekspedisi-content" class="tab-content" style="display: none;">
                                     
                                     <div id="label-lcl-ekspedisi">
-                                        <label  for=""><h3>Belum Ada LCL</h3></label>
+                                        <label  for=""><h3>Belum Ada LOCAL</h3></label>
                                     </div>
                                     
                                     <div id="content-pembayaran">
                                         
                                         <div class="row" id="padding-top">
                                             <div class="col-md-12 d-flex justify-content-end">
-                                            <button type="button" id="importData" class="btn btn-large btn-info">Import Data</button>
+                                            <button type="button" id="backbtn" class="btn btn-large btn-warning" onclick="window.location.href = 'data_localpembelian';">Kembali</button>
                                             </div>
                                         </div>
 
@@ -1016,188 +1016,160 @@ LOCAL   | PT. Maxipro Group Indonesia
                     <div id="reload-icon" style="display: none; text-align: center; font-size: 30px;">
                         <i class="fas fa-sync-alt"></i> Reloading...
                     </div>
-                      
-                    <table id="tabe-stok">
-                        <thead>
-                            <!-- Add table headers if needed -->
-                        </thead>
-                        <tbody>
-                            @php
-                            $num = 1;
-                            $name_ekspedisi;
-                            $resi;
-                            $price;
-                            @endphp
-                            <!-- Table data will be populated here -->
-                            @foreach($Data['msg']['pembelianlcl'] as $index => $data)
-                            @if($data['category_transaksi']=='local')
-                                @php
-                                        \Carbon\Carbon::setLocale('id'); // Set locale ke Bahasa Indonesia
-                                        $formattedDate = \Carbon\Carbon::parse($data['tgl_transaksi'])->translatedFormat('d F Y');
-                                        $rowStyle = '';
-                                        if ($data['status_process'] == 'requested') {
-                                            $rowStyle = 'background-color: #97ebfb;';
-                                        } elseif ($data['status_process'] == 'process') {
-                                            $rowStyle = 'background-color: #feb3aa;';
-                                        }
-                                        elseif ($data['status_process'] == 'complete') {
-                                            $rowStyle = 'background-color: #6cf670;';
-                                        }                            
-                                @endphp
-                                <tr style="{{ $rowStyle }}">
-                                    
-                            
-                                
-                                    <td style="border: 1px solid #d7d7d7; color: black;">
-                                        {{ $num }}     
-                                    </td>
+                      <div class="table-responsive">
 
-                                    <td style="border: 1px solid #d7d7d7; color: black; width:5px;">{{ $formattedDate }}</td>
-                                    <td style="border: 1px solid #d7d7d7; color: black; width:10px;">{{ $data['invoice'] }}</td>
-                                    <td style="border: 1px solid #d7d7d7; color: black;max-width: 10px; text-overflow: ellipsis;">{{ $data['supplier']['name'] }}</td>
-                                    <td style="border: 1px solid #d7d7d7; color: black; width:5px;">{{ $data['teknisi']['name'] }}</td>
-                                    <td style="border: 1px solid #d7d7d7; color: black; width:5px;">{{ $data['cabang']['name'] }}</td>
-                                    <td style="border: 1px solid #d7d7d7; color: black; width:10px;">{{ $data['status_converttorupiah'] == '1' ? 'Rp' : $data['matauang']['simbol'] }} 
-                                        {{ $data['status_converttorupiah'] == '1' ? number_format($data['subtotal_idr'], 0, ',', '.') : number_format($data['subtotal'], 0, ',', '.') }}
-                                    </td>
-                                    
-                                    <!-- jika ekspedisilcl pada pembelian lcl lebih dari 0 -->
-                                    @if(count($data['ekspedisilcl']) >0)
-                                        @php
-                                            $num_baris=0;
-                                        @endphp
-                                        <td style="border: 1px solid #d7d7d7; color: black; width:5px;">
-                                        @foreach($data['ekspedisilcl'] as $resultekspedisi)
-                                            @php
-                                        
-                                            foreach($Data['msg']['ekspedisi'] as $result){
-                                                if($resultekspedisi['id_ekspedisi'] == $result['id']){
-                                                    $name_ekspedisi = $result['name'];
-                                                    $resi = $resultekspedisi['resi'];
-                                                    $price = $resultekspedisi['price'];
-                                                    $num_baris++;
-                                                }
-                                        
-                                            }
-                                            
-                                            
-                                            @endphp
-                                            <span style="color: black;">
-
-                                            <p style="color:black;font-weight:400;">
-                                            {{ $formattedDate = \Carbon\Carbon::parse($resultekspedisi['tgl_kirim'])->translatedFormat('d F Y')}}
-                                            </p> 
-                                        </span>
-                                        @endforeach
-                                        </td>
-                                        <td style="border: 1px solid #d7d7d7; color: black; width:10px">
-                                        @foreach($data['ekspedisilcl'] as $resultekspedisi)
-                                            
-                                                @foreach($Data['msg']['select_ekspedisi'] as $selectEkspedisi)
-                                                    @if($resultekspedisi['id_ekspedisi'] == $selectEkspedisi['id'])    
-                                                        <span style="color: black;">
-                                                            <p style="color:black; font-weight:400;">
-                                                            {{ $selectEkspedisi['name'] }}  
-                                                            </p> 
-                                                        </span>
-                                                    @endif
-                                                @endforeach
-                                        @endforeach
-                                        </td>
-                                        <td style="border: 1px solid #d7d7d7; color: black; width:10px">
-                                        @foreach($data['ekspedisilcl'] as $resultekspedisi)
-                                        
-                                        <span style="color: black;">
-                                            <p style="color:black; font-weight:400;">
-                                                {{$resultekspedisi['resi']}}
-                                            </p> 
-                                        </span>
-                                    
-                                        @endforeach
-                                        </td>
-                                        <td style="border: 1px solid #d7d7d7; color: black;max-width: 10px;">
-                                            @foreach($data['ekspedisilcl'] as $resultekspedisi)
-                                            
-                                            @foreach($Data['msg']['matauang'] as $selectmatauang)
-                                                    @if($resultekspedisi['id_matauang'] == $selectmatauang['id'])    
-                                                        <span style="color: black;">
-                                                            <p style="color:black; font-weight:400;">
-                                                            
-                                                            {{ $selectmatauang['simbol'] }} {{ number_format($resultekspedisi['price'],0,',','.') }}  
-                                                            </p> 
-                                                        </span>
-                                                    @endif
-                                                @endforeach
-                                        
-                                            @endforeach
-                                        </td>
-                                        
-                                    
-                                    <!-- bila ekspedisilcl pada lcl null -->
-                                    @else
-                                        <td style="border: 1px solid #d7d7d7; color: black; width:5px;"></td>
-                                        <td style="border: 1px solid #d7d7d7; color: black;max-width: 40px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"></td>
-                                        <td style="border: 1px solid #d7d7d7; color: black; width:10px"></td>
-                                        <td style="border: 1px solid #d7d7d7; color: black;max-width: 10px;"></td>
-                                    @endif
-                                    <td style="border: 1px solid #d7d7d7; color: black; width:5px;">{{ strtoupper($data['category_transaksi'])  }}</td>
-                                    <td style="border: 1px solid #d7d7d7; color: black;max-width: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                                            @if($data['status_converttorupiah'] == '1')
-                                            <label class="label icon-box-check">
-                                                <i class="fas fa-check" style="color: white; font-weight:bold;"></i>
-                                            </label>
-
-                                            @else
-                                            <label class="label icon-box-times">
-                                                <i class="fas fa-times" style="color: white; font-weight:bold;"></i>
-                                            </label>
-
-                                            @endif
-                                    </td>
-                                    <td style="border: 1px solid #d7d7d7;">
-                                        
-                                        <button type="button" 
-                                            
-                                                data-id="{{ $data['id'] }}" 
-                                                name="editButton" 
-                                                class="btn btn-large btn-info btn-edit" 
-                                                style="width: 35px; height: 38px; padding: 9px 10px;" 
-                                                title="Edit">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        
-                                        
-                                        <button type="button" 
-                                                onclick="rejectOrderPembelian(this)" 
-                                                data-id="{{ $data['id'] }}" 
-                                                name="{{ $data['invoice'] }}" 
-                                                class="btn btn-large btn-info btn-danger" 
-                                                style="width: 35px; height: 38px; padding: 9px 10px;" 
-                                                title="Reject Order">
-                                            <i class="fas fa-times"></i>
-                                        </button>
-
-                                        <button type="button" 
-                                                onclick="deleteOrderPembelian(this)" 
-                                                data-id="{{ $data['id'] }}" 
-                                                name="{{ $data['invoice'] }}" 
-                                                class="btn btn-large btn-info btn-danger" 
-                                                style="width: 35px; height: 38px; padding: 9px 10px;" 
-                                                title="Delete">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-
-                                    </td>
-                                </tr>
-
-
-                                @php
-                                $num++;
-                                @endphp
-                            @endif
-                            @endforeach
-                        </tbody>
-                    </table>
+                          <table id="tabe-stok">
+                              <thead>
+                                  <!-- Add table headers if needed -->
+                              </thead>
+                              <tbody>
+                                  @php
+                                  $num = 1;
+                                  $name_ekspedisi;
+                                  $resi;
+                                  $price;
+                                  @endphp
+                                  <!-- Table data will be populated here -->
+                                  @foreach($Data['msg']['pembelianlcl'] as $index => $data)
+                                  @if($data['category_transaksi']=='local')
+                                      @php
+                                              \Carbon\Carbon::setLocale('id'); // Set locale ke Bahasa Indonesia
+                                              $formattedDate = \Carbon\Carbon::parse($data['tgl_transaksi'])->translatedFormat('d F Y');
+                                              $rowStyle = '';
+                                              if ($data['status_process'] == 'requested') {
+                                                  $rowStyle = 'background-color: #97ebfb;';
+                                              } elseif ($data['status_process'] == 'process') {
+                                                  $rowStyle = 'background-color: #feb3aa;';
+                                              }
+                                              elseif ($data['status_process'] == 'complete') {
+                                                  $rowStyle = 'background-color: #6cf670;';
+                                              }                            
+                                      @endphp
+                                      <tr style="{{ $rowStyle }}">
+                                          
+                                  
+                                      
+                                          <td style="border: 1px solid #d7d7d7; color: black;">
+                                              {{ $num }}     
+                                          </td>
+      
+                                          <td style="border: 1px solid #d7d7d7; color: black; width:5px;">{{ $formattedDate }}</td>
+                                          <td style="border: 1px solid #d7d7d7; color: black; width:10px;">{{ $data['invoice'] }}</td>
+                                          <td style="border: 1px solid #d7d7d7; color: black; width:110px;">{{ $Data['msg']['invoice'][$num - 1]['invoice_no'] != 0 ?'INV-'.$Data['msg']['invoice'][$num - 1]['invoice_no'] : '' }} </td>
+                                          <td style="border: 1px solid #d7d7d7; color: black;max-width: 10px; text-overflow: ellipsis;">{{ $data['supplier']['name'] }}</td>
+                                          <td style="border: 1px solid #d7d7d7; color: black; width:5px;">{{ $data['teknisi']['name'] }}</td>
+                                          <td style="border: 1px solid #d7d7d7; color: black; width:5px;">{{ $data['cabang']['name'] }}</td>
+                                          <td style="border: 1px solid #d7d7d7; color: black; width:10px;">{{ $data['status_converttorupiah'] == '1' ? 'Rp' : $data['matauang']['simbol'] }} 
+                                              {{ $data['status_converttorupiah'] == '1' ? number_format($data['subtotal_idr'], 0, ',', '.') : number_format($data['subtotal'], 0, ',', '.') }}
+                                          </td>
+                                          
+                                          <!-- jika ekspedisilcl pada pembelian lcl lebih dari 0 -->
+                                          @if(count($data['ekspedisilcl']) >0)
+                                              @php
+                                                  $num_baris=0;
+                                              @endphp
+                                              <td style="border: 1px solid #d7d7d7; color: black; width:5px;">
+                                              @foreach($data['ekspedisilcl'] as $resultekspedisi)
+                                                  @php
+                                              
+                                                  foreach($Data['msg']['ekspedisi'] as $result){
+                                                      if($resultekspedisi['id_ekspedisi'] == $result['id']){
+                                                          $name_ekspedisi = $result['name'];
+                                                          $resi = $resultekspedisi['resi'];
+                                                          $price = $resultekspedisi['price'];
+                                                          $num_baris++;
+                                                      }
+                                              
+                                                  }
+                                                  
+                                                  
+                                                  @endphp
+                                                  <span style="color: black;">
+      
+                                                  <p style="color:black;font-weight:400;">
+                                                  {{ $formattedDate = \Carbon\Carbon::parse($resultekspedisi['tgl_kirim'])->translatedFormat('d F Y')}}
+                                                  </p> 
+                                              </span>
+                                              @endforeach
+                                              </td>
+                                              <td style="border: 1px solid #d7d7d7; color: black; width:10px">
+                                              @foreach($data['ekspedisilcl'] as $resultekspedisi)
+                                                  
+                                                      @foreach($Data['msg']['select_ekspedisi'] as $selectEkspedisi)
+                                                          @if($resultekspedisi['id_ekspedisi'] == $selectEkspedisi['id'])    
+                                                              <span style="color: black;">
+                                                                  <p style="color:black; font-weight:400;">
+                                                                  {{ $selectEkspedisi['name'] }}  
+                                                                  </p> 
+                                                              </span>
+                                                          @endif
+                                                      @endforeach
+                                              @endforeach
+                                              </td>
+                                              <td style="border: 1px solid #d7d7d7; color: black; width:10px">
+                                              @foreach($data['ekspedisilcl'] as $resultekspedisi)
+                                              
+                                              <span style="color: black;">
+                                                  <p style="color:black; font-weight:400;">
+                                                      {{$resultekspedisi['resi']}}
+                                                  </p> 
+                                              </span>
+                                          
+                                              @endforeach
+                                              </td>
+                                              <td style="border: 1px solid #d7d7d7; color: black;max-width: 10px;">
+                                                  @foreach($data['ekspedisilcl'] as $resultekspedisi)
+                                                  
+                                                  @foreach($Data['msg']['matauang'] as $selectmatauang)
+                                                          @if($resultekspedisi['id_matauang'] == $selectmatauang['id'])    
+                                                              <span style="color: black;">
+                                                                  <p style="color:black; font-weight:400;">
+                                                                  
+                                                                  {{ $selectmatauang['simbol'] }} {{ number_format($resultekspedisi['price'],0,',','.') }}  
+                                                                  </p> 
+                                                              </span>
+                                                          @endif
+                                                      @endforeach
+                                              
+                                                  @endforeach
+                                              </td>
+                                              
+                                          
+                                          <!-- bila ekspedisilcl pada lcl null -->
+                                          @else
+                                              <td style="border: 1px solid #d7d7d7; color: black; width:5px;"></td>
+                                              <td style="border: 1px solid #d7d7d7; color: black;max-width: 40px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"></td>
+                                              <td style="border: 1px solid #d7d7d7; color: black; width:10px"></td>
+                                              <td style="border: 1px solid #d7d7d7; color: black;max-width: 10px;"></td>
+                                          @endif
+                                          <td style="border: 1px solid #d7d7d7; color: black; width:5px;">{{ strtoupper($data['category_transaksi'])  }}</td>
+                                          <td style="border: 1px solid #d7d7d7; color: black;max-width: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                                  @if($data['status_converttorupiah'] == '1')
+                                                  <label class="label icon-box-check">
+                                                      <i class="fas fa-check" style="color: white; font-weight:bold;"></i>
+                                                  </label>
+      
+                                                  @else
+                                                  <label class="label icon-box-times">
+                                                      <i class="fas fa-times" style="color: white; font-weight:bold;"></i>
+                                                  </label>
+      
+                                                  @endif
+                                          </td>
+                                          <td style="border: 1px solid #d7d7d7;">
+                                              
+                                          </td>
+                                      </tr>
+      
+      
+                                      @php
+                                      $num++;
+                                      @endphp
+                                  @endif
+                                  @endforeach
+                              </tbody>
+                          </table>
+                      </div>
  
 
                   
@@ -1254,16 +1226,22 @@ LOCAL   | PT. Maxipro Group Indonesia
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <!-- DataTables Bootstrap 4 Integration -->
 <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+
 <!-- Choices.js JS -->
 <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="../assets/js/local/local.js"></script>
 
 <!-- untuk load datatable -->
 <script>
-    
+       document.querySelectorAll('input[name="uploadType"]').forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            const uploadType = e.target.value;
+            document.getElementById('file-input').style.display = uploadType === 'file' ? 'block' : 'none';
+            document.getElementById('url-input').style.display = uploadType === 'url' ? 'block' : 'none';
+        });
+    });
     document.addEventListener('DOMContentLoaded', function() {
         // Initialize Choices.js on the select element
         const element = document.getElementById('id_jenis');
@@ -1310,6 +1288,10 @@ LOCAL   | PT. Maxipro Group Indonesia
             },
             {
                 data: 'invoice',
+                title: 'Kode'
+            },
+            {
+                data: 'invoice_comercial',
                 title: 'Invoice'
             },
             {
@@ -1359,15 +1341,23 @@ LOCAL   | PT. Maxipro Group Indonesia
                     
                     return `
                         <button type="button" 
+                                onclick="detailInvoice(this)" 
+                                data-id="${data.invoice}" 
+                                name="${data.invoice}" 
+                                class="btn btn-large btn-info btn-light" 
+                                style="width: 35px; height: 38px; padding: 9px 10px;" 
+                                title="Detail">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button type="button" 
                                 data-id="${data.invoice}" 
                                 name="${data.invoice}" 
                                 class="btn btn-large btn-info btn-edit" 
                                 style="width: 35px; height: 38px; padding: 9px 10px;" 
-                                title="Edit Invoice"
+                                title="Edit"
                                 onclick="editInvoice(this)">
                             <i class="fas fa-edit"></i>
                         </button>
-                   
                         <button type="button" 
                                 onclick="deleteOrderPembelian(this)" 
                                 data-id="${data.id}" 
@@ -1466,7 +1456,7 @@ LOCAL   | PT. Maxipro Group Indonesia
                 $('#ekspedisi-content').show();
     });
    
-    // Menangani klik pada tombol tambah
+    
    
      
        
@@ -1485,60 +1475,7 @@ LOCAL   | PT. Maxipro Group Indonesia
         
         document.getElementById('total-kubik').textContent = totalKubik;
     }
-
-    //Untuk Mereset data input checkbox dan total kubik di modal hitung kubk
     
-    //Membuka modal update
-    function upadetLcl(element) {
-        event.preventDefault();
-        var id = $(element).data('id');
-        console.log(id);
-
-        // Tampilkan elemen overlay dengan efek fade-in sebelum mengirim permintaan AJAX
-        $('#overlay').fadeIn();
-
-        var url = "{{ route('admin.pembelian_lcl_editview') }}";
-
-        $.ajax({
-            url: url,
-            type: 'GET', // Menggunakan metode GET
-            data: {
-                id_lcl: id
-            },
-            success: function(response) {
-                // Sembunyikan elemen overlay dengan efek fade-out setelah mendapatkan respons
-                // $('#overlay').fadeOut();
-                console.log('response',response)
-                // Handle response jika sukses
-                // $('#Formedit').html(response);
-                // Tampilkan modal
-                // $('#editModal').modal('show');
-            },
-            error: function(xhr, status, error) {
-                // Sembunyikan elemen overlay dengan efek fade-out jika terjadi kesalahan
-                $('#overlay').fadeOut();
-
-                // Handle error jika terjadi kesalahan
-                console.error(xhr.responseText);
-                return;
-            }
-        });
-    }
-
-    //Membuka modal gagal update
-    function upadetLclFailed(button) {
-
-        //Menampilkan error message dengan sweetalert
-        Swal.fire({
-            icon: 'error',
-            title: 'Error!',
-            text: 'Maaf, item sudah di proses di commercial invoice',
-        });
-
-        // Prevent the default action (navigation)
-        return false;
-    }
-
     function deleteOrderPembelian(element) {
         event.preventDefault();
         var id = $(element).data('id');
@@ -1556,13 +1493,13 @@ LOCAL   | PT. Maxipro Group Indonesia
             cancelButtonText: 'Batal'
         }).then((result) => {
             if (result.isConfirmed) {
-                var url = "{{ route('admin.pembelian_local') }}";
+                var url = "{{ route('admin.pembelian_lcl') }}";
                 $('#reload-icon').show();
                 $.ajax({
                     url: url,
                     type: 'GET',
                     data: {
-                        menu:'delete_local',
+                        menu:'delete_lcl',
                         invoice: restokName
                     },
                     success: function(response) {
@@ -1660,12 +1597,6 @@ LOCAL   | PT. Maxipro Group Indonesia
         $('#new-input-container-kosong').empty();
     });
 </script>
-
-<script src="../assets/js/lcl/lcl.js"></script>
-
-<!-- digunakan untuk pick date filter -->
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
 
 <!-- untuk mengaktifkan input tanggal di modal filter -->
 <script>
@@ -1916,7 +1847,7 @@ LOCAL   | PT. Maxipro Group Indonesia
                                             type: 'text', 
                                             class: 'form-control', 
                                             value:productItem.name,
-                                            id:'name'+itemIndex
+                                            id:'name'+itemIndex,
                                     });
                                     inputtd1Product.css({
                                             'border': '1px solid #696868', 
@@ -2316,6 +2247,7 @@ LOCAL   | PT. Maxipro Group Indonesia
                         url: '{{ route('admin.pembelian_lcl') }}',
                         data: formData,
                         success: function(response) {
+                            
                         console.log('response',response)
                         
                         var responseMataUangId = response.matauang.id;
@@ -2342,10 +2274,10 @@ LOCAL   | PT. Maxipro Group Indonesia
                             </div>
                             `;
                             $('#row-supplier').append(newDivContentSupplier);
-                            var colselectElement = $('#col-select');
+                            var colselectElement = $('#col-select-matauang');
                             colselectElement.remove()
                             newDivContent = `
-                            <div class="col-md-6" id="col-matauang-choices">
+                            <div class="col-md-6" id="col-select-matauang">
                             <div class="row" id="padding-top">
                             <div class="col-md-3">
                             <label id="label" for="">Mata Uang</label>
@@ -2448,7 +2380,8 @@ LOCAL   | PT. Maxipro Group Indonesia
                                         type: 'text', 
                                         class: 'form-control', 
                                         value: name,
-                                        id:'item'
+                                        id:'item',
+                                        
                                     });
                                     inputName.css({
                                         'border': '1px solid #696868', // Border color and style
@@ -2746,7 +2679,7 @@ LOCAL   | PT. Maxipro Group Indonesia
                                                 clickConvert = true;
                                                 newBoolHargaBelumPpn = true;
                                                 statusConvertRupiah =1;
-                                                $('#col-matauang-choices').remove();
+                                                $('#col-select-matauang').remove();
                                                 var newDivContent2 = `
                                                     <div class="col-md-6" id="">
                                                     <div class="row" id="padding-top">
@@ -2876,6 +2809,7 @@ LOCAL   | PT. Maxipro Group Indonesia
                                         id: 'harga_belum_ppn_import' 
                                     });
 
+                                    
                                     
                                     inputElement.css({
                                         'border': '1px solid #696868', 
@@ -3203,7 +3137,7 @@ LOCAL   | PT. Maxipro Group Indonesia
                                                 clickConvert = true;
                                                 newBoolHargaBelumPpn = true;
                                                 statusConvertRupiah =1;
-                                                $('#col-matauang-choices').remove();
+                                                $('#col-select-matauang').remove();
                                                 var newDivContent2 = `
                                                     <div class="col-md-6" id="">
                                                     <div class="row" id="padding-top">
@@ -3446,8 +3380,9 @@ LOCAL   | PT. Maxipro Group Indonesia
                             td_total:total_elementValueText,
                             td_discount:discount_save,
                             td_discount_nominal:discount_nominal_save,
-                            valuecategoryconvert:valueCategory
-                            
+                            valuecategoryconvert:valueCategory,
+                            category_transaksi:'lcl',
+                            category_comercial_invoice:'lcl',
                         };
                         
                         $.ajax({
@@ -3455,13 +3390,14 @@ LOCAL   | PT. Maxipro Group Indonesia
                             url: '{{ route('admin.pembelian_tambah_lcl') }}',
                             data: formDataSend,
                             success: function(response) {
+                                console.log('response',response)
                             Swal.fire({
                                 icon:'success',
                                 title:'Success',
                                 text:'LCL Berhasil Ditambahkan'
                             }).then((result)=>{
                             if(result.isConfirmed){
-                                window.location.reload();
+                                // window.location.reload();
                             }
                             });
                             },error: function(xhr, status, error) {
@@ -3585,18 +3521,7 @@ LOCAL   | PT. Maxipro Group Indonesia
 
     });
     
-    //popup gagal convert
-    $('#convert_idr').on('click', functionFailedModal);
-    function functionFailedModal(){
-        console.log('failed convert');
-        Swal.fire({
-            title: 'Gagal',
-            text: 'Harus Import Data Dahulu.',
-            icon: 'error',
-            showCancelButton: false, // Menonaktifkan tombol batal
-            confirmButtonText: 'Tutup', // Mengganti teks tombol konfirmasi menjadi "Tutup"
-        });
-    }
+    
 </script>
 
 <!-- script untuk edit view -->
@@ -3604,9 +3529,10 @@ LOCAL   | PT. Maxipro Group Indonesia
     // $(document).ready(function() {
         
         function editInvoice(element) {
+ 
             event.preventDefault();
             var invoice = $(element).data('id');
-            
+    
             editClick =true;
             
             var idcomercialimport =[]
@@ -3641,13 +3567,14 @@ LOCAL   | PT. Maxipro Group Indonesia
             // Example: You can now use this ID in an AJAX request or any other logic
             $.ajax({
                 type: 'GET',
-                url: '{{ route('admin.pembelian_local') }}',
+                url: '{{ route('admin.pembelian_lcl') }}',
                 data: { 
                     menu:'edit',
                     invoice: invoice },
                 success: function(response) {
+                    // console.log('a',response)
                     id_pembelian_savelcl=response.msg.pembelianlcl.id
-                    console.log(id_pembelian_savelcl)
+                    $('main.main-content').removeClass('wider ps ps--active-y');
                     if (window.dataTableInstance) {
                         window.dataTableInstance.destroy();
                     }
@@ -3659,11 +3586,8 @@ LOCAL   | PT. Maxipro Group Indonesia
                     $('#tambah_lcl').remove();
                     $('#tab-nav').show();
                     $('#master-tab').trigger('click'); // Show master content by default
-                    $('#judulLcl').html('<i class="fas fa-database"></i> &nbsp Edit Local');
-                    document.title='Edit Local   | PT. Maxipro Group Indonesia'
-                    
-                    //menambah ekspedisi
-                  
+                    $('#judulLcl').html('<i class="fas fa-database"></i> &nbsp Edit LOCAL');
+                    document.title='Edit LOCAL   | PT. Maxipro Group Indonesia'
                     
                     //mengirim data ke tab master dan ekspedisi
                     var pembelianLcl = response.msg.pembelianlcl
@@ -3917,6 +3841,8 @@ LOCAL   | PT. Maxipro Group Indonesia
                             }
                         });
                     })
+
+                   
                 }
             });
             window.editEkspedisi = function(pembelianLcl,ekspedisilcl,statuspenerimaan,penerimaan,name_ekspedisi_lcl,nama_matauang){
@@ -4215,8 +4141,54 @@ LOCAL   | PT. Maxipro Group Indonesia
                                 })
                 }
             };
+                //untuk tampilan edit lcl
+                window.editLcl = function(pembelianLcl,image_barang,matauang,gudang) {
+                    var convert_edit=false;
+                    $('#convert_idr').on('click', function() {
+                        if(pembelianLcl.status_converttorupiah==1){
+                            Swal.fire({
+                                icon: 'info', // Anda dapat mengganti dengan 'success', 'warning', atau 'error' sesuai kebutuhan
+                                title: 'Data Sudah Di-Convert',
+                                text: 'Data ini sudah di-convert ke Rupiah.',
+                                confirmButtonText: 'OK'
+                            });
+                            return;
+                        }
+                        var dataPhp = pembelianLcl.id_matauang;
 
-            window.editLcl = function(pembelianLcl,image_barang,matauang,gudang) {
+                        if (dataPhp == 3) {
+                            $('#title_convert').text('Convert RMB to IDR');
+                            $('#myModal').modal('show');
+                        } else if (dataPhp == 2) {
+                            $('#title_convert').text('Convert USD to IDR');
+                            $('#myModal').modal('show');
+                        }
+                        
+                        
+                        // console.log(dataPhp);
+
+                        // Menangani klik tombol saveConvert
+                        $('#saveConvert').off('click').on('click', function() {
+                            contentImport.empty()
+                            var newHeader = $('<th>Harga Belum PPN (Rp)</th>');                                    
+                            // Menambahkan header baru setelah elemen tertentu
+                            $('#harga-belum-ppn').after(newHeader);
+                            $('#harga-belum-ppn').text('Harga Invoice ' + '(' + matauang[0].simbol + ')');
+
+                            var nilaiConvert = $('#input_nominal').val();
+                            var text_convert_idr = $('#text_convert');
+                            var paragraph = $('<p>').text(matauang[0].simbol + ' 1 = Rp. ' + nilaiConvert);
+                            text_convert_idr.append(paragraph);
+
+                            hargaInvoiceImport(nilaiConvert);
+                        });
+                    });
+                    function hargaInvoiceImport(nilaiConvert){
+                        console.log('nilaiConvert',nilaiConvert)
+                        convert_edit=true;
+                        elementEditLcl()
+                        
+                    }                    
                 $('#label-lcl').remove()
                 $('#label-lcl-ekspedisi').remove()
                 $('#matauang_pembayaran').select2({
@@ -4229,11 +4201,7 @@ LOCAL   | PT. Maxipro Group Indonesia
                     allowClear: true, // Optional, to allow clearing the selection
                     width: 'resolve' 
                 });
-                // $('#edit_matauang_ekspedisi').select2({
-                //     placeholder: "Pilih Mata Uang", // Optional placeholder
-                //     allowClear: true, // Optional, to allow clearing the selection
-                //     width: 'resolve' 
-                // });
+               
                 $('#rute').select2({
                     placeholder: "Pilih Rute", // Optional placeholder
                     allowClear: true, // Optional, to allow clearing the selection
@@ -4246,7 +4214,7 @@ LOCAL   | PT. Maxipro Group Indonesia
                     width: 'resolve' 
                 });
                 
-        
+                
                     id_lcl = pembelianLcl.id
                     // console.log('pembelianLcl',pembelianLcl)
                     var checboxppn = $('#flexCheckDefault');
@@ -4277,7 +4245,7 @@ LOCAL   | PT. Maxipro Group Indonesia
                     // Initialize Select2
                     $selectDb.select2({
 
-                        placeholder: 'Select Database', // Customize as needed
+                        placeholder: 'Pilih Database', // Customize as needed
                         allowClear: true, // Optional, allows clearing the selection
                         width: 'resolve' // Adjusts width to fit the container
                     });
@@ -4301,7 +4269,7 @@ LOCAL   | PT. Maxipro Group Indonesia
                     // Initialize Select2
                     $select_matauang.select2({
                 
-                        placeholder: 'Pilih Supplier', // Placeholder text
+                        placeholder: 'Pilih Mata Uang', // Placeholder text
                         allowClear: true, // Optional, to allow clearing the selection
                         width: 'resolve' // Automatically adjust width to fit the container
                     });
@@ -4313,7 +4281,7 @@ LOCAL   | PT. Maxipro Group Indonesia
                     // Initialize Select2
                     $select_termin_cash.select2({
                 
-                        placeholder: 'Pilih Supplier', // Placeholder text
+                        placeholder: 'Pilih Termin', // Placeholder text
                         allowClear: true, // Optional, to allow clearing the selection
                         width: 'resolve' // Automatically adjust width to fit the container
                     });
@@ -4325,7 +4293,7 @@ LOCAL   | PT. Maxipro Group Indonesia
                     // Initialize Select2
                     $select_account.select2({
                 
-                        placeholder: 'Pilih Supplier', // Placeholder text
+                        placeholder: 'Pilih Account', // Placeholder text
                         allowClear: true, // Optional, to allow clearing the selection
                         width: 'resolve' // Automatically adjust width to fit the container
                     });
@@ -4337,7 +4305,7 @@ LOCAL   | PT. Maxipro Group Indonesia
                     // Initialize Select2
                     $select_cabang.select2({
                 
-                        placeholder: 'Pilih Supplier', // Placeholder text
+                        placeholder: 'Pilih Cabang', // Placeholder text
                         allowClear: true, // Optional, to allow clearing the selection
                         width: 'resolve' // Automatically adjust width to fit the container
                     });
@@ -4378,398 +4346,468 @@ LOCAL   | PT. Maxipro Group Indonesia
                             text_convert_idr.append(paragraph)
                             
                     }
+                    
+                    function elementEditLcl(){
 
-                    pembelianLcl.detail.forEach((result, itemIndex) => 
-                    {
-                                  
-                                    ppn_item[itemIndex] = result.ppn
-                                    iditem_arr[itemIndex] = result.id_barang,
-                                    idcomercialimport[itemIndex]= result.id_penjualanfromchina ||''
-                                    idrestokimport[itemIndex]= result.id_restok ||''
-                                    var tr=$('<tr>')
-                                    var tdProduct = $('<td>').css({
-                                                    'padding': 'auto',
-                                                    'width': '10%'
-                                            });
-                                    var imgProduct = $('<img class="img-fluid" style="max-width: 20%%; height: auto;">');
-                                    imgProduct.attr('src',image_barang[itemIndex].imagedir)
-                                    tdProduct.append(imgProduct);
-                                    
-                                    var td1Product = $('<td>').css({
-                                            'padding': 'auto',
-                                            'width': '25%',  
-                                    });
-                                    var inputtd1Product = $('<input>', {
-                                            type: 'text', 
-                                            class: 'form-control', 
-                                            value:image_barang[itemIndex].name,
-                                            id:'name'+itemIndex
-                                    });
-                                    inputtd1Product.css({
-                                            'border': '1px solid #696868', 
-                                            'color': 'black', 
-                                            'padding': '10px',
-                                            'width': '100%' 
-                                    });
-                                    var td2Product = $('<td>').css({
-                                            'padding': 'auto',
-                                            'width': '10%', 
-                                    });
-                                    
-                                    var inputtd2Product = $('<input>', {
-                                            type: 'number', 
-                                            class: 'form-control',
-                                            id:'price_asal'+itemIndex,
-                                            value: result.price
-                                    }).css({
-                                        'border': '1px solid #696868', 
-                                            'color': 'black', 
-                                            'padding': '10px',
-                                            'width': '100%' 
-                                    });
-                                    harga_asal[itemIndex] = inputtd2Product.val()
-                                    var td3Product = $('<td>').css({
-                                            'padding': 'auto', 
-                                            'width': '7%',  
-                                    });
-                                    
-                                
-                            
-                                    var inputtd3Product = $('<input>', {
-                                            type: 'number', 
-                                            class: 'form-control',
-                                            value: result.qty,
-                                            id: 'qty_qty'+itemIndex
-                                    }).css({
-                                        'border': '1px solid #696868', 
-                                            'color': 'black', 
-                                            'padding': '10px',
-                                            'width': '100%' 
-                                    });
-                                    td3Product.append(inputtd3Product)
-                                    qty_arr[itemIndex] = inputtd3Product.val()
-                                    var td4Product = $('<td>').css({
-                                            'padding': 'auto', 
-                                            'width': '7%',  
-                                    });
-                                    //row input disc
-                                    var inputtd4Product = $('<input>', {
-                                            type: 'number', 
-                                            class: 'form-control', 
-                                            value: result.disc,
-                                            id: 'discount'+itemIndex
-                                    });
-                                    inputtd4Product.css({
-                                            'border': '1px solid #696868', 
-                                            'color': 'black', 
-                                            'padding': '10px', 
-                                            'width': '100%' 
-                                    });
-                                    td4Product.append(inputtd4Product)
-                                    discount_arr[itemIndex] = inputtd4Product.val()
+                        pembelianLcl.detail.forEach((result, itemIndex) => 
+                        {
+                                       
+                       
+                                        var inputtd5Product=0;
 
-                                    var td5Product = $('<td>').css({
-                                            'padding': 'auto', 
-                                            'width': '10%',  
-                                    });
-                                    var inputtd5Product = $('<input>', {
-                                            type: 'text', 
-                                            class: 'form-control', 
-                                            value: result.subtotal_idr,
-                                            id:'subtotal'+itemIndex
-                                    });
-                                    inputtd5Product.css({
-                                            'border': '1px solid #696868', 
-                                            'color': 'black', 
-                                            'padding': '10px', 
-                                            'width': '100%' 
-                                    });
-                                    td5Product.append(inputtd5Product)
-
-                                    var td6Product = $('<td>').css({
-                                            'padding': 'auto', 
-                                            'width': '5%',  
-                                    });
-                                    var checkboxElementProduct = $('<input>', {
-                                        type: 'checkbox',
-                                        id: 'checkboxId_' + itemIndex,
-                                        value: result.status_ppn,
-                                        checked: result.status_ppn == 1
-                                    }).css({
-                                        'border': '1px solid #696868',
-                                    }).on('change', function() {
-                                        var newValue = this.checked ? 1 : 0;
-                                        $(this).val(newValue);
-
-                                        changeHistory[itemIndex] = newValue;
-                                
-                                    
-                                    });
-                                    changeHistory[itemIndex] = checkboxElementProduct.val()
-                                    td6Product.append(checkboxElementProduct)
-                                   
-                                    var td7Product = $('<td>')
-                                    var selectGudang = $('<select>', {
-                                        class: 'form-control choices-select-gudang', // class for styling
-                                        id:'gudang'+itemIndex
-                                    }).css({
-                                        'border': '1px solid #696868', // Border color and style
-                                        'color': 'black', // Text color
-                                        'padding': '10px', // Padding inside the select
-                                        'width': '100%', // Full width of the container
+                                        ppn_item[itemIndex] = result.ppn
+                                        iditem_arr[itemIndex] = result.id_barang,
+                                        idcomercialimport[itemIndex]= result.id_penjualanfromchina ||''
+                                        idrestokimport[itemIndex]= result.id_restok ||''
+                                        var tr=$('<tr>')
+                                        var tdProduct = $('<td>').css({
+                                                        'padding': 'auto',
+                                                        'width': '10%'
+                                                });
+                                        var imgProduct = $('<img class="img-fluid" style="max-width: 20%%; height: auto;">');
+                                        imgProduct.attr('src',image_barang[itemIndex].imagedir)
+                                        tdProduct.append(imgProduct);
                                         
-                                    });
-                                    // console.log('responseGudang',response.gudang)
-                                    var defaultOption = $('<option>', {
-                                        value: '',
-                                        text: 'Pilih Gudang' // Default text
-                                    }).attr('disabled', 'disabled').attr('selected', 'selected'); // Disabled and selected
-                                    selectGudang.append(defaultOption);
-                                    // Iterate over each item in gudangName to create options
-                                    gudang.forEach(function(gudangitem,index) {
-                                        var optionElement = $('<option>', {
-                                            // text: gudangitem, // Use id as the value
-                                            
-                                            value: gudangitem.id,
-                                            text: gudangitem.name
-
+                                        var td1Product = $('<td>').css({
+                                                'padding': 'auto',
+                                                'width': '25%',  
                                         });
-                                        if(gudangitem.id==result.id_gudang){
-                                            optionElement.attr('selected','selected')
-                                            selectedValuesArray[itemIndex] = optionElement.val()
-                                        }
-                                        selectGudang.append(optionElement);
-                                    });
-                                    selectGudang.on('change', function() {
+                                        var inputtd1Product = $('<input>', {
+                                                type: 'text', 
+                                                class: 'form-control', 
+                                                value:image_barang[itemIndex].name,
+                                                id:'name'+itemIndex,
+                                                disabled:true
+                                        });
+                                        inputtd1Product.css({
+                                                'border': '1px solid #696868', 
+                                                'color': 'black', 
+                                                'padding': '10px',
+                                                'width': '100%' 
+                                        });
+                                        var td2Product = $('<td>').css({
+                                                'padding': 'auto',
+                                                'width': '10%', 
+                                        });
                                         
+                                        var inputtd2Product = $('<input>', {
+                                                type: 'number', 
+                                                class: 'form-control',
+                                                id:'price_asal'+itemIndex,
+                                                value: result.price,
+                                                disabled:true
+                                        }).css({
+                                            'border': '1px solid #696868', 
+                                                'color': 'black', 
+                                                'padding': '10px',
+                                                'width': '100%' 
+                                        });
+                                        harga_asal[itemIndex] = inputtd2Product.val()
+                                        var td3Product = $('<td>').css({
+                                                'padding': 'auto', 
+                                                'width': '7%',  
+                                        });
+                                        
+                                    
                                 
-                                        var newValue = $(this).val();
+                                        var inputtd3Product = $('<input>', {
+                                                type: 'number', 
+                                                class: 'form-control',
+                                                value: result.qty,
+                                                id: 'qty_qty'+itemIndex,
+                                                disabled:true
+                                        }).css({
+                                            'border': '1px solid #696868', 
+                                                'color': 'black', 
+                                                'padding': '10px',
+                                                'width': '100%' 
+                                        });
+                                        td3Product.append(inputtd3Product)
+                                        qty_arr[itemIndex] = inputtd3Product.val()
+                                        var td4Product = $('<td>').css({
+                                                'padding': 'auto', 
+                                                'width': '7%',  
+                                        });
+                                        //row input disc
+                                        var inputtd4Product = $('<input>', {
+                                                type: 'number', 
+                                                class: 'form-control', 
+                                                value: result.disc,
+                                                id: 'discount'+itemIndex,
+                                                disabled:true
+                                        });
+                                        inputtd4Product.css({
+                                                'border': '1px solid #696868', 
+                                                'color': 'black', 
+                                                'padding': '10px', 
+                                                'width': '100%' 
+                                        });
+                                        td4Product.append(inputtd4Product)
+                                        discount_arr[itemIndex] = inputtd4Product.val()
     
-                                        // Update the selectedValuesArray with the new value
-                                        selectedValuesArray[itemIndex] = newValue;
-                                        
-                                 
-                                        
-                                        
-                                    });
-                                    
-                                    td7Product.append(selectGudang)
-
-                                    var newTd9 = $('<td>')
-                        
-                                    var deleteButton = $('<button>',{
-                                        text: 'X',
-                                        class: 'btn btn-danger btn-sm'
-                                    }).css({
-                                        'border': 'none',
-                                        'color':'white',
-                                        'background-color': '#dc3545',
-                                        'padding': '5px 10px',
-                                        'cursor': 'pointer'
-                                    }).on('click',function(){
-                                        $(this).closest('tr').remove();
-                                    })
-                                    newTd9.append(deleteButton)
-
-                                    
-                                    
-
-                                    
-                                    subtotal_edit += result.subtotal_idr
-                                    subtot_arr[itemIndex] = result.subtotal_idr
-
-                                    if(pembelianLcl.status_converttorupiah==1){
-                                        statusconvert =1
-                                        var newTdHargaInvoice = $('<td>').css({
-                                            'padding': 'auto',  
-                                            'width': '10%',  
-                                            
+                                        var td5Product = $('<td>').css({
+                                                'padding': 'auto', 
+                                                'width': '10%',  
                                         });
-
-                                        var inputHargaInvoice = $('<input>', {
-                                            id:'input_harga_invoice2',
-                                            type: 'number',
-                                            class: 'form-control harga2-invoice',
-                                            value:pembelianLcl.nominal_convert * result.price
-                                        });
-                                        inputHargaInvoice.css({
-                                            'border': '1px solid #696868', 
-                                            'color': 'black', 
-                                            'padding': '10px',
-                                            'width': '100%' 
-                                        });
-                                        inputHargaInvoice.prop('disabled', true);
-                                        price_invoice_arr[itemIndex] = inputHargaInvoice.val()
-                                        newTdHargaInvoice.append(inputHargaInvoice)
-                                    }
-                                    function updateCalculatedValue() {
-                                        console.log('masuk calculate')
-                                        var inputField = $(`#price_asal${itemIndex}`);
                                         
-                                        var value_belumppn = parseFloat(inputField.val())  ;
-                               
-                                        console.log('harga_asal',value_belumppn)
-                                        var input_discount = $(`#discount${itemIndex}`);
-            
-                                        var value_discount = parseFloat(input_discount.val()) || 0;
-                                        // console.log('value_discount',value_discount)
-                                        // discount_arr_select[itemIndex]=value_discount
-                                        
-                                        var value3 = value_discount
-                                        console.log('value_discount',value3)
-
-                                        var value1 = value_belumppn;
-                                    
-                                        var inputFieldqty = $(`#qty_qty${itemIndex}`);
-            
-                                
-                                        var value_qty = parseFloat(inputFieldqty.val()) || 1;
-
-                                        harga_asal[itemIndex] = value1; 
-                                        qty_arr[itemIndex] = value_qty;
-                                        
-                                
-                                        // harga_asal_select[itemIndex] = value_belumppn;
-                                            
-                                        
-                                        discount_arr[itemIndex] = value3;
-                                    
-                                        
-                                        var value2 = value_qty;
-
-                                        // Calculate the new value
-                                        var calculatedValue = (value1 * value2);
-                                   
-                                        
-                                        // menghitung dan menyetting value harga subtotal
-                                        if(result.status_converttorupiah==0){
-                                            
-                                            statusconvert =0
-                                            //inisiasi value subtotal
-                                            $(`#subtotal${itemIndex}`).val(calculatedValue);
-                                            subtot_arr[itemIndex]=$(`#subtotal${itemIndex}`).val()
-                                            // subtot_arr_select[itemIndex] = calculatedValue;
-                                            
-                                            // async()
-                                            
+                                        if(pembelianLcl.status_converttorupiah==1){
+                                            inputtd5Product = $('<input>', {
+                                                    type: 'text', 
+                                                    class: 'form-control', 
+                                                    value: result.subtotal_idr,
+                                                    id:'subtotal'+itemIndex,
+                                                    disabled:true
+                                            });
+                                            subtotal_edit += result.subtotal_idr
                                         }
                                         else{
-                                            
-                                            inputHargaInvoice.val(value1*pembelianLcl.nominal_convert)
-                                            price_invoice_arr[itemIndex] =pembelianLcl.nominal_convert*value1
-                                            
-                                            $(`#subtotal${itemIndex}`).val((calculatedValue*pembelianLcl.nominal_convert)-value3);
-                                            // subtot_arr_select[itemIndex]= calculatedValue*nominal_convert
-                                            // async()
-                                            subtot_arr[itemIndex]=$(`#subtotal${itemIndex}`).val()
-                                            // console.log('subtot_arr',subtot_arr)
-                                            subtotal_edit = subtot_arr.reduce(function(accumulator, currentValue) {
-                                                return accumulator + parseFloat(currentValue || 0); // Menambahkan nilai, konversi ke angka
-                                            }, 0);
-                                            $('.sutotal_element').text(subtotal_edit)
-                                            td_subtotal=subtotal_edit
-                                            var discount_percent_new = (subtotal_edit*0.11)-(subtotal_edit*0.11*newvalue_discount_percent).toFixed(2)
-                                            var discount_nominal_new =newValueDiscountNominal||0
-                                            $('.ppn_element').text(discount_percent_new||subtotal_edit*0.11)
-                                            td_ppn=discount_percent_new||subtotal_edit*0.11
-                                            $('.total_element').text(subtotal_edit+(discount_percent_new||subtotal_edit*0.11)-discount_nominal_new)
-                                            td_total=subtotal_edit+(discount_percent_new||subtotal_edit*0.11)-discount_nominal_new
-
-                                            $('#discount_nominal').on('change',function(){
-                                                
-                                                $('.sutotal_element').text(subtotal_edit)
-                                                td_subtotal=subtotal_edit
-                                                var ppnmerge=((subtotal_edit*0.11)-(subtotal_edit*0.11)*newvalue_discount_percent)
-                                                console.log('ppnmerge',ppnmerge)
-                                                $('.ppn_element').text(ppnmerge.toFixed(2)||(subtotal_edit*0.11).toFixed(2))
-                                                td_ppn = ppnmerge||subtotal_edit*0.11
-                                                console.log('discount nominal')
-                                                
-                                                
-                                                newValueDiscountNominal = $(this).val()
-                                                
-                                                td_discount_nominal = newValueDiscountNominal
-                                                var subtotal_new =((subtotal_edit+parseFloat(ppnmerge))-newValueDiscountNominal)
-                                                $('.total_element').text(subtotal_new.toFixed(2))
-                                                td_total = subtotal_new.toFixed(2)
-                                            })  
-                                            $('#discount_percent').on('change',function(){
-                                                // console.log('discount percent edit')
-                                                newvalue_discount_percent = ($(this).val())/100;
-                                                
-                                                td_discount=$(this).val()
-                                                $('.sutotal_element').text(subtotal_edit)
-                                                td_subtotal=subtotal_edit
-                                                var ppnmerge=(subtotal_edit*0.11-(subtotal_edit*0.11*newvalue_discount_percent))
-                                                $('.ppn_element').text(ppnmerge.toFixed(2))
-                                                td_ppn =ppnmerge.toFixed(2)
-                                                $('#discount_nominal').text(newValueDiscountNominal||pembelianLcl.discount_nominal)
-                                                td_discount_nominal = newValueDiscountNominal||pembelianLcl.discount_nominal
-                                                var newTotal = (subtotal_edit + ppnmerge)-newValueDiscountNominal;
-                                                
-                                                $('.total_element').text(newTotal.toFixed(2));
-                                                td_total = newTotal.toFixed(2)
-                                            })  
+                                            inputtd5Product = $('<input>', {
+                                                    type: 'text', 
+                                                    class: 'form-control', 
+                                                    value: result.subtotal,
+                                                    id:'subtotal'+itemIndex,
+                                                    disabled:true
+                                            });
+                                            $('.element_subtotal').text('Subtotal ('+matauang[0].simbol+')')
+                                            $('.element_discount_percent').text('Discount Percent ('+matauang[0].simbol+')')
+                                            $('.element_discount_nominal').text('Discount Nominal ('+matauang[0].simbol+')')
+                                            $('.element_ppn11').text('PPN 11% ('+matauang[0].simbol+')')
+                                            $('.element_total').text('Total ('+matauang[0].simbol+')')
+                                            subtotal_edit += result.subtotal
                                         }
-                    
-                                    }
+                                        inputtd5Product.css({
+                                                'border': '1px solid #696868', 
+                                                'color': 'black', 
+                                                'padding': '10px', 
+                                                'width': '100%' 
+                                        });
+                                        td5Product.append(inputtd5Product)
+    
+                                        var td6Product = $('<td>').css({
+                                                'padding': 'auto', 
+                                                'width': '5%',  
+                                        });
+                                        var checkboxElementProduct = $('<input>', {
+                                            type: 'checkbox',
+                                            id: 'checkboxId_' + itemIndex,
+                                            value: result.status_ppn,
+                                            checked: result.status_ppn == 1
+                                        }).css({
+                                            'border': '1px solid #696868',
+                                        }).on('change', function() {
+                                            var newValue = this.checked ? 1 : 0;
+                                            $(this).val(newValue);
+    
+                                            changeHistory[itemIndex] = newValue;
+                                    
+                                        
+                                        });
+                                        changeHistory[itemIndex] = checkboxElementProduct.val()
+                                        td6Product.append(checkboxElementProduct)
+                                       
+                                        var td7Product = $('<td>')
+                                        var selectGudang = $('<select>', {
+                                            class: 'form-control choices-select-gudang', // class for styling
+                                            id:'gudang'+itemIndex
+                                        }).css({
+                                            'border': '1px solid #696868', // Border color and style
+                                            'color': 'black', // Text color
+                                            'padding': '10px', // Padding inside the select
+                                            'width': '100%', // Full width of the container
+                                            
+                                        });
+                                        // console.log('responseGudang',response.gudang)
+                                        var defaultOption = $('<option>', {
+                                            value: '',
+                                            text: 'Pilih Gudang' // Default text
+                                        }).attr('disabled', 'disabled').attr('selected', 'selected'); // Disabled and selected
+                                        selectGudang.append(defaultOption);
+                                        // Iterate over each item in gudangName to create options
+                                        gudang.forEach(function(gudangitem,index) {
+                                            var optionElement = $('<option>', {
+                                                // text: gudangitem, // Use id as the value
+                                                
+                                                value: gudangitem.id,
+                                                text: gudangitem.name
+    
+                                            });
+                                            if(gudangitem.id==result.id_gudang){
+                                                optionElement.attr('selected','selected')
+                                                selectedValuesArray[itemIndex] = optionElement.val()
+                                            }
+                                            selectGudang.append(optionElement);
+                                        });
+                                        
+                                        selectGudang.on('change', function() {
+                                            
+                                    
+                                            var newValue = $(this).val();
+        
+                                            // Update the selectedValuesArray with the new value
+                                            selectedValuesArray[itemIndex] = newValue;
+                                            
+                                     
+                                            
+                                            
+                                        });
+                                        
+                                        td7Product.append(selectGudang)
+    
+                                        var newTd9 = $('<td>')
+                            
+                                        var deleteButton = $('<button>',{
+                                            text: 'X',
+                                            class: 'btn btn-danger btn-sm'
+                                        }).css({
+                                            'border': 'none',
+                                            'color':'white',
+                                            'background-color': '#dc3545',
+                                            'padding': '5px 10px',
+                                            'cursor': 'pointer'
+                                        }).on('click',function(){
+                                            $(this).closest('tr').remove();
+                                        })
+                                        newTd9.append(deleteButton)
+    
+                                        
+                                        
+    
+                                        
+                                      
+                                        subtot_arr[itemIndex] = result.subtotal_idr
+    
+                                        if(pembelianLcl.status_converttorupiah==1){
+                                            statusconvert =1
+                                            var newTdHargaInvoice = $('<td>').css({
+                                                'padding': 'auto',  
+                                                'width': '10%',  
+                                                
+                                            });
+    
+                                            var inputHargaInvoice = $('<input>', {
+                                                id:'input_harga_invoice2',
+                                                type: 'number',
+                                                class: 'form-control harga2-invoice',
+                                                value:pembelianLcl.nominal_convert * result.price
+                                            });
+                                            inputHargaInvoice.css({
+                                                'border': '1px solid #696868', 
+                                                'color': 'black', 
+                                                'padding': '10px',
+                                                'width': '100%' 
+                                            });
+                                            inputHargaInvoice.prop('disabled', true);
+                                            price_invoice_arr[itemIndex] = inputHargaInvoice.val()
+                                            newTdHargaInvoice.append(inputHargaInvoice)
+                                        }
+                                        else if(convert_edit==true){
+                                            // statusconvert =1
+                                            console.log('masuk convert_edit')
+                                            var newTdHargaInvoice = $('<td>').css({
+                                                'padding': 'auto',  
+                                                'width': '10%',  
+                                                
+                                            });
+    
+                                            var inputHargaInvoice = $('<input>', {
+                                                id:'input_harga_invoice2',
+                                                type: 'number',
+                                                class: 'form-control harga2-invoice',
+                                                value:parseFloat($('#input_nominal').val()*inputtd2Product.val())
+                                            });
+                                            inputHargaInvoice.css({
+                                                'border': '1px solid #696868', 
+                                                'color': 'black', 
+                                                'padding': '10px',
+                                                'width': '100%' 
+                                            });
+                                            inputHargaInvoice.prop('disabled', true);
+                                            price_invoice_arr[itemIndex] = inputHargaInvoice.val()
+                                            inputtd5Product.val(parseFloat($('#input_nominal').val()*inputtd2Product.val())*inputtd3Product.val())
+                                            subtot_arr[itemIndex] =inputtd5Product.val()
+                                            newTdHargaInvoice.append(inputHargaInvoice)
+                                            let totalSubtotals = subtot_arr.reduce((sum, currentValue) => sum + currentValue, 0);
+                                            subtotal_edit = parseFloat(totalSubtotals)
+                                            $('.sutotal_element').text(subtotal_edit)
+                                            statusconvert=1;
+                                            valuenominalconvert=$('#input_nominal').val();
+                                            td_subtotal = subtotal_edit
+                                        }
+                                        else if(convert_edit==false){
+                                            console.log('convert_edit false')
                                             $('.sutotal_element').text(subtotal_edit)
                                             td_subtotal = subtotal_edit
-                                            $('.ppn_element').text(pembelianLcl.ppn)
-                                            td_ppn = pembelianLcl.ppn
-                                            $('#discount_percent').val(pembelianLcl.discount)
-                                            td_discount = pembelianLcl.discount
-                                            $('#discount_percent').on('change',function(){
+                                        }
+                                        function updateCalculatedValue() {
+                                            console.log('masuk calculate')
+                                            var inputField = $(`#price_asal${itemIndex}`);
+                                            
+                                            var value_belumppn = parseFloat(inputField.val())  ;
+                                   
+                                            console.log('harga_asal',value_belumppn)
+                                            var input_discount = $(`#discount${itemIndex}`);
+                
+                                            var value_discount = parseFloat(input_discount.val()) || 0;
+                                            // console.log('value_discount',value_discount)
+                                            // discount_arr_select[itemIndex]=value_discount
+                                            
+                                            var value3 = value_discount
+                                            console.log('value_discount',value3)
+    
+                                            var value1 = value_belumppn;
+                                        
+                                            var inputFieldqty = $(`#qty_qty${itemIndex}`);
+                
+                                    
+                                            var value_qty = parseFloat(inputFieldqty.val()) || 1;
+    
+                                            harga_asal[itemIndex] = value1; 
+                                            qty_arr[itemIndex] = value_qty;
+                                            
+                                    
+                                            // harga_asal_select[itemIndex] = value_belumppn;
+                                                
+                                            
+                                            discount_arr[itemIndex] = value3;
+                                        
+                                            
+                                            var value2 = value_qty;
+    
+                                            // Calculate the new value
+                                            var calculatedValue = (value1 * value2);
+                                       
+                                            
+                                            // menghitung dan menyetting value harga subtotal
+                                            if(result.status_converttorupiah==0){
+                                                
+                                                statusconvert =0
+                                                //inisiasi value subtotal
+                                                $(`#subtotal${itemIndex}`).val(calculatedValue);
+                                                subtot_arr[itemIndex]=$(`#subtotal${itemIndex}`).val()
+                                                // subtot_arr_select[itemIndex] = calculatedValue;
+                                                
+                                                // async()
+                                                
+                                            }
+                                            else{
+                                                
+                                                inputHargaInvoice.val(value1*pembelianLcl.nominal_convert)
+                                                price_invoice_arr[itemIndex] =pembelianLcl.nominal_convert*value1
+                                                
+                                                $(`#subtotal${itemIndex}`).val((calculatedValue*pembelianLcl.nominal_convert)-value3);
+                                                // subtot_arr_select[itemIndex]= calculatedValue*nominal_convert
+                                                // async()
+                                                subtot_arr[itemIndex]=$(`#subtotal${itemIndex}`).val()
+                                                // console.log('subtot_arr',subtot_arr)
+                                                subtotal_edit = subtot_arr.reduce(function(accumulator, currentValue) {
+                                                    return accumulator + parseFloat(currentValue || 0); // Menambahkan nilai, konversi ke angka
+                                                }, 0);
                                                 $('.sutotal_element').text(subtotal_edit)
                                                 td_subtotal=subtotal_edit
-                                                // $('.ppn_element').text(pembelianLcl.ppn)
-                                                td_discount_nominal=newValueDiscountNominal
-                                                newvalue_discount_percent = ($(this).val())/100;
-                                                td_discount =$(this).val()
-                                                var value_ppn_discount_percent = pembelianLcl.ppn-(newvalue_discount_percent*pembelianLcl.ppn)
-                                                td_ppn = value_ppn_discount_percent
-                                                $('.ppn_element').text(value_ppn_discount_percent)
-                                                $('.total_element').text((subtotal_edit+value_ppn_discount_percent)-newValueDiscountNominal)
-                                                td_total = (subtotal_edit+value_ppn_discount_percent)-newValueDiscountNominal
-                                            })
-                                            $('#discount_nominal').val(pembelianLcl.discount_nominal)
-                                            td_discount_nominal = pembelianLcl.discount_nominal
-                                            $('#discount_nominal').on('change',function(){
-                                                $('.sutotal_element').text(subtotal_edit)
-                                                td_subtotal=subtotal_edit
-                                                $('#discount_percent').val(pembelianLcl.discount||newvalue_discount_percent*100)
-                                                newValueDiscountNominal = $(this).val()
-                                                td_discount_nominal=newValueDiscountNominal
-                                                var discount_percent_input = newvalue_discount_percent || 0;
-                                                
-                                                
-                                                var value_ppn_discount_percent = pembelianLcl.ppn - (discount_percent_input * pembelianLcl.ppn);
-                                                td_ppn = value_ppn_discount_percent
-                                                $('.ppn_element').text(value_ppn_discount_percent)
-                                                $('.total_element').text((subtotal_edit+value_ppn_discount_percent)-newValueDiscountNominal)
-                                                td_total = (subtotal_edit+value_ppn_discount_percent)-newValueDiscountNominal
-                                            })
-                                            $('.total_element').text(
-                                                ((subtotal_edit + pembelianLcl.ppn) - pembelianLcl.discount_nominal) * 
+                                                var discount_percent_new = (subtotal_edit*0.11)-(subtotal_edit*0.11*newvalue_discount_percent).toFixed(2)
+                                                var discount_nominal_new =newValueDiscountNominal||0
+                                                $('.ppn_element').text(discount_percent_new||subtotal_edit*0.11)
+                                                td_ppn=discount_percent_new||subtotal_edit*0.11
+                                                $('.total_element').text(subtotal_edit+(discount_percent_new||subtotal_edit*0.11)-discount_nominal_new)
+                                                td_total=subtotal_edit+(discount_percent_new||subtotal_edit*0.11)-discount_nominal_new
+    
+                                                $('#discount_nominal').on('change',function(){
+                                                    
+                                                    $('.sutotal_element').text(subtotal_edit)
+                                                    td_subtotal=subtotal_edit
+                                                    var ppnmerge=((subtotal_edit*0.11)-(subtotal_edit*0.11)*newvalue_discount_percent)
+                                                    console.log('ppnmerge',ppnmerge)
+                                                    $('.ppn_element').text(ppnmerge.toFixed(2)||(subtotal_edit*0.11).toFixed(2))
+                                                    td_ppn = ppnmerge||subtotal_edit*0.11
+                                                    console.log('discount nominal')
+                                                    
+                                                    
+                                                    newValueDiscountNominal = $(this).val()
+                                                    
+                                                    td_discount_nominal = newValueDiscountNominal
+                                                    var subtotal_new =((subtotal_edit+parseFloat(ppnmerge))-newValueDiscountNominal)
+                                                    $('.total_element').text(subtotal_new.toFixed(2))
+                                                    td_total = subtotal_new.toFixed(2)
+                                                })  
+                                                $('#discount_percent').on('change',function(){
+                                                    // console.log('discount percent edit')
+                                                    newvalue_discount_percent = ($(this).val())/100;
+                                                    
+                                                    td_discount=$(this).val()
+                                                    $('.sutotal_element').text(subtotal_edit)
+                                                    td_subtotal=subtotal_edit
+                                                    var ppnmerge=(subtotal_edit*0.11-(subtotal_edit*0.11*newvalue_discount_percent))
+                                                    $('.ppn_element').text(ppnmerge.toFixed(2))
+                                                    td_ppn =ppnmerge.toFixed(2)
+                                                    $('#discount_nominal').text(newValueDiscountNominal||pembelianLcl.discount_nominal)
+                                                    td_discount_nominal = newValueDiscountNominal||pembelianLcl.discount_nominal
+                                                    var newTotal = (subtotal_edit + ppnmerge)-newValueDiscountNominal;
+                                                    
+                                                    $('.total_element').text(newTotal.toFixed(2));
+                                                    td_total = newTotal.toFixed(2)
+                                                })  
+                                            }
+                        
+                                        }
+                                        $('.sutotal_element').text(subtotal_edit)
+                                        td_subtotal = subtotal_edit
+                                                $('.ppn_element').text(pembelianLcl.ppn)
+                                                td_ppn = pembelianLcl.ppn
+                                                $('#discount_percent').val(pembelianLcl.discount)
+                                                td_discount = pembelianLcl.discount
+                                                $('#discount_percent').on('change',function(){
+                                                    $('.sutotal_element').text(subtotal_edit)
+                                                    td_subtotal=subtotal_edit
+                                                    // $('.ppn_element').text(pembelianLcl.ppn)
+                                                    td_discount_nominal=newValueDiscountNominal
+                                                    newvalue_discount_percent = ($(this).val())/100;
+                                                    td_discount =$(this).val()
+                                                    var value_ppn_discount_percent = pembelianLcl.ppn-(newvalue_discount_percent*pembelianLcl.ppn)
+                                                    td_ppn = value_ppn_discount_percent
+                                                    $('.ppn_element').text(value_ppn_discount_percent)
+                                                    $('.total_element').text((subtotal_edit+value_ppn_discount_percent)-newValueDiscountNominal)
+                                                    td_total = (subtotal_edit+value_ppn_discount_percent)-newValueDiscountNominal
+                                                })
+                                                $('#discount_nominal').val(pembelianLcl.discount_nominal)
+                                                td_discount_nominal = pembelianLcl.discount_nominal
+                                                $('#discount_nominal').on('change',function(){
+                                                    $('.sutotal_element').text(subtotal_edit)
+                                                    td_subtotal=subtotal_edit
+                                                    $('#discount_percent').val(pembelianLcl.discount||newvalue_discount_percent*100)
+                                                    newValueDiscountNominal = $(this).val()
+                                                    td_discount_nominal=newValueDiscountNominal
+                                                    var discount_percent_input = newvalue_discount_percent || 0;
+                                                    
+                                                    
+                                                    var value_ppn_discount_percent = pembelianLcl.ppn - (discount_percent_input * pembelianLcl.ppn);
+                                                    td_ppn = value_ppn_discount_percent
+                                                    $('.ppn_element').text(value_ppn_discount_percent)
+                                                    $('.total_element').text((subtotal_edit+value_ppn_discount_percent)-newValueDiscountNominal)
+                                                    td_total = (subtotal_edit+value_ppn_discount_percent)-newValueDiscountNominal
+                                                })
+                                                $('.total_element').text(
+                                                    ((subtotal_edit + pembelianLcl.ppn) - pembelianLcl.discount_nominal) * 
+                                                    (pembelianLcl.discount !== 0 ? pembelianLcl.discount : 1)
+                                                );
+                                                td_total= ((subtotal_edit + pembelianLcl.ppn) - pembelianLcl.discount_nominal) * 
                                                 (pembelianLcl.discount !== 0 ? pembelianLcl.discount : 1)
-                                            );
-                                            td_total= ((subtotal_edit + pembelianLcl.ppn) - pembelianLcl.discount_nominal) * 
-                                            (pembelianLcl.discount !== 0 ? pembelianLcl.discount : 1)
-                                            // td_discount =pembelianLcl.discount
-                                            // Update calculation when values change
-                                            
-                                            inputtd2Product.on('input', updateCalculatedValue);
-                                            inputtd3Product.on('input', updateCalculatedValue);
-                                            inputtd4Product.on('input',updateCalculatedValue)
-
-                                            item[itemIndex] = inputtd1Product.val()
-                                            
-                                                        
-                                            td1Product.append(inputtd1Product)
-                                            td2Product.append(inputtd2Product)
-                                            tr.append(tdProduct,td1Product,td2Product,newTdHargaInvoice,td3Product,td4Product,td5Product,td6Product,td7Product,newTd9);
-                                            contentImport.append(tr)
-                    });
+                                                // td_discount =pembelianLcl.discount
+                                                // Update calculation when values change
+                                                
+                                                inputtd2Product.on('input', updateCalculatedValue);
+                                                inputtd3Product.on('input', updateCalculatedValue);
+                                                inputtd4Product.on('input',updateCalculatedValue)
+    
+                                                item[itemIndex] = inputtd1Product.val()
+                                                
+                                                            
+                                                td1Product.append(inputtd1Product)
+                                                td2Product.append(inputtd2Product)
+                                                tr.append(tdProduct,td1Product,td2Product,newTdHargaInvoice,td3Product,td4Product,td5Product,td6Product,td7Product,newTd9);
+                                                contentImport.append(tr)
+                        });
+                    }
+                    elementEditLcl()
                              
             };     
 
@@ -4907,15 +4945,27 @@ LOCAL   | PT. Maxipro Group Indonesia
                                     url: '{{ route('admin.pembelian_tambah_lcl') }}',
                                     data: formDataSendEdit,
                                     success: function(response) {
-                                    Swal.fire({
-                                        icon:'success',
-                                        title:'Success',
-                                        text:'LCL Berhasil Diupdate'
-                                    }).then((result)=>{
-                                    if(result.isConfirmed){
-                                        window.location.reload();
-                                    }
-                                    });
+                                        console.log('response',response)
+                                        if(response.auth==true){
+
+                                            Swal.fire({
+                                                icon:'success',
+                                                title:'Success',
+                                                text:response.msg
+                                            }).then((result)=>{
+                                            if(result.isConfirmed){
+                                                window.location.reload();
+                                            }
+                                            });
+                                        }
+                                        else{
+                                            
+                                            Swal.fire({
+                                                icon:'error',
+                                                title:'error',
+                                                text:response.msg
+                                            })
+                                        }
                                     },error: function(xhr, status, error) {
                                         console.log('Terjadi kesalahan:',error);
                                     }
@@ -4924,6 +4974,37 @@ LOCAL   | PT. Maxipro Group Indonesia
                    
                 }
         }
+
+        function detailInvoice(element){
+            event.preventDefault();
+            var invoice = $(element).data('id');
+            $.ajax({
+                type: 'GET',
+                url: '{{ route('admin.pembelian_lcl') }}',
+                data: { 
+                    menu:'detail',
+                    invoice: invoice 
+                },
+                success: function(response) {
+                    $('main.main-content').removeClass('wider ps ps--active-y');
+                    $('.btn-tambah').remove();
+                    
+                    if (window.dataTableInstance) {
+                        window.dataTableInstance.destroy();
+                    }
+                    $('#tabe-stok').remove();
+                    $('.radio-button-container').hide();
+                    $('#openModalBtn').hide();
+                    $('#clearFilterBtn').hide();
+                    $('#Formedit').html(response);
+                    $('#div_detail').show();
+                    $('#judulLcl').html('<i class="fas fa-database"></i> &nbsp Detail LCL');
+                    document.title='Detail LOCAL   | PT. Maxipro Group Indonesia';
+                },
+                    
+            })
+        }
+
         // });
         
        

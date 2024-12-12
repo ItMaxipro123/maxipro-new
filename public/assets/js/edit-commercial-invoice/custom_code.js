@@ -1,38 +1,26 @@
+document.getElementById('customCodeCheckboxEdit').addEventListener('click', function() {
+    console.log('custom code')
+    const modeadminInput = document.querySelector('input[name="modeadmin"]');
+    
+    const invoiceInput = document.querySelector('input[name="invoice_no_name"]');
+    const contractInput = document.querySelector('input[name="contract_no_name"]');
+    const packingInput = document.querySelector('input[name="packing_no_name"]');
+
+    if (this.checked) {
+        
+        modeadminInput.value = 1;
+        invoiceInput.disabled = false;
+        contractInput.disabled = false;
+        packingInput.disabled = false;
+    } else {
+        modeadminInput.value = 0;
+        invoiceInput.disabled = true;
+        contractInput.disabled = true;
+        packingInput.disabled = true;
+    }
+});
 $(document).ready(function() {
    
-  // Memeriksa status awal radio button
- var modeAdminValue = $('input[name="modeadmin"]:checked').val();
-console.log()
- // Inisialisasi input berdasarkan status radio button saat halaman dimuat
- if (modeAdminValue === '1') {
-     enableInputs(); // Panggil fungsi untuk mengaktifkan input
- } else {
-     disableInputs(); // Panggil fungsi untuk menonaktifkan input
- }
-
- // Event listener untuk perubahan pada radio button
- $('input[name="modeadmin"]').on('change', function() {
-     var selectedValue = $(this).val();
-
-     // Lakukan sesuatu berdasarkan nilai radio button yang dipilih
-     if (selectedValue === '1') {
-         
-         enableInputs(); // Panggil fungsi untuk mengaktifkan input
-     } else {
-         
-         disableInputs(); // Panggil fungsi untuk menonaktifkan input
-     }
- });
-
- // Fungsi untuk mengaktifkan input
- function enableInputs() {
-     $('#invoice_no, #contract_no, #packing_no').prop('disabled', false);
- }
-
- // Fungsi untuk menonaktifkan input
- function disableInputs() {
-     $('#invoice_no, #contract_no, #packing_no').prop('disabled', true);
- }
  flatpickr("#tgl_request", {
     dateFormat: "Y-m-d",
     

@@ -175,12 +175,12 @@
 
                             @foreach($Data['msg']['list_comercial_invoice'] as $index => $result)
                             <table id="table-atas2">
-                              <input type="text" class="form-control custom-border" id="id_penjualanfromchinadetail_{{ $ascendingIndex }}" name="id_detail_name" value="{{$Data['msg']['list_comercial_invoice'][$ascendingIndex]['id'] }}">
-                              <input type="text" class="form-control custom-border" id="id_penjualanfromchina_{{ $ascendingIndex }}" name="id_barang_name" value="{{ $Data['msg']['list_comercial_invoice'][$ascendingIndex]['id_penjualanfromchina'] }}">
-                              <input type="text" class="form-control restok-input" id="restok_{{ $ascendingIndex }}" name="id_restok_name" value="">
+                              <input type="hidden" class="form-control custom-border" id="id_penjualanfromchinadetail_{{ $ascendingIndex }}" name="id_detail_name" value="{{$Data['msg']['list_comercial_invoice'][$ascendingIndex]['id'] }}">
+                              <input type="hidden" class="form-control custom-border" id="id_penjualanfromchina_{{ $ascendingIndex }}" name="id_barang_name" value="{{ $Data['msg']['list_comercial_invoice'][$ascendingIndex]['id_penjualanfromchina'] }}">
+                              <input type="hidden" class="form-control restok-input" id="restok_{{ $ascendingIndex }}" name="id_restok_name" value="">
                                 <tr>
                                     <td style="border: 1px solid #696868; color: black;">
-                                        <image src="https://maxipro.id/images/barang/{{ $Data['msg']['barang'][$ascendingIndex]['imagedir'] }}" style="width: 350px;height: 320px;">
+                                        <image src="https://maxipro.id/images/barang/{{ $Data['msg']['barang'][$ascendingIndex]['image'] }}" style="width: 350px;height: 320px;">
                                     </td>
                                     <td style="border: 1px solid #696868; color: black; width: 100%;">
                                          <table style="width: 100%;padding-left: 25px; height: 100%;">
@@ -233,7 +233,7 @@
                                 <br></br>
                             </table>
 
-                            <table>
+                            <table style="width:100%;">
                               <tr>
                                      <td colspan="3" style="border: 1px solid #d7d7d7; color: white; background-color: black; text-align: center; ">Size(CM) <br>每件尺寸</td>
                                      <td colspan="3" style="border: 1px solid #d7d7d7; color: white; background-color: black; text-align: center; ">Package Size(CM) <br>每个包装的尺寸</td>
@@ -376,8 +376,11 @@
                     </div>
                     
 </form>
+
+
+
                 <div style="padding-left: 1000px;">
-                  <table>
+                  <table style="width:100%;">
                     <tr>
                       <td style="border: 1px solid #696868; color: black; width: 75%;"> <!-- Menambahkan padding -->
                         Freight Cost
@@ -443,7 +446,7 @@
                         Total Price (RMB)
                       </td>
                       <td style="border: 1px solid #696868; color: black;" id="custom-tot-price-without-tax-td">
-                        {{$total_price_rmb_td}}
+                        {{$total_price_rmb_td + $Data['msg']['fclcontainer']['freight_cost'] +  $Data['msg']['fclcontainer']['insurance']}} 
                          
                       </td>
                     </tr>
@@ -453,7 +456,7 @@
                             Total Price (USD)
                         </td>
                         <td style="border: 1px solid #696868; color: black;" id="custom-tot-price-without-tax-usd-td">
-                            {{$total_price_usd_td}}
+                            {{$total_price_usd_td + $Data['msg']['fclcontainer']['freight_cost'] +  $Data['msg']['fclcontainer']['insurance']}}
                             
                         </td>
                     </tr>
@@ -680,7 +683,7 @@
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <!-- DataTables Bootstrap 4 Integration -->
 <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+
 <!-- Choices.js JS -->
 <!-- <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
@@ -689,354 +692,360 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
      $(document).ready(function() {
-    var valuestatusrate=$('.border-statusrate').val()
-    var valueelement = $('.border-input')
-    var indexCounter
-    var valuerate=$('.border-input').val();
-    var array_tot_price_usd =[];
-    var array_unit_price_usd =[]
-    var td_tot_price_usd = $('#custom-tot-price-without-tax-usd-td').text()
-    var input_freight_cost = $('#freight_cost_id_tab').val()
-    var input_insurance    = $('#insurance_edit_id_tab').val()
-    var new_tot_td_price_usd;
-    console.log('valuestatusrate',valuestatusrate)
-    console.log('valueelement',valueelement)
-    console.log('valuerate',valuerate)
+
+
+                // Initial nilai price rmb dan usd
+        let total_price_rmb = parseFloat("{{ $total_price_rmb_td }}");
+        let total_price_usd = parseFloat("{{ $total_price_usd_td }}");
     
-    var viewtojson = {!! $jsonData !!}
-    console.log(viewtojson)
-
-    $('#freight_cost_id_tab').on('change', function() {
-       var initial_td_tot_price_usd =td_tot_price_usd
-        var newValue = $(this).val(); // ambil nilai baru
-        console.log('Nilai baru:', newValue); 
-        input_freight_cost=newValue
-        console.log('input_freight_cost',input_freight_cost)
-        console.log('input_insurance',input_insurance)
-        initial_td_tot_price_usd=parseFloat(initial_td_tot_price_usd)+parseFloat(input_freight_cost)+parseFloat(input_insurance)
-        console.log('td_tot_price_usd',initial_td_tot_price_usd)
-        $('#custom-tot-price-without-tax-usd-td').text(initial_td_tot_price_usd)
-    });
-    $('#insurance_edit_id_tab').on('change', function() {
-        var initial_td_tot_price_usd =td_tot_price_usd
-        var newValue = $(this).val(); // ambil nilai baru
-        console.log('Nilai baru:', newValue); 
-        input_insurance=newValue
-        console.log('input_freight_cost',input_freight_cost)
-        console.log('input_insurance',input_insurance)
-        initial_td_tot_price_usd=parseFloat(initial_td_tot_price_usd)+parseFloat(input_freight_cost)+parseFloat(input_insurance)
-        td_tot_price_usd=initial_td_tot_price_usd
-        console.log('td_tot_price_usd',initial_td_tot_price_usd)
-        $('#custom-tot-price-without-tax-usd-td').text(initial_td_tot_price_usd)
-    });
-    
-    //untuk mengatur nilai usd bila nilai convert usd berubah
-    $('.border-input').on('change', function() {
-                valuerate = $(this).val()
-                valuestatusrate=1
-                indexCounter =0
-                new_tot_td_price_usd=0
-                viewtojson.forEach(function(result,key){
-                    
-                    var newUnitUsd =  ($('#unit_price_without_tax_'+key).val())/valuerate
-                    array_unit_price_usd[key]=newUnitUsd.toFixed(2)
-                    $('#unit_price_usd_'+key).val(newUnitUsd.toFixed(2))
-                    console.log('array_unit_price_usd',array_unit_price_usd)
-                    
-                    var newTotUsd=($('#total_price_without_tax_'+key).val())/valuerate
-                    array_tot_price_usd[key]=newTotUsd.toFixed(2)
-                    $('#total_price_usd_'+key).val(newTotUsd.toFixed(2))
-                    console.log('array_tot_price_usd',array_tot_price_usd)
-                    new_tot_td_price_usd +=parseFloat(newTotUsd.toFixed(2))
-                    $('#custom-tot-price-without-tax-usd-td').text(parseFloat(new_tot_td_price_usd.toFixed(2))+parseFloat(input_freight_cost)+parseFloat(input_insurance))
-                    td_tot_price_usd = parseFloat(new_tot_td_price_usd)+parseFloat(input_freight_cost)+parseFloat(input_freight_cost)
-                })
-                
-                console.log('valuerate',valuerate)
-    })
-
-    viewtojson.forEach(function(result,key){
-        array_tot_price_usd.push($('#total_price_usd_'+key).val())
-        array_unit_price_usd.push($('#unit_price_usd_'+key).val())
-    })
-
-    $('#convertButton').on('click', function() {
-        console.log('masuk')
-        $('#myModal').modal('show')
-    });
-
-    $('#database_edit_id').select2({
-        placeholder: 'Pilih Database',
-        allowClear: true,
-        width: '100%'
-    });
-    $('#supplier-edit').select2({
-        placeholder: 'Supplier',
-        allowClear: true,
-        width: '100%'
-    });
-    $('#incoterms-edit-id').select2({
-        placeholder: 'Pilih Incoterms',
-        allowClear: true,
-        width: '100%'
-    });
-    $('#banksupplier-edit-id').select2({
-        placeholder: 'Pilih Bank Supplier',
-        allowClear: true,
-        width: '100%'
-    });
-    $('#currency-edit-id').select2({
-        placeholder: 'Pilih Currency',
-        allowClear: true,
-        width: '100%'
-    });
-
-    var selectedSupplier = $('.supplier-supplier')
-  
-  selectedSupplier.on('change', function(event) {
-      const selectedValueSupplier = event.target.value;
-      const inputElementSelectedSupplier = document.getElementById('supplier-edit'); // Ganti dengan ID yang sesuai
-      if (inputElementSelectedSupplier) {
-          inputElementSelectedSupplier.value = selectedValueSupplier;
-          console.log('selected_value',selectedValueSupplier)
-      }
-      $.ajax({
-          type:'GET',
-          url:'{{ route('admin.pembelian_fcl') }}',
-          data:{
-              menu:'select_supplier',
-              select_id_supplier:selectedValueSupplier
-          },
-          success: function(response){
-              console.log('response', response.filtered_supplier);
-
-              // Iterate over the keys of filtered_supplier
-              for (const key in response.filtered_supplier) { 
-                  
-                      const supplier = response.filtered_supplier[key];
-                      
-                      if (supplier) {
-                          $('#address_company').val(supplier.address);
-                          $('#city').val(supplier.city);
-                          $('#telp').val(supplier.telp);
-                      } else {
-                          // console.log(`Address not found for key ${key}`);
-                          $('#address_company').val(supplier.address);
-                          $('#city').val(supplier.city);
-                          $('#telp').val(supplier.telp);
-                      }
-                  
-              }
-              
-             
-                    //select2
-                    //   if (response.filtered_bank_supplier.length == 0) {
-                        
-                    //       var $select = $('#banksupplier-edit-id'); // Get the raw DOM element
-                        
-                    //       // Clear existing options
-                    //       $select.empty();
-                        
-                    //       // Add default option
-                    //       $select.append('<option value="0">Pilih Bank Supplier</option>');
-
-                    //       // Reinitialize Select2
-                    //       $select.select2({
-                    //           placeholder: 'Pilih Bank Supplier',
-                    //           allowClear: true,
-                    //           width: '100%' // Adjust the width if needed
-                    //       });
-
-                    //       //mengisi value menjadi string kosong
-                    //       $('#bank_name_id_tab').val('');
-                    //       $('#bankAddress_id_tab_edit').val('');
-                    //       $('#swiftCode_id_tab_edit').val('');
-                    //       $('#accountNo_id_tab_edit').val('');
-                    //       $('#beneficiaryName_id_tab_edit').val('');
-                    //       $('#beneficiaryAddress_id_tab_edit').val('');
-
-                        
-                    //       $('#banksupplier-edit-id').next('.select2-container').css('margin-top', '20px'); //mengatur posisi element dari atas
-                    //       $('#currency-edit-id').next('.select2-container').css('margin-top', '20px'); // mengatur posisi element dari atas
-
-                    //   }
-                    //    else {
-                
-                  var $select = $('#banksupplier-edit-id'); // mengambil nilai dari id
-                  
-                  // menghapus nilai yang sudah ada
-                  $select.empty();
-                  
-                  $('#bank_name_id_tab').val('');
-                    $('#bankAddress_id_tab_edit').val('');
-                    $('#swiftCode_id_tab_edit').val('');
-                    $('#accountNo_id_tab_edit').val('');
-                    $('#beneficiaryName_id_tab_edit').val('');
-                    $('#beneficiaryAddress_id_tab_edit').val('');
-
-                    
-                    $('#banksupplier-edit-id').next('.select2-container').css('margin-top', '20px'); //mengatur posisi element dari atas
-                    $('#currency-edit-id').next('.select2-container').css('margin-top', '20px'); // mengatur posisi element dari atas
-
-
-                  // menambah default option
-                  $select.append('<option value="0">Pilih Bank Supplier</option>');
-                  var label_banksupplier = $('#label-banksupplier')
-                  label_banksupplier.css({
-                    'margin-top':'20px',
-                  });
-                  var label_currency = $('#label-currency')
-                  label_currency.css({
-                    'margin-top':'20px',
-                  });
-                  console.log('$select',$select.val())
-                  // looping dari response filter bank ke option
-                  for (const key2 in response.filtered_bank_supplier) {
-                      var bank_supplier = response.filtered_bank_supplier[key2];
-                      if (bank_supplier) {
-                          console.log('select id', bank_supplier.id);
-                          console.log('select', bank_supplier.bank_name);
-                          
-                          // Create new option element
-                          var newOption = $('<option></option>')
-                              .val(bank_supplier.id) // The value for the option
-                              .text(bank_supplier.bank_name); // The label for the option
-                          
-                          // Append the new option to the select element
-                          $select.append(newOption);
-                      }
-                  }
-                  
-                 
-                    
-                  // Handle perubahan select di bank supplier pada bank supplier
-                  $('#banksupplier-edit-id').on('change', function() {
-                      var selectedId = $(this).val();
-                    
-                    //   //bila id yang dipilih bank supplier !=0
-                      if(selectedId!=0){
-
-                          $.ajax({
-                              type: 'GET',
-                              url: '{{ route('admin.pembelian_fcl') }}',
-                              data: {
-                                  menu: 'select_bank_supplier',
-                                  select_id_banksupplier: selectedId
-                              },
-                              success: function(response) {
-                                  console.log('response', response);
-                               
-                                      for (const key2 in response.filtered_bank_supplier) {
-                                          var bank_supplier2 = response.filtered_bank_supplier[key2];
-                                          console.log('bank_supplier2.name', bank_supplier2.bank_name);
-                                   
-                                          $('#bank_name_id_tab').val(bank_supplier2.bank_name);
-                                          $('#bankAddress_id_tab_edit').val(bank_supplier2.bank_address);
-                                          $('#swiftCode_id_tab_edit').val(bank_supplier2.swiftcode);
-                                          $('#accountNo_id_tab_edit').val(bank_supplier2.account_number);
-                                          $('#beneficiaryName_id_tab_edit').val(bank_supplier2.beneficiary_name);
-                                          $('#beneficiaryAddress_id_tab_edit').val(bank_supplier2.beneficiary_address);
-                                          var $currencyDropdown = $('#currency-edit-id');
-                                          
-                                          //mengganti dropdown dengan value id_matauang dari response filterd_bank_supplier
-                                          $currencyDropdown.val(bank_supplier2.id_matauang).trigger('change')
-                                      }
-                                  
-                                   
-                              },
-                          });
-                      }
-                      else{
-                          //mengisi value menjadi string kosong
-                          $('#bank_name_id_tab').val('');
-                          $('#bankAddress_id_tab_edit').val('');
-                          $('#swiftCode_id_tab_edit').val('');
-                          $('#accountNo_id_tab_edit').val('');
-                          $('#beneficiaryName_id_tab_edit').val('');
-                          $('#beneficiaryAddress_id_tab_edit').val('');
-
-                          var $currencyDropdown = $('#currency-edit-id')
-                          $currencyDropdown.val(0).trigger('change');
-                      }
-                  });
-                  
-                  $('#banksupplier-edit-id').next('.select2-container').css('margin-top', '20px'); //mengatur posisi element dari atas
-                  $('#currency-edit-id').next('.select2-container').css('margin-top', '20px'); // mengatur posisi element dari atas
-
-                    //   }
-
-              
-              
-          }
-      })
-      
-  });      
-  $('#submitButtonForm2').on('click',function(){
-    var id_penjualanfromchina=[]
-    var id_penjualanfromchinadetail=[]
-    viewtojson.forEach(function(result,key){
-        id_penjualanfromchina.push($('#id_penjualanfromchina_'+key).val())
-        id_penjualanfromchinadetail.push($('#id_penjualanfromchinadetail_'+key).val())
-    })
-
-    
-    console.log('array_tot_price_usd',array_tot_price_usd)
-    console.log('array_unit_price_usd',array_unit_price_usd)
-    console.log('td_tot_price_usd',td_tot_price_usd)
-    var formData = {
-        id_fclcontainer:$('#id_fclcontainer').val(),
-        id_penjualanfromchina:id_penjualanfromchina,
-        id_penjualanfromchinadetail:id_penjualanfromchinadetail,
-        database: $('#database_edit_id').val(),
-        tgl_request: $('#tgl_request_edit').val(),
-        supplier: $('#supplier-edit').val(),
-        address_company: $('#address_company').val(),
-        city: $('#city').val(),
-        telp: $('#telp').val(),
-        incoterms_id: $('#incoterms-edit-id').val()||"",
-        location_id: $('#location_id_tab').val(),
-        banksupplier_id: $('#banksupplier-edit-id').val()||0,
-        currency_id: $('#currency-edit-id').val()||0,
-        bank_name_id: $('#bank_name_id_tab').val()||"",
-        bank_address: $('#bankAddress_id_tab_edit').val()||"",
-        swift_code: $('#swiftCode_id_tab_edit').val(),
-        account_no: $('#accountNo_id_tab_edit').val(),
-        beneficiary_name: $('#beneficiaryName_id_tab_edit').val(),
-        beneficiary_address: $('#beneficiaryAddress_id_tab_edit').val(),
-        valuerate:valuerate,
-        valuestatusrate:valuestatusrate,
-        invoice_no: $('#invoice_no_tambah').val(),
-        contract_no: $('#contract_no_tambah').val(),
-        packing_no: $('#packing_no_tambah').val(),
-        modeadmin: $('input[name="modeadmin_tambah"]').val(),
-        unit_price_usd:array_unit_price_usd,
-        tot_price_usd:array_tot_price_usd,
-        total_price_usd:parseFloat(td_tot_price_usd),
-        total_insurance: input_insurance,
-        total_freight_cost: input_freight_cost
-    }
-    console.log('formData',formData)
-    $.ajax({
-        url:'{{ route('admin.pembelian_fcl') }}',
-        type:'GET',
-        data:{
-            form:formData,
-            menu:'updated_fcl',
-        },
-        success: function(response){
-                Swal.fire({
-                    icon:'success',
-                    title:'Success',
-                    text:response.msg
-                    }).then((result)=>{
-                    if(result.isConfirmed){
-                        window.location.reload();
-                    }
-                })
-        },error: function(xhr,status,error){
-                alert('Terjadi kesalahan')
+        //untuk mengupdate nilai price rmb dan usd dengan nilai inputan terbaru dari freight_cost dan insurance
+        function updateTotals() {
+            // Get current freight_cost and insurance values
+            let freight_cost = parseFloat($('#freight_cost_id_tab').val()) || 0;
+            let insurance = parseFloat($('#insurance_edit_id_tab').val()) || 0;
+            
+            // Calculate new totals
+            let new_total_rmb = total_price_rmb + freight_cost + insurance;
+            let new_total_usd = total_price_usd + freight_cost + insurance;
+            
+            // Update the display in the table cells
+            $('#custom-tot-price-without-tax-td').text(new_total_rmb.toFixed(2));
+            $('#custom-tot-price-without-tax-usd-td').text(new_total_usd.toFixed(2));
         }
-    })
-  })
+
+        // mengupdate nilai insuracen dan freight cost dari inputan terbaru
+        $('#freight_cost_id_tab, #insurance_edit_id_tab').on('input', function() {
+            updateTotals();
+        });
+    
+
+
+        
+        var valuestatusrate=$('.border-statusrate').val()
+        var valueelement = $('.border-input')
+        var indexCounter
+        var valuerate=$('.border-input').val();
+        var array_tot_price_usd =[];
+        var array_unit_price_usd =[]
+        var td_tot_price_usd = $('#custom-tot-price-without-tax-usd-td').text()
+        var input_freight_cost = $('#freight_cost_id_tab').val()
+        var input_insurance    = $('#insurance_edit_id_tab').val()
+        var new_tot_td_price_usd;
+        console.log('valuestatusrate',valuestatusrate)
+        console.log('valueelement',valueelement)
+        console.log('valuerate',valuerate)
+        
+        var viewtojson = {!! $jsonData !!}
+    
+
+
+        //untuk mengatur nilai usd bila nilai convert usd berubah
+        $('.border-input').on('change', function() {
+                    valuerate = $(this).val()
+                    valuestatusrate=1
+                    indexCounter =0
+                    new_tot_td_price_usd=0
+                    viewtojson.forEach(function(result,key){
+                        
+                        var newUnitUsd =  ($('#unit_price_without_tax_'+key).val())/valuerate
+                        array_unit_price_usd[key]=newUnitUsd.toFixed(2)
+                        $('#unit_price_usd_'+key).val(newUnitUsd.toFixed(2))
+                        console.log('array_unit_price_usd',array_unit_price_usd)
+                        
+                        var newTotUsd=($('#total_price_without_tax_'+key).val())/valuerate
+                        array_tot_price_usd[key]=newTotUsd.toFixed(2)
+                        $('#total_price_usd_'+key).val(newTotUsd.toFixed(2))
+                        console.log('array_tot_price_usd',array_tot_price_usd)
+                        new_tot_td_price_usd +=parseFloat(newTotUsd.toFixed(2))
+                        $('#custom-tot-price-without-tax-usd-td').text(parseFloat(new_tot_td_price_usd.toFixed(2))+parseFloat(input_freight_cost)+parseFloat(input_insurance))
+                        td_tot_price_usd = parseFloat(new_tot_td_price_usd)+parseFloat(input_freight_cost)+parseFloat(input_freight_cost)
+                    })
+                    
+                    console.log('valuerate',valuerate)
+        })
+
+        viewtojson.forEach(function(result,key){
+            array_tot_price_usd.push($('#total_price_usd_'+key).val())
+            array_unit_price_usd.push($('#unit_price_usd_'+key).val())
+        })
+
+        $('#convertButton').on('click', function() {
+            console.log('masuk')
+            $('#myModal').modal('show')
+        });
+
+        $('#database_edit_id').select2({
+            placeholder: 'Pilih Database',
+            allowClear: true,
+            width: '100%'
+        });
+        $('#supplier-edit').select2({
+            placeholder: 'Supplier',
+            allowClear: true,
+            width: '100%'
+        });
+        $('#incoterms-edit-id').select2({
+            placeholder: 'Pilih Incoterms',
+            allowClear: true,
+            width: '100%'
+        });
+        $('#banksupplier-edit-id').select2({
+            placeholder: 'Pilih Bank Supplier',
+            allowClear: true,
+            width: '100%'
+        });
+        $('#currency-edit-id').select2({
+            placeholder: 'Pilih Currency',
+            allowClear: true,
+            width: '100%'
+        });
+
+        var selectedSupplier = $('.supplier-supplier')
+  
+        selectedSupplier.on('change', function(event) {
+            const selectedValueSupplier = event.target.value;
+            const inputElementSelectedSupplier = document.getElementById('supplier-edit'); // Ganti dengan ID yang sesuai
+            if (inputElementSelectedSupplier) {
+                inputElementSelectedSupplier.value = selectedValueSupplier;
+                console.log('selected_value',selectedValueSupplier)
+            }
+            $.ajax({
+                type:'GET',
+                url:'{{ route('admin.pembelian_fcl') }}',
+                data:{
+                    menu:'select_supplier',
+                    select_id_supplier:selectedValueSupplier
+                },
+                success: function(response){
+                    console.log('response', response.filtered_supplier);
+
+                    // Iterate over the keys of filtered_supplier
+                    for (const key in response.filtered_supplier) { 
+                        
+                            const supplier = response.filtered_supplier[key];
+                            
+                            if (supplier) {
+                                $('#address_company').val(supplier.address);
+                                $('#city').val(supplier.city);
+                                $('#telp').val(supplier.telp);
+                            } else {
+                                // console.log(`Address not found for key ${key}`);
+                                $('#address_company').val(supplier.address);
+                                $('#city').val(supplier.city);
+                                $('#telp').val(supplier.telp);
+                            }
+                        
+                    }
+                    
+                    
+                            //select2
+                            //   if (response.filtered_bank_supplier.length == 0) {
+                                
+                            //       var $select = $('#banksupplier-edit-id'); // Get the raw DOM element
+                                
+                            //       // Clear existing options
+                            //       $select.empty();
+                                
+                            //       // Add default option
+                            //       $select.append('<option value="0">Pilih Bank Supplier</option>');
+
+                            //       // Reinitialize Select2
+                            //       $select.select2({
+                            //           placeholder: 'Pilih Bank Supplier',
+                            //           allowClear: true,
+                            //           width: '100%' // Adjust the width if needed
+                            //       });
+
+                            //       //mengisi value menjadi string kosong
+                            //       $('#bank_name_id_tab').val('');
+                            //       $('#bankAddress_id_tab_edit').val('');
+                            //       $('#swiftCode_id_tab_edit').val('');
+                            //       $('#accountNo_id_tab_edit').val('');
+                            //       $('#beneficiaryName_id_tab_edit').val('');
+                            //       $('#beneficiaryAddress_id_tab_edit').val('');
+
+                                
+                            //       $('#banksupplier-edit-id').next('.select2-container').css('margin-top', '20px'); //mengatur posisi element dari atas
+                            //       $('#currency-edit-id').next('.select2-container').css('margin-top', '20px'); // mengatur posisi element dari atas
+
+                            //   }
+                            //    else {
+                        
+                        var $select = $('#banksupplier-edit-id'); // mengambil nilai dari id
+                        
+                        // menghapus nilai yang sudah ada
+                        $select.empty();
+                        
+                        $('#bank_name_id_tab').val('');
+                            $('#bankAddress_id_tab_edit').val('');
+                            $('#swiftCode_id_tab_edit').val('');
+                            $('#accountNo_id_tab_edit').val('');
+                            $('#beneficiaryName_id_tab_edit').val('');
+                            $('#beneficiaryAddress_id_tab_edit').val('');
+
+                            
+                            $('#banksupplier-edit-id').next('.select2-container').css('margin-top', '20px'); //mengatur posisi element dari atas
+                            $('#currency-edit-id').next('.select2-container').css('margin-top', '20px'); // mengatur posisi element dari atas
+
+
+                        // menambah default option
+                        $select.append('<option value="0">Pilih Bank Supplier</option>');
+                        var label_banksupplier = $('#label-banksupplier')
+                        label_banksupplier.css({
+                            'margin-top':'20px',
+                        });
+                        var label_currency = $('#label-currency')
+                        label_currency.css({
+                            'margin-top':'20px',
+                        });
+                        console.log('$select',$select.val())
+                        // looping dari response filter bank ke option
+                        for (const key2 in response.filtered_bank_supplier) {
+                            var bank_supplier = response.filtered_bank_supplier[key2];
+                            if (bank_supplier) {
+                                console.log('select id', bank_supplier.id);
+                                console.log('select', bank_supplier.bank_name);
+                                
+                                // Create new option element
+                                var newOption = $('<option></option>')
+                                    .val(bank_supplier.id) // The value for the option
+                                    .text(bank_supplier.bank_name); // The label for the option
+                                
+                                // Append the new option to the select element
+                                $select.append(newOption);
+                            }
+                        }
+                        
+                        
+                            
+                        // Handle perubahan select di bank supplier pada bank supplier
+                        $('#banksupplier-edit-id').on('change', function() {
+                            var selectedId = $(this).val();
+                            
+                            //   //bila id yang dipilih bank supplier !=0
+                            if(selectedId!=0){
+
+                                $.ajax({
+                                    type: 'GET',
+                                    url: '{{ route('admin.pembelian_fcl') }}',
+                                    data: {
+                                        menu: 'select_bank_supplier',
+                                        select_id_banksupplier: selectedId
+                                    },
+                                    success: function(response) {
+                                        console.log('response', response);
+                                    
+                                            for (const key2 in response.filtered_bank_supplier) {
+                                                var bank_supplier2 = response.filtered_bank_supplier[key2];
+                                                console.log('bank_supplier2.name', bank_supplier2.bank_name);
+                                        
+                                                $('#bank_name_id_tab').val(bank_supplier2.bank_name);
+                                                $('#bankAddress_id_tab_edit').val(bank_supplier2.bank_address);
+                                                $('#swiftCode_id_tab_edit').val(bank_supplier2.swiftcode);
+                                                $('#accountNo_id_tab_edit').val(bank_supplier2.account_number);
+                                                $('#beneficiaryName_id_tab_edit').val(bank_supplier2.beneficiary_name);
+                                                $('#beneficiaryAddress_id_tab_edit').val(bank_supplier2.beneficiary_address);
+                                                var $currencyDropdown = $('#currency-edit-id');
+                                                
+                                                //mengganti dropdown dengan value id_matauang dari response filterd_bank_supplier
+                                                $currencyDropdown.val(bank_supplier2.id_matauang).trigger('change')
+                                            }
+                                        
+                                        
+                                    },
+                                });
+                            }
+                            else{
+                                //mengisi value menjadi string kosong
+                                $('#bank_name_id_tab').val('');
+                                $('#bankAddress_id_tab_edit').val('');
+                                $('#swiftCode_id_tab_edit').val('');
+                                $('#accountNo_id_tab_edit').val('');
+                                $('#beneficiaryName_id_tab_edit').val('');
+                                $('#beneficiaryAddress_id_tab_edit').val('');
+
+                                var $currencyDropdown = $('#currency-edit-id')
+                                $currencyDropdown.val(0).trigger('change');
+                            }
+                        });
+                        
+                        $('#banksupplier-edit-id').next('.select2-container').css('margin-top', '20px'); //mengatur posisi element dari atas
+                        $('#currency-edit-id').next('.select2-container').css('margin-top', '20px'); // mengatur posisi element dari atas
+
+                            //   }
+
+                    
+                    
+                }
+            })
+            
+        });      
+        $('#submitButtonForm2').on('click',function(){
+            var id_penjualanfromchina=[]
+            var id_penjualanfromchinadetail=[]
+            viewtojson.forEach(function(result,key){
+                id_penjualanfromchina.push($('#id_penjualanfromchina_'+key).val())
+                id_penjualanfromchinadetail.push($('#id_penjualanfromchinadetail_'+key).val())
+            })
+
+            
+            console.log('array_tot_price_usd',array_tot_price_usd)
+            console.log('array_unit_price_usd',array_unit_price_usd)
+            console.log('td_tot_price_usd',td_tot_price_usd)
+            var formData = {
+                id_fclcontainer:$('#id_fclcontainer').val(),
+                id_penjualanfromchina:id_penjualanfromchina,
+                id_penjualanfromchinadetail:id_penjualanfromchinadetail,
+                database: $('#database_edit_id').val(),
+                tgl_request: $('#tgl_request_edit').val(),
+                supplier: $('#supplier-edit').val(),
+                address_company: $('#address_company').val(),
+                city: $('#city').val(),
+                telp: $('#telp').val(),
+                incoterms_id: $('#incoterms-edit-id').val()||"",
+                location_id: $('#location_id_tab').val(),
+                banksupplier_id: $('#banksupplier-edit-id').val()||0,
+                currency_id: $('#currency-edit-id').val()||0,
+                bank_name_id: $('#bank_name_id_tab').val()||"",
+                bank_address: $('#bankAddress_id_tab_edit').val()||"",
+                swift_code: $('#swiftCode_id_tab_edit').val(),
+                account_no: $('#accountNo_id_tab_edit').val(),
+                beneficiary_name: $('#beneficiaryName_id_tab_edit').val(),
+                beneficiary_address: $('#beneficiaryAddress_id_tab_edit').val(),
+                valuerate:valuerate,
+                valuestatusrate:valuestatusrate,
+                invoice_no: $('#invoice_no_tambah').val(),
+                contract_no: $('#contract_no_tambah').val(),
+                packing_no: $('#packing_no_tambah').val(),
+                modeadmin: $('input[name="modeadmin_tambah"]').val(),
+                unit_price_usd:array_unit_price_usd,
+                tot_price_usd:array_tot_price_usd,
+                total_price_usd:parseFloat(td_tot_price_usd),
+                total_insurance: input_insurance,
+                total_freight_cost: input_freight_cost
+            }
+            console.log('formData',formData)
+            $.ajax({
+                url:'{{ route('admin.pembelian_fcl') }}',
+                type:'GET',
+                data:{
+                    form:formData,
+                    menu:'updated_fcl',
+                },
+                success: function(response){
+                        Swal.fire({
+                            icon:'success',
+                            title:'Success',
+                            text:response.msg
+                            }).then((result)=>{
+                            if(result.isConfirmed){
+                                window.location.reload();
+                            }
+                        })
+                },error: function(xhr,status,error){
+                        alert('Terjadi kesalahan')
+                }
+            })
+        })
 })
 </script>

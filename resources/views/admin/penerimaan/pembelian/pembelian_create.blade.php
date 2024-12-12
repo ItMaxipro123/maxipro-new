@@ -1,4 +1,7 @@
 
+<div class="col-md-12 d-flex justify-content-end">
+    <button type="button" id="backbtn" class="btn btn-large btn-warning">Kembali </button>
+</div>
 <div class="form-group" style="padding-top: 30px; padding-left: 20px; width:100%;">
 
         <div class="row">
@@ -48,7 +51,7 @@
 
             
             <select style="border: 1px solid #696868; color: black; padding: 10px;" class="select select2 select-search form-control database-tambah" id="pembelian_tambah_id" name="pembelian_tambah_name" required> 
-                <option value="">Pilih LCL / FCL</option>
+                <option value="0">Pilih LCL / FCL</option>
                 @php
                 $id_detail_pembelian_lcl = array();
                 $id_detail_pembelian_lcl_ud = array();
@@ -207,7 +210,7 @@
 
 <!-- DataTables Bootstrap 4 Integration -->
 <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
@@ -215,18 +218,24 @@
 <script src="../assets/js/fcl-container/fcl-container.js"></script> 
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
-
+    var linkPrevious = @json($history);
+    const currentUrl = window.location.pathname;
+    console.log('currentUrl')
+    document.getElementById('backbtn').addEventListener('click', function () {
+        // Periksa apakah URL saat ini adalah '/admin/tambah_pembelian_penerimaan'
+        console.log('masuk',linkPrevious)
+        if (currentUrl != linkPrevious) {
+            console.log('masuk',linkPrevious)
+            window.location.href = linkPrevious;
+        }
+        else{
+            window.location.href = '/admin/data_pembelian_penerimaan';
+            
+        }
+        
+    });
 $(document).ready(function() {
-    // var idDetailPembelianLcl = @json($id_detail_pembelian_lcl);
-    // console.log(idDetailPembelianLcl);
-    // var $tot_detail_pembelian_lcl = @json($tot_detail_pembelian_lcl);
-    // console.log('tot',$tot_detail_pembelian_lcl);
-    // var $tot_terima_detail_pembelian_lcl = @json($tot_terima_detail_pembelian_lcl);
-    // console.log('tot_terima',$tot_terima_detail_pembelian_lcl);
-    // var $id_pembelian_lcl = @json($id_pembelian_lcl);
-    // console.log('id_pembelianlcl',$id_pembelian_lcl);
-    // var countPembelianLcl = @json($count_pembelian_lcl);
-  
+
     $('#database_tambah_id').select2({
         placeholder: 'Pilih Database',
         allowClear: true,
@@ -260,10 +269,11 @@ $(document).ready(function() {
 
     $('#database_tambah_id').on('change', function() {
             var selectedValue = $(this).val();
-        
+            console.log('berubah')
+
+            $(document).off('change', '#pembelian_tambah_id');
 
             if (selectedValue === 'UD') {
-    
                 const idDetailPembelianLcl = @json($id_detail_pembelian_lcl_desc_ud);
                 const pembelianLclDetail = @json($Data['msg']['pembelianlcldetail']);
 
@@ -289,9 +299,6 @@ $(document).ready(function() {
                         totDetailPembelianLcl[idLclDetail] += data.qty;
                         totTerimaDetailPembelianLcl[idLclDetail] += data.qty_terima;
 
-                        // Calculate the difference between totals
-                        
-
                         // Store the current id
                         idPembelianLcl[idLclDetail] = data.id_pembelianlcl;
                     }
@@ -302,12 +309,6 @@ $(document).ready(function() {
                     totDifference[idLclDetail] = totDetailPembelianLcl[idLclDetail] - totTerimaDetailPembelianLcl[idLclDetail];
                 });
 
-                // Log the results
-                console.log('Total Pembelian LCL:', totDetailPembelianLcl);
-                console.log('Total Terima Pembelian LCL:', totTerimaDetailPembelianLcl);
-                console.log('Difference (Total - Terima):', totDifference);
-                console.log('ID Pembelian LCL:', idPembelianLcl);
-
                 var pembelianDropdown = $('#pembelian_tambah_id');
 
                 // Clear all existing options
@@ -315,131 +316,73 @@ $(document).ready(function() {
                 pembelianDropdown.append('<option value="">Pilih LCL / FCL</option>');
                 @foreach($Data['msg']['pembelianlcl'] as $index => $result)
                     @if($result['name_db']=='UD')
-                    var option = $('<option></option>')
-                        .attr('value', 'lcl-{{ $result['id'] }}')
-                        .attr('data-type', 'PT')
-                        .text('LCL - {{ $result['invoice'] }} '+'( '+totDifference['{{ $result['id'] }}'] +' )');
-                    pembelianDropdown.append(option);
+                        var option = $('<option></option>')
+                            .attr('value', 'lcl-{{ $result['id'] }}')
+                            .attr('data-type', 'PT')
+                            .text('LCL - {{ $result['invoice'] }} '+'( '+totDifference['{{ $result['id'] }}'] +' )');
+                        pembelianDropdown.append(option);
                     @endif
                 @endforeach
-                //untuk memproses import data ke tabel ketika memilih di option select
+
+                // Mengatur event listener untuk memproses pemilihan di option select
                 $(document).on('change', '#pembelian_tambah_id', function() {
-                    $('#tbody_addbarang').empty()
+                    $('#tbody_addbarang').empty();
                     const selected_id = $(this).val();
-   
-                    const otherChars =selected_id.substring(4);
-                    
+                    const otherChars = selected_id.substring(4);
                     const firstThreeChars = selected_id.substring(0, 3);
-                    
-                    if(firstThreeChars=='FCL'){
+
+                    let ajaxMenu = '';
+                    if (firstThreeChars === 'FCL') {
+                        ajaxMenu = 'fcl_import';
+                    } else if (firstThreeChars === 'lcl') {
+                        ajaxMenu = 'lcl_import';
+                    }
+
+                    if (ajaxMenu) {
                         $.ajax({
-                            url:'',
-                            data:{
-                                menu:'fcl_import',
-                                id:selected_id
+                            url: '',
+                            data: {
+                                menu: ajaxMenu,
+                                id: selected_id
                             },
-                            success: function(response){
-                                console.log('res',response)
-                                response.detail.forEach(function(detail,index) {
-                                    newRows += `
-                                        <tr>
-                                            <td class="text-center" style="border: 0.1px solid black;width: 150px; height: 150px;">
-                                                <!-- Set the size of the <td> -->
-                                                <img src="${detail.image}" style="width: 150px; height: 150px;">
-                                                <!-- Image size -->
-                                            </td>
-                                            <td style=" border:0.1px solid black;" id="kode-detail-${index}"> 
-                                                <p class="centered-text">
-                                                    <b>${detail.kode}</b>
-                                                </p>
-                                            </td>
-                                            <td style=" border: 0.1px solid black;">
-                                                <p class="centered-text" >
-                                                    <b id="idfcllcl-${index}" style="display: none;">${detail.id}</b>
-                                                    <b id="name-detail-${index}">${detail.name}</b>
-                                                    <b id="category-detail-${index}"style="display: none;">${detail.category}</b>
-                                                </p>
-                                            </td>
-                                            <td style=" border: 0.1px solid black;">
-                                                <p class="centered-text">
-                                                    <b id="stok-input-${index}">${detail.qty_input}</b>
-                                                </p>
-                                            </td>
-                                            <td style=" border: 0.1px solid black;">
-                                                <p class="centered-text">
-                                                    <b id="stok-update-${index}">${detail.qty_terima}</b>
-                                                    <b id="stok-idbarang-${index}" style="display: none;">${detail.idbarang}</b>
-                                                    <b id="stok-iddetail-${index}" style="display: none;">${detail.iddetail}</b>
-                                                </p>
-                                            </td>
-                                            <td style=" border: 0.1px solid black;">
-                                                <input class="form-control bordered-input" id="stok-terima-${index}" value="0">
-                                            </td>
-                                            <td style=" border: 0.1px solid black;">
-                                                <div class="centered-text">
-                                                    <button type="button" id="delete_barang" class="btn btn-primary">X</button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        
-                                    `;
-                                });
-                                
-                                $('#tbody_addbarang').append(newRow);
-                                $(document).on('click', '#delete_barang', function() {
-                                    $(this).closest('tr').remove(); // Menghapus baris induk (tr) dari tombol yang diklik
-                                });
-                            }
-                        })
-                        return;
-                    }else if(firstThreeChars=='lcl'){
-                        $.ajax({
-                            url:'',
-                            data:{
-                                menu:'lcl_import',
-                                id:selected_id
-                            },
-                            success: function(response){
-                                console.log('res',response)
-                                let newRows = '';  // Initialize an empty string to store all the new rows
+                            success: function(response) {
+                                let newRows = ''; // Initialize an empty string to store all the new rows
 
                                 // Loop through each item in response.detail
-                                response.detail.forEach(function(detail,index) {
+                                response.detail.forEach(function(detail, index) {
                                     newRows += `
                                         <tr>
                                             <td class="text-center" style="border: 0.1px solid black;width: 150px; height: 150px;">
-                                                <!-- Set the size of the <td> -->
                                                 <img src="${detail.image}" style="width: 150px; height: 150px;">
-                                                <!-- Image size -->
                                             </td>
-                                            <td style=" border:0.1px solid black;" id="kode-detail-${index}"> 
+                                            <td style="border: 0.1px solid black;" id="kode-detail-${index}">
                                                 <p class="centered-text">
                                                     <b>${detail.kode}</b>
                                                 </p>
                                             </td>
-                                            <td style=" border: 0.1px solid black;">
-                                                <p class="centered-text" >
+                                            <td style="border: 0.1px solid black;">
+                                                <p class="centered-text">
                                                     <b id="idfcllcl-${index}" style="display: none;">${detail.id}</b>
                                                     <b id="name-detail-${index}">${detail.name}</b>
                                                     <b id="category-detail-${index}" style="display: none;">${detail.category}</b>
                                                 </p>
                                             </td>
-                                            <td style=" border: 0.1px solid black;">
+                                            <td style="border: 0.1px solid black;">
                                                 <p class="centered-text">
                                                     <b id="stok-input-${index}">${detail.qty_input}</b>
                                                 </p>
                                             </td>
-                                            <td style=" border: 0.1px solid black;">
+                                            <td style="border: 0.1px solid black;">
                                                 <p class="centered-text">
                                                     <b id="stok-update-${index}">${detail.qty_terima}</b>
                                                     <b id="stok-idbarang-${index}" style="display: none;">${detail.idbarang}</b>
                                                     <b id="stok-iddetail-${index}" style="display: none;">${detail.iddetail}</b>
                                                 </p>
                                             </td>
-                                            <td style=" border: 0.1px solid black;">
+                                            <td style="border: 0.1px solid black;">
                                                 <input class="form-control bordered-input" id="stok-terima-${index}" value="0">
                                             </td>
-                                            <td style=" border: 0.1px solid black;">
+                                            <td style="border: 0.1px solid black;">
                                                 <div class="centered-text">
                                                     <button type="button" id="delete_barang" class="btn btn-primary">X</button>
                                                 </div>
@@ -449,17 +392,12 @@ $(document).ready(function() {
                                 });
 
                                 $('#tbody_addbarang').append(newRows);
-                                $(document).on('click', '#delete_barang', function() {
-                                    $(this).closest('tr').remove(); // Menghapus baris induk (tr) dari tombol yang diklik
-                                });
                             }
-                        })
-                        return;
+                        });
                     }
                 });
-                return;
             }
-            else{
+            else if (selectedValue === 'PT') {
 
                 const idDetailPembelianLcl = @json($id_detail_pembelian_lcl_desc);
                 const pembelianLclDetail = @json($Data['msg']['pembelianlcldetail']);
@@ -499,11 +437,7 @@ $(document).ready(function() {
                     totDifference[idLclDetail] = totDetailPembelianLcl[idLclDetail] - totTerimaDetailPembelianLcl[idLclDetail];
                 });
 
-                // Log the results
-                console.log('Total Pembelian LCL:', totDetailPembelianLcl);
-                console.log('Total Terima Pembelian LCL:', totTerimaDetailPembelianLcl);
-                console.log('Difference (Total - Terima):', totDifference);
-                console.log('ID Pembelian LCL:', idPembelianLcl);
+                
 
                 var pembelianDropdown = $('#pembelian_tambah_id');
 
@@ -616,10 +550,16 @@ $(document).ready(function() {
                                 $(document).on('click', '#delete_barang', function() {
                                     $(this).closest('tr').remove(); // Menghapus baris induk (tr) dari tombol yang diklik
                                 });
+                            },
+                            error: function(xhr, status, error) {
+                                // Handle error jika terjadi kesalahan
+                                console.error(xhr.responseText);
+                                return;
                             }
                         })
-                        return;
+                        return 0;
                     }else if(firstThreeChars=='lcl'){
+                        
                         $.ajax({
                             url:'',
                             data:{
@@ -627,7 +567,7 @@ $(document).ready(function() {
                                 id:selected_id
                             },
                             success: function(response){
-                                console.log('res',response)
+                                console.log('res pt',response)
                                 let newRows = '';  // Initialize an empty string to store all the new rows
 
                                 // Loop through each item in response.detail
@@ -679,13 +619,18 @@ $(document).ready(function() {
                                 $(document).on('click', '#delete_barang', function() {
                                     $(this).closest('tr').remove(); // Menghapus baris induk (tr) dari tombol yang diklik
                                 });
+                                
+                            },
+                            error: function(xhr, status, error) {
+                                // Handle error jika terjadi kesalahan
+                                console.error(xhr.responseText);
                                 return;
                             }
                         })
-                        return;
-                    }
+                        return 0;
+                    } 
                 });
-                return;
+                return 0;
             }
 
          
@@ -757,9 +702,6 @@ $(document).ready(function() {
             stok_terima.push(stok); // Push each value into the name_detail array
         });
 
-       
-        console.log('id_detail:', id_detail);
-        console.log('idbarang:', id_barang);
 
         var dataToSend = {
             database: database,
@@ -787,9 +729,9 @@ $(document).ready(function() {
         }
 
 
-        console.log('dataTosend',dataToSend)
+        
         $.ajax({
-            url:'',
+            url:'{{ route('admin.penerimaan_pembelian') }}',
             data: {
                 menu:'tambah_penerimaan',
                 form:dataToSend
@@ -816,6 +758,11 @@ $(document).ready(function() {
                     })
                     return;
                 }
+            },
+            error: function(xhr, status, error) {
+                    // Handle error jika terjadi kesalahan
+                    console.error(xhr.responseText);
+                    return;
             }
         })
     });

@@ -157,19 +157,38 @@ class Fcl extends Model
             $key_index++;
             $key_index_array[] = $newKey;
         }
-        foreach ($form['id_penjualanfromchina']  as $key => $value) {
-            $lastChar = substr($key, -1);
-            $newKey = "idpenjualanfromchina[{$lastChar}]";
-            $array[$newKey] = $value ?? '';
-            $key_index++;
-            $key_index_array[] = $newKey;
+        if(!empty($form['id_penjualanfromchina']) && !empty($form['id_penjualanfromchinadetail'])){
+
+            foreach ($form['id_penjualanfromchina']  as $key => $value) {
+                $lastChar = substr($key, -1);
+                $newKey = "idpenjualanfromchina[{$lastChar}]";
+                $array[$newKey] = $value ?? '';
+                $key_index++;
+                $key_index_array[] = $newKey;
+            }
+            foreach ($form['id_penjualanfromchinadetail']  as $key => $value) {
+                $lastChar = substr($key, -1);
+                $newKey = "idpenjualanfromchinadetail[{$lastChar}]";
+                $array[$newKey] = $value ?? '';
+                $key_index++;
+                $key_index_array[] = $newKey;
+            }
         }
-        foreach ($form['id_penjualanfromchinadetail']  as $key => $value) {
-            $lastChar = substr($key, -1);
-            $newKey = "idpenjualanfromchinadetail[{$lastChar}]";
-            $array[$newKey] = $value ?? '';
-            $key_index++;
-            $key_index_array[] = $newKey;
+        else{
+            foreach ($form['id_commercial']  as $key => $value) {
+                $lastChar = substr($key, -1);
+                $newKey = "idpenjualanfromchina[{$lastChar}]";
+                $array[$newKey] = $value ?? '';
+                $key_index++;
+                $key_index_array[] = $newKey;
+            }
+            foreach ($form['id_commercial_detail']  as $key => $value) {
+                $lastChar = substr($key, -1);
+                $newKey = "idpenjualanfromchinadetail[{$lastChar}]";
+                $array[$newKey] = $value ?? '';
+                $key_index++;
+                $key_index_array[] = $newKey;
+            }
         }
         $mergedArray = array_merge($formParams, $array);
         // dd($mergedArray);

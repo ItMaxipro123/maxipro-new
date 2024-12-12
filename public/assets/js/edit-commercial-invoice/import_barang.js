@@ -6,3 +6,5 @@ function importData(event) {
         $('#importModal').modal('show'); // Tampilkan modal
 }
 
+   //untuk mengaktifkan checkbox agar dapat mencustom nomor invoice
+  

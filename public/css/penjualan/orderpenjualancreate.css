@@ -1,0 +1,20 @@
+@media (max-width: 768px) {
+    table thead tr th {
+        display: block;
+        width: 100%;
+    }
+
+    table tbody tr td {
+        display: block;
+        width: 100%;
+    }
+}
+/* Tambahkan border untuk setiap th, td, dan tr */
+table tr, table td, table th {
+    border: 1px solid black;
+}
+
+/* Menggabungkan border agar tidak ada jarak */
+table {
+    border-collapse: collapse;
+}

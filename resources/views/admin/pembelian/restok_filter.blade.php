@@ -7,6 +7,7 @@ Pembeliaan    | PT. Maxipro Group Indonesia
 @section('link')
 
 <link href="{{ asset('css/restok.css') }}" rel="stylesheet">
+
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 
@@ -21,13 +22,55 @@ Pembeliaan    | PT. Maxipro Group Indonesia
 @section('content')
 
 <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg wider">
-    
-    <div class="container-fluid">
-        <h4 id="judulRestok"><i class="fas fa-database"></i> &nbsp Restok</h4>
-        <small class="display-block" id="subjudul">Restok {{ $username['data']['teknisi']['name'] }}</small>
-        
-    </div>
+    <div class="row">
+        <div class="col-md-6">
 
+            <div class="container-fluid">
+                <h4 id="judulRestok"><i class="fas fa-database"></i> &nbsp Restok</h4>
+                <small class="display-block" id="subjudul">Restok {{ $username['data']['teknisi']['name'] }}</small>
+                
+            </div>
+        </div>
+        <div class="col-md-6">
+            <!-- navbar untuk membuka sidebar -->
+                <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" data-scroll="true">
+                    <div class="container-fluid py-1 px-3">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+
+
+                                </ol>
+                                <h6 class="font-weight-bolder mb-0"></h6>
+                            </nav>
+                            <div  id="navbar">
+                                <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+                                
+                                </div>
+                                    <ul class="navbar-nav  justify-content-end">
+                                
+                                
+                                        <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+                                            <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
+                                                <div class="sidenav-toggler-inner">
+                                                <i class="sidenav-toggler-line"></i>
+                                                <i class="sidenav-toggler-line"></i>
+                                                <i class="sidenav-toggler-line"></i>
+                                                </div>
+                                            </a>
+                                        </li>
+
+                                
+                                
+
+                                
+                                
+                                    </ul>
+
+                            </div>
+                    </div>
+                </nav>
+        </div>
+    </div>
 
 
     <div class="container-fluid py-4 h-100">
@@ -95,18 +138,11 @@ Pembeliaan    | PT. Maxipro Group Indonesia
                                         <div class="form-group">
                                             <label for="jenislabel">Jenis</label>
                                             <select class="form-control" name="jenis" id="id_jenis" style="background-color:  #f0f0f0">
-                                                @if($id_jenis=='all')
-
-                                                <option value="all">All</option>
-                                                @foreach($Data['msg']['category'] as $index => $jenis)
-                                                    <option value="{{ $jenis['id'] }}">{{ $jenis['name'] }}</option>
+                                                     <option value="all">All</option>
+                                                         @foreach($Data['msg']['category'] as $index => $jenis)
+                                                <option value="{{ $jenis['id'] }}">{{ $jenis['name'] }}</option>
                                                 @endforeach
-                                                @else
-                                                <option value="all">All</option>
-                                                @foreach($Data['msg']['category'] as $index => $jenis)
-                                                <option value="{{ $jenis['id'] }}" {{ $id_jenis == $jenis['id'] ? 'selected' : '' }}>{{ $jenis['name'] }}</option>
-                                                @endforeach
-                                                @endif
+                                                
                                             </select>
                                         </div>
 
@@ -159,88 +195,75 @@ Pembeliaan    | PT. Maxipro Group Indonesia
                         </label>
 
                     </div>
+                    
+                    <div id="reload-icon">
+                        <i class="fas fa-sync-alt"></i> Reloading...
+                    </div>
+                    <div class="table-responsive">
 
+                        <table id="tabe-stok" style="width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th style="width: 5%; border: 1px solid #d7d7d7;">No</th>
+                                    <th style="width: 10%; border: 1px solid #d7d7d7;">Tanggal</th>
+                                    <th style="width: 10%; border: 1px solid #d7d7d7;">Kode</th>
+                                    <th style="width: 30%; border: 1px solid #d7d7d7;">Nama Barang</th>
+                                    <th style="width: 5%; border: 1px solid #d7d7d7;">Qty</th>
+                                    
+                                    <th style="width: 5%; border: 1px solid #d7d7d7;">Stok</th>
+                                    <th style="width: 5%; border: 1px solid #d7d7d7;">Kubik</th>
+                                    <th style="width: 5%; border: 1px solid #d7d7d7;">User</th>
+                                    <th style="width: 20%; border: 1px solid #d7d7d7;">Keterangan</th>
+                                    <th style="width: 5%; border: 1px solid #d7d7d7;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php $num = 1; @endphp
+                                @foreach($Data['msg']['restok'] as $index => $data)
+                                    @php
+                                        \Carbon\Carbon::setLocale('id');
+                                        $formattedDate = \Carbon\Carbon::parse($data['tgl_request'])->translatedFormat('d M Y');
+                                        $rowStyle = '';
+                                        if ($data['status'] == 'requested') {
+                                            $rowStyle = 'background-color: #fff17a;';
+                                        } elseif ($data['status'] == 'process') {
+                                            $rowStyle = 'background-color: #97ebfb;';
+                                        } elseif ($data['status'] == 'complete') {
+                                            $rowStyle = 'background-color: #6cf670;';
+                                        } elseif ($data['status'] == 'reject') {
+                                            $rowStyle = 'background-color: #feb3aa;';
+                                        }
+                                        $gambar = json_encode($data['image_url']);
+                                        $kubik = $data['kubik'] == 0 ? 0 : $data['jml_permintaan'] * $data['kubik'];
+                                    @endphp
+                                    <tr style="{{ $rowStyle }}">
+                                        <td style="border: 1px solid #d7d7d7; color: black;">{{ $num }}</td>
+                                        <td style="border: 1px solid #d7d7d7; color: black;">{{ $formattedDate }}</td>
+                                        <td style="border: 1px solid #d7d7d7; color: black;">
+                                            <a href="javascript:void(0)" onclick="gambarRestok(this, '{{ $gambar }}')" data-id="{{ $data['id'] }}" name="gambarButton">{{ $data['new_kode'] }}</a>
+                                        </td>
+                                        <td style="border: 1px solid #d7d7d7; color: black;" id="data-nama-barang">{{ $data['nama_barang'] }}</td>
+                                        <td style="border: 1px solid #d7d7d7; color: black;">{{ $data['jml_permintaan'] }}</td>
+                                        <td id="td-table" style="border: 1px solid #d7d7d7; color: black;">
+                                            <a href="javascript:void(0)" onclick="modalRestok(this)" data-new-code="{{ $data['new_kode'] }}" data-nama-barang="{{ $data['nama_barang'] }}">{{ $data['last_stok'] }}</a>
+                                        </td>
+                                        <td style="border: 1px solid #d7d7d7; color: black;">{{ $kubik }}</td>
+                                        <td style="border: 1px solid #d7d7d7; color: black;">{{ $data['name_teknisi'] }}</td>
+                                        <td style="border: 1px solid #d7d7d7; color: black;">{{ $data['keterangan'] }}</td>
+                                        <td style="border: 1px solid #d7d7d7;">
+                                            @if($data['status'] == 'requested' || $data['status'] == 'reject')
+                                                <a href="javascript:void(0)" onclick="updateRestok(this)" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-secondary btn-edit">Edit</a>
+                                            @else
+                                                <a href="javascript:void(0)" onclick="updateRestokFailed(this); return false;" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-secondary btn-edit">Edit</a>
+                                            @endif
+                                            <a href="javascript:void(0)" onclick="deleteRestok(this)" data-id="{{ $data['id'] }}" name="{{ $data['nama_barang'] }}" class="btn btn-large btn-info btn-danger" style="width: 75px; height: 38px; padding: 9px 10px;">Delete</a>
+                                        </td>
+                                    </tr>
+                                    @php $num++; @endphp
+                                @endforeach
+                            </tbody>
+                        </table>
 
-                    <table id="tabe-stok">
-                        <thead>
-                            <!-- Add table headers if needed -->
-                        </thead>
-                        <tbody>
-                            @php
-                            $num = 1;
-                
-                            @endphp
-                            <!-- Table data will be populated here -->
-                            @foreach($Data['msg']['restok'] as $index => $data)
-                            @php
-                            \Carbon\Carbon::setLocale('id'); // Set locale ke Bahasa Indonesia
-                            $formattedDate = \Carbon\Carbon::parse($data['tgl_request'])->translatedFormat('d F Y');
-                           $rowStyle = '';
-                            if ($data['status'] == 'requested') {
-                                $rowStyle = 'background-color: #fff17a;';
-                            } elseif ($data['status'] == 'process') {
-                                $rowStyle = 'background-color: #97ebfb;';
-                            }
-                            elseif ($data['status'] == 'complete') {
-                                $rowStyle = 'background-color: #6cf670;';
-                            }
-                            elseif ($data['status'] == 'reject') {
-                                $rowStyle = 'background-color: #feb3aa;';
-                            }               
-                            $gambar = json_encode($data['image_url']);               
-                            @endphp
-                        <tr style="{{ $rowStyle }}">
-                            <td style="border: 1px solid #d7d7d7; color: black;">{{ $num }}</td>
-                            <td style="border: 1px solid #d7d7d7; color: black;">{{ $formattedDate }}</td>
-                        
-                            <td style="border: 1px solid #d7d7d7; color: black;"><a href="javascript:void(0)" onclick="gambarRestok(this, '{{ $gambar }}')" data-id="{{ $data['id'] }}" name="gambarButton">{{ $data['new_kode'] }}</a></td>
-                            <td style="border: 1px solid #d7d7d7; color: black;">{{ $data['nama_barang'] }}</td>
-                            <td style="border: 1px solid #d7d7d7; color: black;">{{ $data['jml_permintaan'] }}</td>
-                            <td id="td-table"> <a href="javascript:void(0)" onclick="modalRestok(this)" data-new-code="{{ $data['new_kode'] }}" data-nama-barang="{{ $data['nama_barang'] }}"> {{ $data['last_stok'] }} </a> </td>
-                            @php
-                            $kubik = $data['kubik'] == 0 ? 0 : $data['jml_permintaan'] * $data['kubik'];
-                            @endphp
-                            <td style="border: 1px solid #d7d7d7; color: black;">{{ $kubik }}</td>
-                            <td style="border: 1px solid #d7d7d7; color: black;">{{ $data['name_teknisi'] }}</td>
-                            <td style="border: 1px solid #d7d7d7; color: black;">{{ $data['keterangan'] }}</td>
-                            <td style="border: 1px solid #d7d7d7; color: black;">{{ $data['category'] }}</td>
-                            <td style="border: 1px solid #d7d7d7;">
-                            @if($data['status'] == 'requested' || $data['status'] == 'reject')
-                            <a href="javascript:void(0)" onclick="updateRestok(this)" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-secondary btn-edit">Edit</a>
-                            @else
-                            <a href="javascript:void(0)" onclick="updateRestokFailed(this); return false;" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-secondary btn-edit">Edit</a>
-                            @endif
-                             <a href="javascript:void(0)" onclick="deleteRestok(this)" data-id="{{ $data['id'] }}" name="{{ $data['nama_barang'] }}" class="btn btn-large btn-info btn-danger" style="width: 75px; height: 38px; padding: 9px 10px;">Delete</a>
-
-                            </td>
-                        </tr>
-
-
-                            @php
-                            $num++;
-                            @endphp
-                            @endforeach
-                        </tbody>
-                    </table>
-
-                    <div class="col-sm-12">
-                        <div class="modal fade" id="gambarModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-lg" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="gambarModallabel">Gambar</h5>
-                                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        
-                                        <img id="gambarImage" src="" alt="Gambar" style="max-width: 100%;">
-                                    </div>
-                                    <div class="modal-footer"></div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                     
                     <!-- modal menampilkan gambar -->
@@ -263,6 +286,7 @@ Pembeliaan    | PT. Maxipro Group Indonesia
                             </div>
                         </div>
                     </div>
+
                     <!-- modal tambah restok -->
                     <div class="col-sm-12" style="margin-top: 15px;">
 
@@ -278,6 +302,7 @@ Pembeliaan    | PT. Maxipro Group Indonesia
                                     </div>
                                     <!-- Isi modal -->
                                     <div class="modal-body">
+                                    <div id="overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1000;"></div>
 
                                       <form action="" class="form-horizontal" id="tambahForm" method="get">
                                             <div class="form-group">
@@ -291,12 +316,12 @@ Pembeliaan    | PT. Maxipro Group Indonesia
 
                                             <div class="form-group">
                                                 <label for="startDatepicker">Tanggal Request:</label>
-                                                <input type="text" placeholder="Pilih Tanggal Request" class="form-control" id="tgl_request" name="tgl_request_name" disabled>
+                                                <input type="text" placeholder="Pilih Tanggal Request" class="form-control" id="tgl_request" name="tgl_request_name" style="border: 1px solid #ced4da; width: 100%; padding-left:10px;" readonly>
                                             </div>
                                            
                                             <div class="form-group">
                                                 <label for="jumlahpermintaanlabel">Jumlah Permintaan</label>
-                                                <input type="number" class="form-control" placeholder="Jumlah Permintaan" id="jml_permintaan" name="jml_permintaan_name"style="border: 1px solid #ced4da; width: 100%; padding-left:22px;">
+                                                <input type="number" class="form-control" placeholder="Jumlah Permintaan" id="jml_permintaan" name="jml_permintaan_name"style="border: 1px solid #ced4da; width: 100%; padding-left:10px;">
                                             </div>
                                 
                                             <div class="form-group" style="margin-bottom: 20px;">
@@ -327,7 +352,7 @@ Pembeliaan    | PT. Maxipro Group Indonesia
                                                 <textarea type="text" class="form-control" placeholder="Keterangan" id="keterangan" name="keterangan_name" style="border: 1px solid #ced4da; width: 100%; padding-left:22px;"></textarea>
                                             </div>
                                             <div class="form-group" style="display: flex;padding-top:30px; text-align:end;">
-                                              <button type="submit" id="selecttambahButton" class="btn btn-primary" style="margin-left: auto;">Select
+                                              <button type="submit" id="selecttambahButton" class="btn btn-primary" style="margin-left: auto;">Simpan
                                               </button>
                                           </div>
                                       </form>
@@ -335,7 +360,7 @@ Pembeliaan    | PT. Maxipro Group Indonesia
                                     </div>
                                     <div class="modal-footer">
                                         <!-- Tombol untuk menutup modal -->
-                                      
+                                       
                                     </div>
 
 
@@ -349,7 +374,7 @@ Pembeliaan    | PT. Maxipro Group Indonesia
                             <div class="modal-dialog modal-xl" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="mutasistokModallabel">Mutasi Stok</h5>
+                                        <h5 class="modal-title" id="mutasistokModallabelCode">Mutasi Stok </h5>
                                         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -381,6 +406,7 @@ Pembeliaan    | PT. Maxipro Group Indonesia
                             </div>
                         </div>
                     </div>
+
                     <!-- modal edit restok -->
                     <div class="col-sm-12" style="margin-top: 15px;">
                         <div id="overlay" style="display: none;"></div>
@@ -391,10 +417,10 @@ Pembeliaan    | PT. Maxipro Group Indonesia
                                 <div class="modal-content">
                                     <!-- Header modal, termasuk tombol close -->
                                     <div class="modal-header">
+                                       
                                     <h5 class="modal-title" id="mutasistokModallabel">Restok</h5>
                                     <button type="button" class="close" data-bs-dismiss="modal" onclick="location.reload()"  aria-label="Close">    <span aria-hidden="true">&times;</span></button>
                                    
-
 
                                     </div>
                                     <!-- Isi modal -->
@@ -407,8 +433,7 @@ Pembeliaan    | PT. Maxipro Group Indonesia
                                     </div>
                                     <div class="modal-footer">
                                         <!-- Tombol untuk menutup modal -->
-                           
-                                   
+                                
                                     </div>
 
 
@@ -420,6 +445,10 @@ Pembeliaan    | PT. Maxipro Group Indonesia
 
                 </div>
             </div>
+            
+            
+
+
         </div>
     </div>
 </main>
@@ -444,6 +473,12 @@ Pembeliaan    | PT. Maxipro Group Indonesia
 
 <script>
    
+   const today = new Date().toISOString().split('T')[0];
+
+    // Mengaktifkan input dan menambahkan nilai tanggal hari ini
+    const inputTanggal = document.getElementById('tgl_request');
+    inputTanggal.disabled = false; // Mengaktifkan input
+    inputTanggal.value = today;
 
     document.addEventListener('DOMContentLoaded', function() {
         // Initialize Choices.js on the select element
@@ -500,7 +535,8 @@ Pembeliaan    | PT. Maxipro Group Indonesia
                 }
             },
 
-            columns: [{
+            columns: [
+                {
                     data: 'num',
                     title: 'No'
                 },
@@ -520,7 +556,7 @@ Pembeliaan    | PT. Maxipro Group Indonesia
                 
                 {
                     data: 'jml_permintaan',
-                    title: 'Jml Permintaan'
+                    title: 'Qty'
                 },
                  {
                     data: 'last_stok',
@@ -537,10 +573,6 @@ Pembeliaan    | PT. Maxipro Group Indonesia
                  {
                     data: 'keterangan',
                     title: 'Keterangan'
-                },
-                  {
-                    data: 'category',
-                    title: 'Kategori'
                 },
                 {
                     data: 'link',
@@ -564,196 +596,195 @@ Pembeliaan    | PT. Maxipro Group Indonesia
 <script>
     
     $(document).ready(function() {
+
+
+                $(document).on('change', '.select_kategori', function() {
+                    var selectedKategori = $(this).val()
+                    var dataId = $(this).data('id');
+                    
+                    $('#reload-icon').show();
+                    $.ajax({
+                        url: "{{ route('admin.pembelian_select_category_order_pembelian') }}",
+                        type: 'GET',
+                        data: {
+                            id: dataId,
+                            category: selectedKategori,
+                            _token: $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            console.log(response);
+                            $('#reload-icon').hide();
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(xhr.responseText);
+                        }
+                    });
+                    
+                })
+
         
         // Event listener for dropdown change
         $('#product-restok-tambah-filter').change(function() {
+     
+            $('#overlay').show();
+
+      
             // Get selected value
-            
-             var selectedProductId = $(this).val();
+            var selectedProductId = $(this).val();
         
             // Check if the selected value is not the default option
-            if (selectedProductId !== ""){
-                       
+            let isSubmitting = false; // Variabel untuk melacak status pengiriman
+
+            if (selectedProductId !== "") {
                 // AJAX request
                 $.ajax({
-                    url: '{{ route('admin.pembelian_restok_getstok_filter') }}', // Replace with your server endpoint URL
+                    url: '{{ route('admin.pembelian_restok_getstok_filter') }}',
                     type: 'GET',
                     data: { id_product: selectedProductId },
-
                     success: function(response) {
-                       
-                       
-                        if ($.isEmptyObject(response)) {//bila response {}
-                              function appendImage() {
+                        $('#overlay').hide();
+                        // console.log('import')
+                        if ($.isEmptyObject(response)) { // Jika response kosong
+                            function appendImage() {
                                 var img = $('<img>').attr('src', "https://maxipro.id/images/placeholder/basic.png").css('width', '70px').css('height', '70px');
                                 $('#new-input-container-gambar').empty().append(img);
                             }
-                              appendImage(); 
+                            appendImage();
+
                             var emptyTable = $('<table>').addClass('table').css('border', '1px solid black');
                             var emptyRow = $('<tr>').append($('<td>').text('Stok Kosong'));
                             emptyTable.append(emptyRow);
-                            $('#new-input-container').empty(); // Menghapus tabel dari #new-input-container
+                            $('#new-input-container').empty();
                             $('#new-input-container2').empty();
-                             
                             $('#new-input-container-kosong').html(emptyTable);
-                         
-                        }
-                        else {
-                            //bila response ! {}
-                           var countstokPT =0;
-                           var countstokUD =0;
-                           var countStokTotal=0;
+
+                        } else { // Jika response berisi data
+                            var countstokPT = 0;
+                            var countstokUD = 0;
+
                             function appendImage() {
                                 var img = $('<img>').attr('src', response.msg.image).css('width', '270px').css('height', '270px');
                                 $('#new-input-container-gambar').empty().append(img);
                             }
-                   
-                             if (response.msg.countStokPT !== 0 || response.msg.countStokUD !== 0) {
-                                appendImage(); 
-                            // Replace the new table with the container
-                            if (response.msg.countStokPT !== 0) {
 
-                                var newTable = $('<table>').addClass('table').css('border', '1px solid black');
+                            if (response.msg.countStokPT !== 0 || response.msg.countStokUD !== 0) {
+                                appendImage();
 
-                                // Create table header
-                                var tableHeader = $('<thead>').append($('<tr>').append($('<th>').text('Database PT').addClass('header-class').attr('colspan', '2').css('border', '1px solid black')));
-
-                                // Create table body
-                                var tableBody = $('<tbody>');
-
-                                // Loop through each stok product UD and create table rows and cells for body
+                                if (response.msg.countStokPT !== 0) {
+                                    var newTable = $('<table>').addClass('table').css('border', '1px solid black');
+                                    var tableHeader = $('<thead>').append($('<tr>').append($('<th>').text('Database PT').attr('colspan', '2').css('border', '1px solid black')));
+                                    var tableBody = $('<tbody>');
+                                    
                                     var rowtitle1 = $('<tr>');
                                     rowtitle1.append($('<td>').text('Gudang').css('border', '1px solid black'));
                                     rowtitle1.append($('<td>').text('Qty').css('border', '1px solid black'));
                                     tableBody.append(rowtitle1);
-                                response.msg.stokproduct.forEach(function(item) {
-                                
-                                    var row = $('<tr>');
-                                    row.append($('<td>').text(item.name_gudang).css('border', '1px solid black'));
-                                    row.append($('<td>').text(item.stok_gudang).css('border', '1px solid black'));
-                                    tableBody.append(row);
 
-                                     countstokPT += parseInt(item.stok_gudang, 10);
+                                    response.msg.stokproduct.forEach(function(item) {
+                                        var row = $('<tr>');
+                                        row.append($('<td>').text(item.name_gudang).css('border', '1px solid black'));
+                                        row.append($('<td>').text(item.stok_gudang).css('border', '1px solid black'));
+                                        tableBody.append(row);
 
-                                });
-                                var rowtotalpt = $('<tr>');
-                                rowtotalpt.append($('<td>').html('<b>Total</b>').css('border', '1px solid black'));
-                                rowtotalpt.append($('<td>').html('<b>'+countstokPT+'</b>').css('border', '1px solid black'));
-                                tableBody.append(rowtotalpt)
-                                // Append header and body to the table
-                                newTable.append(tableHeader).append(tableBody);
-                                $('#new-input-container').html(newTable);
+                                        countstokPT += parseInt(item.stok_gudang, 10);
+                                    });
+
+                                    var rowtotalpt = $('<tr>');
+                                    rowtotalpt.append($('<td>').html('<b>Total</b>').css('border', '1px solid black'));
+                                    rowtotalpt.append($('<td>').html('<b>' + countstokPT + '</b>').css('border', '1px solid black'));
+                                    tableBody.append(rowtotalpt);
+
+                                    newTable.append(tableHeader).append(tableBody);
+                                    $('#new-input-container').html(newTable);
                                     $('#new-input-container-kosong').empty();
-                            }
-                            else {
-                                $('#new-input-container').html(''); // Clear the table if countStokPT is 0
+                                } else {
+                                    $('#new-input-container').html('');
                                     $('#new-input-container-kosong').empty();
-                            }
-                            if (response.msg.countStokUD !== 0) {
-                                var newTable2 = $('<table>').addClass('table').css('border', '1px solid black');
+                                }
 
-                                // Create table header
-                                var tableHeader2 = $('<thead>').append($('<tr>').append($('<th>').text('Database UD').addClass('header-class').attr('colspan', '2').css('border', '1px solid')));
+                                if (response.msg.countStokUD !== 0) {
+                                    var newTable2 = $('<table>').addClass('table').css('border', '1px solid black');
+                                    var tableHeader2 = $('<thead>').append($('<tr>').append($('<th>').text('Database UD').attr('colspan', '2').css('border', '1px solid')));
+                                    var tableBody2 = $('<tbody>');
 
-                                // Create table body
-                                var tableBody2 = $('<tbody>');
+                                    var row2title = $('<tr>');
+                                    row2title.append($('<td>').text('Gudang').css('border', '1px solid black'));
+                                    row2title.append($('<td>').text('Qty').css('border', '1px solid black'));
+                                    tableBody2.append(row2title);
 
-                                var row2title = $('<tr>');
-                                row2title.append($('<td>').text('Gudang').css('border', '1px solid black'));
-                                row2title.append($('<td>').text('Qty').css('border', '1px solid black'));
-                                tableBody2.append(row2title);
+                                    response.msg.stokproductUD.forEach(function(item) {
+                                        var row = $('<tr>');
+                                        row.append($('<td>').text(item.name_gudang).css('border', '1px solid black'));
+                                        row.append($('<td>').text(item.stok_gudang).css('border', '1px solid black'));
+                                        tableBody2.append(row);
 
-                                // Loop through each stok product UD and create table rows and cells for body
-                                response.msg.stokproductUD.forEach(function(item) {
-                                    var row = $('<tr>');
-                                    row.append($('<td>').text(item.name_gudang).css('border', '1px solid black'));
-                                    row.append($('<td>').text(item.stok_gudang).css('border', '1px solid black'));
-                                    tableBody2.append(row);
+                                        countstokUD += parseInt(item.stok_gudang, 10);
+                                    });
 
-                                    
-                                     countstokUD += parseInt(item.stok_gudang, 10);
-                                });
-                                 var rowtotalud = $('<tr>');
-                                rowtotalud.append($('<td>').html('<b>Total</b>').css('border', '1px solid black'));
-                                rowtotalud.append($('<td>').html('<b>' +countstokUD+'</b>').css('border', '1px solid black'));
-                                tableBody2.append(rowtotalud)
-                                // Append header and body to the table
-                                newTable2.append(tableHeader2).append(tableBody2);
-                                $('#new-input-container2').html(newTable2);
+                                    var rowtotalud = $('<tr>');
+                                    rowtotalud.append($('<td>').html('<b>Total</b>').css('border', '1px solid black'));
+                                    rowtotalud.append($('<td>').html('<b>' + countstokUD + '</b>').css('border', '1px solid black'));
+                                    tableBody2.append(rowtotalud);
+
+                                    newTable2.append(tableHeader2).append(tableBody2);
+                                    $('#new-input-container2').html(newTable2);
                                     $('#new-input-container-kosong').empty();
-                            } else {
-                                $('#new-input-container2').html(''); // Clear the second table if countStokUD is 0
-                                $('#new-input-container-kosong').empty();
+                                } else {
+                                    $('#new-input-container2').html('');
+                                    $('#new-input-container-kosong').empty();
+                                }
                             }
-                       }     
-                            countStokTotal = countstokPT + countstokUD;   
 
+                            var countStokTotal = countstokPT + countstokUD;
 
-                            $('#tambahForm').submit(function(event) {
-                                    // Mencegah perilaku default formulir
-                                    event.preventDefault();
-                                      
-                                    // Mengumpulkan data formulir
+                            $('#tambahForm').off('submit').on('submit', function(event) {
+                                event.preventDefault();
+
+                                if (!isSubmitting) {
+                                    isSubmitting = true;
+
                                     var formData = {
-                                        
-                                         tgl_request: $('input[name=tgl_request_name]').val(), // Mengambil value dari elemen name_edit 
-                                                                              
-                           
-                                         laststok: countStokTotal,
-                                         jml_permintaan: $('input[name=jml_permintaan_name]').val(),
-                                         
-                                         keterangan: $('textarea[name=keterangan_name]').val(),
+                                        tgl_request: $('input[name=tgl_request_name]').val(),
+                                        laststok: countStokTotal,
+                                        jml_permintaan: $('input[name=jml_permintaan_name]').val(),
+                                        keterangan: $('textarea[name=keterangan_name]').val(),
                                         product: $('#product-restok-tambah-filter').val(),
-                                        
-                                        
-                                        
                                     };
-                                  console.log(formData)
-                                    // Mengirim permintaan AJAX
+
                                     $.ajax({
                                         type: 'GET',
-                                        url: '{{ route('admin.pembelian_restok_tambah_filter') }}', //url send data
+                                        url: '{{ route('admin.pembelian_restok_tambah_filter') }}',
                                         data: formData,
                                         success: function(response) {
-                                            // Tanggapan berhasil, lakukan apa yang perlu dilakukan di sini
-                                           console.log(response);
-                                            if(response !== null){
-                                                 
-                                                 Swal.fire({
-                                                    icon: 'success',
-                                                    title: 'Success!',
-                                                    text: 'Restok berhasil ditambah!',
-                                                }).then((result) => {
-                                                  
-                                                    window.location.reload();
+                                            
+                                            if (response.success==true) {
+                                                Swal.fire('Success', response.message, 'success').then(() => {
+                                                    window.location.reload(); // Reload page or redirect
                                                 });
+                                            }else{
+                                                Swal.fire('Error', response.msg, 'error');
                                             }
-                                            else{
-                                                console.log(response);
-                                                 Swal.fire({
-                                                    icon: 'error',
-                                                    title: 'Error!',
-                                                    text: 'Restok Gagal ditamb!',
-                                                });
-                                            }
-                                             
                                         },
                                         error: function(xhr, status, error) {
-                                            // Penanganan kesalahan jika terjadi
                                             console.error(error);
+                                        },
+                                        complete: function() {
+                                            isSubmitting = false; // Reset status setelah pengiriman
                                         }
                                     });
+                                }
                             });
-
                         }
-                                       
-                   
                     },
                     error: function(xhr, status, error) {
-                        // Handle error
                         console.error('Error:', error);
                     }
                 });
+            }
+
+            else{
+                $('#overlay').hide();
+                return;
             }
         });
     });
@@ -814,7 +845,7 @@ Pembeliaan    | PT. Maxipro Group Indonesia
         event.preventDefault();
 
         $('#product-restok-tambah-filter').val('');
-        console.log($('#product-restok-tambah-filter').val());
+        // console.log($('#product-restok-tambah-filter').val());
         if ($('#product-restok-tambah-filter').val() === null) {
           $('#product-restok-tambah-filter').remove();
 
@@ -884,11 +915,15 @@ Pembeliaan    | PT. Maxipro Group Indonesia
     }
     function modalRestok(element){
         event.preventDefault();
-        console.log('masuk modal');
+        // console.log('masuk modal');
 
+        //mengambil nama barang menggunakan class di datatabel
         var nama_barang = element.getAttribute('data-nama-barang');
+
+        //mengambil new code menggunakan class di datatabel
         var new_code = element.getAttribute('data-new-code');
         
+        //mengirim nama barang dan new code untuk mengambil response
         $.ajax({
             url: '{{ route('admin.pembelian_orderpembelian_stokproduct') }}',
             type: 'GET',
@@ -897,7 +932,7 @@ Pembeliaan    | PT. Maxipro Group Indonesia
                 name_product: nama_barang 
             },
             success: function(response) {
-                console.log('response', response);
+                // console.log('response', response);
 
                 var detailPenjualan = response.msg.detailProduct;
                 var detailPenerimaan = response.msg.penerimaandetail;
@@ -989,7 +1024,7 @@ Pembeliaan    | PT. Maxipro Group Indonesia
                     '</select>' +
                     '</div>' +
                     '<div class="col-md-2">' +
-                    '<button type="button" class="btn btn-info" id="filterMutasi">Save</button>' +
+                    '<button type="button" class="btn btn-info" id="filterMutasi">Filter</button>' +
                     '</div>';
                 divTahunFilter.html(divCol);
 
@@ -1024,7 +1059,8 @@ Pembeliaan    | PT. Maxipro Group Indonesia
                 }
 
                 $('#mutasistokModal').modal('show');
-
+              
+                $('#mutasistokModallabelCode').text('Mutasi Stok ' +'('+new_code+ ') '+nama_barang)
                 $('#filterMutasi').on('click', function() {
                     var bulanSelect = $('#bulanSelect').val();
                     var tahunSelect = $('#tahunSelect').val();
@@ -1272,4 +1308,4 @@ Pembeliaan    | PT. Maxipro Group Indonesia
     });
 </script>
 
-@endsection         
+@endsection

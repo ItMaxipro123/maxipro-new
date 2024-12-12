@@ -1,4 +1,7 @@
 @if($menu=='edit_view')
+<div class="col-md-12 d-flex justify-content-end">
+    <button type="button" id="backbtn" class="btn btn-large btn-warning" onclick="window.location.href = 'data_pembelian_penerimaan';">Kembali</button>
+</div>
 <div class="form-group" style="padding-top: 30px; padding-left: 20px; width:100%;">
 
         <div class="row">
@@ -297,7 +300,7 @@
 @if($menu=='detail_view')
     @if($Data['msg']['penerimaan'][0]['category']=='lcl')
     <div class="modal fade" id="addEkspedisiModal" tabindex="-1" role="dialog" aria-labelledby="addEkspedisiModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-xl" role="document">
+                            <div class="modal-dialog modal-lg" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="addEkspedisiModalLabel">Add Ekspedisi Lcl</h5>
@@ -314,12 +317,13 @@
                                                     <div class="col-md-6">
                                                         <div class="row">
 
-                                                            <div class="col-md-2">
+                                                            <div class="col-md-3">
     
                                                                 <label for="kodeLabel">Kode <span style="color: red;">*</span></label>
                                                             </div>
-                                                            <div class="col-md-10">
+                                                            <div class="col-md-9">
     
+                                                                 <input type="hidden"  class="form-control custom-border" id="id_lcl" value="{{ $Data['msg']['penerimaan'][0]['id_fcl_lcl'] }}" >
                                                                  <input type="text"  class="form-control custom-border" id="kode" placeholder= "AUTO" disabled >
                                                             </div>
                                                         </div>
@@ -328,11 +332,11 @@
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="row">
-                                                            <div class="col-md-2">
+                                                            <div class="col-md-3">
 
                                                                 <label for="ruteLabel">Rute <span style="color: red;">*</span></label>
                                                             </div>
-                                                            <div class="col-md-10">
+                                                            <div class="col-md-9">
                                                                         <select class="select2 form-control tambah_rute" style="width:100%" name="" id="rute">
                                                                                             <option value="0">Pilih Rute</option>
         
@@ -353,12 +357,12 @@
                                                     <div class="col-md-6">
                                                         
                                                             <div class="row">
-                                                                <div class="col-md-2">
+                                                                <div class="col-md-3">
 
                                                                     <label for="databaselabel">Tanggal <span style="color: red;">*</span></label>
                                                                 </div>
 
-                                                                <div class="col-md-10">
+                                                                <div class="col-md-9">
 
                                                                     <input type="text"  class="form-control custom-border" id="tgl_request_tambah" name="tgl_request" placeholder= "Tanggal Pengiriman" required >
                                                                 </div>
@@ -376,16 +380,16 @@
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="row">
-                                                            <div class="col-md-2">
+                                                            <div class="col-md-3">
 
                                                                 <label for="EkpedisiLabel">Ekspedisi<span style="color: red;">*</span></label>
                                                             </div>
-                                                            <div class="col-md-10">
+                                                            <div class="col-md-9">
 
-                                                                <select class="form-control" name="id_db" id="ekspedisi_id" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;" required>
+                                                                <select class="form-control" name="add_id_ekspedisi" id="ekspedisi_id" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;" required>
                                                                     <option value="0">Pilih Ekspedisi</option>
                                                                     @foreach($Data['msg']['ekspedisi'] as $index => $result)
-                                                                    <option value="{{ $result['id'] }}" >{{ $result['name'] }}</option>
+                                                                    <option value="{{ $result['id'] }}" data-name="{{ $result['name'] }}" >{{ $result['name'] }}</option>
                                                                     @endforeach
                                                                 </select>
                                                             </div>
@@ -399,20 +403,20 @@
                                                         
 
                                                             <div class="row">
-                                                                <div class="col-md-2">
+                                                                <div class="col-md-3">
 
                                                                     <label for="databaselabel">Biaya <span style="color: red;">*</span></label>
                                                                 </div>
                                                                 <div class="col-md-5">
 
-                                                                    <select class="form-control" name="id_db" id="matauang_id" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;" required>
+                                                                    <select class="form-control" name="add_matauang_id" id="matauang_id" style="border: 1px solid #ced4da; width: 100%; padding-left: 20px;" required>
                                                                         <option value="0">Pilih Mata Uang</option>
                                                                         @foreach($Data['msg']['matauang'] as $index => $result)
-                                                                        <option value="{{ $result['id'] }}" >({{ $result['simbol'] }}) {{ $result['kode'] }} - {{ $result['name'] }}</option>
+                                                                        <option value="{{ $result['id'] }}" data-simbol="{{ $result['simbol'] }}" >({{ $result['simbol'] }}) {{ $result['kode'] }} - {{ $result['name'] }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
-                                                                <div class="col-md-5">
+                                                                <div class="col-md-4">
 
                                                                     <input type="text"  class="form-control custom-border" id="biaya" placeholder= "Biaya" required >
                                                                 </div>
@@ -422,11 +426,11 @@
                                                     <div class="col-md-6">
 
                                                         <div class="row">
-                                                            <div class="col-md-2">
+                                                            <div class="col-md-3">
 
                                                                 <label for="resiLabel">No. Resi<span style="color: red;">*</span></label>
                                                             </div>
-                                                            <div class="col-md-10">
+                                                            <div class="col-md-9">
                                                                 <input type="text"  class="form-control custom-border" id="resi" placeholder= "No. Resi" required >
                                                             </div>
                                                         </div>
@@ -439,11 +443,11 @@
                                                         
 
                                                             <div class="row">
-                                                                <div class="col-md-2">
+                                                                <div class="col-md-3">
 
                                                                     <label for="databaselabel">Keterangan</label>
                                                                 </div>
-                                                                <div class="col-md-10">
+                                                                <div class="col-md-9">
 
                                                                 <textarea style="border: 1px solid #ced4da;width:100%;height:100px;padding-left:20px;" name="" id="keterangan_ekepedisi"  class="form-control" placeholder="Keterangan"></textarea>
                                                                 </div>
@@ -472,19 +476,19 @@
     </div>
     @endif
 
-<div class="form-group" style="padding-left: 25px; width: 100%;">
-    <div class="border-bottom" style="border-bottom: 1px solid black; width: 100%; margin: 0;">
+    <div class="form-group" style="padding-left: 25px; width: 100%;">
+        <div class="border-bottom" style="border-bottom: 1px solid black; width: 100%; margin: 0;">
+        </div>
     </div>
-</div>
-@if($Data['msg']['penerimaan'][0]['category']=='lcl')
-<div class="form-group" style="padding-top:25px;">
-    <p style="padding-left:25px;">Ekspedisi:</p>
-    <div class="row">
-        <div class="col-md-12">
-            <!-- Add table-responsive class to make the table scrollable on mobile -->
+    @if($Data['msg']['penerimaan'][0]['category']=='lcl')
+    <div class="form-group" style="padding-top:25px;">
+        <p style="padding-left:25px;">Ekspedisi:</p>
+        <div class="row">
+            <div class="col-md-12">
+                <!-- Add table-responsive class to make the table scrollable on mobile -->
 
-            <div class="table-responsive" style="padding-left:25px;">
-                <table class="table table-bordered  ">
+                <div class="table-responsive" style="padding-left:25px;">
+                <table class="table table-bordered">
                     <thead>
                         <tr>
                             <td style="font-weight:bold; border: 0.1px solid black">Tanggal</td>
@@ -495,97 +499,103 @@
                             <td style="font-weight:bold; border: 0.1px solid black">Biaya</td>
                             <td style="font-weight:bold; border: 0.1px solid black">Keterangan</td>
                             <td style="font-weight:bold; border: 0.1px solid black">Action</td>
-                            
                         </tr>
                     </thead>
                     <tbody id="tbody_addekspedisi" style="background-color:white;">
                         @php
+                            $penerimaan_idData = $Data['msg']['penerimaan'][0]['lcl']['id'];
+                            $pembelianlclData = $Data['msg']['pembelianlcl'];
                             
-                        $penerimaan_idData = $Data['msg']['penerimaan'][0]['lcl']['id'];
-                        $pembelianlclData = $Data['msg']['pembelianlcl'];
+                            $penerimaan_lclData = $Data['msg']['penerimaan'][0]['lcl']['invoice'];
+
+                            
+                            $id_ekspedisi_array = [];
+                            $nama_ekspedisi_array = [];
+                            $new_id_ekspedisi_array = [];
+                            
+
+                            $new_id_matauang_array = [];
+                            $new_simbol_matauang_array = [];
+
+                            foreach($pembelianlclData as $index => $result) {
+                                if($result['id'] == $penerimaan_idData) {
+                                    foreach($result['ekspedisilcl'] as $key => $query) {
+                                        $id_ekspedisi_array[] = $query['id_ekspedisi']; // Menambahkan id_ekspedisi ke array
+                                    }
+                                }
+                            }
 
                         
-                        
+
+                            foreach($Data['msg']['pembelianlcl'] as $index3 => $result2) {
+                                if($result2['invoice'] == $penerimaan_lclData) {
+                                    foreach($result2['ekspedisilcl'] as $key => $sum_result2) {
+                                        // Menyimpan semua ID, termasuk duplikat
+                                        $new_id_ekspedisi_array[] = $sum_result2['id_ekspedisi'];
+                                        $new_id_matauang_array[] = $sum_result2['id_matauang'];
+                                    }
+                                }
+                            }
+
+                            
+                            
+
+                            foreach ($Data['msg']['ekspedisi'] as $index2 => $sum_result) {
+                                // Tambahkan nama ke dalam array tanpa memeriksa apakah ID sudah ada
+                                foreach ($new_id_ekspedisi_array as $id) {
+                                    if ($sum_result['id'] === $id) {
+                                        // Tambahkan nama ke dalam array, termasuk duplikat
+                                        $nama_ekspedisi_array[] = $sum_result['name'];
+                                    }
+                                }
+                            }
+
+                            foreach($Data['msg']['matauang'] as $index_mt => $result_mt){
+                                foreach($new_id_matauang_array as $id_mt){
+                                    if($result_mt['id'] == $id_mt){
+                                        $new_simbol_matauang_array[] = $result_mt['simbol'];
+                                    }
+                                }
+                            }
+
+                            
                         @endphp
-                        @php
-    $id_ekspedisi_array = [];
-    $nama_ekspedisi_array = [];
-@endphp
+                    
 
-@foreach($pembelianlclData as $index => $result)
-    @if($result['id'] == $penerimaan_idData)
-        @foreach($result['ekspedisilcl'] as $key => $query)
-            @php
-                $id_ekspedisi_array[] = $query['id_ekspedisi']; // Menambahkan id_ekspedisi ke array
-            @endphp
-        @endforeach
-    @endif
-@endforeach
-
-<p>{{ implode(', ', $id_ekspedisi_array) }}</p> <!-- Menampilkan array sebagai string -->
-@php
-    // Menampilkan seluruh isi dari $id_ekspedisi_array
-    print_r($id_ekspedisi_array);
-@endphp
-
-@foreach($Data['msg']['ekspedisi'] as $index2 => $sum_result)
-    @if(in_array($sum_result['id'], $id_ekspedisi_array))
-        <!-- Kode yang akan dieksekusi jika id ada di dalam array -->
-        $nama_ekspedisi_array[] = $sum_result['name'];
-    @endif
-@endforeach
-
-
-
-
-
-@php
-    $nama_ekspedisi_array = []; // Inisialisasi array untuk menyimpan nama ekspedisi
-@endphp
-
-@foreach($Data['msg']['ekspedisi'] as $index2 => $sum_result)
-    @if(in_array($sum_result['id'], $id_ekspedisi_array))
-        @php
-            
-            $nama_ekspedisi_array[] = $sum_result['name'];
-        @endphp
-    @endif
-@endforeach
-
-<!-- Contoh untuk menampilkan array $nama_ekspedisi_array -->
-
-                      
-                        @foreach($pembelianlclData as $index =>$result)
-                            @if($result['id']== $penerimaan_idData)
+                        @foreach($Data['msg']['pembelianlcl'] as $index => $result)
+                            @if($result['id'] == $penerimaan_idData)
                                 @foreach($result['ekspedisilcl'] as $key => $query)
-                                
-                                <tr>
-                                    <td style="font-weight:bold; border: 0.1px solid black">{{ $query['tgl_kirim'] }}</td>
-                                    <td style="font-weight:bold; border: 0.1px solid black">{{ $query['kode'] }}</td>
-                                    <td style="font-weight:bold; border: 0.1px solid black">{{ $query['rute'] }}</td>
-                                    <td style="font-weight:bold; border: 0.1px solid black"> {{ isset($nama_ekspedisi_array[$key]) ? $nama_ekspedisi_array[$key] : 'Nama ekspedisi tidak ditemukan' }}</td>
-                                    <td style="font-weight:bold; border: 0.1px solid black">{{ $query['resi'] }}</td>
-                                    <td style="font-weight:bold; border: 0.1px solid black">{{ $query['price'] }}</td>
-                                    <td style="font-weight:bold; border: 0.1px solid black">{{ $query['keterangan'] }}</td>
-
-                                </tr>
+                                    <tr>
+                                        <td style="font-weight:bold; border: 0.1px solid black">{{ $query['tgl_kirim'] }}</td>
+                                        <td style="font-weight:bold; border: 0.1px solid black">{{ $query['kode'] }}</td>
+                                        <td style="font-weight:bold; border: 0.1px solid black">{{ $query['rute'] }}</td>
+                                        <td style="font-weight:bold; border: 0.1px solid black">{{ isset($nama_ekspedisi_array[$key]) ? $nama_ekspedisi_array[$key] : '' }}</td>
+                                        <td style="font-weight:bold; border: 0.1px solid black">{{ $query['resi'] }}</td>
+                                        <td style="font-weight:bold; border: 0.1px solid black">{{ $new_simbol_matauang_array[$key] }} {{ number_format($query['price'],0,',','.') }}</td>
+                                        <td style="font-weight:bold; border: 0.1px solid black">{{ $query['keterangan'] }}</td>
+                                        <td style="border: 0.1px solid black">
+                                            <!-- Tombol delete -->
+                                            <button type="button" class="btn btn-danger btn-sm delete-button" data-id="{{ $query['id_ekspedisi'] }}" data-kode="{{ $query['kode'] }}">
+                                                X
+                                            </button>
+                                        </td>
+                                    </tr>
                                 @endforeach
                             @endif
                         @endforeach
-                           
                     </tbody>
-
                 </table>
+
+                </div>
+            
             </div>
-        
         </div>
     </div>
-</div>
-@endif
-<div class="form-group" style="padding-left: 25px; width: 100%;">
-    <div class="border-bottom" style="border-bottom: 1px solid black; width: 100%; margin: 0;">
+    @endif
+    <div class="form-group" style="padding-left: 25px; width: 100%;">
+        <div class="border-bottom" style="border-bottom: 1px solid black; width: 100%; margin: 0;">
+        </div>
     </div>
-</div>
 @endif
 
 @if($menu=='edit_view')
@@ -649,7 +659,7 @@
 
 <!-- DataTables Bootstrap 4 Integration -->
 <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
@@ -659,6 +669,134 @@
 <script>
 
 $(document).ready(function() {
+    $('#saveEkspedisi').on('click', function() {
+    var id_lcl = $('#id_lcl').val();
+    var tgl_kirim = $('#tgl_request_tambah').val();
+    var rute = $('#rute').val();
+    var ekspedisi = $('select[name="add_id_ekspedisi"]').val();
+    var selectedName = $('#ekspedisi_id option:selected').data('name');
+    
+    var matauang = $('select[name="add_matauang_id"]').val();
+    
+    var selectedNameMatauang = $('#matauang_id option:selected').data('simbol')
+    var biaya = $('#biaya').val();
+    var resi = $('#resi').val();
+    var keterangan_ekepedisi = $('#keterangan_ekepedisi').val();
+    
+    var formSend = {
+        id_lcl: id_lcl,
+        tgl_kirim: tgl_kirim,
+        rute: rute,
+        ekspedisi: ekspedisi,
+        matauang: matauang,
+        price: biaya,
+        resi: resi,
+        keterangan: keterangan_ekepedisi
+    };
+    var number_format_biaya = parseFloat(biaya).toLocaleString('id-ID',{
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+    })
+    
+    
+    $.ajax({
+        url: '{{ route('admin.penerimaan_pembelian') }}',
+        data: {
+            menu: 'tambah_ekspedisi',
+            form: formSend
+        },
+        success: function(response) {
+    
+            
+            // Tampilkan pesan sukses dengan Swal sebelum menambahkan row
+            Swal.fire({
+                title: 'Berhasil!',
+                text: 'Ekspedisi berhasil ditambahkan.',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then(function() {
+                // Setelah pengguna menutup SweetAlert, menambahkan row ke dalam tabel ekspedisi
+                var newRow = `
+                    <tr>
+                        <td style="font-weight:bold; border: 0.1px solid black">${tgl_kirim}</td>
+                        <td style="font-weight:bold; border: 0.1px solid black">${response.msg.data.kode || ''}</td>
+                        <td style="font-weight:bold; border: 0.1px solid black">${rute}</td>
+                        <td style="font-weight:bold; border: 0.1px solid black">${selectedName || ''}</td>
+                        <td style="font-weight:bold; border: 0.1px solid black">${resi}</td>
+                        <td style="font-weight:bold; border: 0.1px solid black">${selectedNameMatauang} ${number_format_biaya}</td>
+                        <td style="font-weight:bold; border: 0.1px solid black">${keterangan_ekepedisi}</td>
+                        <td style="border: 0.1px solid black">
+                            <button type="button" class="btn btn-danger btn-sm delete-button" data-id="${ekspedisi}" data-kode="${response.msg.data.kode || ''}">
+                                X
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                
+                // Menyisipkan baris baru ke dalam tbody
+                $('#tbody_addekspedisi').append(newRow);
+            });
+        },
+        error: function(xhr, status, error) {
+            Swal.fire({
+                title: 'Error!',
+                text: 'Terjadi kesalahan saat menambahkan ekspedisi.',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        }
+    });
+});
+
+    
+        // Menangani event klik pada tombol delete
+        $(document).on('click', '.delete-button', function() {
+            const idEkspedisi = $(this).data('id');
+            const kodeEkspedisi = $(this).data('kode');
+            
+            // Menggunakan SweetAlert2 untuk konfirmasi
+            Swal.fire({
+                title: 'Konfirmasi',
+                text: 'Anda yakin ingin menghapus item ini?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Lakukan AJAX untuk menghapus data
+                    $.ajax({
+                        url: '{{ route('admin.penerimaan_pembelian') }}', // Ganti dengan URL endpoint penghapusan
+                        
+                        data: { 
+                            menu:'delete_ekspedisi',
+                            id: kodeEkspedisi },
+                        success: function(response) {
+                            // Hapus baris tabel
+                            $(this).closest('tr').remove();
+                            // Tindakan setelah berhasil menghapus
+                            Swal.fire(
+                                'Deleted!',
+                                'Item berhasil dihapus.',
+                                'success'
+                            );
+                        }.bind(this), // Bind `this` untuk referensi yang tepat
+                        error: function(xhr, status, error) {
+                            Swal.fire(
+                                'Error!',
+                                'Terjadi kesalahan saat menghapus item.',
+                                'error'
+                            );
+                        }
+                    });
+                }
+            });
+        });
+
+
+    
 
     $('#rute').select2({
                     placeholder: "Pilih Rute", // Optional placeholder
@@ -672,7 +810,7 @@ $(document).ready(function() {
 
     // You can bind an event listener if you prefer
     tambahButton.on('click', function() {
-        console.log('masuk add ekspedisi')
+        
         $('#addEkspedisiModal').modal('show'); // Menampilkan modal Filter
     });         
     
@@ -763,12 +901,6 @@ $(document).ready(function() {
                     totDifference[idLclDetail] = totDetailPembelianLcl[idLclDetail] - totTerimaDetailPembelianLcl[idLclDetail];
                 });
 
-                // Log the results
-                console.log('Total Pembelian LCL:', totDetailPembelianLcl);
-                console.log('Total Terima Pembelian LCL:', totTerimaDetailPembelianLcl);
-                console.log('Difference (Total - Terima):', totDifference);
-                console.log('ID Pembelian LCL:', idPembelianLcl);
-
                 var pembelianDropdown = $('#pembelian_tambah_id');
 
                 // Clear all existing options
@@ -826,11 +958,7 @@ $(document).ready(function() {
                     totDifference[idLclDetail] = totDetailPembelianLcl[idLclDetail] - totTerimaDetailPembelianLcl[idLclDetail];
                 });
 
-                // Log the results
-                console.log('Total Pembelian LCL:', totDetailPembelianLcl);
-                console.log('Total Terima Pembelian LCL:', totTerimaDetailPembelianLcl);
-                console.log('Difference (Total - Terima):', totDifference);
-                console.log('ID Pembelian LCL:', idPembelianLcl);
+                
 
                 var pembelianDropdown = $('#pembelian_tambah_id');
 
@@ -895,12 +1023,11 @@ $(document).ready(function() {
     var barang = {!! json_encode($Data['msg']['barang']) !!};
     var menu = {!! json_encode($menu) !!}
     var img_barang = barang[0].imagedir
-    console.log('barang',barang[0].imagedir)
-    console.log('edit', edit);
+
     edit.forEach(function(detail, index) {
         // bila detail lcl tidak null
         if(detail.lcldetail != null){
-            console.log('masuk')
+            
             if(menu=='edit_view'){
                 newRowsEdit += `
                 <tr>
@@ -1039,7 +1166,7 @@ $(document).ready(function() {
             `;
             }
             else{
-                console.log('else')
+                
                 newRowsEdit += `
                 <tr>
                     <td class="text-center" style="border: 0.1px solid black;width: 150px; height: 150px;">
@@ -1168,7 +1295,7 @@ $(document).ready(function() {
                                 id: selected_id
                             },
                             success: function(response) {
-                                console.log('res lcl', response);
+                                
                                 
                                 // Clear the existing rows to prevent duplicates
                                 $('#tbody_addbarang').empty();
@@ -1297,8 +1424,7 @@ $(document).ready(function() {
         });
 
        
-        console.log('id_detail:', id_detail);
-        console.log('idbarang:', id_barang);
+
 
         var dataToSend = {
             id_penerimaan:id_penerimaan,
@@ -1329,7 +1455,7 @@ $(document).ready(function() {
 
 
         
-      console.log('dataTosend',dataToSend)
+      
       $.ajax({
             url:'{{ route('admin.penerimaan_pembelian') }}',
             data: {
@@ -1337,7 +1463,7 @@ $(document).ready(function() {
                 form:dataToSend
             },
             success: function(response){
-                console.log('response',response)
+                
                 if(response.auth===false){
                      Swal.fire({
                         icon:'warning',
@@ -1353,7 +1479,7 @@ $(document).ready(function() {
                         text:response.msg
                         }).then((result)=>{
                         if(result.isConfirmed){
-                            window.location.reload();
+                            window.location.href='data_pembelian_penerimaan';
                         }
                     })
                     return;
@@ -1364,5 +1490,5 @@ $(document).ready(function() {
 
 })
 var tbody_addekspedisi = $('#tbody_addekspedisi');
-console.log('aa')
+
 </script>

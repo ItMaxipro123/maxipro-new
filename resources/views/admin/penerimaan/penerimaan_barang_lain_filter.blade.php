@@ -8,6 +8,7 @@ Penerimaan Barang Lain   | PT. Maxipro Group Indonesia
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+<link rel="stylesheet" href="{{ asset('css/penerimaan/baranglain.css') }}">
 @endsection
 @section('style')
 
@@ -144,7 +145,7 @@ Penerimaan Barang Lain   | PT. Maxipro Group Indonesia
 <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg wider">
     <div id="overlay"> <i class="fas fa-spinner fa-spin"></i> </div>
     <div class="container-fluid">
-        <h4 id="judulStok" style="margin-top: 40px;margin-bottom: 40px;"><i class="fas fa-database"></i> &nbsp Penerimaan Barang Lain</h4>
+        <h4 id="judulBarangLain" style="margin-top: 40px;margin-bottom: 40px;display:none;"><i class="fas fa-database"></i> &nbsp Penerimaan Barang Lain</h4>
 
         <small class="display-block" style="position: absolute; top: 70px; left: 50px;">Penerimaan Barang Lain {{ $username['data']['teknisi']['name'] }}</small>
     </div>
@@ -159,17 +160,17 @@ Penerimaan Barang Lain   | PT. Maxipro Group Indonesia
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-12">
-                         <a href="javascript:void(0)" onclick="tambahPenawaran(this)" name="tambahButton" class="btn btn-large btn-primary btn-tambah">Add Penerimaan Barang Lain</a>
+                         <a href="javascript:void(0)" onclick="tambahBarangLain(this)" name="tambahButton" style="display:none;" class="btn btn-large btn-primary btn-tambah">Add Penerimaan Barang Lain</a>
 
                                 <div class="d-flex justify-content-end">
 
                                   
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-info" style="width: 10%; margin-right: 5px;" id="openModalBtn">Filter</button>
+                                        <button type="button" class="btn btn-info" style="width: 10%; margin-right: 5px;display:none;" id="filterBtn">Filter</button>
 
                                     </div>
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-warning" style="width: 10%; margin-right: 5px;" id="clearFilterBtn">Clear Filter</button>
+                                        <button type="button" class="btn btn-warning" style="width: 10%; margin-right: 5px;display:none;" id="clearFilterBtn">Clear Filter</button>
 
                                     </div>
                                 </div>
@@ -213,63 +214,57 @@ Penerimaan Barang Lain   | PT. Maxipro Group Indonesia
                                 </div>
                                 <div class="modal-footer">
 
-                                    <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
-                                    <!-- code diatas untuk modal bootstrap 4 -->
 
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <!-- code diatas untuk modal bootstrap 5 -->
 
-                                    <button type="button" class="btn btn-primary" id="saveChangesBtn">Save changes</button>
+
+                                    <button type="button" class="btn btn-primary" id="saveChangesBtn">Simpan</button>
 
                                 </div>
                             </div>
                         </div>
                     </div>
+                    
+                    <div class="table-responsive" style="display:none;">
+                        <table id="tabe-stok" class="table table-bordered table-striped">
+                            <thead>
 
-                    <table id="tabe-stok" class="table table-bordered table-striped">
-                        <thead>
-
-                        </thead>
-                        <tbody>
-                            @php
-                            $num =1;
-                            @endphp
-                            <!-- Table data will be populated here -->
-                            @foreach($Data['msg']['penerimaan'] as $index => $data)
-                            
-                            @php
-                            \Carbon\Carbon::setLocale('id'); // Set locale ke Bahasa Indonesia
-                            $formattedDate = \Carbon\Carbon::parse($data['tgl_terima'])->translatedFormat('d F Y');
-                            @endphp
-                            <tr>
-                                <td>{{ $num }}</td>
-                                <td>{{ $formattedDate }}</td>
-                                <td>{{ $data['kode'] }}</td>
-                              
-
-                              
-                              
-                                <td>{{ $data['teknisi']['name'] }}</td>
-                               
+                            </thead>
+                            <tbody>
+                                @php
+                                $num =1;
+                                @endphp
+                                <!-- Table data will be populated here -->
+                                @foreach($Data['msg']['penerimaan'] as $index => $data)
+                                
+                                @php
+                                \Carbon\Carbon::setLocale('id'); // Set locale ke Bahasa Indonesia
+                                $formattedDate = \Carbon\Carbon::parse($data['tgl_terima'])->translatedFormat('d M Y');
+                                @endphp
+                                <tr>
+                                    <td>{{ $num }}</td>
+                                    <td>{{ $formattedDate }}</td>
+                                    <td>{{ $data['kode'] }}</td>
                                 
 
-
-                                <td>
-                                    <a href="javascript:void(0)" onclick="updatePenawaran(this)" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-secondary btn-edit">Edit</a>
-                                     <a href="{{ route('admin.detailview_penawaran_filter', ['id' => $data['id']]) }}" class="btn btn-large btn-info btn-detail">Detail</a>
-                                   
-                                   <a href="javascript:void(0)" onclick="deletePenawaran(this)" data-id="{{ $data['id'] }}" name="{{ $data['kode'] }}" class="btn btn-large btn-primary btn-delete">Delete</a>
                                 
-                                </td>
-                            </tr>
-                            @php $num++
-                            @endphp
-                            @endforeach
+                                
+                                    <td>{{ $data['teknisi']['name'] }}</td>
+                                
+                                    
 
-                        </tbody>
 
-                    </table>
+                                    <td>
+                                    
+                                    </td>
+                                </tr>
+                                @php $num++
+                                @endphp
+                                @endforeach
 
+                            </tbody>
+
+                        </table>
+                    </div>
 
                     <!-- modal tambah penerimaan pindah gudang-->
                     <div class="col-sm-12" style="margin-top: 15px;">
@@ -397,40 +392,13 @@ Penerimaan Barang Lain   | PT. Maxipro Group Indonesia
                             </div>
                     </div>
 
+                    <div id="tambahPenerimaanContainer" style="display: none;" class="col-sm-12" style="margin-top: 15px;">
+                            <form action=""id="Formtambah"></form>            
+                    </div>
 
 
                     
-                    <!-- modal edit penawaran -->
-                    <div class="col-sm-12" style="margin-top: 15px;">
-                        <div id="tabe-stok"></div>
-
-                        <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-xl" role="document">
-                                <div class="modal-content">
-                                    <!-- Header modal, termasuk tombol close -->
-                                    <div class="modal-header">
-                                       
-
-                                    </div>
-                                    <!-- Isi modal -->
-                                    <div class="modal-body">
-                                        
-                                        <form id="editForm">
-
-                                        </form>
-                                        
-                                    </div>
-                                    <div class="modal-footer">
-                                        <!-- Tombol untuk menutup modal -->
-                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="location.reload()">Close</button>
-                                   
-                                    </div>
-
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                 
 
 
                 </div>
@@ -451,7 +419,7 @@ Penerimaan Barang Lain   | PT. Maxipro Group Indonesia
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <!-- DataTables Bootstrap 4 Integration -->
 <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+
 <!-- Choices.js JS -->
 <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
@@ -648,14 +616,14 @@ Penerimaan Barang Lain   | PT. Maxipro Group Indonesia
              company: $('input[name=company_tambah]').val(),
              address: $('input[name=address_tambah]').val(),
              email: $('input[name=email_tambah]').val(),
-            pembayaran: $('input[name=option_tambah]:checked').val(),
+             pembayaran: $('input[name=option_tambah]:checked').val(),
              handphone: $('input[name=handphone_tambah]').val(),
              text_top: $('textarea[name=text_top_tambah]').val(),
              text_middle: $('textarea[name=text_middle_tambah]').val(),
              text_bottom: $('textarea[name=text_bottom_tambah]').val(),
              text_bothbottom: $('textarea[name=text_bothbottom_tambah]').val(),
 
-              ppn: $('input[name=ppn_tambah]').is(':checked') ? '1' : '0',
+             ppn: $('input[name=ppn_tambah]').is(':checked') ? '1' : '0',
              selected_product_edit: $('input[name=selected_product_tambah]').map(function() {
                 return $(this).val();
              }).get(),
@@ -744,7 +712,8 @@ Penerimaan Barang Lain   | PT. Maxipro Group Indonesia
 <script>
     
     $(document).ready(function() {
-        $('#tabe-stok').DataTable({
+        window.dataTableInstance = $('#tabe-stok').DataTable({
+            
 
             "dom": '<"top"lf>rt<"bottom"ip><"clear">', // Mengatur posisi elemen filter/search
             "language": { // Menyesuaikan teks placeholder
@@ -773,10 +742,31 @@ Penerimaan Barang Lain   | PT. Maxipro Group Indonesia
                     title: 'User'
                 },
                 {
-                    data: 'link',
+                    data: 'null',
                     title: 'Action',
                     render: function(data, type, full, meta) {
-                        return '<a href="' + data + '</a>';
+                        let code=full.code
+                        
+                        return `
+                            <button type="button" 
+                                    data-id="${code}" 
+                                    name="${code}" 
+                                    class="btn btn-large btn-info edit-btn" 
+                                    style="width: 35px; height: 38px; padding: 9px 10px;" 
+                                    title="Edit Penerimaan Pindah Gudang">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button type="button" 
+                                    onclick="deleteBarangLain(this)" 
+                                    data-id="${code}" 
+                                    name="${code}" 
+                                    class="btn btn-large btn-info btn-danger" 
+                                    style="width: 35px; height: 38px; padding: 9px 10px;" 
+                                    title="Hapus Penerimaan Pindah Gudang">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+
+                            `;
                     }
                 }
 
@@ -791,11 +781,11 @@ Penerimaan Barang Lain   | PT. Maxipro Group Indonesia
 
 <script>
     // Menangani peristiwa klik pada tombol "Filter"
-    document.getElementById('openModalBtn').addEventListener('click', function() {
+    document.getElementById('filterBtn').addEventListener('click', function() {
         $('#exampleModal').modal('show'); // Menampilkan modal Filter
     });
 
-        function detailPenawaran(element) {
+    function detailPenawaran(element) {
           var id = $(element).data('id');
           console.log(id);
 
@@ -820,128 +810,184 @@ Penerimaan Barang Lain   | PT. Maxipro Group Indonesia
                     return;
                 }
             });
-        }
-
-    // Menangani klik pada tombol Edit
-    function updatePenawaran(element) {
-        event.preventDefault();
-        var id = $(element).data('id');
-        console.log(id);
-
-        var url = "{{ route('admin.editview_penawaran_filter') }}";
-
-        $.ajax({
-            url: url,
-            type: 'GET', // Menggunakan metode POST
-            data: {
-
-                id: id
-            },
-            success: function(response) {
-                // Handle response jika sukses
-
-                $('#editForm').html(response);
-                // Tampilkan modal
-                $('#editModal').modal('show');
-               
-            },
-            error: function(xhr, status, error) {
-                // Handle error jika terjadi kesalahan
-                console.error(xhr.responseText);
-                return;
-            }
-        });
     }
 
+  
     // Menangani klik pada tombol tambah
-    function tambahPenawaran(element) {
-        event.preventDefault();
-     $('#tambahModal').modal('show'); // Tampilkan modal
+    function tambahBarangLain() {
+                        
+                        $.ajax({
+                            url:'{{ route('admin.tambah_barang_lain') }}',
+                            data:{
+                                menu:'tambah_baranglain_view'
+                            },
+                            success: function(response){
+
+                                $('main.main-content').removeClass('wider ps ps--active-y');
+                                $('small.display-block').css('top', '30px');
+                                // Ganti konten dari form dengan response dari server
+                                // $('#Formtambah').show();
+                                // $('#Formtambah').html(response);
+                                $('#Formtambah').show();
+                                $('#Formtambah').html(response);
+                                // Ubah judul dan ikon
+                                $('#judulBarangLain').html('<i class="fas fa-database"></i> &nbsp Tambah Penerimaan Barang Lain');
+                                document.title = 'Tambah Penerimaan Barang Lain | PT. Maxipro Group Indonesia';
+                                $('#judulBarangLain').show()
+                                // Menghapus elemen yang tidak dibutuhkan
+                                $('.btn-tambah').hide();
+                                $('.radio-button-container').hide();
+                                $('#clearFilterBtn').hide();
+                                $('#filterBtn').hide();
+                                   // Menghancurkan DataTable jika ada
+                                if (window.dataTableInstance) {
+                                    window.dataTableInstance.destroy();
+                                }
+                                $('#tambahPenerimaanContainer').show();
+                                $('#tabe-stok').hide();
+                                history.pushState({page:'Tambah Barang Lain' }, 'Tambah Barang Lain', '{{ route('admin.tambah_barang_lain') }}' );
+  
+
+                            },
+                            error: function(xhr, status, error) {
+                                // Handle error jika terjadi kesalahan
+                                console.error(xhr.responseText);
+                                return;
+                            }
+
+                        });
     }
 
-    function detailKas(element) {
+
+
+
+    function deleteBarangLain(element) {
         event.preventDefault();
         var id = $(element).data('id');
-        console.log(id);
+        var penawaranName = $(element).attr('name');
 
-        var url = "{{ route('admin.kasdetail') }}";
+        // Menggunakan SweetAlert2 untuk konfirmasi penghapusan
+        Swal.fire({
+            title: 'Konfirmasi',
+            text: "Apakah Anda yakin ingin menghapus penawaran ini " + penawaranName + " ?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, Hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var url = "{{ route('admin.penerimaan_barang_lain') }}";
 
-        $.ajax({
-            url: url,
-            type: 'GET', // Menggunakan metode POST
-            data: {
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    data: {
+                        id: id,
+                        menu:'delete_baranglain'
+                    },
+                    success: function(response) {
+                        // Handle response jika sukses
+                        console.log(response);
 
-                id: id
-            },
-            success: function(response) {
-                // Handle response jika sukses
+                        // Hapus data berdasarkan elemen, element berupa id
+                        $(element).closest('tr').remove();
 
-                $('#detailForm').html(response);
-                // Tampilkan modal
-                $('#detailModal').modal('show');
-                
-               
-            },
-            error: function(xhr, status, error) {
-                // Handle error jika terjadi kesalahan
-                console.error(xhr.responseText);
-                return;
+                        // Tampilkan SweetAlert2 ketika berhasil dihapus
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil',
+                            text: 'Data berhasil dihapus!',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error jika terjadi kesalahan
+                        console.error(xhr.responseText);
+                        return;
+                    }
+                });
             }
         });
     }
+    const currentUrl = window.location.pathname;
+       console.log('currentUrl',currentUrl)
+       if(currentUrl==='/admin/data_penerimaan_barang_lain'){
+            $('.btn-tambah').show()
+            $('.table-responsive').show();
+            $('#clearFilterBtn').show();
+            $('#filterBtn').show();
+            $('#judulBarangLain').show()
+        }
+       else if(currentUrl==='/admin/data_penerimaan_barang_lain_filter'){
+            $('.btn-tambah').show()
+            $('.table-responsive').show();
+            $('#clearFilterBtn').show();
+            $('#filterBtn').show();
+            $('#judulBarangLain').show()
+        }
+        else if(currentUrl==='/admin/tambah_penerimaan_barang_lain'){
+            $('.table-responsive').hide();
+            $('main.main-content').removeClass('wider ps ps--active-y');
+            $('small.display-block').css('top', '30px');
+            $('.btn-tambah').hide();
+            $('.radio-button-container').hide();
+            $('#clearFilterBtn').hide();
+            $('#filterBtn').hide();
+            // Menghancurkan DataTable jika ada
+            if (window.dataTableInstance) {
+                window.dataTableInstance.destroy();
+            }
+            tambahBarangLain()
+        }
+        else if(currentUrl==='/admin/edit_penerimaan_barang_lain'){
+            
+            window.location.href='data_penerimaan_barang_lain'
+            
+        }
+    $(document).on('click','.edit-btn', function(event){
+        event.preventDefault();
+        var code = $(this).data('id')
+        // console.log('code',code)
+        $.ajax({
+            url:'{{ route('admin.penerimaan_barang_lain')}}',
+            data:{
+                menu:'edit_view',
+                id:code,
+            },
+            success: function(response){
+                        $('main.main-content').removeClass('wider ps ps--active-y');
+                        $('small.display-block').css('top', '30px');
+                        // Ganti konten dari form dengan response dari server
+                        $('#Formtambah').show();
+                        $('#Formtambah').html(response);
+                        
+                        // Ubah judul dan ikon
+                        $('#judulBarangLain').html('<i class="fas fa-database"></i> &nbsp Edit Penerimaan Barang Lain');
+                        document.title = 'Edit Penerimaan Barang Lain | PT. Maxipro Group Indonesia';
 
-
-    function deletePenawaran(element) {
-    event.preventDefault();
-    var id = $(element).data('id');
-    var penawaranName = $(element).attr('name');
-
-    // Menggunakan SweetAlert2 untuk konfirmasi penghapusan
-    Swal.fire({
-        title: 'Konfirmasi',
-        text: "Apakah Anda yakin ingin menghapus penawaran ini " + penawaranName + " ?",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Ya, Hapus!',
-        cancelButtonText: 'Batal'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            var url = "{{ route('admin.hapus_penawaran_filter') }}";
-
-            $.ajax({
-                url: url,
-                type: 'GET',
-                data: {
-                    id: id
-                },
-                success: function(response) {
-                    // Handle response jika sukses
-                    console.log(response);
-
-                    // Hapus data berdasarkan elemen, element berupa id
-                    $(element).closest('tr').remove();
-
-                    // Tampilkan SweetAlert2 ketika berhasil dihapus
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil',
-                        text: 'Data berhasil dihapus!',
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                },
-                error: function(xhr, status, error) {
+                        // Menghapus elemen yang tidak dibutuhkan
+                        $('.btn-tambah').hide();
+                        $('.radio-button-container').hide();
+                        $('#clearFilterBtn').hide();
+                        $('#filterBtn').hide();
+                           // Menghancurkan DataTable jika ada
+                        if (window.dataTableInstance) {
+                            window.dataTableInstance.destroy();
+                        }
+                        $('#tabe-stok').hide();
+                        $('#tambahPenerimaanContainer').show();
+                        history.pushState({ code: code }, 'Edit Barang Lain', '{{ route('admin.edit_barang_lain') }}' );
+            },
+            error: function(xhr, status, error) {
                     // Handle error jika terjadi kesalahan
                     console.error(xhr.responseText);
                     return;
-                }
-            });
-        }
-    });
-}
-
+            }
+        })
+    })
 
 </script>
 

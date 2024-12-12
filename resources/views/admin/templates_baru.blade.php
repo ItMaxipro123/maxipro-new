@@ -45,17 +45,38 @@
 <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark" id="sidenav-main">
     <div class="sidenav-header">
       <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
-      <a class="navbar-brand m-0">
-        @if($username['data']['teknisi']['image']=='')
-        <img src="https://maxipro.id/images/placeholder/basic.png" class="navbar-brand-img h-100 rounded-image" alt="main_logo">
-        @else
-        <img src="{{ $username['data']['teknisi']['imagedir'] }}" class="navbar-brand-img h-100" alt="main_logo">
-        @endif
-        <span class="ms-1 font-weight-bold text-white">{{ $username['data']['teknisi']['name'] }}</span>
+      
+      <a class="navbar-brand m-0" style="margin: bottom 20px;">
+        <div class="row align-items-center">
+          <!-- Bagian Gambar dan Nama -->
+          <div class="col-md-6 d-flex align-items-center" id="gambar">
+            @if($username['data']['teknisi']['image']=='')
+            <img src="https://maxipro.id/images/placeholder/basic.png" class="navbar-brand-img h-100 rounded-image" alt="main_logo">
+            @else
+            <img src="{{ $username['data']['teknisi']['imagedir'] }}" class="navbar-brand-img h-100" alt="main_logo">
+            @endif
+            <span class="ms-1 font-weight-bold text-white">{{ $username['data']['teknisi']['name'] }}</span>
+          </div>
+
+          <!-- Bagian Tombol -->
+          <div class="col-md-6 d-flex justify-content-end">
+              <button id="toggle-sidebar" class="btn-custom" title="Minimize">
+                <div class="sidenav-toggler-inner">
+                  <i class="fas fa-bars fa-2x" style="color: white;"></i>
+                </div>
+              </button>
+          </div>
+
+
+
+        </div>
       </a>
+
+      
+
     </div>
-    <hr class="horizontal light mt-0 mb-2">
-    <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
+    
+    <div  id="sidenav-collapse-main">
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
         <li class="nav-item">
 
@@ -430,7 +451,7 @@
 
 
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" style="display:flex;justify-content: space-between;" role="button" data-bs-auto-close="outside" data-bs-toggle="dropdown" href="#">
+        <a class="nav-link dropdown-toggle {{ Request::is('admin/tambah_orderpenjualan') || Request::is('admin/data_orderpenjualan') ? 'active bg-gradient-primary' : '' }}" style="display: flex;justify-content: space-between;" role="button" data-bs-auto-close="outside" data-bs-toggle="dropdown" href="../pages/rtl.html">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">view_in_ar</i>
             </div>
@@ -438,7 +459,7 @@
           </a>
           <ul class="dropdown-menu">
             <li class="nav-item">
-              <a class="nav-link text-white " href="../pages/notifications.html">
+            <a href="{{ route('admin.order_penjualan') }}" class="nav-link text-white {{ Request::is('admin/data_orderpenjualan')   || Request::is('admin/tambah_orderpenjualan') ? 'active bg-gradient-primary' : '' }}">
                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i style="color:black" class="fas fa-luggage-cart"></i>
                 </div>
@@ -582,7 +603,7 @@
         </li>
 
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" style="display: flex;justify-content: space-between;" role="button" data-bs-auto-close="outside" data-bs-toggle="dropdown" href="../pages/notifications.html">
+          <a class="nav-link dropdown-toggle {{ Request::is('admin/data_pembelian_penerimaan') || Request::is('admin/data_pembelian_penerimaan_filter') || Request::is('admin/penerimaan_pindahgudang') || Request::is('admin/edit_pindah_gudang') || Request::is('admin/penerimaan_pindahgudang_filter')  ? 'active bg-gradient-primary' : '' }}" style="display: flex;justify-content: space-between;" role="button" data-bs-auto-close="outside" data-bs-toggle="dropdown" href="../pages/notifications.html">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="fas fa-people-carry"></i>
             </div>
@@ -598,7 +619,7 @@
               </a>
             </li>
             <li class="nav-item">
-                   <a href="{{ route('admin.penerimaan_pindahgudang') }}" class="nav-link text-white {{ Request::is('admin/data_penerimaan_pindahgudang')  ? 'active bg-gradient-primary' : '' }}">
+                   <a href="{{ route('admin.penerimaan_pindahgudang') }}" class="nav-link text-white {{ Request::is('admin/penerimaan_pindahgudang')  ? 'active bg-gradient-primary' : '' }}">
                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i style="color:black" class="fas fa-boxes"></i>
                   <span class="nav-link-text ms-1" style="color:black;">Pindah Gudang</span>
@@ -939,9 +960,10 @@
       </ul>
     </div>
   
-  </aside>
+</aside>
 
   @yield('content')
+  
   <!--   Core JS Files   -->
   <script src="../assets/js/core/popper.min.js"></script>
   <script src="../assets/js/core/bootstrap.min.js"></script>
@@ -952,6 +974,47 @@
   
   <script src="../assets/js/material-dashboard.min.js?v=3.1.0"></script>
   <script>
+document.addEventListener("DOMContentLoaded", function () {
+  const toggleButton = document.getElementById("toggle-sidebar");
+  const sidebar = document.getElementById("sidenav-main");
+  let gambar = document.getElementById("gambar"); // Referensi awal elemen gambar
+
+  toggleButton.addEventListener("click", function () {
+    // Toggle kelas pada sidebar
+    sidebar.classList.toggle("minimized");
+
+    if (sidebar.classList.contains("minimized")) {
+      // Jika sidebar diminimalkan, tambahkan kelas dan hapus elemen
+      gambar.classList.add("minimized");
+      gambar.remove();
+      console.log("Gambar dihapus");
+    } else {
+      // Jika sidebar diperluas, buat ulang elemen gambar
+      const row = document.querySelector(".row.align-items-center");
+      const newGambar = document.createElement("div");
+      newGambar.className = "col-md-6 d-flex align-items-center";
+      newGambar.id = "gambar";
+      newGambar.innerHTML = `
+        @if($username['data']['teknisi']['image']=='')
+        <img src="https://maxipro.id/images/placeholder/basic.png" class="navbar-brand-img h-100 rounded-image" alt="main_logo">
+        @else
+        <img src="{{ $username['data']['teknisi']['imagedir'] }}" class="navbar-brand-img h-100" alt="main_logo">
+        @endif
+        <span class="ms-1 font-weight-bold text-white">{{ $username['data']['teknisi']['name'] }}</span>
+      `;
+      row.prepend(newGambar); // Tambahkan elemen baru ke dalam row
+      gambar = newGambar; // Perbarui referensi elemen gambar
+      console.log("Gambar diinisialisasi ulang");
+    }
+
+    // Ubah title tombol
+    toggleButton.title = sidebar.classList.contains("minimized") ? "Maximize" : "Minimize";
+  });
+});
+
+
+
+
     // Function to add sub-dropdown items
     function addSubDropdown() {
       // Select the dropdown menu

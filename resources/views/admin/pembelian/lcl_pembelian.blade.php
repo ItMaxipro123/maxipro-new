@@ -17,11 +17,55 @@ LCL   | PT. Maxipro Group Indonesia
 
 @section('content')
 
-<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg wider">
+<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg wider" style="max-width: 100%; overflow-x: hidden;">
     
     <div class="container-fluid">
-        <h4 id="judulLcl" style="margin-top: 40px;margin-bottom: 40px;"><i class="fas fa-database"></i> &nbsp LCL</h4>
-        <small class="display-block" style="position: absolute; top: 70px; left: 50px;" id="subjudulLcl">LCL {{ $username['data']['teknisi']['name'] }}</small>
+        <div class="row">
+            <div class="col-md-6">
+
+                <h4 id="judulLcl" style="margin-top: 40px;margin-bottom: 40px;"><i class="fas fa-database"></i> &nbsp LCL</h4>
+                <small class="display-block" style="position: absolute; top: 70px; left: 50px;" id="subjudulLcl">LCL {{ $username['data']['teknisi']['name'] }}</small>
+            </div>
+            <div class="col-md-6">
+                   <!-- navbar untuk membuka sidebar -->
+                   <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" data-scroll="true">
+                    <div class="container-fluid py-1 px-3">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+
+
+                                </ol>
+                                <h6 class="font-weight-bolder mb-0"></h6>
+                            </nav>
+                            <div  id="navbar">
+                                <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+                                
+                                </div>
+                                    <ul class="navbar-nav  justify-content-end">
+                                
+                                
+                                        <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+                                            <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
+                                                <div class="sidenav-toggler-inner">
+                                                <i class="sidenav-toggler-line"></i>
+                                                <i class="sidenav-toggler-line"></i>
+                                                <i class="sidenav-toggler-line"></i>
+                                                </div>
+                                            </a>
+                                        </li>
+
+                                
+                                
+
+                                
+                                
+                                    </ul>
+
+                            </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
         
     </div>
 
@@ -35,7 +79,7 @@ LCL   | PT. Maxipro Group Indonesia
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-12">
-                               <!-- <a href="javascript:void(0)" id="tambah_lcl" onclick="tambahRestok()" name="tambahButton" class="btn btn-large btn-primary btn-tambah">Add LCL</a> -->
+                               <a href="javascript:void(0)" id="tambah_lcl" onclick="tambahRestok()" name="tambahButton" class="btn btn-large btn-primary btn-tambah" style="display:none;">Add LCL</a>
                                <input type="hidden" id="lclValue" value="0">
                                 <div class="d-flex justify-content-end">
                                    
@@ -57,13 +101,15 @@ LCL   | PT. Maxipro Group Indonesia
                                     <li class="nav-item"><a class="nav-link" href="#" id="pembayaran-tab">Pembayaran</a></li>
                                     <li class="nav-item"><a class="nav-link" href="#" id="ekspedisi-tab">Ekspedisi</a></li>
                                 </ul>
-
+                                <div id="div_detail" style="display: none;">
+                                        <form action=""id="Formedit"></form>
+                                </div>
                                 <!-- untuk tab master -->
                                 <div id="master-content" class="tab-content" style="display: none;">
                                         
                                     <div class="row" id="padding-top">
                                         <div class="col-md-12 d-flex justify-content-end">
-                                        <button type="button" id="importData" class="btn btn-large btn-info">Import Data</button>
+                                        <button type="button" id="backbtn" class="btn btn-large btn-warning" onclick="window.location.href = 'data_lclpembelian';">Kembali</button>
                                         </div>
                                     </div>
                                     <div class="row" id="row-supplier">
@@ -118,7 +164,7 @@ LCL   | PT. Maxipro Group Indonesia
                                                 </div>
                                             
                                         </div>
-                                        <div class="col-md-6" id="col-select">
+                                        <div class="col-md-6" id="col-select-matauang">
                                             <div class="row" id="padding-top">
                                                 <div class="col-md-3">
                                                 <label id="label" for="">Mata Uang</label>
@@ -163,7 +209,7 @@ LCL   | PT. Maxipro Group Indonesia
                                                 </div>
                                                 <div class="col-md-6 d-flex justify-content-end">
                                                    
-                                                    <button type="button" id="convert_idr" class="btn btn-large btn-warning">Convert to IDR</button>
+                                                    <button type="button" id="convert_idr" class="btn btn-large btn-danger">Convert to IDR</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -310,11 +356,11 @@ LCL   | PT. Maxipro Group Indonesia
                                         <div class="col-12 col-md-6">
                                             <table class="table table-striped">
                                                 <tr id="border">
-                                                    <td id="border">Subtotal(Rp)</td>
+                                                    <td id="border" class="element_subtotal">Subtotal (Rp)</td>
                                                     <td id="border" class="sutotal_element">0</td>
                                                 </tr>
                                                 <tr id="border">
-                                                    <td id="border">Discount Percent (Rp)</td>
+                                                    <td id="border" class="element_discount_percent">Discount Percent (Rp)</td>
                                                     <td id="border">
                                                         <div style="display: flex; align-items: center;">
                                                             <input type="number" class="form-control" id="discount_percent" value="0">
@@ -323,15 +369,15 @@ LCL   | PT. Maxipro Group Indonesia
                                                     </td>
                                                 </tr>
                                                 <tr id="border">
-                                                    <td id="border">Discount Nominal(Rp)</td>
+                                                    <td id="border" class="element_discount_nominal">Discount Nominal (Rp)</td>
                                                     <td id="border" ><input type="number" class="form-control" id="discount_nominal" value="0"></td>
                                                 </tr>
                                                 <tr id="border">
-                                                    <td id="border">PPN 11%(Rp)</td>
+                                                    <td id="border" class="element_ppn11">PPN 11% (Rp)</td>
                                                     <td id="border" class="ppn_element">0</td>
                                                 </tr>
                                                 <tr id="border">
-                                                    <td id="border">Total (Rp)</td>
+                                                    <td id="border" class="element_total">Total (Rp)</td>
                                                     <td id="border" class="total_element">0</td>
                                                 </tr>
                                            </table>
@@ -448,7 +494,7 @@ LCL   | PT. Maxipro Group Indonesia
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                            <button type="button" id="saveConvert" disabled class="btn btn-primary">Simpan</button>
+                                            <button type="button" id="saveConvert" disabled class="btn btn-primary" data-bs-dismiss="modal">Simpan</button>
                                             </div>
                                             </div>
                                         </div>
@@ -456,137 +502,133 @@ LCL   | PT. Maxipro Group Indonesia
 
                                     
                                 </div>
+                                
+                               <div class="form-no-lcl">
+
+                               </div>
 
                                 <!-- untuk tab pembayaran -->
                                 <div id="pembayaran-content" class="tab-content" style="display: none;">
                                     
-                                    <div id="label-lcl">
-                                        <label  for=""><h3>Belum Ada LCL</h3></label>
-                                    </div>
+
                                     
                                     <div id="content-pembayaran">
                                         
-                                        <div class="row" id="padding-top">
-                                            <div class="col-md-12 d-flex justify-content-end">
-                                            <button type="button" id="importData" class="btn btn-large btn-info">Import Data</button>
+                                            <div class="row" id="padding-top">
+                                                <div class="col-md-12 d-flex justify-content-end">
+                                                <button type="button" id="backbtn" class="btn btn-large btn-warning" onclick="window.location.href = 'data_lclpembelian';">Kembali</button>
+                                                </div>
                                             </div>
-                                        </div>
-
-                                        <div class="row" id="row-supplier">
-                                                <div class="col-md-6">
-                                                        
-                                                        <div class="row" id="padding-top">
-                                                            <div class="col-md-3">
+                                            
+                                            <form id="form-pembayaran">
+                                                <div class="row" id="row-supplier">
+                                                        <div class="col-md-6">
                                                                 
-                                                                <label id="label" for="">Kode <span id="required-star">*</span></label>
-                                                            </div>
-                                                            <div class="col-md-9">
-
-                                                                <input class="form-control kode"type="text" placeholder="AUTO" id="input-input" disabled>
-                                                            </div>
-                                                        </div>
-                                                    
-                                                </div>
-                                                <div class="col-md-6" id="col-supplier">
-                                                    <div class="row" id="padding-top">
-                                                        <div class="col-md-3">
-                                                        <label id="label" for="">Nominal <span id="required-star">*</span></label>
-                                                        </div>
-                                                        
-                                                            <div class="col-md-9">
-                                                                    <div class="row" >
-                                                                      
-                                                                        <div class="col-md-6">
-
-                                                                            <select class="select2 form-control matauang_pembayaran" style="width:100%" name="" id="matauang_pembayaran">
-                                                                                    <option value="">Pilih mata Uang</option>
-                                                                                    @foreach($Data_barang['matauang'] as $index => $result)
-                                                                                        <option value="{{ $result['id'] }}">( {{ $result['simbol'] }} ) {{ $result['kode'] }} - {{ $result['name'] }}</option>
-
-                                                                                    @endforeach
-                                                                            </select>
-                                                                        
-
-                                                                            
-                                                                        </div>
-                                                                        <div class="col-md-6">
-
-                                                                            <input type="text" class="form-control nominal" id="input-input" placeholder="Nominal">
-
-                                                                            
-                                                                        </div>
-                                                                    </div>    
-
-                                                            </div>
-                                                        
-                                                    </div>
-                                                </div>
-
-                                             
-                                        </div>
-                                        <div class="row" id="row-supplier">
-                                                    <div class="col-md-6">
-                                                
-                                                        <div class="row" id="padding-top">
+                                                                <div class="row" id="padding-top">
                                                                     <div class="col-md-3">
                                                                         
-                                                                        <label id="label" for="">Tanggal <span id="required-star">*</span></label>
+                                                                        <label id="label" for="">Kode <span id="required-star">*</span></label>
                                                                     </div>
                                                                     <div class="col-md-9">
 
-                                                                        <input class="form-control tgl_bayar" id="tgl_request" type="text" placeholder="Tanggal Bayar" id="input-input">
+                                                                        <input class="form-control kode"type="text" placeholder="AUTO" id="input-input" disabled>
                                                                     </div>
-                                                        </div>
-                                                            
-                                                    </div>
-                                                    
-                                                    <div class="col-md-6" id="col-supplier">
-                                                        <div class="row" id="padding-top">
-                                                            <div class="col-md-3">
-                                                            <label id="label" for="">Bukti <span id="required-star">*</span></label>
-                                                            </div>
-                                                            
-                                                                <div class="col-md-9">
-                                                                        <div class="row" >
-                                                                        
-                                                                            <div class="col-md-12">
-
-                                                                            
-                                                                            <div class="form-control" id="input-input" >
-                                                                            <input type="file" name="fileInput">
-                                                                            </div>
-                                                                           
-                                                                            </div>
-                                                                            
-                                                                        </div>    
-
                                                                 </div>
                                                             
                                                         </div>
-                                                    </div>
-
-                                        </div>
-
-                                        <div class="row" id="row-supplier">
-                                            <div class="col-md-6">
-                                                        <div class="row" id="padding-top">
-                                                            <div class="col-md-3">
+                                                        <div class="col-md-6" id="col-supplier">
+                                                            <div class="row" id="padding-top">
+                                                                <div class="col-md-3">
+                                                                <label id="label" for="">Nominal <span id="required-star">*</span></label>
+                                                                </div>
                                                                 
-                                                                <label id="label" for="">Keterangan <span id="required-star">*</span></label>
-                                                            </div>
-                                                            <div class="col-md-9">
+                                                                    <div class="col-md-9">
+                                                                            <div class="row" >
+                                                                            
+                                                                                <div class="col-md-6">
 
-                                                            <textarea class="form-control" name="" id="text_area" rows="3"placeholder="Keterangan"></textarea>
+                                                                                    <select class="select2 form-control matauang_pembayaran" style="width:100%" name="" id="matauang_pembayaran">
+                                                                                            <option value="">Pilih mata Uang</option>
+                                                                                            @foreach($Data_barang['matauang'] as $index => $result)
+                                                                                                <option value="{{ $result['id'] }}">( {{ $result['simbol'] }} ) {{ $result['kode'] }} - {{ $result['name'] }}</option>
+
+                                                                                            @endforeach
+                                                                                    </select>
+                                                                                
+
+                                                                                    
+                                                                                </div>
+                                                                                <div class="col-md-6">
+
+                                                                                    <input type="text" class="form-control nominal_pembayaran" id="input-input" placeholder="Nominal">
+
+                                                                                    
+                                                                                </div>
+                                                                            </div>    
+
+                                                                    </div>
+                                                                
                                                             </div>
                                                         </div>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="element">
-                                            <div id="element-button-tambah">
 
-                                                <button class="btn btn-info" id="tambah-pembayaran">Tambah Pembayaran</button>
-                                            </div>
+                                                    
+                                                </div>
+
+                                                <div class="row" id="row-supplier">
+                                                            <div class="col-md-6">
+                                                        
+                                                                <div class="row" id="padding-top">
+                                                                            <div class="col-md-3">
+                                                                                
+                                                                                <label id="label" for="">Tanggal <span id="required-star">*</span></label>
+                                                                            </div>
+                                                                            <div class="col-md-9">
+
+                                                                                <input class="form-control tgl_bayar" id="tgl_request" type="text" placeholder="Tanggal Bayar" id="input-input">
+                                                                            </div>
+                                                                </div>
+                                                                    
+                                                            </div>
+                                                            
+                                                            <div class="col-md-6" id="col-supplier">
+                                                                <div class="row" id="padding-top">
+                                                                    <div class="col-md-3">
+                                                                    <label id="label" for="">Bukti <span id="required-star">*</span></label>
+                                                                    </div>
+                                                                    
+                                                                        <div class="col-md-9">
+                                                                                <div id="url-input" >
+                                                                                            <input class="form-control" type="url" name="urlInput" id="input-input" placeholder="Enter a URL">
+                                                                                        </div>
+                                                                        </div>
+                                                                    
+                                                                </div>
+                                                            </div>
+
+                                                </div>
+
+                                                <div class="row" id="row-supplier">
+                                                    <div class="col-md-6">
+                                                                <div class="row" id="padding-top">
+                                                                    <div class="col-md-3">
+                                                                        
+                                                                        <label id="label" for="">Keterangan <span id="required-star">*</span></label>
+                                                                    </div>
+                                                                    <div class="col-md-9">
+
+                                                                    <textarea class="form-control keterangan_pembayaran" name="" id="text_area" rows="3"placeholder="Keterangan"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="element">
+                                                    <div id="element-button-tambah">
+
+                                                        <button type="button" class="btn btn-info" id="tambah-pembayaran">Tambah Pembayaran</button>
+                                                    </div>
+                                            </form>
+
                                             <div class="table-wrapper tabel-pembayaran">
                                                 <table class="responsive-table">
                                                     <thead>
@@ -606,28 +648,102 @@ LCL   | PT. Maxipro Group Indonesia
                                                     
                                                 </table>
                                             </div>
+
                                             <div id="element-button-tambah">
 
                                                 <button class="btn btn-primary" id="simpan-pembayaran">Simpan Pembayaran</button>
                                             </div>
+
+                                                
+
+                                            <!-- a -->
                                         </div>
 
                                     </div>
+                                        <!-- modal menampilkan data ketika edit row di tabel ekspedisi  -->
+                                        <div class="modal fade" id="editModalPembayaranLcl" tabindex="-1" role="dialog" aria-labelledby="editModalPembayaranLcl" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="editModalEksepedisiLclLabel">Edit Pembayaran</h5>
+                                                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
 
+                                                                <div class="form-group" style="display:none;">
+                                                                    <label for="">ID Pembayaran</label>
+                                                                    <input type="text" class="form-control edit_id_pembayaran_lcl" id="input-input" disabled>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="">Kode Pembayaran</label>
+                                                                    <input type="text" class="form-control edit_kode_pembayaran_lcl" id="input-input">
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label for="">Tanggal Pembayaran</label>
+                                                                    <input class="form-control edit_tgl_pembayaran" id="tgl_request" type="text" placeholder="Tanggal Pembayaran" id="input-input">
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label for="">Nominal</label>
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+
+                                                                            <select class="select2 form-control edit_select_nominal" style="width:100%" name="" id="input-input">
+                                                                                    
+        
+                                                                                    <option value="0">Pilih Mata Uang</option>
+                                                                                    @foreach($Data_barang['matauang'] as $index => $result)
+                                                                                                        <option value="{{ $result['id'] }}">( {{ $result['simbol'] }} ) {{ $result['kode'] }} - {{ $result['name'] }}</option>
+        
+                                                                                                    @endforeach
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <input type="text" class="form-control edit_nominal" id="input-input">
+                                                                        </div>
+
+
+                                                                    </div>
+                                                                </div>
+
+                                                               
+
+                                                                
+
+                                                                <div class="form-group">
+                                                                    <label for="">Bukti</label>
+                                                                    <input type="text" class="form-control edit_bukti_pembayaran" id="input-input">
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label for="">Keterangan</label>
+                                                                    <textarea class="form-control edit_keterangan_pembayaran" name="" id="text_area" rows="3"placeholder="Keterangan"></textarea>
+                                                                </div>
+
+
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                
+                                                                <button type="button" id="update_pembayaran" class="btn btn-primary">Update Pembayaran</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                        </div>
                                 </div>
 
                                 <!-- untuk tab ekspedisi -->
                                 <div id="ekspedisi-content" class="tab-content" style="display: none;">
                                     
-                                    <div id="label-lcl-ekspedisi">
-                                        <label  for=""><h3>Belum Ada LCL</h3></label>
-                                    </div>
+                                 
                                     
                                     <div id="content-pembayaran">
                                         
                                         <div class="row" id="padding-top">
                                             <div class="col-md-12 d-flex justify-content-end">
-                                            <button type="button" id="importData" class="btn btn-large btn-info">Import Data</button>
+                                            <button type="button" id="backbtn" class="btn btn-large btn-warning" onclick="window.location.href = 'data_lclpembelian';">Kembali</button>
                                             </div>
                                         </div>
 
@@ -1016,188 +1132,95 @@ LCL   | PT. Maxipro Group Indonesia
                     <div id="reload-icon" style="display: none; text-align: center; font-size: 30px;">
                         <i class="fas fa-sync-alt"></i> Reloading...
                     </div>
-                      
-                    <table id="tabe-stok">
-                        <thead>
-                            <!-- Add table headers if needed -->
-                        </thead>
-                        <tbody>
-                            @php
-                            $num = 1;
-                            $name_ekspedisi;
-                            $resi;
-                            $price;
-                            @endphp
-                            <!-- Table data will be populated here -->
-                            @foreach($Data['msg']['pembelianlcl'] as $index => $data)
-                            @if($data['category_transaksi']!='local')
-                            @php
-                            \Carbon\Carbon::setLocale('id'); // Set locale ke Bahasa Indonesia
-                            $formattedDate = \Carbon\Carbon::parse($data['tgl_transaksi'])->translatedFormat('d F Y');
-                           $rowStyle = '';
-                            if ($data['status_process'] == 'requested') {
-                                $rowStyle = 'background-color: #97ebfb;';
-                            } elseif ($data['status_process'] == 'process') {
-                                $rowStyle = 'background-color: #feb3aa;';
-                            }
-                            elseif ($data['status_process'] == 'complete') {
-                                $rowStyle = 'background-color: #6cf670;';
-                            }                            
-                            @endphp
-                        <tr style="{{ $rowStyle }}">
-                            
-                      
-                        
-                        <td style="border: 1px solid #d7d7d7; color: black;">
-                            {{ $num }}     
-                        </td>
+                    <div class="table-responsive">
 
-                            <td style="border: 1px solid #d7d7d7; color: black; width:5px;">{{ $formattedDate }}</td>
-                            <td style="border: 1px solid #d7d7d7; color: black; width:10px;">{{ $data['invoice'] }}</td>
-                            <td style="border: 1px solid #d7d7d7; color: black;max-width: 10px; text-overflow: ellipsis;">{{ $data['supplier']['name'] }}</td>
-                            <td style="border: 1px solid #d7d7d7; color: black; width:5px;">{{ $data['teknisi']['name'] }}</td>
-                            <td style="border: 1px solid #d7d7d7; color: black; width:5px;">{{ $data['cabang']['name'] }}</td>
-                            <td style="border: 1px solid #d7d7d7; color: black; width:10px;">{{ $data['status_converttorupiah'] == '1' ? 'Rp' : $data['matauang']['simbol'] }} 
-                                {{ $data['status_converttorupiah'] == '1' ? number_format($data['subtotal_idr'], 0, ',', '.') : number_format($data['subtotal'], 0, ',', '.') }}
-                            </td>
-                            
-                            <!-- jika ekspedisilcl pada pembelian lcl lebih dari 0 -->
-                            @if(count($data['ekspedisilcl']) >0)
-                                @php
-                                    $num_baris=0;
-                                @endphp
-                                <td style="border: 1px solid #d7d7d7; color: black; width:5px;">
-                                @foreach($data['ekspedisilcl'] as $resultekspedisi)
-                                    @php
-                                   
-                                    foreach($Data['msg']['ekspedisi'] as $result){
-                                        if($resultekspedisi['id_ekspedisi'] == $result['id']){
-                                            $name_ekspedisi = $result['name'];
-                                            $resi = $resultekspedisi['resi'];
-                                            $price = $resultekspedisi['price'];
-                                            $num_baris++;
-                                        }
-                                   
-                                    }
-                                    
-                                    
-                                    @endphp
-                                    <span style="color: black;">
-
-                                       <p style="color:black;font-weight:400;">
-                                       {{ $formattedDate = \Carbon\Carbon::parse($resultekspedisi['tgl_kirim'])->translatedFormat('d F Y')}}
-                                       </p> 
-                                </span>
-                                 @endforeach
-                                </td>
-                                <td style="border: 1px solid #d7d7d7; color: black; width:10px">
-                                @foreach($data['ekspedisilcl'] as $resultekspedisi)
-                                    
-                                        @foreach($Data['msg']['select_ekspedisi'] as $selectEkspedisi)
-                                            @if($resultekspedisi['id_ekspedisi'] == $selectEkspedisi['id'])    
-                                                <span style="color: black;">
-                                                    <p style="color:black; font-weight:400;">
-                                                    {{ $selectEkspedisi['name'] }}  
-                                                    </p> 
-                                                </span>
-                                            @endif
-                                        @endforeach
-                                @endforeach
-                                </td>
-                                <td style="border: 1px solid #d7d7d7; color: black; width:10px">
-                                @foreach($data['ekspedisilcl'] as $resultekspedisi)
-                                   
-                                   <span style="color: black;">
-                                       <p style="color:black; font-weight:400;">
-                                           {{$resultekspedisi['resi']}}
-                                       </p> 
-                                   </span>
+                        <table id="tabe-stok">
+                            <thead>
+                                <!-- Add table headers if needed -->
+                            </thead>
+                            <tbody>
                              
-                                @endforeach
+                                @php
+                                $num = 1;
+                                $name_ekspedisi;
+                                $resi;
+                                $price;
+                                @endphp
+                                <!-- Table data will be populated here -->
+                                @foreach($Data['msg']['pembelianlcl'] as $index => $data)
+                                @if($data['category_transaksi']!='local')
+                                @php
+                                \Carbon\Carbon::setLocale('id'); // Set locale ke Bahasa Indonesia
+                                $formattedDate = \Carbon\Carbon::parse($data['tgl_transaksi'])->translatedFormat('d M Y');
+                               $rowStyle = '';
+                                if ($data['status_process'] == 'requested') {
+                                    $rowStyle = 'background-color: #97ebfb;';
+                                } elseif ($data['status_process'] == 'process') {
+                                    $rowStyle = 'background-color: #feb3aa;';
+                                }
+                                elseif ($data['status_process'] == 'complete') {
+                                    $rowStyle = 'background-color: #6cf670;';
+                                }                            
+                                @endphp
+                            <tr style="{{ $rowStyle }}">
+                                
+                          
+                            
+                            <td style="border: 1px solid #d7d7d7; color: black; width: 20px;">
+                                {{ $num }}     
+                            </td>
+    
+                                <td style="border: 1px solid #d7d7d7; color: black; width:110px;">{{ $formattedDate }}</td>
+                                
+                                <td style="border: 1px solid #d7d7d7; color: black; width:150px;">{{ $data['invoice'] }}</td>
+                                <td style="border: 1px solid #d7d7d7; color: black; width:150px;">{{ $Data['msg']['invoice'][$num - 1]['invoice_no'] != 0 ?'INV-'.$Data['msg']['invoice'][$num - 1]['invoice_no'] : '' }} </td>
+                                <td style="border: 1px solid #d7d7d7; color: black;width: 120px; text-overflow: ellipsis;">{{ $data['supplier']['name'] }}</td>
+                                
+                                
+                                <td style="border: 1px solid #d7d7d7; color: black; width:150px;">{{ $data['status_converttorupiah'] == '1' ? $data['matauang']['simbol'] : $data['matauang']['simbol'] }} 
+                                    {{ $data['status_converttorupiah'] == '1' ? number_format($data['subtotal'], 0, ',',) : number_format($data['subtotal'], 0, ',', ',') }}
                                 </td>
-                                <td style="border: 1px solid #d7d7d7; color: black;max-width: 10px;">
-                                    @foreach($data['ekspedisilcl'] as $resultekspedisi)
+                                
+                                
+                                <td style="border: 1px solid #d7d7d7; color: black; width: 50px;">{{ $data['nominal_convert'] }}</td>
+                                <td style="border: 1px solid #d7d7d7; color: black; width:150px;">{{ $data['status_converttorupiah'] == '1' ? 'Rp' : $data['matauang']['simbol'] }} 
+                                        {{ $data['status_converttorupiah'] == '1' ? number_format($data['subtotal_idr'], 0, ',',) : number_format($data['subtotal'], 0, ',', ',') }}
+                                </td>
+                                    <td style="border: 1px solid #d7d7d7; color: black; width: 10px;"></td>
+                                    <td style="border: 1px solid #d7d7d7; color: black; width: 10px;"></td>
                                     
-                                    @foreach($Data['msg']['matauang'] as $selectmatauang)
-                                            @if($resultekspedisi['id_matauang'] == $selectmatauang['id'])    
-                                                <span style="color: black;">
-                                                    <p style="color:black; font-weight:400;">
-                                                    
-                                                    {{ $selectmatauang['simbol'] }} {{ number_format($resultekspedisi['price'],0,',','.') }}  
-                                                    </p> 
-                                                </span>
-                                            @endif
-                                        @endforeach
+                                  
                                 
-                                    @endforeach
+                                <td style="border: 1px solid #d7d7d7; color: black;max-width: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                        @if($data['status_converttorupiah'] == '1')
+                                        <label class="label icon-box-check">
+                                            <i class="fas fa-check" style="color: white; font-weight:bold;"></i>
+                                        </label>
+    
+                                        @else
+                                        <label class="label icon-box-times">
+                                            <i class="fas fa-times" style="color: white; font-weight:bold;"></i>
+                                        </label>
+    
+                                        @endif
                                 </td>
-                                
-                               
-                            <!-- bila ekspedisilcl pada lcl null -->
-                            @else
-                                <td style="border: 1px solid #d7d7d7; color: black; width:5px;"></td>
-                                <td style="border: 1px solid #d7d7d7; color: black;max-width: 40px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"></td>
-                                <td style="border: 1px solid #d7d7d7; color: black; width:10px"></td>
-                                <td style="border: 1px solid #d7d7d7; color: black;max-width: 10px;"></td>
-                            @endif
-                            <td style="border: 1px solid #d7d7d7; color: black; width:5px;">LCL</td>
-                            <td style="border: 1px solid #d7d7d7; color: black;max-width: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                                    @if($data['status_converttorupiah'] == '1')
-                                    <label class="label icon-box-check">
-                                        <i class="fas fa-check" style="color: white; font-weight:bold;"></i>
-                                    </label>
-
-                                    @else
-                                    <label class="label icon-box-times">
-                                        <i class="fas fa-times" style="color: white; font-weight:bold;"></i>
-                                    </label>
-
-                                    @endif
-                            </td>
-                            <td style="border: 1px solid #d7d7d7;">
-                                
-                                <button type="button" 
-                                     
-                                        data-id="{{ $data['id'] }}" 
-                                        name="editButton" 
-                                        class="btn btn-large btn-info btn-edit" 
-                                        style="width: 35px; height: 38px; padding: 9px 10px;" 
-                                        title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                
-                                
-                                <button type="button" 
-                                        onclick="rejectOrderPembelian(this)" 
-                                        data-id="{{ $data['id'] }}" 
-                                        name="{{ $data['invoice'] }}" 
-                                        class="btn btn-large btn-info btn-danger" 
-                                        style="width: 35px; height: 38px; padding: 9px 10px;" 
-                                        title="Reject Order">
-                                    <i class="fas fa-times"></i>
-                                </button>
-
-                                <button type="button" 
-                                        onclick="deleteOrderPembelian(this)" 
-                                        data-id="{{ $data['id'] }}" 
-                                        name="{{ $data['invoice'] }}" 
-                                        class="btn btn-large btn-info btn-danger" 
-                                        style="width: 35px; height: 38px; padding: 9px 10px;" 
-                                        title="Delete">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-
-                            </td>
-                        </tr>
-
-
-                            @php
-                            $num++;
-                            @endphp
-                            @endif
-                            @endforeach
-                        </tbody>
-                    </table>
+                              
+                                <td style="border: 1px solid #d7d7d7; color: black; width: 150px;">
+                                    
+                                  
+    
+                                </td>
+                            </tr>
+    
+    
+                                @php
+                                $num++;
+                                @endphp
+                                @endif
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
  
 
                   
@@ -1217,7 +1240,7 @@ LCL   | PT. Maxipro Group Indonesia
                                     <!-- Isi modal -->
                                     <div class="modal-body">
                                         
-                                        <form id="Formedit">
+                                        <form id="Formedit2">
 
                                         </form>
                                         
@@ -1254,7 +1277,7 @@ LCL   | PT. Maxipro Group Indonesia
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <!-- DataTables Bootstrap 4 Integration -->
 <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+
 <!-- Choices.js JS -->
 <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
@@ -1263,7 +1286,13 @@ LCL   | PT. Maxipro Group Indonesia
 
 <!-- untuk load datatable -->
 <script>
-    
+    //    document.querySelectorAll('input[name="uploadType"]').forEach(radio => {
+    //     radio.addEventListener('change', (e) => {
+    //         const uploadType = e.target.value;
+    //         // document.getElementById('file-input').style.display = uploadType === 'file' ? 'block' : 'none';
+    //     });
+    //     document.getElementById('url-input').style.display = uploadType === 'url' ? 'block' : 'block';
+    // });
     document.addEventListener('DOMContentLoaded', function() {
         // Initialize Choices.js on the select element
         const element = document.getElementById('id_jenis');
@@ -1280,12 +1309,12 @@ LCL   | PT. Maxipro Group Indonesia
     $('#clearFilterBtn').on('click', function() {
 
 
-            window.location.href = '{{ route('admin.pembeliaan_restok') }}'; 
+            window.location.href = '{{ route('admin.pembelian_lcl') }}'; 
     })
 
     //untuk membuat datatable
     $(document).ready(function() {
-
+        var pilihan
         
         var table = $('#tabe-stok').DataTable({
         "dom": '<"top"lf>rt<"bottom"ip><"clear">',
@@ -1310,48 +1339,81 @@ LCL   | PT. Maxipro Group Indonesia
             },
             {
                 data: 'invoice',
+                title: 'Kode'
+            },
+            {
+                data: 'invoice_comercial',
                 title: 'Invoice'
             },
             {
                 data: 'supplier',
                 title: 'Supplier'
             },
-            {
-                data: 'sales',
-                title: 'Sales'
-            },
-            {
-                data: 'cabang',
-                title: 'Cabang'
-            },
+           
             {
                 data: 'subtotal_idr',
                 title: 'Total'
             },
             {
-                data: 'tgl_pengiriman',
-                title: 'Tanggal Pengiriman'
+                data: 'nominal_kurs',
+                title: 'Kurs'
             },
             {
-                data: 'ekspedisi',
-                title: 'Ekspedisi'
+                data: 'kurs',
+                title: 'Total After Kurs'
+            },
+            // {
+            //     data: 'ekspedisi',
+            //     title: 'Ekspedisi'
+            // },
+            {
+                data: null,
+                title: 'Pembayaran',
+                render: function(data, type, full, meta) {
+                    let tambahanData = 'pembayaran'; // Ganti 'someField' dengan field sesuai kebutuhan Anda
+
+                    return `
+                        
+                        <button type="button" 
+                                data-id="${data.invoice}" 
+                                name="${data.invoice}" 
+                                class="btn btn-large btn-success btn-edit" 
+                                style="width: 35px; height: 38px; padding: 9px 10px;" 
+                                title="Pembayaran"
+                                data-tambahan="${tambahanData}"
+                                onclick="editInvoice(this)">
+                            <i class="fab fa-cc-apple-pay"></i>
+                        </button>
+                        
+                    `;
+                }
             },
             {
-                data: 'resi',
-                title: 'Resi'
-            },
-            {
-                data: 'harga',
-                title: 'Harga'
-            },
-            {
-                data: 'category',
-                title: 'Kategori'
+                data: null,
+                title: 'Pengiriman',
+                render: function(data, type, full, meta) {
+                    let tambahanData = 'pengiriman'; // Ganti 'someField' dengan field sesuai kebutuhan Anda
+                    return `
+                        
+                        <button type="button" 
+                                data-id="${data.invoice}" 
+                                name="${data.invoice}" 
+                                class="btn btn-large btn-secondary btn-edit" 
+                                style="width: 35px; height: 38px; padding: 9px 10px;" 
+                                title="Pengiriman"
+                                   data-tambahan="${tambahanData}"
+                                onclick="editInvoice(this)">
+                            <i class="fas fa-shipping-fast"></i>
+                        </button>
+                        
+                    `;
+                }
             },
             {
                 data: 'convert',
                 title: 'Convert'
             },
+            
             {
                 data: null,
                 title: 'Action',
@@ -1359,22 +1421,22 @@ LCL   | PT. Maxipro Group Indonesia
                     
                     return `
                         <button type="button" 
+                                onclick="detailInvoice(this)" 
+                                data-id="${data.invoice}" 
+                                name="${data.invoice}" 
+                                class="btn btn-large btn-info btn-light" 
+                                style="width: 35px; height: 38px; padding: 9px 10px;" 
+                                title="Detail">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button type="button" 
                                 data-id="${data.invoice}" 
                                 name="${data.invoice}" 
                                 class="btn btn-large btn-info btn-edit" 
                                 style="width: 35px; height: 38px; padding: 9px 10px;" 
-                                title="Edit Invoice"
+                                title="Edit"
                                 onclick="editInvoice(this)">
                             <i class="fas fa-edit"></i>
-                        </button>
-                        <button type="button" 
-                                onclick="rejectOrderPembelian(this)" 
-                                data-id="${data.id}" 
-                                name="${data.invoice}" 
-                                class="btn btn-large btn-info btn-danger" 
-                                style="width: 35px; height: 38px; padding: 9px 10px;" 
-                                title="Reject Order">
-                            <i class="fas fa-times"></i>
                         </button>
                         <button type="button" 
                                 onclick="deleteOrderPembelian(this)" 
@@ -1474,7 +1536,7 @@ LCL   | PT. Maxipro Group Indonesia
                 $('#ekspedisi-content').show();
     });
    
-    // Menangani klik pada tombol tambah
+    
    
      
        
@@ -1493,60 +1555,7 @@ LCL   | PT. Maxipro Group Indonesia
         
         document.getElementById('total-kubik').textContent = totalKubik;
     }
-
-    //Untuk Mereset data input checkbox dan total kubik di modal hitung kubk
     
-    //Membuka modal update
-    function upadetLcl(element) {
-        event.preventDefault();
-        var id = $(element).data('id');
-        console.log(id);
-
-        // Tampilkan elemen overlay dengan efek fade-in sebelum mengirim permintaan AJAX
-        $('#overlay').fadeIn();
-
-        var url = "{{ route('admin.pembelian_lcl_editview') }}";
-
-        $.ajax({
-            url: url,
-            type: 'GET', // Menggunakan metode GET
-            data: {
-                id_lcl: id
-            },
-            success: function(response) {
-                // Sembunyikan elemen overlay dengan efek fade-out setelah mendapatkan respons
-                // $('#overlay').fadeOut();
-                console.log('response',response)
-                // Handle response jika sukses
-                // $('#Formedit').html(response);
-                // Tampilkan modal
-                // $('#editModal').modal('show');
-            },
-            error: function(xhr, status, error) {
-                // Sembunyikan elemen overlay dengan efek fade-out jika terjadi kesalahan
-                $('#overlay').fadeOut();
-
-                // Handle error jika terjadi kesalahan
-                console.error(xhr.responseText);
-                return;
-            }
-        });
-    }
-
-    //Membuka modal gagal update
-    function upadetLclFailed(button) {
-
-        //Menampilkan error message dengan sweetalert
-        Swal.fire({
-            icon: 'error',
-            title: 'Error!',
-            text: 'Maaf, item sudah di proses di commercial invoice',
-        });
-
-        // Prevent the default action (navigation)
-        return false;
-    }
-
     function deleteOrderPembelian(element) {
         event.preventDefault();
         var id = $(element).data('id');
@@ -1605,56 +1614,6 @@ LCL   | PT. Maxipro Group Indonesia
         });
     }
 
-    function rejectOrderPembelian(element) {
-        event.preventDefault();
-        var id = $(element).data('id');
-        var restokName = $(element).attr('name');
-
-        // Menggunakan SweetAlert2 untuk konfirmasi penghapusan
-        Swal.fire({
-            title: 'Konfirmasi',
-            text: "Apakah Anda yakin ingin mereject Order Pembelian ini " + restokName + " ?",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Ya, Reject!',
-            cancelButtonText: 'Batal'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                var url = "{{ route('admin.pembelian_reject_order_pembelian') }}";
-
-                $.ajax({
-                    url: url,
-                    type: 'GET',
-                    data: {
-                        id: id
-                    },
-                    success: function(response) {
-                        // Handle response jika sukses
-                        console.log(response);
-
-                        // Hapus data berdasarkan elemen, element berupa id
-                        $(element).closest('tr').remove();
-
-                        // Tampilkan SweetAlert2 ketika berhasil dihapus
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Berhasil',
-                            text: 'Data berhasil direject!',
-                            showConfirmButton: false,
-                            timer: 1500
-                        });
-                    },
-                    error: function(xhr, status, error) {
-                        // Handle error jika terjadi kesalahan
-                        console.error(xhr.responseText);
-                        return;
-                    }
-                });
-            }
-        });
-    }
 
     $('#tambahModal').on('hidden.bs.modal', function () {
      
@@ -1854,6 +1813,8 @@ LCL   | PT. Maxipro Group Indonesia
     var price_invoice_select =[]
     var subtot_arr_select_global=[]
     var editClick=false;
+    var array_create_pembayaran=[]
+    
     $(document).ready(function() {
                 
                 var contentImport = $('.container-import2');
@@ -1924,7 +1885,7 @@ LCL   | PT. Maxipro Group Indonesia
                                             type: 'text', 
                                             class: 'form-control', 
                                             value:productItem.name,
-                                            id:'name'+itemIndex
+                                            id:'name'+itemIndex,
                                     });
                                     inputtd1Product.css({
                                             'border': '1px solid #696868', 
@@ -2324,6 +2285,7 @@ LCL   | PT. Maxipro Group Indonesia
                         url: '{{ route('admin.pembelian_lcl') }}',
                         data: formData,
                         success: function(response) {
+                            
                         console.log('response',response)
                         
                         var responseMataUangId = response.matauang.id;
@@ -2350,10 +2312,10 @@ LCL   | PT. Maxipro Group Indonesia
                             </div>
                             `;
                             $('#row-supplier').append(newDivContentSupplier);
-                            var colselectElement = $('#col-select');
+                            var colselectElement = $('#col-select-matauang');
                             colselectElement.remove()
                             newDivContent = `
-                            <div class="col-md-6" id="col-matauang-choices">
+                            <div class="col-md-6" id="col-select-matauang">
                             <div class="row" id="padding-top">
                             <div class="col-md-3">
                             <label id="label" for="">Mata Uang</label>
@@ -2456,7 +2418,8 @@ LCL   | PT. Maxipro Group Indonesia
                                         type: 'text', 
                                         class: 'form-control', 
                                         value: name,
-                                        id:'item'
+                                        id:'item',
+                                        
                                     });
                                     inputName.css({
                                         'border': '1px solid #696868', // Border color and style
@@ -2743,6 +2706,7 @@ LCL   | PT. Maxipro Group Indonesia
                                             
                                             //action save di contert idr
                                             $('#saveConvert').click(function(event) {
+                                                $(this).prop('disabled', true);
                                                 mata_uang_disabled = true;
                                                 console.log('matauang_disabled')
                                                 category_convert =$('#select_category_convert').val()
@@ -2754,7 +2718,7 @@ LCL   | PT. Maxipro Group Indonesia
                                                 clickConvert = true;
                                                 newBoolHargaBelumPpn = true;
                                                 statusConvertRupiah =1;
-                                                $('#col-matauang-choices').remove();
+                                                $('#col-select-matauang').remove();
                                                 var newDivContent2 = `
                                                     <div class="col-md-6" id="">
                                                     <div class="row" id="padding-top">
@@ -2884,6 +2848,7 @@ LCL   | PT. Maxipro Group Indonesia
                                         id: 'harga_belum_ppn_import' 
                                     });
 
+                                    
                                     
                                     inputElement.css({
                                         'border': '1px solid #696868', 
@@ -3200,6 +3165,7 @@ LCL   | PT. Maxipro Group Indonesia
                                             
                                             //action save di contert idr
                                             $('#saveConvert').click(function(event) {
+                                                $(this).prop('disabled', true);
                                                 mata_uang_disabled = true;
                                                 console.log('matauang_disabled')
                                                 category_convert =$('#select_category_convert').val()
@@ -3211,7 +3177,7 @@ LCL   | PT. Maxipro Group Indonesia
                                                 clickConvert = true;
                                                 newBoolHargaBelumPpn = true;
                                                 statusConvertRupiah =1;
-                                                $('#col-matauang-choices').remove();
+                                                $('#col-select-matauang').remove();
                                                 var newDivContent2 = `
                                                     <div class="col-md-6" id="">
                                                     <div class="row" id="padding-top">
@@ -3454,8 +3420,9 @@ LCL   | PT. Maxipro Group Indonesia
                             td_total:total_elementValueText,
                             td_discount:discount_save,
                             td_discount_nominal:discount_nominal_save,
-                            valuecategoryconvert:valueCategory
-                            
+                            valuecategoryconvert:valueCategory,
+                            category_transaksi:'lcl',
+                            category_comercial_invoice:'lcl',
                         };
                         
                         $.ajax({
@@ -3463,13 +3430,14 @@ LCL   | PT. Maxipro Group Indonesia
                             url: '{{ route('admin.pembelian_tambah_lcl') }}',
                             data: formDataSend,
                             success: function(response) {
+                                console.log('response',response)
                             Swal.fire({
                                 icon:'success',
                                 title:'Success',
                                 text:'LCL Berhasil Ditambahkan'
                             }).then((result)=>{
                             if(result.isConfirmed){
-                                window.location.reload();
+                                // window.location.reload();
                             }
                             });
                             },error: function(xhr, status, error) {
@@ -3552,7 +3520,7 @@ LCL   | PT. Maxipro Group Indonesia
                         $(this).val(0);  // Jika Anda ingin mengatur nilai saat tidak tercentang
                         $(this).prop('checked', false);
                     }
-                    async(); // Panggil ulang calculateTotals saat checkbox berubah
+                    // async (); // Panggil ulang calculateTotals saat checkbox berubah
                 });
             
 
@@ -3589,672 +3557,877 @@ LCL   | PT. Maxipro Group Indonesia
                         inputtd3Product.on('input', updateCalculatedValueSubtot);
                 }
        
-       
+            
+                $('#tambah-pembayaran').on('click', function(e) {
+                    e.preventDefault(); // Prevent default action if needed
+                    var tbody_container_pembayaran = $('.container-pembayaran')
+                    // tbody_container_pembayaran.empty()
+                    var tr = $('<tr>')
+                    var tgl_bayar = $('.tgl_bayar').val()
+                    var keterangan = $('.keterangan_pembayaran').val()
+                    var bukti=$('input[name="urlInput"]').val()
+                    console.log('bukti',bukti)
+                    var matauang_pembayaran =$('#matauang_pembayaran').val()
+                    var nominal_pembayaran = $('.nominal_pembayaran').val()
+                    // console.log('tgl_bayar',tgl_bayar,'keterangan',keterangan,'bukti',bukti,'matauang_pembayaran',matauang_pembayaran,'nominal_pembayaran',nominal_pembayaran)
+                    
+                    var dataToSend = {
+                        tgl_bayar: tgl_bayar,
+                        keterangan: keterangan,
+                        bukti: bukti,
+                        matauang_pembayaran: matauang_pembayaran,
+                        nominal_pembayaran: nominal_pembayaran
+                    };
+                    console.log('dataToSend',dataToSend)
+                    // AJAX request
+                    $.ajax({
+                        url: '{{ route('admin.pembelian_lcl') }}', // Replace with your server endpoint
+                        type: 'GET',
+                        data:{
+                            form:dataToSend,
+                            menu:'create_pembayaran'
+                        },
+                        beforeSend: function () {
+                            // Validasi data
+                            if (!dataToSend.tgl_bayar || !dataToSend.keterangan || !dataToSend.bukti || 
+                                !dataToSend.matauang_pembayaran || !dataToSend.nominal_pembayaran) {
+                                
+                                Swal.fire({
+                                    icon: 'warning',
+                                    title: 'Data Tidak Lengkap',
+                                    text: 'Harap lengkapi semua data sebelum mengirim!',
+                                });
+
+                                // Hentikan pengiriman data
+                                return false;
+                            }
+                        },
+                        success: function(response) {
+                          
+                          
+                            array_create_pembayaran.push(response)
+                            console.log('create_pembayaran',array_create_pembayaran)
+                            array_create_pembayaran.forEach(function(pembayaran_arr, index_arr){
+                                var tglBayar = new Date(pembayaran_arr.tgl_bayar_create); // Assuming result.tgl_kirim is in a parseable format
+                                console.log('tgl bayar',tglBayar)
+                                // Array of month names in Indonesian
+                                var bulan = [
+                                    "Jan", "Feb", "Mar", "Apr", "Mei", "Jun", 
+                                    "Jul", "Agt", "Sep", "Okt", "Nov", "Des"
+                                ];
+
+                                // Format the date as 'dd Month yyyy'
+                                var formattedDate = ('0' + tglBayar.getDate()).slice(-2) + ' ' + 
+                                                    bulan[tglBayar.getMonth()] + ' ' + 
+                                                    tglBayar.getFullYear();
+                                
+                               
+                                tr.empty()
+                                var td1Product = $('<td>',{
+                                        id:'tgl_pembayaran_edit-'+index_arr
+                                }).css({
+                                        'padding': 'auto',
+                                            'width': '10%', 
+                                }).text(formattedDate);
+                                
+                                tr.append(td1Product)
+                                var td2Product = $('<td>',{
+                                        id:'kode_pembayaran_edit-'+index_arr
+                                }).css({
+                                        'padding': 'auto',
+                                            'width': '10%', 
+                                }).text(pembayaran_arr.kodepembayaran);
+                                
+                                tr.append(td2Product)
+                                var td3Product = $('<td>',{
+                                    id:'nominal_pembayaran_edit-'+index_arr
+                                }).css({
+                                    'padding': 'auto',
+                                    'width': '10%', 
+                                }).text(pembayaran_arr.matauang_simbol+' '+pembayaran_arr.price_name);
+                                
+                                tr.append(td3Product)
+                                var td4Product = $('<td>',{
+                                        id:'keterangan_pembayaran_edit-'+index_arr
+                                }).css({
+                                        'padding': 'auto',
+                                            'width': '10%', 
+                                }).text(pembayaran_arr.keterangan_create);
+                                
+                                tr.append(td4Product)
+                                 // Create Edit button
+                                var tdActions = $('<td>', {
+                                            id: 'actions_pembayaran_edit-' + index_arr
+                                        }).css({
+                                            'padding': 'auto',
+                                            'width': '15%', // Adjust as needed
+                                            'text-align': 'center' // Center align the buttons
+                                });
+                                 var btnEdit = $('<button>')
+                                        .addClass('btn btn-sm btn-primary')
+                                        .html('<i class="fas fa-edit"></i>') // Use .html() to render the Font Awesome icon
+                                        .css({
+                                            'margin-left': '5px' // Add spacing between buttons
+                                        })
+                                        .attr('type', 'button') // Set the button type
+                                        .on('click', function() {
+                                            // Add your edit functionality here
+                                            console.log('Edit clicked for index:', index_pembayaran);
+                                            // $('#editModalPembayaranLcl').modal('show');
+                                          
+                                            // $('#editModalPembayaranLcl').on('shown.bs.modal', function () {
+
+                                            // })
+                                        });
+
+                                        // Create Delete button
+                                var btnDelete = $('<button>')
+                                        .addClass('btn btn-sm btn-danger btn-delete')
+                                        .html('<i class="fas fa-trash"></i>') // Use .html() to render the Font Awesome trash icon
+                                        .attr('type', 'button') // Set the button type explicitly
+                                        .css({
+                                            'margin-left': '5px' // Add spacing between buttons
+                                        })
+                                        .on('click', function() {
+                                            // Add your delete functionality here
+                                            console.log('Delete clicked for index:', index_pembayaran);
+                                });
+                                tdActions.append(btnEdit,btnDelete)
+                                tr.append(tdActions)
+                                tbody_container_pembayaran.append(tr)
+                            })
+                            
+                        },
+                        error: function(xhr, status, error) {
+                            // Handle error
+                            console.error('AJAX Error:', error);
+                            alert('Terjadi kesalahan saat menambahkan pembayaran.');
+                        },
+                    });
+                });
+               
 
     });
     
-    //popup gagal convert
-    $('#convert_idr').on('click', functionFailedModal);
-    function functionFailedModal(){
-        console.log('failed convert');
-        Swal.fire({
-            title: 'Gagal',
-            text: 'Harus Import Data Dahulu.',
-            icon: 'error',
-            showCancelButton: false, // Menonaktifkan tombol batal
-            confirmButtonText: 'Tutup', // Mengganti teks tombol konfirmasi menjadi "Tutup"
-        });
-    }
+    
 </script>
 
 <!-- script untuk edit view -->
 <script>
     // $(document).ready(function() {
-        
+        var array_data_pembayaran=[]
+        var id_pembelian_savelcl=0;
         function editInvoice(element) {
-            event.preventDefault();
-            var invoice = $(element).data('id');
-            
-            editClick =true;
-            
-            var idcomercialimport =[]
-            var idrestokimport = []
-            var subtot_arr=[]
-            var harga_asal=[]
-            var qty_arr=[]
-            var discount_arr=[]
-            var changeHistory=[]
-            var price_invoice_arr=[]
-            var statusconvert=0
-            var ppn_item=[]
-            var valuenominalconvert=0
-            var id_lcl
-            var td_ppn
-            var td_subtotal
-            var td_total
-            var td_discount
-            var td_discount_nominal
+ 
+                event.preventDefault();
+                var invoice = $(element).data('id');
+        
+                editClick =true;
+                
+                var idcomercialimport =[]
+                var idrestokimport = []
+                var subtot_arr=[]
+                var harga_asal=[]
+                var qty_arr=[]
+                var discount_arr=[]
+                var changeHistory=[]
+                var price_invoice_arr=[]
+                var statusconvert=0
+                var ppn_item=[]
+                var valuenominalconvert=0
+                var id_lcl
+                var td_ppn
+                var td_subtotal
+                var td_total
+                var td_discount
+                var td_discount_nominal
 
-            //array menampung row in ekspedisi table
-            var array_kode=[]
-            var array_tgl=[]
-            var array_rute=[]
-            var array_nama=[]
-            var array_resi=[]
-            var array_price=[]
-            var array_keterangan=[]
-            var array_matauang=[]
-            var id_pembelian_savelcl=0;
+                //array menampung row in ekspedisi table
+                var array_kode=[]
+                var array_tgl=[]
+                var array_rute=[]
+                var array_nama=[]
+                var array_resi=[]
+                var array_price=[]
+                var array_keterangan=[]
+                var array_matauang=[]
+              
 
-            // Example: You can now use this ID in an AJAX request or any other logic
-            $.ajax({
-                type: 'GET',
-                url: '{{ route('admin.pembelian_lcl') }}',
-                data: { 
-                    menu:'edit',
-                    invoice: invoice },
-                success: function(response) {
-                    id_pembelian_savelcl=response.msg.pembelianlcl.id
-                    console.log(id_pembelian_savelcl)
-                    if (window.dataTableInstance) {
-                        window.dataTableInstance.destroy();
-                    }
-            
-                    $('#openModalBtn').remove();
-                    $('#tabe-stok').remove();
-                    $('#radio-button').remove();
-                    $('#clearFilterBtn').remove();
-                    $('#tambah_lcl').remove();
-                    $('#tab-nav').show();
-                    $('#master-tab').trigger('click'); // Show master content by default
-                    $('#judulLcl').html('<i class="fas fa-database"></i> &nbsp Edit LCL');
-                    document.title='Edit LCL   | PT. Maxipro Group Indonesia'
-                    
-                    //menambah ekspedisi
-                  
-                    
-                    //mengirim data ke tab master dan ekspedisi
-                    var pembelianLcl = response.msg.pembelianlcl
-                    var image_barang = response.msg.image_barang
-                    var matauang = response.msg.matauang
-                    var gudang = response.msg.gudang
-                    var ekspedisilcl = response.msg.ekspedisilcl
-                    var statuspenerimaan = response.msg.statuspenerimaan
-                    var penerimaan = response.msg.penerimaan
-                    var name_ekspedisi_lcl = response.msg.nama_ekspedisi
-                    var nama_matauang = response.msg.matauang_ekspedisi
-                    editLcl(pembelianLcl,image_barang,matauang,gudang)
-                    editEkspedisi(pembelianLcl,ekspedisilcl,statuspenerimaan,penerimaan,name_ekspedisi_lcl,nama_matauang)
-                    var tambah_tbody_container_ekspedisi = $('.tambah-tbody-container-ekspedisi')
-                    var ekspedisi_row_tambah = [];
-             
-                    $('#tambah-ekspedisi').on('click',function(){
-                        var tambah_tgl_ekspedisi = $('.tambah_tgl_ekspedisi').val();
-                        var tambah_ekspedisi = $('.tambah_ekspedisi').val();
-                        var tambah_keterangan = $('.tambah_keterangan').val();
-                        var tambah_rute = $('.tambah_rute').val();
-                        var tambah_matauang_ekspedisi = $('.tambah_matauang_ekspedisi').val();
-                        var tambah_biaya_ekspedisi = $('.tambah_biaya_ekspedisi').val();
-                        var tambah_resi_ekspedisi = $('.tambah_resi_ekspedisi').val();
+                // Example: You can now use this ID in an AJAX request or any other logic
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ route('admin.pembelian_lcl') }}',
+                    data: { 
+                        menu:'edit',
+                        invoice: invoice },
+                    success: function(response) {
+                        // console.log('a',response)
+                        id_pembelian_savelcl=response.msg.pembelianlcl.id
+                        $('main.main-content').removeClass('wider ps ps--active-y');
+                        if (window.dataTableInstance) {
+                            window.dataTableInstance.destroy();
+                        }
+                
+                        $('#openModalBtn').remove();
+                        $('#tabe-stok').remove();
+                        $('#radio-button').remove();
+                        $('#clearFilterBtn').remove();
+                        $('#tambah_lcl').remove();
+                        $('#tab-nav').show();
+                        $('#master-tab').trigger('click'); // Show master content by default
+                        $('#judulLcl').html('<i class="fas fa-database"></i> &nbsp Edit LCL');
+                        document.title='Edit LCL   | PT. Maxipro Group Indonesia'
                         
-                 
-
-                        $.ajax({
-                            type:'GET',
-                            url:'{{ route('admin.pembelian_lcl') }}',
-                            data:{
-                                menu:'tambah_ekspedisi',
-                                tambah_tgl_ekspedisi:tambah_tgl_ekspedisi,
-                                tambah_ekspedisi:tambah_ekspedisi,
-                                tambah_keterangan:tambah_keterangan,
-                                tambah_rute:tambah_rute,
-                                tambah_matauang_ekspedisi:tambah_matauang_ekspedisi,
-                                tambah_biaya_ekspedisi:tambah_biaya_ekspedisi,
-                                tambah_resi_ekspedisi:tambah_resi_ekspedisi
-                            },
-                            success: function(response){
-                             
-                                array_tgl.push(response.tgl_kirim);
-                                array_kode.push(response.kodepengiriman);
-                                array_rute.push(response.rute);
-                                array_nama.push(response.ekspedisi);
-                                array_resi.push(response.resi);
-                                array_price.push(response.price);
-                                array_keterangan.push(response.keterangan);
-                                array_matauang.push(response.matauang);
-                                console.log('res',response)
-                                tambah_tbody_container_ekspedisi.empty()
+                        //mengirim data ke tab master dan ekspedisi
+                        var pembelianLcl = response.msg.pembelianlcl
+                        var image_barang = response.msg.image_barang
+                        var matauang = response.msg.matauang
+                        var gudang = response.msg.gudang
+                        var ekspedisilcl = response.msg.ekspedisilcl
+                        var statuspenerimaan = response.msg.statuspenerimaan
+                        var penerimaan = response.msg.penerimaan
+                        var name_ekspedisi_lcl = response.msg.nama_ekspedisi
+                        var nama_matauang = response.msg.matauang_ekspedisi
+                        
+                        let tambahanData = $(element).data('tambahan')
+                        if(tambahanData=='pembayaran'){
+                            $('#pembayaran-tab').trigger('click');
+                        }
+                        else if(tambahanData=='pengiriman'){
+                            $('#ekspedisi-tab').trigger('click');
+                        }
+                        editLcl(pembelianLcl,image_barang,matauang,gudang)
+                        editPembayaran(response.msg.pembayaranlcl,response.msg.matauang_all)
+                        editEkspedisi(pembelianLcl,ekspedisilcl,statuspenerimaan,penerimaan,name_ekspedisi_lcl,nama_matauang)
+                        var tambah_tbody_container_ekspedisi = $('.tambah-tbody-container-ekspedisi')
+                        var ekspedisi_row_tambah = [];
+                
+                        $('#tambah-ekspedisi').on('click',function(){
+                            var tambah_tgl_ekspedisi = $('.tambah_tgl_ekspedisi').val();
+                            var tambah_ekspedisi = $('.tambah_ekspedisi').val();
+                            var tambah_keterangan = $('.tambah_keterangan').val();
+                            var tambah_rute = $('.tambah_rute').val();
+                            var tambah_matauang_ekspedisi = $('.tambah_matauang_ekspedisi').val();
+                            var tambah_biaya_ekspedisi = $('.tambah_biaya_ekspedisi').val();
+                            var tambah_resi_ekspedisi = $('.tambah_resi_ekspedisi').val();
                             
-                                // Menambahkan data ke dalam array
-                                ekspedisi_row_tambah.push(response);
-                                        console.log('ekspedisi_row_tambah',ekspedisi_row_tambah)
-                                        ekspedisi_row_tambah.forEach(function(response, newIndex) {
+                            if (!tambah_tgl_ekspedisi || !tambah_ekspedisi || !tambah_keterangan || !tambah_rute || 
+                                !tambah_matauang_ekspedisi || !tambah_biaya_ekspedisi || !tambah_resi_ekspedisi) {
+                                
+                                Swal.fire({
+                                    icon: 'warning',
+                                    title: 'Data Tidak Lengkap',
+                                    text: 'Harap lengkapi semua data sebelum menambahkan ekspedisi!',
+                                });
+
+                                // Hentikan pengiriman data
+                                return;
+                            }
+
+                            $.ajax({
+                                type:'GET',
+                                url:'{{ route('admin.pembelian_lcl') }}',
+                                data:{
+                                    menu:'tambah_ekspedisi',
+                                    tambah_tgl_ekspedisi:tambah_tgl_ekspedisi,
+                                    tambah_ekspedisi:tambah_ekspedisi,
+                                    tambah_keterangan:tambah_keterangan,
+                                    tambah_rute:tambah_rute,
+                                    tambah_matauang_ekspedisi:tambah_matauang_ekspedisi,
+                                    tambah_biaya_ekspedisi:tambah_biaya_ekspedisi,
+                                    tambah_resi_ekspedisi:tambah_resi_ekspedisi
+                                },
+                                success: function(response){
+                                
+                                    array_tgl.push(response.tgl_kirim);
+                                    array_kode.push(response.kodepengiriman);
+                                    array_rute.push(response.rute);
+                                    array_nama.push(response.ekspedisi);
+                                    array_resi.push(response.resi);
+                                    array_price.push(response.price);
+                                    array_keterangan.push(response.keterangan);
+                                    array_matauang.push(response.matauang);
+                                    console.log('res',response)
+                                    tambah_tbody_container_ekspedisi.empty()
+                                
+                                    // Menambahkan data ke dalam array
+                                    ekspedisi_row_tambah.push(response);
+                                            console.log('ekspedisi_row_tambah',ekspedisi_row_tambah)
+                                            ekspedisi_row_tambah.forEach(function(response, newIndex) {
+                                                
+                                                var bulan = [
+                                                    "Januari", "Februari", "Maret", "April", "Mei", "Juni", 
+                                                    "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+                                                ];
+                                                var tgl_kirim_tambah_ekspedisi = new Date(response.tgl_kirim)
+                                                // Format the date as 'dd Month yyyy'
+                                                var formattedDate = ('0' + tgl_kirim_tambah_ekspedisi.getDate()).slice(-2) + ' ' + 
+                                                                    bulan[tgl_kirim_tambah_ekspedisi.getMonth()] + ' ' + 
+                                                                    tgl_kirim_tambah_ekspedisi.getFullYear();
+                                                var trtambah = $('<tr>')
+                                    
+                                                var td1ProductTambah = $('<td>',{
+                                                        id:'tgl_ekspedisi_tambah-'+newIndex
+                                                }).css({
+                                                        'padding': 'auto',
+                                                        'width': '10%', 
+                                                }).text(formattedDate)
                                             
-                                            var bulan = [
+                                                
+                                                var td2ProductTambah = $('<td>', {
+                                                    id: 'kode_ekspedisi_tambah-'+newIndex
+                                                }).css({
+                                                    'padding': 'auto',
+                                                    'width': '10%', 
+                                                }).text(response.kodepengiriman)
+                                    
+
+                                                var td3ProductTambah = $('<td>',{
+                                                        id:'rute_ekspedisi_tambah-'+newIndex
+                                                }).css({
+                                                        'padding': 'auto',
+                                                        'width': '10%', 
+                                                    }).text(response.rute)
+                                            
+                                                
+                                                var td4ProductTambah = $('<td>',{
+                                                        id:'nama_ekspedisi_tambah-'+newIndex
+                                                }).css({
+                                                        'padding': 'auto',
+                                                        'width': '10%', 
+                                                }).text(response.ekspedisi_name)
+                                                
+                                    
+
+                                                
+                                            
+                                                
+                                                var td5ProductTambah = $('<td>',{
+                                                    id:'resi_ekspedisi_tambah-'+newIndex
+                                                }).css({
+                                                    'padding': 'auto',
+                                                    'width': '10%', 
+                                                }).text(response.resi)
+                                                
+                                                var td6ProductTambah = $('<td>',{
+                                                    id:'price_ekspedisi_tambah-'+newIndex
+                                                }).css({
+                                                    'padding': 'auto',
+                                                    'width': '10%', 
+                                                }).text(response.matauang_simbol+' '+response.price)
+
+                                                var td7ProductTambah = $('<td>',{
+                                                    id:'keterangan_tambah-'+newIndex
+                                                }).css({
+                                                    'padding': 'auto',
+                                                    'width': '10%', 
+                                                }).text(response.keterangan)
+                                                var td8ProductTambah = $('<td>').css({
+                                                    'padding': 'auto',
+                                                    'width': '10%', 
+                                                })
+                                                
+                                                var editButton = $('<button>', {
+                                                    class: 'btn btn-sm btn-primary',
+                                                    click: function() {
+                                                        var getIndex = $(this).closest('tr').index(); // Ambil indeks baris
+                                                        $('#editModalEksepedisiLcl').modal('show');
+                                                        
+                                                        var currentIndex=0
+                                                        var curIndex=0;
+                                                        if (array_keterangan.length > 0 && array_keterangan.length !=ekspedisi_row_tambah.length) {
+                                                            currentIndex = (array_keterangan.length - (newIndex + 1)) + getIndex;
+                                                            curIndex=getIndex
+                                                            console.log('Current Index length:', currentIndex);
+                                                            console.log('curIndex length:', curIndex);
+                                                        } else {
+                                                            currentIndex =newIndex
+                                                            curIndex=getIndex
+                                                            console.log('Current Index:', currentIndex);
+                                                        }
+                                                        console.log('array_kode',array_kode)                                       
+                                                        $('.edit_kode_ekspedisi_lcl').val(array_kode[curIndex]);
+                                                        $('.edit_tgl_kirim_ekspedisi').val(array_tgl[curIndex]);
+                                                        $('.edit_matauang_ekspedisi').val(array_matauang[curIndex]).trigger('change');
+                                                        $('.edit_biaya_ekspedisi_lcl').val(array_price[curIndex]);
+                                                        $('.rute_ekspedisi').val(array_rute[curIndex]).trigger('change');
+                                                        $('.edit_ekspedisi_lcl').val(array_nama[curIndex]).trigger('change');
+                                                        $('.edit_no_resi').val(array_resi[curIndex]);
+                                                        $('.edit_keterangan').val(array_keterangan[curIndex]);
+
+                                                        
+                                                        // Simpan index untuk update nanti
+                                                        $('#update_ekspedisi').data('index', currentIndex);
+                                                        $('#update_ekspedisi').data('curIndex', curIndex);
+                                                    }
+                                                }).append($('<i>',{ class: 'fas fa-edit'}))
+                                                .attr('title','Edit')
+                                                ;
+
+                                                
+                                                td8ProductTambah.append(editButton);
+
+                                                $('#update_ekspedisi').on('click',function(){
+                                                        
+                                                        
+                                                        var kode_ekspedisi = $('.edit_kode_ekspedisi_lcl').val()
+                                                        var tgl_ekspedisi = $('.edit_tgl_kirim_ekspedisi').val()
+                                                        var matauang_update = $('.edit_matauang_ekspedisi').val()
+                                                        var price_update = $('.edit_biaya_ekspedisi_lcl').val()
+                                                        var rute_update = $('.edit_rute_ekspedisi').val()
+                                                        var ekspedisi_update = $('.edit_ekspedisi_lcl').val()
+                                                        var resi_update = $('.edit_no_resi').val()
+                                                        var keterangan_update = $('.edit_keterangan').val()
+                                                        
+                                                    
+                                                        var formUpdateEkspedisi ={
+                                                            menu:'update_ekspedisi',
+                                                            kodepengiriman_update:kode_ekspedisi,
+                                                            tgl_kirim_update:tgl_ekspedisi,
+                                                            matauang_update:matauang_update,
+                                                            price_update:price_update,
+                                                            rute_update:rute_update,
+                                                            ekspedisi_update:ekspedisi_update,
+                                                            resi_update:resi_update,
+                                                            keterangan_update:keterangan_update,
+                                                            
+                                                        }
+                                                        console.log(formUpdateEkspedisi)
+                                                        var currentIndex = $(this).data('index');
+                                                        var curIndex = $(this).data('curIndex');
+                                                        console.log('currentIndex',currentIndex)
+                                                        console.log('curIndex',curIndex)
+                                                        $.ajax({
+                                                    
+                                                            type: 'GET',
+                                                            url: '{{ route('admin.pembelian_lcl') }}',
+                                                            data: formUpdateEkspedisi,
+                                                            success: function(response) {
+                                                                console.log('res update tambah',response)
+
+                                                                var tglBayar_ekspedisi_edit = new Date(response.tgl_kirim); // Assuming result.tgl_kirim is in a parseable format
+
+                                                                // Array of month names in Indonesian
+                                                                var bulan_ekspedisi_edit = [
+                                                                    "Januari", "Februari", "Maret", "April", "Mei", "Juni", 
+                                                                    "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+                                                                ];
+
+                                                                // Format the date as 'dd Month yyyy'
+                                                                var formattedDateEkspedisiEdit = ('0' + tglBayar_ekspedisi_edit.getDate()).slice(-2) + ' ' + 
+                                                                                    bulan_ekspedisi_edit[tglBayar_ekspedisi_edit.getMonth()] + ' ' + 
+                                                                                    tglBayar_ekspedisi_edit.getFullYear();
+                                                                $('#kode_ekspedisi_tambah-' + curIndex).text(response.kodepengiriman);
+                                                                $('#tgl_ekspedisi_tambah-' + curIndex).text(formattedDateEkspedisiEdit);
+                                                                $('#rute_ekspedisi_tambah-' + curIndex).text(response.rute);
+                                                                $('#nama_ekspedisi_tambah-' + curIndex).text(response.ekspedisi_name);
+                                                                $('#resi_ekspedisi_tambah-' + curIndex).text(response.resi);
+                                                                $('#price_ekspedisi_tambah-' + curIndex).text(response.matauang_simbol+' '+response.price);
+                                                                $('#keterangan_tambah-'+curIndex).text(response.keterangan);
+                                                                
+                                                                //menginisiasi nilai yang telah diupdate
+                                                                array_kode[currentIndex] = response.kodepengiriman
+                                                                array_tgl[currentIndex] = response.tgl_kirim
+                                                                array_nama[currentIndex] = response.ekspedisi
+                                                                array_keterangan[currentIndex]= response.keterangan
+                                                                array_resi[currentIndex]=response.resi
+                                                                array_price[currentIndex]= response.price
+                                                                array_rute[currentIndex]= response.rute
+                                                                array_matauang[currentIndex]=response.matauang
+
+                                                                $('#editModalEksepedisiLcl').modal('hide');
+                                                            }
+
+
+                                                        })
+                                                
+                                                        
+                                                    })
+                                                trtambah.append(td1ProductTambah,td2ProductTambah,td3ProductTambah,td4ProductTambah,td5ProductTambah,td6ProductTambah,td7ProductTambah,td8ProductTambah)
+                                                tambah_tbody_container_ekspedisi.append(trtambah)
+                                            })
+
+                                }
+                            });
+                        })
+
+                    
+                    }
+                });
+
+                window.editEkspedisi = function(pembelianLcl,ekspedisilcl,statuspenerimaan,penerimaan,name_ekspedisi_lcl,nama_matauang){
+            
+                    id_pembelian_savelcl=pembelianLcl.id
+                    var tbody_container_ekspedisi = $('.tbody-container-ekspedisi')
+                    if(statuspenerimaan=='true'){
+                        
+                        
+                        $('#ekspedisi').val(penerimaan.id_ekspedisi).trigger('change');
+                    }
+                    console.log('name_ekspedisi_lcl',name_ekspedisi_lcl)
+                    
+                
+                    if(ekspedisilcl){
+                        ekspedisilcl.forEach(function(result, itemIndex) 
+                    
+                        {
+                    
+                            var tglBayar = new Date(result.tgl_kirim); // Assuming result.tgl_kirim is in a parseable format
+
+                            // Array of month names in Indonesian
+                            var bulan = [
+                                "Jan", "Feb", "Mar", "Apr", "Mei", "Jun", 
+                                "Jul", "Agt", "Sep", "Okt", "Nov", "Des"
+                            ];
+
+                            // Format the date as 'dd Month yyyy'
+                            var formattedDate = ('0' + tglBayar.getDate()).slice(-2) + ' ' + 
+                                                bulan[tglBayar.getMonth()] + ' ' + 
+                                                tglBayar.getFullYear();
+                        var tr = $('<tr>')
+                        var td1Product = $('<td>',{
+                                id:'tgl_ekspedisi_edit-'+itemIndex
+                        }).css({
+                                'padding': 'auto',
+                                'width': '10%', 
+                            }).text(formattedDate);
+
+                            var td2Product = $('<td>', {
+                                id: 'produk_ekspedisi_edit-' + itemIndex // Add hyphen to separate 'produk-ekspedisi' and itemIndex
+                            }).css({
+                                'padding': 'auto',
+                                'width': '10%', 
+                            }).text(result.kode);
+
+                        var td3Product = $('<td>',{
+                                id:'rute_ekspedisi_edit-'+itemIndex
+                        }).css({
+                                'padding': 'auto',
+                                'width': '10%', 
+                            }).text(result.rute);
+
+                        
+                        var td4Product = $('<td>',{
+                                id:'nama_ekspedisi_edit-'+itemIndex
+                        }).css({
+                                'padding': 'auto',
+                                'width': '10%', 
+                            }).text(name_ekspedisi_lcl[itemIndex].name);
+                        
+                            var td5Product = $('<td>',{
+                                id:'resi_ekspedisi_edit-'+itemIndex
+                            }).css({
+                                'padding': 'auto',
+                                'width': '10%', 
+                            }).text(result.resi);
+                            
+                            var td6Product = $('<td>',{
+                                id:'price_ekspedisi_edit-'+itemIndex
+                            }).css({
+                                'padding': 'auto',
+                                'width': '10%', 
+                            }).text(nama_matauang[itemIndex].simbol+' '+result.price);
+
+                            var td7Product = $('<td>',{
+                                id:'keterangan_edit-'+itemIndex
+                            }).css({
+                                'padding': 'auto',
+                                'width': '10%', 
+                            }).text(result.keterangan);
+                            var td8Product = $('<td>').css({
+                                'padding': 'auto',
+                                'width': '10%', 
+                            })
+                                array_kode[itemIndex] = result.kode
+                                array_tgl[itemIndex] = result.tgl_kirim
+                                array_rute[itemIndex] = result.rute
+                                array_nama[itemIndex] = name_ekspedisi_lcl[itemIndex].id
+                                array_resi[itemIndex] = result.resi
+                                array_price[itemIndex] = result.price
+                                array_keterangan[itemIndex] = result.keterangan
+                                array_matauang[itemIndex]=result.id_matauang
+                                id_pembelian_savelcl= result.id_pembelianlcl
+                                var editButtonEkspedisi = $('<button>')
+                                .addClass('btn btn-sm btn-primary')
+                                .css({
+                                    'margin-left': '5px',
+                                })
+                                .html('<i class="fas fa-edit"></i>')  // Assuming you're using Font Awesome for icons
+                                .attr('title', 'Edit')
+                                .attr('data-kode', result.kode)
+                                .on('click', function() {
+                                    // Your edit logic here
+                                    var kode = $(this).data('kode');
+                                    var getIndex = itemIndex;
+                                    console.log('array_keterangan[getIndex]',array_keterangan)
+                                    // Open the modal and populate it with kode
+                                    $('#editModalEksepedisiLcl').modal('show');
+                                    $('.edit_kode_ekspedisi_lcl').val(array_kode[getIndex]);
+                                    $('.edit_tgl_kirim_ekspedisi').val(array_tgl[getIndex])
+                                    
+                                    $('.edit_matauang_ekspedisi').val(array_matauang[getIndex]).trigger('change');
+                                    $('.edit_biaya_ekspedisi_lcl').val(array_price[getIndex])
+                                    $('.rute_ekspedisi').val(array_rute[getIndex]).trigger('change')
+                                    $('.edit_ekspedisi_lcl').val(array_nama[getIndex]).trigger('change')
+                                    $('#editModalEksepedisiLcl').on('shown.bs.modal', function () {
+
+                                
+
+
+                                        const editRuteEkspedisi = new Choices('#rute_ekspedisi', {
+                                            searchEnabled: true,  // Enable search
+                                            removeItemButton: true,  // Allow clearing the selection
+                                            shouldSort: false,  // Keep the order of the options
+                                            itemSelectText: '',  // Text for selecting items (empty if you don't want text)
+                                        });
+                                        editRuteEkspedisi.setChoiceByValue(array_rute[getIndex]);
+                                        const editMatauangEkspedisi = new Choices('#edit_matauang_ekspedisi', {
+                                            searchEnabled: true,  // Enable search
+                                            removeItemButton: true,  // Allow clearing the selection
+                                            shouldSort: false,  // Keep the order of the options
+                                            itemSelectText: '',  // Text for selecting items (empty if you don't want text)
+                                        });
+                                        editMatauangEkspedisi.setChoiceByValue(array_matauang[getIndex]);
+                                        const editEkspedisi = new Choices('#edit_ekspedisi_lcl', {
+                                            searchEnabled: true,  // Enable search
+                                            removeItemButton: true,  // Allow clearing the selection
+                                            shouldSort: false,  // Keep the order of the options
+                                            itemSelectText: '',  // Text for selecting items (empty if you don't want text)
+                                        });
+                                        editEkspedisi.setChoiceByValue(array_nama[getIndex]);
+                                    })
+                                    $('.edit_no_resi').val(array_resi[getIndex])
+                                    $('.edit_keterangan').val(array_keterangan[getIndex])
+                                    $('#update_ekspedisi').data('index', getIndex); 
+                                    
+                                });
+                            
+                                
+                            // Create the delete button
+                            var deleteButtonEksepedisi = $('<button>')
+                            .addClass('btn btn-sm btn-danger')
+                            .css({ 'margin-left': '5px' })
+                            .html('<i class="fas fa-trash"></i>')
+                            .attr('title', 'Delete')
+                            .on('click', function() {
+                                var itemIndex3 = $(this).closest('tr').index(); // Get index of the row
+
+                                // Remove item from arrays
+                                array_kode.splice(itemIndex3, 1);
+                                array_tgl.splice(itemIndex3, 1);
+                                array_rute.splice(itemIndex3, 1);
+                                array_nama.splice(itemIndex3, 1);
+                                array_resi.splice(itemIndex3, 1);
+                                array_price.splice(itemIndex3, 1);
+                                array_keterangan.splice(itemIndex3, 1);
+                                array_matauang.splice(itemIndex3, 1);
+
+                                // Remove the row from the table
+                                $(this).closest('tr').remove();
+
+                                // Log the updated arrays after deletion
+                                console.log('Deleted row and updated arrays for index:', itemIndex3);
+                                console.log('array_kode:', array_kode);
+                                console.log('array_tgl:', array_tgl);
+                                console.log('array_rute:', array_rute);
+                                console.log('array_nama:', array_nama);
+                                console.log('array_resi:', array_resi);
+                                console.log('array_price:', array_price);
+                                console.log('array_keterangan:', array_keterangan);
+                                console.log('array_matauang:', array_matauang);
+                            });
+                                $('#update_ekspedisi').on('click',function(){
+                            
+                            
+                                    var kode_ekspedisi = $('.edit_kode_ekspedisi_lcl').val()
+                                    var tgl_ekspedisi = $('.edit_tgl_kirim_ekspedisi').val()
+                                    var matauang_update = $('.edit_matauang_ekspedisi').val()
+                                    var price_update = $('.edit_biaya_ekspedisi_lcl').val()
+                                    var rute_update = $('.edit_rute_ekspedisi').val()
+                                    var ekspedisi_update = $('.edit_ekspedisi_lcl').val()
+                                    var resi_update = $('.edit_no_resi').val()
+                                    var keterangan_update = $('.edit_keterangan').val()
+                                    
+                                
+                                    var formUpdateEkspedisi ={
+                                        menu:'update_ekspedisi',
+                                        kodepengiriman_update:kode_ekspedisi,
+                                        tgl_kirim_update:tgl_ekspedisi,
+                                        matauang_update:matauang_update,
+                                        price_update:price_update,
+                                        rute_update:rute_update,
+                                        ekspedisi_update:ekspedisi_update,
+                                        resi_update:resi_update,
+                                        keterangan_update:keterangan_update,
+                                        
+                                    }
+                                    console.log(formUpdateEkspedisi)
+                                    var itemIndex2 = $(this).data('index');
+                                    // console.log('itemIndex2',itemIndex2)
+                                    $.ajax({
+                                
+                                        type: 'GET',
+                                        url: '{{ route('admin.pembelian_lcl') }}',
+                                        data: formUpdateEkspedisi,
+                                        success: function(response) {
+                                            console.log('res',response)
+
+                                            var tglBayar_ekspedisi_edit = new Date(response.tgl_kirim); // Assuming result.tgl_kirim is in a parseable format
+
+                                            // Array of month names in Indonesian
+                                            var bulan_ekspedisi_edit = [
                                                 "Januari", "Februari", "Maret", "April", "Mei", "Juni", 
                                                 "Juli", "Agustus", "September", "Oktober", "November", "Desember"
                                             ];
-                                            var tgl_kirim_tambah_ekspedisi = new Date(response.tgl_kirim)
+
                                             // Format the date as 'dd Month yyyy'
-                                            var formattedDate = ('0' + tgl_kirim_tambah_ekspedisi.getDate()).slice(-2) + ' ' + 
-                                                                bulan[tgl_kirim_tambah_ekspedisi.getMonth()] + ' ' + 
-                                                                tgl_kirim_tambah_ekspedisi.getFullYear();
-                                            var trtambah = $('<tr>')
-                                
-                                            var td1ProductTambah = $('<td>',{
-                                                    id:'tgl_ekspedisi_tambah-'+newIndex
-                                            }).css({
-                                                    'padding': 'auto',
-                                                    'width': '10%', 
-                                            }).text(formattedDate)
-                                        
+                                            var formattedDateEkspedisiEdit = ('0' + tglBayar_ekspedisi_edit.getDate()).slice(-2) + ' ' + 
+                                                                bulan_ekspedisi_edit[tglBayar_ekspedisi_edit.getMonth()] + ' ' + 
+                                                                tglBayar_ekspedisi_edit.getFullYear();
+                                            $('#produk_ekspedisi_edit-' + itemIndex2).text(response.kodepengiriman);
+                                            $('#tgl_ekspedisi_edit-' + itemIndex2).text(formattedDateEkspedisiEdit);
+                                            $('#rute_ekspedisi_edit-' + itemIndex2).text(response.rute);
+                                            $('#nama_ekspedisi_edit-' + itemIndex2).text(response.ekspedisi_name);
+                                            $('#resi_ekspedisi_edit-' + itemIndex2).text(response.resi);
+                                            $('#price_ekspedisi_edit-' + itemIndex2).text(response.matauang_simbol+' '+response.price);
+                                            $('#keterangan_edit-' + itemIndex2).text(response.keterangan);
                                             
-                                            var td2ProductTambah = $('<td>', {
-                                                id: 'kode_ekspedisi_tambah-'+newIndex
-                                            }).css({
-                                                'padding': 'auto',
-                                                'width': '10%', 
-                                            }).text(response.kodepengiriman)
-                                
-
-                                            var td3ProductTambah = $('<td>',{
-                                                    id:'rute_ekspedisi_tambah-'+newIndex
-                                            }).css({
-                                                    'padding': 'auto',
-                                                    'width': '10%', 
-                                                }).text(response.rute)
-                                        
+                                            //menginisiasi nilai yang telah diupdate
+                                            array_kode[itemIndex2] = response.kodepengiriman
+                                            array_tgl[itemIndex2] = response.tgl_kirim
+                                            array_nama[itemIndex2] = response.ekspedisi
+                                            array_keterangan[itemIndex2]= response.keterangan
+                                            array_resi[itemIndex2]=response.resi
+                                            array_price[itemIndex2]= response.price
+                                            array_rute[itemIndex2]= response.rute
+                                            array_matauang[itemIndex2]=response.matauang
                                             
-                                            var td4ProductTambah = $('<td>',{
-                                                    id:'nama_ekspedisi_tambah-'+newIndex
-                                            }).css({
-                                                    'padding': 'auto',
-                                                    'width': '10%', 
-                                            }).text(response.ekspedisi_name)
-                                            
-                                
-
-                                            
-                                        
-                                            
-                                            var td5ProductTambah = $('<td>',{
-                                                id:'resi_ekspedisi_tambah-'+newIndex
-                                            }).css({
-                                                'padding': 'auto',
-                                                'width': '10%', 
-                                            }).text(response.resi)
-                                            
-                                            var td6ProductTambah = $('<td>',{
-                                                id:'price_ekspedisi_tambah-'+newIndex
-                                            }).css({
-                                                'padding': 'auto',
-                                                'width': '10%', 
-                                            }).text(response.matauang_simbol+' '+response.price)
-
-                                            var td7ProductTambah = $('<td>',{
-                                                id:'keterangan_tambah-'+newIndex
-                                            }).css({
-                                                'padding': 'auto',
-                                                'width': '10%', 
-                                            }).text(response.keterangan)
-                                            var td8ProductTambah = $('<td>').css({
-                                                'padding': 'auto',
-                                                'width': '10%', 
-                                            })
-                                            
-                                            var editButton = $('<button>', {
-                                                class: 'btn btn-sm btn-primary',
-                                                click: function() {
-                                                    var getIndex = $(this).closest('tr').index(); // Ambil indeks baris
-                                                    $('#editModalEksepedisiLcl').modal('show');
-                                                    
-                                                    var currentIndex=0
-                                                    var curIndex=0;
-                                                    if (array_keterangan.length > 0 && array_keterangan.length !=ekspedisi_row_tambah.length) {
-                                                        currentIndex = (array_keterangan.length - (newIndex + 1)) + getIndex;
-                                                        curIndex=getIndex
-                                                        console.log('Current Index length:', currentIndex);
-                                                        console.log('curIndex length:', curIndex);
-                                                    } else {
-                                                         currentIndex =newIndex
-                                                         curIndex=getIndex
-                                                         console.log('Current Index:', currentIndex);
-                                                    }
-                                                    console.log('array_kode',array_kode)                                       
-                                                    $('.edit_kode_ekspedisi_lcl').val(array_kode[curIndex]);
-                                                    $('.edit_tgl_kirim_ekspedisi').val(array_tgl[curIndex]);
-                                                    $('.edit_matauang_ekspedisi').val(array_matauang[curIndex]).trigger('change');
-                                                    $('.edit_biaya_ekspedisi_lcl').val(array_price[curIndex]);
-                                                    $('.rute_ekspedisi').val(array_rute[curIndex]).trigger('change');
-                                                    $('.edit_ekspedisi_lcl').val(array_nama[curIndex]).trigger('change');
-                                                    $('.edit_no_resi').val(array_resi[curIndex]);
-                                                    $('.edit_keterangan').val(array_keterangan[curIndex]);
-
-                                                    
-                                                    // Simpan index untuk update nanti
-                                                    $('#update_ekspedisi').data('index', currentIndex);
-                                                    $('#update_ekspedisi').data('curIndex', curIndex);
-                                                }
-                                            }).append($('<i>',{ class: 'fas fa-edit'}))
-                                            .attr('title','Edit')
-                                            ;
-
-                                            
-                                            td8ProductTambah.append(editButton);
-
-                                            $('#update_ekspedisi').on('click',function(){
-                                                    
-                                                    
-                                                    var kode_ekspedisi = $('.edit_kode_ekspedisi_lcl').val()
-                                                    var tgl_ekspedisi = $('.edit_tgl_kirim_ekspedisi').val()
-                                                    var matauang_update = $('.edit_matauang_ekspedisi').val()
-                                                    var price_update = $('.edit_biaya_ekspedisi_lcl').val()
-                                                    var rute_update = $('.edit_rute_ekspedisi').val()
-                                                    var ekspedisi_update = $('.edit_ekspedisi_lcl').val()
-                                                    var resi_update = $('.edit_no_resi').val()
-                                                    var keterangan_update = $('.edit_keterangan').val()
-                                                    
-                                                
-                                                    var formUpdateEkspedisi ={
-                                                        menu:'update_ekspedisi',
-                                                        kodepengiriman_update:kode_ekspedisi,
-                                                        tgl_kirim_update:tgl_ekspedisi,
-                                                        matauang_update:matauang_update,
-                                                        price_update:price_update,
-                                                        rute_update:rute_update,
-                                                        ekspedisi_update:ekspedisi_update,
-                                                        resi_update:resi_update,
-                                                        keterangan_update:keterangan_update,
-                                                        
-                                                    }
-                                                    console.log(formUpdateEkspedisi)
-                                                    var currentIndex = $(this).data('index');
-                                                    var curIndex = $(this).data('curIndex');
-                                                    console.log('currentIndex',currentIndex)
-                                                    console.log('curIndex',curIndex)
-                                                    $.ajax({
-                                                
-                                                        type: 'GET',
-                                                        url: '{{ route('admin.pembelian_lcl') }}',
-                                                        data: formUpdateEkspedisi,
-                                                        success: function(response) {
-                                                            console.log('res update tambah',response)
-
-                                                            var tglKirim_ekspedisi_edit = new Date(response.tgl_kirim); // Assuming result.tgl_kirim is in a parseable format
-
-                                                            // Array of month names in Indonesian
-                                                            var bulan_ekspedisi_edit = [
-                                                                "Januari", "Februari", "Maret", "April", "Mei", "Juni", 
-                                                                "Juli", "Agustus", "September", "Oktober", "November", "Desember"
-                                                            ];
-
-                                                            // Format the date as 'dd Month yyyy'
-                                                            var formattedDateEkspedisiEdit = ('0' + tglKirim_ekspedisi_edit.getDate()).slice(-2) + ' ' + 
-                                                                                bulan_ekspedisi_edit[tglKirim_ekspedisi_edit.getMonth()] + ' ' + 
-                                                                                tglKirim_ekspedisi_edit.getFullYear();
-                                                            $('#kode_ekspedisi_tambah-' + curIndex).text(response.kodepengiriman);
-                                                            $('#tgl_ekspedisi_tambah-' + curIndex).text(formattedDateEkspedisiEdit);
-                                                            $('#rute_ekspedisi_tambah-' + curIndex).text(response.rute);
-                                                            $('#nama_ekspedisi_tambah-' + curIndex).text(response.ekspedisi_name);
-                                                            $('#resi_ekspedisi_tambah-' + curIndex).text(response.resi);
-                                                            $('#price_ekspedisi_tambah-' + curIndex).text(response.matauang_simbol+' '+response.price);
-                                                            $('#keterangan_tambah-'+curIndex).text(response.keterangan);
-                                                            
-                                                            //menginisiasi nilai yang telah diupdate
-                                                            array_kode[currentIndex] = response.kodepengiriman
-                                                            array_tgl[currentIndex] = response.tgl_kirim
-                                                            array_nama[currentIndex] = response.ekspedisi
-                                                            array_keterangan[currentIndex]= response.keterangan
-                                                            array_resi[currentIndex]=response.resi
-                                                            array_price[currentIndex]= response.price
-                                                            array_rute[currentIndex]= response.rute
-                                                            array_matauang[currentIndex]=response.matauang
-
-                                                            $('#editModalEksepedisiLcl').modal('hide');
-                                                        }
-
-
-                                                    })
-                                            
-                                                    
-                                                })
-                                            trtambah.append(td1ProductTambah,td2ProductTambah,td3ProductTambah,td4ProductTambah,td5ProductTambah,td6ProductTambah,td7ProductTambah,td8ProductTambah)
-                                            tambah_tbody_container_ekspedisi.append(trtambah)
-                                        })
-
-                            }
-                        });
-                    })
-                }
-            });
-            window.editEkspedisi = function(pembelianLcl,ekspedisilcl,statuspenerimaan,penerimaan,name_ekspedisi_lcl,nama_matauang){
-                id_pembelian_savelcl=pembelianLcl.id
-                var tbody_container_ekspedisi = $('.tbody-container-ekspedisi')
-                if(statuspenerimaan=='true'){
-                    
-                    
-                    $('#ekspedisi').val(penerimaan.id_ekspedisi).trigger('change');
-                }
-                console.log('name_ekspedisi_lcl',name_ekspedisi_lcl)
-                
-             
-                if(ekspedisilcl){
-                    ekspedisilcl.forEach(function(result, itemIndex) 
-                 
-                    {
-                  
-                        var tglKirim = new Date(result.tgl_kirim); // Assuming result.tgl_kirim is in a parseable format
-
-                        // Array of month names in Indonesian
-                        var bulan = [
-                            "Januari", "Februari", "Maret", "April", "Mei", "Juni", 
-                            "Juli", "Agustus", "September", "Oktober", "November", "Desember"
-                        ];
-
-                        // Format the date as 'dd Month yyyy'
-                        var formattedDate = ('0' + tglKirim.getDate()).slice(-2) + ' ' + 
-                                            bulan[tglKirim.getMonth()] + ' ' + 
-                                            tglKirim.getFullYear();
-                       var tr = $('<tr>')
-                       var td1Product = $('<td>',{
-                            id:'tgl_ekspedisi_edit-'+itemIndex
-                       }).css({
-                            'padding': 'auto',
-                            'width': '10%', 
-                        }).text(formattedDate);
-
-                        var td2Product = $('<td>', {
-                            id: 'produk_ekspedisi_edit-' + itemIndex // Add hyphen to separate 'produk-ekspedisi' and itemIndex
-                        }).css({
-                            'padding': 'auto',
-                            'width': '10%', 
-                        }).text(result.kode);
-
-                       var td3Product = $('<td>',{
-                            id:'rute_ekspedisi_edit-'+itemIndex
-                       }).css({
-                            'padding': 'auto',
-                            'width': '10%', 
-                        }).text(result.rute);
-
-                     
-                       var td4Product = $('<td>',{
-                            id:'nama_ekspedisi_edit-'+itemIndex
-                       }).css({
-                            'padding': 'auto',
-                            'width': '10%', 
-                        }).text(name_ekspedisi_lcl[itemIndex].name);
-                       
-                        var td5Product = $('<td>',{
-                            id:'resi_ekspedisi_edit-'+itemIndex
-                        }).css({
-                            'padding': 'auto',
-                            'width': '10%', 
-                        }).text(result.resi);
-                        
-                        var td6Product = $('<td>',{
-                            id:'price_ekspedisi_edit-'+itemIndex
-                        }).css({
-                            'padding': 'auto',
-                            'width': '10%', 
-                        }).text(nama_matauang[itemIndex].simbol+' '+result.price);
-
-                        var td7Product = $('<td>',{
-                            id:'keterangan_edit-'+itemIndex
-                        }).css({
-                            'padding': 'auto',
-                            'width': '10%', 
-                        }).text(result.keterangan);
-                        var td8Product = $('<td>').css({
-                            'padding': 'auto',
-                            'width': '10%', 
-                        })
-                            array_kode[itemIndex] = result.kode
-                            array_tgl[itemIndex] = result.tgl_kirim
-                            array_rute[itemIndex] = result.rute
-                            array_nama[itemIndex] = name_ekspedisi_lcl[itemIndex].id
-                            array_resi[itemIndex] = result.resi
-                            array_price[itemIndex] = result.price
-                            array_keterangan[itemIndex] = result.keterangan
-                            array_matauang[itemIndex]=result.id_matauang
-                            id_pembelian_savelcl= result.id_pembelianlcl
-                            var editButtonEkspedisi = $('<button>')
-                            .addClass('btn btn-sm btn-primary')
-                            .css({
-                                'margin-left': '5px',
-                            })
-                            .html('<i class="fas fa-edit"></i>')  // Assuming you're using Font Awesome for icons
-                            .attr('title', 'Edit')
-                            .attr('data-kode', result.kode)
-                            .on('click', function() {
-                                // Your edit logic here
-                                var kode = $(this).data('kode');
-                                var getIndex = itemIndex;
-                                console.log('array_keterangan[getIndex]',array_keterangan)
-                                // Open the modal and populate it with kode
-                                $('#editModalEksepedisiLcl').modal('show');
-                                $('.edit_kode_ekspedisi_lcl').val(array_kode[getIndex]);
-                                $('.edit_tgl_kirim_ekspedisi').val(array_tgl[getIndex])
-                                   
-                                $('.edit_matauang_ekspedisi').val(array_matauang[getIndex]).trigger('change');
-                                $('.edit_biaya_ekspedisi_lcl').val(array_price[getIndex])
-                                $('.rute_ekspedisi').val(array_rute[getIndex]).trigger('change')
-                                $('.edit_ekspedisi_lcl').val(array_nama[getIndex]).trigger('change')
-                                $('#editModalEksepedisiLcl').on('shown.bs.modal', function () {
-
-                             
-
-
-                                    const editRuteEkspedisi = new Choices('#rute_ekspedisi', {
-                                        searchEnabled: true,  // Enable search
-                                        removeItemButton: true,  // Allow clearing the selection
-                                        shouldSort: false,  // Keep the order of the options
-                                        itemSelectText: '',  // Text for selecting items (empty if you don't want text)
-                                    });
-                                    editRuteEkspedisi.setChoiceByValue(array_rute[getIndex]);
-                                    const editMatauangEkspedisi = new Choices('#edit_matauang_ekspedisi', {
-                                        searchEnabled: true,  // Enable search
-                                        removeItemButton: true,  // Allow clearing the selection
-                                        shouldSort: false,  // Keep the order of the options
-                                        itemSelectText: '',  // Text for selecting items (empty if you don't want text)
-                                    });
-                                    editMatauangEkspedisi.setChoiceByValue(array_matauang[getIndex]);
-                                    const editEkspedisi = new Choices('#edit_ekspedisi_lcl', {
-                                        searchEnabled: true,  // Enable search
-                                        removeItemButton: true,  // Allow clearing the selection
-                                        shouldSort: false,  // Keep the order of the options
-                                        itemSelectText: '',  // Text for selecting items (empty if you don't want text)
-                                    });
-                                    editEkspedisi.setChoiceByValue(array_nama[getIndex]);
-                                })
-                                $('.edit_no_resi').val(array_resi[getIndex])
-                                $('.edit_keterangan').val(array_keterangan[getIndex])
-                                $('#update_ekspedisi').data('index', getIndex); 
-                                
-                            });
-                          
-                              
-                        // Create the delete button
-                        var deleteButtonEksepedisi = $('<button>')
-                        .addClass('btn btn-sm btn-danger')
-                        .css({ 'margin-left': '5px' })
-                        .html('<i class="fas fa-trash"></i>')
-                        .attr('title', 'Delete')
-                        .on('click', function() {
-                            var itemIndex3 = $(this).closest('tr').index(); // Get index of the row
-
-                            // Remove item from arrays
-                            array_kode.splice(itemIndex3, 1);
-                            array_tgl.splice(itemIndex3, 1);
-                            array_rute.splice(itemIndex3, 1);
-                            array_nama.splice(itemIndex3, 1);
-                            array_resi.splice(itemIndex3, 1);
-                            array_price.splice(itemIndex3, 1);
-                            array_keterangan.splice(itemIndex3, 1);
-                            array_matauang.splice(itemIndex3, 1);
-
-                            // Remove the row from the table
-                            $(this).closest('tr').remove();
-
-                            // Log the updated arrays after deletion
-                            console.log('Deleted row and updated arrays for index:', itemIndex3);
-                            console.log('array_kode:', array_kode);
-                            console.log('array_tgl:', array_tgl);
-                            console.log('array_rute:', array_rute);
-                            console.log('array_nama:', array_nama);
-                            console.log('array_resi:', array_resi);
-                            console.log('array_price:', array_price);
-                            console.log('array_keterangan:', array_keterangan);
-                            console.log('array_matauang:', array_matauang);
-                        });
-                            $('#update_ekspedisi').on('click',function(){
-                        
-                        
-                                var kode_ekspedisi = $('.edit_kode_ekspedisi_lcl').val()
-                                var tgl_ekspedisi = $('.edit_tgl_kirim_ekspedisi').val()
-                                var matauang_update = $('.edit_matauang_ekspedisi').val()
-                                var price_update = $('.edit_biaya_ekspedisi_lcl').val()
-                                var rute_update = $('.edit_rute_ekspedisi').val()
-                                var ekspedisi_update = $('.edit_ekspedisi_lcl').val()
-                                var resi_update = $('.edit_no_resi').val()
-                                var keterangan_update = $('.edit_keterangan').val()
-                                
-                              
-                                var formUpdateEkspedisi ={
-                                    menu:'update_ekspedisi',
-                                    kodepengiriman_update:kode_ekspedisi,
-                                    tgl_kirim_update:tgl_ekspedisi,
-                                    matauang_update:matauang_update,
-                                    price_update:price_update,
-                                    rute_update:rute_update,
-                                    ekspedisi_update:ekspedisi_update,
-                                    resi_update:resi_update,
-                                    keterangan_update:keterangan_update,
-                                    
-                                }
-                                console.log(formUpdateEkspedisi)
-                                var itemIndex2 = $(this).data('index');
-                                // console.log('itemIndex2',itemIndex2)
-                                $.ajax({
-                            
-                                    type: 'GET',
-                                    url: '{{ route('admin.pembelian_lcl') }}',
-                                    data: formUpdateEkspedisi,
-                                    success: function(response) {
-                                        console.log('res',response)
-
-                                        var tglKirim_ekspedisi_edit = new Date(response.tgl_kirim); // Assuming result.tgl_kirim is in a parseable format
-
-                                        // Array of month names in Indonesian
-                                        var bulan_ekspedisi_edit = [
-                                            "Januari", "Februari", "Maret", "April", "Mei", "Juni", 
-                                            "Juli", "Agustus", "September", "Oktober", "November", "Desember"
-                                        ];
-
-                                        // Format the date as 'dd Month yyyy'
-                                        var formattedDateEkspedisiEdit = ('0' + tglKirim_ekspedisi_edit.getDate()).slice(-2) + ' ' + 
-                                                            bulan_ekspedisi_edit[tglKirim_ekspedisi_edit.getMonth()] + ' ' + 
-                                                            tglKirim_ekspedisi_edit.getFullYear();
-                                        $('#produk_ekspedisi_edit-' + itemIndex2).text(response.kodepengiriman);
-                                        $('#tgl_ekspedisi_edit-' + itemIndex2).text(formattedDateEkspedisiEdit);
-                                        $('#rute_ekspedisi_edit-' + itemIndex2).text(response.rute);
-                                        $('#nama_ekspedisi_edit-' + itemIndex2).text(response.ekspedisi_name);
-                                        $('#resi_ekspedisi_edit-' + itemIndex2).text(response.resi);
-                                        $('#price_ekspedisi_edit-' + itemIndex2).text(response.matauang_simbol+' '+response.price);
-                                        $('#keterangan_edit-' + itemIndex2).text(response.keterangan);
-                                        
-                                        //menginisiasi nilai yang telah diupdate
-                                        array_kode[itemIndex2] = response.kodepengiriman
-                                        array_tgl[itemIndex2] = response.tgl_kirim
-                                        array_nama[itemIndex2] = response.ekspedisi
-                                        array_keterangan[itemIndex2]= response.keterangan
-                                        array_resi[itemIndex2]=response.resi
-                                        array_price[itemIndex2]= response.price
-                                        array_rute[itemIndex2]= response.rute
-                                        array_matauang[itemIndex2]=response.matauang
-                                        
-                                        $('#editModalEksepedisiLcl').modal('hide');
-                                    }
-
-
-                                })
-                           
-                                
-                            })
-                           
-                            td8Product.append(editButtonEkspedisi,deleteButtonEksepedisi)
-                        tr.append(td1Product,td2Product,td3Product,td4Product,td5Product,td6Product,td7Product,td8Product)
-                        tbody_container_ekspedisi.append(tr) 
-                    });
-                    $('#simpan-ekspedisi').on('click',function(){
-                                    $.ajax({
-                            
-                                    type: 'GET',
-                                    url: '{{route('admin.pembelian_lcl') }}',
-                                    data: {
-                                        menu:'save_ekspedisi',
-                                        id_lcl:id_pembelian_savelcl,
-                                        kode:array_kode,
-                                        tgl:array_tgl,
-                                        rute:array_rute,
-                                        nama:array_nama,
-                                        resi:array_resi,
-                                        price:array_price,
-                                        keterangan:array_keterangan,
-                                        matauang:array_matauang,
-                                        
-                                    },
-                                    success: function(response) {
-                                        console.log(response)
-                                        Swal.fire({
-                                        icon:'success',
-                                        title:'Success',
-                                        text:response.msg
-                                        }).then((result)=>{
-                                        if(result.isConfirmed){
-                                            window.location.reload();
+                                            $('#editModalEksepedisiLcl').modal('hide');
                                         }
-                                        });
-                                    },
-                                    });
-                                
+
+
+                                    })
+                            
                                     
-
                                 })
-                }
-            };
+                            
+                                td8Product.append(editButtonEkspedisi,deleteButtonEksepedisi)
+                            tr.append(td1Product,td2Product,td3Product,td4Product,td5Product,td6Product,td7Product,td8Product)
+                            tbody_container_ekspedisi.append(tr) 
+                        });
+                        $('#simpan-ekspedisi').on('click',function(){
+                                        $.ajax({
+                                
+                                        type: 'GET',
+                                        url: '{{route('admin.pembelian_lcl') }}',
+                                        data: {
+                                            menu:'save_ekspedisi',
+                                            id_lcl:id_pembelian_savelcl,
+                                            kode:array_kode,
+                                            tgl:array_tgl,
+                                            rute:array_rute,
+                                            nama:array_nama,
+                                            resi:array_resi,
+                                            price:array_price,
+                                            keterangan:array_keterangan,
+                                            matauang:array_matauang,
+                                            
+                                        },
+                                        success: function(response) {
+                                            console.log(response)
+                                            Swal.fire({
+                                            icon:'success',
+                                            title:'Success',
+                                            text:response.msg
+                                            }).then((result)=>{
+                                            if(result.isConfirmed){
+                                                window.location.reload();
+                                            }
+                                            });
+                                        },
+                                        });
+                                    
+                                        
 
-            window.editLcl = function(pembelianLcl,image_barang,matauang,gudang) {
-                $('#label-lcl').remove()
-                $('#label-lcl-ekspedisi').remove()
-                $('#matauang_pembayaran').select2({
-                    placeholder: "Pilih Mata Uang", // Optional placeholder
-                    allowClear: true, // Optional, to allow clearing the selection
-                    width: 'resolve' 
-                });
-                $('#tambah_matauang_ekspedisi').select2({
-                    placeholder: "Pilih Mata Uang", // Optional placeholder
-                    allowClear: true, // Optional, to allow clearing the selection
-                    width: 'resolve' 
-                });
-                // $('#edit_matauang_ekspedisi').select2({
-                //     placeholder: "Pilih Mata Uang", // Optional placeholder
-                //     allowClear: true, // Optional, to allow clearing the selection
-                //     width: 'resolve' 
-                // });
-                $('#rute').select2({
-                    placeholder: "Pilih Rute", // Optional placeholder
-                    allowClear: true, // Optional, to allow clearing the selection
-                    width: 'resolve' 
-                });
+                                    })
+                    }
+                };
+                //untuk tampilan edit lcl
+                window.editLcl = function(pembelianLcl,image_barang,matauang,gudang) {
+                    var convert_edit=false;
+            
+                    $('#convert_idr').on('click', function() {
+                        if(pembelianLcl.status_converttorupiah==1){
+                            Swal.fire({
+                                icon: 'info', // Anda dapat mengganti dengan 'success', 'warning', atau 'error' sesuai kebutuhan
+                                title: 'Data Sudah Di-Convert',
+                                text: 'Data ini sudah di-convert ke Rupiah.',
+                                confirmButtonText: 'OK'
+                            });
+                            return;
+                        }
+                        var dataPhp = pembelianLcl.id_matauang;
 
-                $('#ekspedisi').select2({
-                    placeholder: "Pilih ekspedisi", // Optional placeholder
-                    allowClear: true, // Optional, to allow clearing the selection
-                    width: 'resolve' 
-                });
+                        if (dataPhp == 3) {
+                            $('#title_convert').text('Convert RMB to IDR');
+                            $('#myModal').modal('show');
+                        } else if (dataPhp == 2) {
+                            $('#title_convert').text('Convert USD to IDR');
+                            $('#myModal').modal('show');
+                        }
+                        
+                        
+                        // console.log(dataPhp);
+
+                        // Menangani klik tombol saveConvert
+                        $('#saveConvert').off('click').on('click', function() {
+                            $(this).prop('disabled', true);
+                            contentImport.empty()
+                            var newHeader = $('<th>Harga Belum PPN (Rp)</th>');                                    
+                            // Menambahkan header baru setelah elemen tertentu
+                            $('#harga-belum-ppn').after(newHeader);
+                            $('#harga-belum-ppn').text('Harga Invoice ' + '(' + matauang[0].simbol + ')');
+
+                            var nilaiConvert = $('#input_nominal').val();
+                            var text_convert_idr = $('#text_convert');
+                            var paragraph = $('<p>').text(matauang[0].simbol + ' 1 = Rp. ' + nilaiConvert);
+                            text_convert_idr.append(paragraph);
+
+                            hargaInvoiceImport(nilaiConvert);
+                        });
+                    });
+                    function hargaInvoiceImport(nilaiConvert){
+                        console.log('nilaiConvert',nilaiConvert)
+                        convert_edit=true;
+                        elementEditLcl()
+                        
+                    }                    
+                    $('#label-lcl').remove()
+                    $('#label-lcl-ekspedisi').remove()
+                    $('#matauang_pembayaran').select2({
+                        placeholder: "Pilih Mata Uang", // Optional placeholder
+                        allowClear: true, // Optional, to allow clearing the selection
+                        width: 'resolve' 
+                    });
+                    $('#tambah_matauang_ekspedisi').select2({
+                        placeholder: "Pilih Mata Uang", // Optional placeholder
+                        allowClear: true, // Optional, to allow clearing the selection
+                        width: 'resolve' 
+                    });
                 
-        
+                    $('#rute').select2({
+                        placeholder: "Pilih Rute", // Optional placeholder
+                        allowClear: true, // Optional, to allow clearing the selection
+                        width: 'resolve' 
+                    });
+
+                    $('#ekspedisi').select2({
+                        placeholder: "Pilih ekspedisi", // Optional placeholder
+                        allowClear: true, // Optional, to allow clearing the selection
+                        width: 'resolve' 
+                    });
+                
+                
                     id_lcl = pembelianLcl.id
                     // console.log('pembelianLcl',pembelianLcl)
                     var checboxppn = $('#flexCheckDefault');
@@ -4285,7 +4458,7 @@ LCL   | PT. Maxipro Group Indonesia
                     // Initialize Select2
                     $selectDb.select2({
 
-                        placeholder: 'Select Database', // Customize as needed
+                        placeholder: 'Pilih Database', // Customize as needed
                         allowClear: true, // Optional, allows clearing the selection
                         width: 'resolve' // Adjusts width to fit the container
                     });
@@ -4309,7 +4482,7 @@ LCL   | PT. Maxipro Group Indonesia
                     // Initialize Select2
                     $select_matauang.select2({
                 
-                        placeholder: 'Pilih Supplier', // Placeholder text
+                        placeholder: 'Pilih Mata Uang', // Placeholder text
                         allowClear: true, // Optional, to allow clearing the selection
                         width: 'resolve' // Automatically adjust width to fit the container
                     });
@@ -4321,7 +4494,7 @@ LCL   | PT. Maxipro Group Indonesia
                     // Initialize Select2
                     $select_termin_cash.select2({
                 
-                        placeholder: 'Pilih Supplier', // Placeholder text
+                        placeholder: 'Pilih Termin', // Placeholder text
                         allowClear: true, // Optional, to allow clearing the selection
                         width: 'resolve' // Automatically adjust width to fit the container
                     });
@@ -4333,7 +4506,7 @@ LCL   | PT. Maxipro Group Indonesia
                     // Initialize Select2
                     $select_account.select2({
                 
-                        placeholder: 'Pilih Supplier', // Placeholder text
+                        placeholder: 'Pilih Account', // Placeholder text
                         allowClear: true, // Optional, to allow clearing the selection
                         width: 'resolve' // Automatically adjust width to fit the container
                     });
@@ -4345,7 +4518,7 @@ LCL   | PT. Maxipro Group Indonesia
                     // Initialize Select2
                     $select_cabang.select2({
                 
-                        placeholder: 'Pilih Supplier', // Placeholder text
+                        placeholder: 'Pilih Cabang', // Placeholder text
                         allowClear: true, // Optional, to allow clearing the selection
                         width: 'resolve' // Automatically adjust width to fit the container
                     });
@@ -4386,400 +4559,862 @@ LCL   | PT. Maxipro Group Indonesia
                             text_convert_idr.append(paragraph)
                             
                     }
+                    
+                    function elementEditLcl(){
 
-                    pembelianLcl.detail.forEach((result, itemIndex) => 
-                    {
-                                  
-                                    ppn_item[itemIndex] = result.ppn
-                                    iditem_arr[itemIndex] = result.id_barang,
-                                    idcomercialimport[itemIndex]= result.id_penjualanfromchina ||''
-                                    idrestokimport[itemIndex]= result.id_restok ||''
-                                    var tr=$('<tr>')
-                                    var tdProduct = $('<td>').css({
-                                                    'padding': 'auto',
-                                                    'width': '10%'
+                        pembelianLcl.detail.forEach((result, itemIndex) => 
+                        {
+                                       
+                       
+                                        var inputtd5Product=0;
+                                        
+                                        ppn_item[itemIndex] = result.ppn
+                                        iditem_arr[itemIndex] = result.id_barang,
+                                        idcomercialimport[itemIndex]= result.id_penjualanfromchina ||''
+                                        idrestokimport[itemIndex]= result.id_restok ||''
+                                        var tr=$('<tr>')
+                                        var tdProduct = $('<td>').css({
+                                            'padding': 'auto',
+                                            'width': '10%'
+                                        });
+
+                                        // Pastikan itemIndex valid dan memiliki data sebelum mengakses properti image_barang
+                                        if (image_barang[itemIndex] && image_barang[itemIndex].image) {
+                                            var imgProduct = $('<img>', {
+                                                class: 'img-fluid',
+                                                style: 'max-width: 100%; height: auto;',
+                                                src: 'https://maxipro.id/images/barang/' + image_barang[itemIndex].image,
+                                            
                                             });
-                                    var imgProduct = $('<img class="img-fluid" style="max-width: 20%%; height: auto;">');
-                                    imgProduct.attr('src',image_barang[itemIndex].imagedir)
-                                    tdProduct.append(imgProduct);
-                                    
-                                    var td1Product = $('<td>').css({
-                                            'padding': 'auto',
-                                            'width': '25%',  
-                                    });
-                                    var inputtd1Product = $('<input>', {
-                                            type: 'text', 
-                                            class: 'form-control', 
-                                            value:image_barang[itemIndex].name,
-                                            id:'name'+itemIndex
-                                    });
-                                    inputtd1Product.css({
-                                            'border': '1px solid #696868', 
-                                            'color': 'black', 
-                                            'padding': '10px',
-                                            'width': '100%' 
-                                    });
-                                    var td2Product = $('<td>').css({
-                                            'padding': 'auto',
-                                            'width': '10%', 
-                                    });
-                                    
-                                    var inputtd2Product = $('<input>', {
-                                            type: 'number', 
-                                            class: 'form-control',
-                                            id:'price_asal'+itemIndex,
-                                            value: result.price
-                                    }).css({
-                                        'border': '1px solid #696868', 
-                                            'color': 'black', 
-                                            'padding': '10px',
-                                            'width': '100%' 
-                                    });
-                                    harga_asal[itemIndex] = inputtd2Product.val()
-                                    var td3Product = $('<td>').css({
-                                            'padding': 'auto', 
-                                            'width': '7%',  
-                                    });
-                                    
-                                
-                            
-                                    var inputtd3Product = $('<input>', {
-                                            type: 'number', 
-                                            class: 'form-control',
-                                            value: result.qty,
-                                            id: 'qty_qty'+itemIndex
-                                    }).css({
-                                        'border': '1px solid #696868', 
-                                            'color': 'black', 
-                                            'padding': '10px',
-                                            'width': '100%' 
-                                    });
-                                    td3Product.append(inputtd3Product)
-                                    qty_arr[itemIndex] = inputtd3Product.val()
-                                    var td4Product = $('<td>').css({
-                                            'padding': 'auto', 
-                                            'width': '7%',  
-                                    });
-                                    //row input disc
-                                    var inputtd4Product = $('<input>', {
-                                            type: 'number', 
-                                            class: 'form-control', 
-                                            value: result.disc,
-                                            id: 'discount'+itemIndex
-                                    });
-                                    inputtd4Product.css({
-                                            'border': '1px solid #696868', 
-                                            'color': 'black', 
-                                            'padding': '10px', 
-                                            'width': '100%' 
-                                    });
-                                    td4Product.append(inputtd4Product)
-                                    discount_arr[itemIndex] = inputtd4Product.val()
-
-                                    var td5Product = $('<td>').css({
-                                            'padding': 'auto', 
-                                            'width': '10%',  
-                                    });
-                                    var inputtd5Product = $('<input>', {
-                                            type: 'text', 
-                                            class: 'form-control', 
-                                            value: result.subtotal_idr,
-                                            id:'subtotal'+itemIndex
-                                    });
-                                    inputtd5Product.css({
-                                            'border': '1px solid #696868', 
-                                            'color': 'black', 
-                                            'padding': '10px', 
-                                            'width': '100%' 
-                                    });
-                                    td5Product.append(inputtd5Product)
-
-                                    var td6Product = $('<td>').css({
-                                            'padding': 'auto', 
-                                            'width': '5%',  
-                                    });
-                                    var checkboxElementProduct = $('<input>', {
-                                        type: 'checkbox',
-                                        id: 'checkboxId_' + itemIndex,
-                                        value: result.status_ppn,
-                                        checked: result.status_ppn == 1
-                                    }).css({
-                                        'border': '1px solid #696868',
-                                    }).on('change', function() {
-                                        var newValue = this.checked ? 1 : 0;
-                                        $(this).val(newValue);
-
-                                        changeHistory[itemIndex] = newValue;
-                                
-                                    
-                                    });
-                                    changeHistory[itemIndex] = checkboxElementProduct.val()
-                                    td6Product.append(checkboxElementProduct)
-                                   
-                                    var td7Product = $('<td>')
-                                    var selectGudang = $('<select>', {
-                                        class: 'form-control choices-select-gudang', // class for styling
-                                        id:'gudang'+itemIndex
-                                    }).css({
-                                        'border': '1px solid #696868', // Border color and style
-                                        'color': 'black', // Text color
-                                        'padding': '10px', // Padding inside the select
-                                        'width': '100%', // Full width of the container
-                                        
-                                    });
-                                    // console.log('responseGudang',response.gudang)
-                                    var defaultOption = $('<option>', {
-                                        value: '',
-                                        text: 'Pilih Gudang' // Default text
-                                    }).attr('disabled', 'disabled').attr('selected', 'selected'); // Disabled and selected
-                                    selectGudang.append(defaultOption);
-                                    // Iterate over each item in gudangName to create options
-                                    gudang.forEach(function(gudangitem,index) {
-                                        var optionElement = $('<option>', {
-                                            // text: gudangitem, // Use id as the value
-                                            
-                                            value: gudangitem.id,
-                                            text: gudangitem.name
-
-                                        });
-                                        if(gudangitem.id==result.id_gudang){
-                                            optionElement.attr('selected','selected')
-                                            selectedValuesArray[itemIndex] = optionElement.val()
+                                        tdProduct.append(imgProduct);
+                                        } else {
+                                            console.error('Error: image_barang[itemIndex] atau properti image tidak ditemukan.');
                                         }
-                                        selectGudang.append(optionElement);
-                                    });
-                                    selectGudang.on('change', function() {
-                                        
-                                
-                                        var newValue = $(this).val();
-    
-                                        // Update the selectedValuesArray with the new value
-                                        selectedValuesArray[itemIndex] = newValue;
-                                        
-                                 
-                                        
-                                        
-                                    });
-                                    
-                                    td7Product.append(selectGudang)
 
-                                    var newTd9 = $('<td>')
-                        
-                                    var deleteButton = $('<button>',{
-                                        text: 'X',
-                                        class: 'btn btn-danger btn-sm'
-                                    }).css({
-                                        'border': 'none',
-                                        'color':'white',
-                                        'background-color': '#dc3545',
-                                        'padding': '5px 10px',
-                                        'cursor': 'pointer'
-                                    }).on('click',function(){
-                                        $(this).closest('tr').remove();
-                                    })
-                                    newTd9.append(deleteButton)
 
-                                    
-                                    
+                                        tdProduct.append(imgProduct);
 
-                                    
-                                    subtotal_edit += result.subtotal_idr
-                                    subtot_arr[itemIndex] = result.subtotal_idr
-
-                                    if(pembelianLcl.status_converttorupiah==1){
-                                        statusconvert =1
-                                        var newTdHargaInvoice = $('<td>').css({
-                                            'padding': 'auto',  
-                                            'width': '10%',  
-                                            
+                                        
+                                        var td1Product = $('<td>').css({
+                                                'padding': 'auto',
+                                                'width': '25%',  
                                         });
-
-                                        var inputHargaInvoice = $('<input>', {
-                                            id:'input_harga_invoice2',
-                                            type: 'number',
-                                            class: 'form-control harga2-invoice',
-                                            value:pembelianLcl.nominal_convert * result.price
+                                        var inputtd1Product = $('<input>', {
+                                                type: 'text', 
+                                                class: 'form-control', 
+                                                value:image_barang[itemIndex].name,
+                                                id:'name'+itemIndex,
+                                                disabled:true
                                         });
-                                        inputHargaInvoice.css({
+                                        inputtd1Product.css({
+                                                'border': '1px solid #696868', 
+                                                'color': 'black', 
+                                                'padding': '10px',
+                                                'width': '100%' 
+                                        });
+                                        var td2Product = $('<td>').css({
+                                                'padding': 'auto',
+                                                'width': '10%', 
+                                        });
+                                        
+                                        var inputtd2Product = $('<input>', {
+                                                type: 'number', 
+                                                class: 'form-control',
+                                                id:'price_asal'+itemIndex,
+                                                value: result.price,
+                                                disabled:true
+                                        }).css({
                                             'border': '1px solid #696868', 
-                                            'color': 'black', 
-                                            'padding': '10px',
-                                            'width': '100%' 
+                                                'color': 'black', 
+                                                'padding': '10px',
+                                                'width': '100%' 
                                         });
-                                        inputHargaInvoice.prop('disabled', true);
-                                        price_invoice_arr[itemIndex] = inputHargaInvoice.val()
-                                        newTdHargaInvoice.append(inputHargaInvoice)
-                                    }
-                                    function updateCalculatedValue() {
-                                        console.log('masuk calculate')
-                                        var inputField = $(`#price_asal${itemIndex}`);
+                                        harga_asal[itemIndex] = inputtd2Product.val()
+                                        var td3Product = $('<td>').css({
+                                                'padding': 'auto', 
+                                                'width': '7%',  
+                                        });
                                         
-                                        var value_belumppn = parseFloat(inputField.val())  ;
-                               
-                                        console.log('harga_asal',value_belumppn)
-                                        var input_discount = $(`#discount${itemIndex}`);
-            
-                                        var value_discount = parseFloat(input_discount.val()) || 0;
-                                        // console.log('value_discount',value_discount)
-                                        // discount_arr_select[itemIndex]=value_discount
-                                        
-                                        var value3 = value_discount
-                                        console.log('value_discount',value3)
-
-                                        var value1 = value_belumppn;
                                     
-                                        var inputFieldqty = $(`#qty_qty${itemIndex}`);
-            
                                 
-                                        var value_qty = parseFloat(inputFieldqty.val()) || 1;
-
-                                        harga_asal[itemIndex] = value1; 
-                                        qty_arr[itemIndex] = value_qty;
+                                        var inputtd3Product = $('<input>', {
+                                                type: 'number', 
+                                                class: 'form-control',
+                                                value: result.qty,
+                                                id: 'qty_qty'+itemIndex,
+                                                disabled:true
+                                        }).css({
+                                            'border': '1px solid #696868', 
+                                                'color': 'black', 
+                                                'padding': '10px',
+                                                'width': '100%' 
+                                        });
+                                        td3Product.append(inputtd3Product)
+                                        qty_arr[itemIndex] = inputtd3Product.val()
+                                        var td4Product = $('<td>').css({
+                                                'padding': 'auto', 
+                                                'width': '7%',  
+                                        });
+                                        //row input disc
+                                        var inputtd4Product = $('<input>', {
+                                                type: 'number', 
+                                                class: 'form-control', 
+                                                value: result.disc,
+                                                id: 'discount'+itemIndex,
+                                                disabled:true
+                                        });
+                                        inputtd4Product.css({
+                                                'border': '1px solid #696868', 
+                                                'color': 'black', 
+                                                'padding': '10px', 
+                                                'width': '100%' 
+                                        });
+                                        td4Product.append(inputtd4Product)
+                                        discount_arr[itemIndex] = inputtd4Product.val()
+    
+                                        var td5Product = $('<td>').css({
+                                                'padding': 'auto', 
+                                                'width': '10%',  
+                                        });
                                         
-                                
-                                        // harga_asal_select[itemIndex] = value_belumppn;
-                                            
-                                        
-                                        discount_arr[itemIndex] = value3;
-                                    
-                                        
-                                        var value2 = value_qty;
-
-                                        // Calculate the new value
-                                        var calculatedValue = (value1 * value2);
-                                   
-                                        
-                                        // menghitung dan menyetting value harga subtotal
-                                        if(result.status_converttorupiah==0){
-                                            
-                                            statusconvert =0
-                                            //inisiasi value subtotal
-                                            $(`#subtotal${itemIndex}`).val(calculatedValue);
-                                            subtot_arr[itemIndex]=$(`#subtotal${itemIndex}`).val()
-                                            // subtot_arr_select[itemIndex] = calculatedValue;
-                                            
-                                            // async()
-                                            
+                                        if(pembelianLcl.status_converttorupiah==1){
+                                            inputtd5Product = $('<input>', {
+                                                    type: 'text', 
+                                                    class: 'form-control', 
+                                                    value: result.subtotal_idr,
+                                                    id:'subtotal'+itemIndex,
+                                                    disabled:true
+                                            });
+                                            subtotal_edit += result.subtotal_idr
                                         }
                                         else{
-                                            
-                                            inputHargaInvoice.val(value1*pembelianLcl.nominal_convert)
-                                            price_invoice_arr[itemIndex] =pembelianLcl.nominal_convert*value1
-                                            
-                                            $(`#subtotal${itemIndex}`).val((calculatedValue*pembelianLcl.nominal_convert)-value3);
-                                            // subtot_arr_select[itemIndex]= calculatedValue*nominal_convert
-                                            // async()
-                                            subtot_arr[itemIndex]=$(`#subtotal${itemIndex}`).val()
-                                            // console.log('subtot_arr',subtot_arr)
-                                            subtotal_edit = subtot_arr.reduce(function(accumulator, currentValue) {
-                                                return accumulator + parseFloat(currentValue || 0); // Menambahkan nilai, konversi ke angka
-                                            }, 0);
-                                            $('.sutotal_element').text(subtotal_edit)
-                                            td_subtotal=subtotal_edit
-                                            var discount_percent_new = (subtotal_edit*0.11)-(subtotal_edit*0.11*newvalue_discount_percent).toFixed(2)
-                                            var discount_nominal_new =newValueDiscountNominal||0
-                                            $('.ppn_element').text(discount_percent_new||subtotal_edit*0.11)
-                                            td_ppn=discount_percent_new||subtotal_edit*0.11
-                                            $('.total_element').text(subtotal_edit+(discount_percent_new||subtotal_edit*0.11)-discount_nominal_new)
-                                            td_total=subtotal_edit+(discount_percent_new||subtotal_edit*0.11)-discount_nominal_new
-
-                                            $('#discount_nominal').on('change',function(){
-                                                
-                                                $('.sutotal_element').text(subtotal_edit)
-                                                td_subtotal=subtotal_edit
-                                                var ppnmerge=((subtotal_edit*0.11)-(subtotal_edit*0.11)*newvalue_discount_percent)
-                                                console.log('ppnmerge',ppnmerge)
-                                                $('.ppn_element').text(ppnmerge.toFixed(2)||(subtotal_edit*0.11).toFixed(2))
-                                                td_ppn = ppnmerge||subtotal_edit*0.11
-                                                console.log('discount nominal')
-                                                
-                                                
-                                                newValueDiscountNominal = $(this).val()
-                                                
-                                                td_discount_nominal = newValueDiscountNominal
-                                                var subtotal_new =((subtotal_edit+parseFloat(ppnmerge))-newValueDiscountNominal)
-                                                $('.total_element').text(subtotal_new.toFixed(2))
-                                                td_total = subtotal_new.toFixed(2)
-                                            })  
-                                            $('#discount_percent').on('change',function(){
-                                                // console.log('discount percent edit')
-                                                newvalue_discount_percent = ($(this).val())/100;
-                                                
-                                                td_discount=$(this).val()
-                                                $('.sutotal_element').text(subtotal_edit)
-                                                td_subtotal=subtotal_edit
-                                                var ppnmerge=(subtotal_edit*0.11-(subtotal_edit*0.11*newvalue_discount_percent))
-                                                $('.ppn_element').text(ppnmerge.toFixed(2))
-                                                td_ppn =ppnmerge.toFixed(2)
-                                                $('#discount_nominal').text(newValueDiscountNominal||pembelianLcl.discount_nominal)
-                                                td_discount_nominal = newValueDiscountNominal||pembelianLcl.discount_nominal
-                                                var newTotal = (subtotal_edit + ppnmerge)-newValueDiscountNominal;
-                                                
-                                                $('.total_element').text(newTotal.toFixed(2));
-                                                td_total = newTotal.toFixed(2)
-                                            })  
+                                            inputtd5Product = $('<input>', {
+                                                    type: 'text', 
+                                                    class: 'form-control', 
+                                                    value: result.subtotal,
+                                                    id:'subtotal'+itemIndex,
+                                                    disabled:true
+                                            });
+                                            $('.element_subtotal').text('Subtotal ('+matauang[0].simbol+')')
+                                            $('.element_discount_percent').text('Discount Percent ('+matauang[0].simbol+')')
+                                            $('.element_discount_nominal').text('Discount Nominal ('+matauang[0].simbol+')')
+                                            $('.element_ppn11').text('PPN 11% ('+matauang[0].simbol+')')
+                                            $('.element_total').text('Total ('+matauang[0].simbol+')')
+                                            subtotal_edit += result.subtotal
                                         }
-                    
-                                    }
+                                        inputtd5Product.css({
+                                                'border': '1px solid #696868', 
+                                                'color': 'black', 
+                                                'padding': '10px', 
+                                                'width': '100%' 
+                                        });
+                                        td5Product.append(inputtd5Product)
+    
+                                        var td6Product = $('<td>').css({
+                                                'padding': 'auto', 
+                                                'width': '5%',  
+                                        });
+                                        var checkboxElementProduct = $('<input>', {
+                                            type: 'checkbox',
+                                            id: 'checkboxId_' + itemIndex,
+                                            value: result.status_ppn,
+                                            checked: result.status_ppn == 1
+                                        }).css({
+                                            'border': '1px solid #696868',
+                                        }).on('change', function() {
+                                            var newValue = this.checked ? 1 : 0;
+                                            $(this).val(newValue);
+
+                                            // Simpan nilai ke dalam changeHistory
+                                            changeHistory[itemIndex] = newValue;
+                                            console.log('changeHistory', changeHistory);
+
+                                            // Hitung hanya jika nilai adalah 1
+                                            if (newValue == 1) {
+                                                $('.ppn_element').text((subtotal_edit * 0.11).toFixed(2));
+                                                td_ppn=(subtotal_edit * 0.11 )
+                                                td_total=subtotal_edit
+                                                $('.total_element').text(td_total+td_ppn)
+                                                $('#discount_percent').on('change',function(){
+                                                    $('.sutotal_element').text(subtotal_edit)
+                                                    td_subtotal=subtotal_edit
+                                                    // $('.ppn_element').text(pembelianLcl.ppn)
+                                                    newvalue_discount_percent = 1-($(this).val())/100;
+                                                    var new_nilai =parseFloat((subtotal_edit * 0.11)*newvalue_discount_percent)
+                                                    console.log(new_nilai,newvalue_discount_percent)
+                                                    // $('.ppn_element').text(value_ppn_discount_percent)
+                                                    $('.ppn_element').text(new_nilai);
+                                                    $('.total_element').text((subtotal_edit+new_nilai)-newValueDiscountNominal)
+                                                    td_total = (new_nilai)-newValueDiscountNominal
+                                                })
+                                                $('#discount_nominal').on('change',function(){
+                                                    $('.sutotal_element').text(subtotal_edit)
+                                                    td_subtotal=subtotal_edit
+                                                    // $('#discount_percent').val(pembelianLcl.discount||newvalue_discount_percent*100)
+                                                    // newvalue_discount_percent += newvalue_discount_percent * 100;
+                                                    var new_nilai =parseFloat((subtotal_edit * 0.11)*newvalue_discount_percent)
+                                                    newValueDiscountNominal = $(this).val()
+                                                    console.log(newValueDiscountNominal)
+                                                    // td_discount_nominal=newValueDiscountNominal
+                                                    // var discount_percent_input = newvalue_discount_percent || 0;
+                                                    
+                                                    
+                                                    // var value_ppn_discount_percent = pembelianLcl.ppn - (discount_percent_input * pembelianLcl.ppn);
+                                                    $('.ppn_element').text(new_nilai)
+                                                    td_ppn = new_nilai
+                                                    $('.total_element').text((subtotal_edit+new_nilai-newValueDiscountNominal))
+                                                    td_total = (new_nilai)-newValueDiscountNominal
+                                                })
+                                            } else {
+
+                                                $('.ppn_element').text((0).toFixed(2)); // Atur ke nol jika tidak tercentang
+                                                // $('.ppn_element').text((subtotal_edit * 0.11).toFixed(2));
+                                                td_ppn=0
+                                                td_total=subtotal_edit
+                                                $('.total_element').text(td_total)
+                                            }
+                                        
+                                        });
+                                       
+                                        changeHistory[itemIndex] = checkboxElementProduct.val()
+                                        td6Product.append(checkboxElementProduct)
+                                       
+                                        var td7Product = $('<td>')
+                                        var selectGudang = $('<select>', {
+                                            class: 'form-control choices-select-gudang', // class for styling
+                                            id:'gudang'+itemIndex
+                                        }).css({
+                                            'border': '1px solid #696868', // Border color and style
+                                            'color': 'black', // Text color
+                                            'padding': '10px', // Padding inside the select
+                                            'width': '100%', // Full width of the container
+                                            
+                                        });
+                                        // console.log('responseGudang',response.gudang)
+                                        var defaultOption = $('<option>', {
+                                            value: '',
+                                            text: 'Pilih Gudang' // Default text
+                                        }).attr('disabled', 'disabled').attr('selected', 'selected'); // Disabled and selected
+                                        selectGudang.append(defaultOption);
+                                        // Iterate over each item in gudangName to create options
+                                        gudang.forEach(function(gudangitem,index) {
+                                            var optionElement = $('<option>', {
+                                                // text: gudangitem, // Use id as the value
+                                                
+                                                value: gudangitem.id,
+                                                text: gudangitem.name
+    
+                                            });
+                                            if(gudangitem.id==result.id_gudang){
+                                                optionElement.attr('selected','selected')
+                                                selectedValuesArray[itemIndex] = optionElement.val()
+                                            }
+                                            selectGudang.append(optionElement);
+                                        });
+                                        
+                                        selectGudang.on('change', function() {
+                                            
+                                    
+                                            var newValue = $(this).val();
+        
+                                            // Update the selectedValuesArray with the new value
+                                            selectedValuesArray[itemIndex] = newValue;
+                                            
+                                     
+                                            
+                                            
+                                        });
+                                        
+                                        td7Product.append(selectGudang)
+    
+                                        var newTd9 = $('<td>')
+                            
+                                        var deleteButton = $('<button>',{
+                                            text: 'X',
+                                            class: 'btn btn-danger btn-sm'
+                                        }).css({
+                                            'border': 'none',
+                                            'color':'white',
+                                            'background-color': '#dc3545',
+                                            'padding': '5px 10px',
+                                            'cursor': 'pointer'
+                                        }).on('click',function(){
+                                            $(this).closest('tr').remove();
+                                        })
+                                        newTd9.append(deleteButton)
+    
+                                        
+                                        
+    
+                                        
+                                      
+                                        subtot_arr[itemIndex] = result.subtotal_idr
+    
+                                        if(pembelianLcl.status_converttorupiah==1){
+                                            statusconvert =1
+                                            var newTdHargaInvoice = $('<td>').css({
+                                                'padding': 'auto',  
+                                                'width': '10%',  
+                                                
+                                            });
+    
+                                            var inputHargaInvoice = $('<input>', {
+                                                id:'input_harga_invoice2',
+                                                type: 'number',
+                                                class: 'form-control harga2-invoice',
+                                                value:pembelianLcl.nominal_convert * result.price
+                                            });
+                                            inputHargaInvoice.css({
+                                                'border': '1px solid #696868', 
+                                                'color': 'black', 
+                                                'padding': '10px',
+                                                'width': '100%' 
+                                            });
+                                            inputHargaInvoice.prop('disabled', true);
+                                            price_invoice_arr[itemIndex] = inputHargaInvoice.val()
+                                            newTdHargaInvoice.append(inputHargaInvoice)
+                                            td_total=pembelianLcl.subtotal_idr
+                                        }
+                                        else if(convert_edit==true){
+                                            // statusconvert =1
+                                            console.log('masuk convert_edit')
+                                            var newTdHargaInvoice = $('<td>').css({
+                                                'padding': 'auto',  
+                                                'width': '10%',  
+                                                
+                                            });
+    
+                                            var inputHargaInvoice = $('<input>', {
+                                                id:'input_harga_invoice2',
+                                                type: 'number',
+                                                class: 'form-control harga2-invoice',
+                                                value:parseFloat($('#input_nominal').val()*inputtd2Product.val())
+                                            });
+                                            inputHargaInvoice.css({
+                                                'border': '1px solid #696868', 
+                                                'color': 'black', 
+                                                'padding': '10px',
+                                                'width': '100%' 
+                                            });
+                                            inputHargaInvoice.prop('disabled', true);
+                                            price_invoice_arr[itemIndex] = inputHargaInvoice.val()
+                                            inputtd5Product.val(parseFloat($('#input_nominal').val()*inputtd2Product.val())*inputtd3Product.val())
+                                            subtot_arr[itemIndex] =parseFloat(inputtd5Product.val())
+                                            newTdHargaInvoice.append(inputHargaInvoice)
+                                            let totalSubtotals =subtot_arr.reduce(function (accumulator, currentValue) {
+                                                    return accumulator + currentValue;
+                                                }, 0);
+                                            subtotal_edit = parseFloat(totalSubtotals)
+                                            $('.sutotal_element').text(subtotal_edit)
+                                            statusconvert=1;
+                                            valuenominalconvert=$('#input_nominal').val();
+                                            td_subtotal = subtotal_edit
+                                      
+                                        }
+                                        else if(convert_edit==false){
+                                            console.log('convert_edit false')
                                             $('.sutotal_element').text(subtotal_edit)
                                             td_subtotal = subtotal_edit
-                                            $('.ppn_element').text(pembelianLcl.ppn)
-                                            td_ppn = pembelianLcl.ppn
-                                            $('#discount_percent').val(pembelianLcl.discount)
-                                            td_discount = pembelianLcl.discount
-                                            $('#discount_percent').on('change',function(){
+                                        }
+                                        function updateCalculatedValue() {
+                                            console.log('masuk calculate')
+                                            var inputField = $(`#price_asal${itemIndex}`);
+                                            
+                                            var value_belumppn = parseFloat(inputField.val())  ;
+                                   
+                                            console.log('harga_asal',value_belumppn)
+                                            var input_discount = $(`#discount${itemIndex}`);
+                
+                                            var value_discount = parseFloat(input_discount.val()) || 0;
+                                            
+                                            var value3 = value_discount
+                                            console.log('value_discount',value3)
+    
+                                            var value1 = value_belumppn;
+                                        
+                                            var inputFieldqty = $(`#qty_qty${itemIndex}`);
+                
+                                    
+                                            var value_qty = parseFloat(inputFieldqty.val()) || 1;
+    
+                                            harga_asal[itemIndex] = value1; 
+                                            qty_arr[itemIndex] = value_qty;
+                                            
+                                    
+                                            // harga_asal_select[itemIndex] = value_belumppn;
+                                                
+                                            
+                                            discount_arr[itemIndex] = value3;
+                                        
+                                            
+                                            var value2 = value_qty;
+    
+                                            // Calculate the new value
+                                            var calculatedValue = (value1 * value2);
+                                       
+                                            
+                                            // menghitung dan menyetting value harga subtotal
+                                            if(result.status_converttorupiah==0){
+                                                
+                                                statusconvert =0
+                                                //inisiasi value subtotal
+                                                $(`#subtotal${itemIndex}`).val(calculatedValue);
+                                                subtot_arr[itemIndex]=$(`#subtotal${itemIndex}`).val()
+                                                // subtot_arr_select[itemIndex] = calculatedValue;
+                                                
+                                                // async()
+                                                
+                                            }
+                                            else{
+                                                // console.log('masuk else')
+                                                inputHargaInvoice.val(value1*pembelianLcl.nominal_convert)
+                                                price_invoice_arr[itemIndex] =pembelianLcl.nominal_convert*value1
+                                                
+                                                $(`#subtotal${itemIndex}`).val((calculatedValue*pembelianLcl.nominal_convert)-value3);
+                                                // subtot_arr_select[itemIndex]= calculatedValue*nominal_convert
+                                                // async()
+                                                subtot_arr[itemIndex]=$(`#subtotal${itemIndex}`).val()
+                                                // console.log('subtot_arr',subtot_arr)
+                                                subtotal_edit = subtot_arr.reduce(function(accumulator, currentValue) {
+                                                    return accumulator + parseFloat(currentValue || 0); // Menambahkan nilai, konversi ke angka
+                                                }, 0);
                                                 $('.sutotal_element').text(subtotal_edit)
                                                 td_subtotal=subtotal_edit
-                                                // $('.ppn_element').text(pembelianLcl.ppn)
-                                                td_discount_nominal=newValueDiscountNominal
-                                                newvalue_discount_percent = ($(this).val())/100;
-                                                td_discount =$(this).val()
-                                                var value_ppn_discount_percent = pembelianLcl.ppn-(newvalue_discount_percent*pembelianLcl.ppn)
-                                                td_ppn = value_ppn_discount_percent
-                                                $('.ppn_element').text(value_ppn_discount_percent)
-                                                $('.total_element').text((subtotal_edit+value_ppn_discount_percent)-newValueDiscountNominal)
-                                                td_total = (subtotal_edit+value_ppn_discount_percent)-newValueDiscountNominal
-                                            })
-                                            $('#discount_nominal').val(pembelianLcl.discount_nominal)
-                                            td_discount_nominal = pembelianLcl.discount_nominal
-                                            $('#discount_nominal').on('change',function(){
+                                                var discount_percent_new = (subtotal_edit*0.11)-(subtotal_edit*0.11*newvalue_discount_percent).toFixed(2)
+                                                var discount_nominal_new =newValueDiscountNominal||0
+                                                $('.ppn_element').text(discount_percent_new||subtotal_edit*0.11)
+                                                td_ppn=discount_percent_new||subtotal_edit*0.11
+                                                $('.total_element').text(subtotal_edit+(discount_percent_new||subtotal_edit*0.11)-discount_nominal_new)
+                                                td_total=subtotal_edit+(discount_percent_new||subtotal_edit*0.11)-discount_nominal_new
+    
+                                                $('#discount_nominal').on('change',function(){
+                                                    
+                                                    $('.sutotal_element').text(subtotal_edit)
+                                                    td_subtotal=subtotal_edit
+                                                    var ppnmerge=((subtotal_edit*0.11)-(subtotal_edit*0.11)*newvalue_discount_percent)
+                                                    console.log('ppnmerge',ppnmerge)
+                                                    $('.ppn_element').text(ppnmerge.toFixed(2)||(subtotal_edit*0.11).toFixed(2))
+                                                    td_ppn = ppnmerge||subtotal_edit*0.11
+                                                    console.log('discount nominal')
+                                                    
+                                                    
+                                                    newValueDiscountNominal = $(this).val()
+                                                    
+                                                    td_discount_nominal = newValueDiscountNominal
+                                                    var subtotal_new =((subtotal_edit+parseFloat(ppnmerge))-newValueDiscountNominal)
+                                                    $('.total_element').text(subtotal_new.toFixed(2))
+                                                    td_total = subtotal_new.toFixed(2)
+                                                })  
+                                                $('#discount_percent').on('change',function(){
+                                                    // console.log('discount percent edit')
+                                                    newvalue_discount_percent = ($(this).val())/100;
+                                                    
+                                                    td_discount=$(this).val()
+                                                    $('.sutotal_element').text(subtotal_edit)
+                                                    td_subtotal=subtotal_edit
+                                                    var ppnmerge=(subtotal_edit*0.11-(subtotal_edit*0.11*newvalue_discount_percent))
+                                                    $('.ppn_element').text(ppnmerge.toFixed(2))
+                                                    td_ppn =ppnmerge.toFixed(2)
+                                                    $('#discount_nominal').text(newValueDiscountNominal||pembelianLcl.discount_nominal)
+                                                    td_discount_nominal = newValueDiscountNominal||pembelianLcl.discount_nominal
+                                                    var newTotal = (subtotal_edit + ppnmerge)-newValueDiscountNominal;
+                                                    
+                                                    $('.total_element').text(newTotal.toFixed(2));
+                                                    td_total = newTotal.toFixed(2)
+                                                })  
+                                            }
+                        
+                                        }
                                                 $('.sutotal_element').text(subtotal_edit)
-                                                td_subtotal=subtotal_edit
-                                                $('#discount_percent').val(pembelianLcl.discount||newvalue_discount_percent*100)
-                                                newValueDiscountNominal = $(this).val()
-                                                td_discount_nominal=newValueDiscountNominal
-                                                var discount_percent_input = newvalue_discount_percent || 0;
+                                                td_subtotal = subtotal_edit
+                                                $('.ppn_element').text(pembelianLcl.ppn)
+                                                td_ppn = pembelianLcl.ppn
+                                                $('#discount_percent').val(pembelianLcl.discount)
+                                                td_discount = pembelianLcl.discount
+                                                $('#discount_percent').on('change',function(){
+                                                    $('.sutotal_element').text(subtotal_edit)
+                                                    td_subtotal=subtotal_edit
+                                                    // $('.ppn_element').text(pembelianLcl.ppn)
+                                                    td_discount_nominal=newValueDiscountNominal
+                                                    newvalue_discount_percent = ($(this).val())/100;
+                                                    td_discount =$(this).val()
+                                                    var value_ppn_discount_percent = pembelianLcl.ppn-(newvalue_discount_percent*pembelianLcl.ppn)
+                                                    td_ppn = value_ppn_discount_percent
+                                                    $('.ppn_element').text(value_ppn_discount_percent)
+                                                    $('.total_element').text((subtotal_edit+value_ppn_discount_percent)-newValueDiscountNominal)
+                                                    td_total = (subtotal_edit+value_ppn_discount_percent)-newValueDiscountNominal
+                                                })
+                                                $('#discount_nominal').val(pembelianLcl.discount_nominal)
+                                                td_discount_nominal = pembelianLcl.discount_nominal
+                                                $('#discount_nominal').on('change',function(){
+                                                    $('.sutotal_element').text(subtotal_edit)
+                                                    td_subtotal=subtotal_edit
+                                                    $('#discount_percent').val(pembelianLcl.discount||newvalue_discount_percent*100)
+                                                    newValueDiscountNominal = $(this).val()
+                                                    td_discount_nominal=newValueDiscountNominal
+                                                    var discount_percent_input = newvalue_discount_percent || 0;
+                                                    
+                                                    
+                                                    var value_ppn_discount_percent = pembelianLcl.ppn - (discount_percent_input * pembelianLcl.ppn);
+                                                    td_ppn = value_ppn_discount_percent
+                                                    $('.ppn_element').text(value_ppn_discount_percent)
+                                                    $('.total_element').text((subtotal_edit+value_ppn_discount_percent)-newValueDiscountNominal)
+                                                    td_total = (subtotal_edit+value_ppn_discount_percent)-newValueDiscountNominal
+                                                })
+                                                console.log('?? pembelianLcl.subtotal_idr',pembelianLcl.subtotal_idr)
+                                                $('.total_element').text(
+                                                    td_total ?? subtotal_edit
+                                                );
+                                                if(result.status_ppn == 1){
+                                                    console.log('ppn 1')
+                                                    console.log('1',subtotal_edit)
+                                                    td_ppn=((subtotal_edit * 0.11)* ((100-pembelianLcl.discount)/100))
+                                                        td_total=subtotal_edit+td_ppn-pembelianLcl.discount_nominal
+                                                        console.log(td_ppn,td_total)
+                                                        $('.total_element').text(td_total)
+                                                        $('.ppn_element').text(td_ppn)
+                                                       
+                                                        $('#flexCheckDefault').prop('checked', true).val('1');
+                                                }
+                                                // td_total= subtotal_edit  
+                                                // (pembelianLcl.discount !== 0 ? pembelianLcl.discount : 1)
+                                                // td_discount =pembelianLcl.discount
+                                                // Update calculation when values change
                                                 
+                                                inputtd2Product.on('input', updateCalculatedValue);
+                                                inputtd3Product.on('input', updateCalculatedValue);
+                                                inputtd4Product.on('input',updateCalculatedValue)
+    
+                                                item[itemIndex] = inputtd1Product.val()
                                                 
-                                                var value_ppn_discount_percent = pembelianLcl.ppn - (discount_percent_input * pembelianLcl.ppn);
-                                                td_ppn = value_ppn_discount_percent
-                                                $('.ppn_element').text(value_ppn_discount_percent)
-                                                $('.total_element').text((subtotal_edit+value_ppn_discount_percent)-newValueDiscountNominal)
-                                                td_total = (subtotal_edit+value_ppn_discount_percent)-newValueDiscountNominal
-                                            })
-                                            $('.total_element').text(
-                                                ((subtotal_edit + pembelianLcl.ppn) - pembelianLcl.discount_nominal) * 
-                                                (pembelianLcl.discount !== 0 ? pembelianLcl.discount : 1)
-                                            );
-                                            td_total= ((subtotal_edit + pembelianLcl.ppn) - pembelianLcl.discount_nominal) * 
-                                            (pembelianLcl.discount !== 0 ? pembelianLcl.discount : 1)
-                                            // td_discount =pembelianLcl.discount
-                                            // Update calculation when values change
-                                            
-                                            inputtd2Product.on('input', updateCalculatedValue);
-                                            inputtd3Product.on('input', updateCalculatedValue);
-                                            inputtd4Product.on('input',updateCalculatedValue)
-
-                                            item[itemIndex] = inputtd1Product.val()
-                                            
-                                                        
-                                            td1Product.append(inputtd1Product)
-                                            td2Product.append(inputtd2Product)
-                                            tr.append(tdProduct,td1Product,td2Product,newTdHargaInvoice,td3Product,td4Product,td5Product,td6Product,td7Product,newTd9);
-                                            contentImport.append(tr)
-                    });
+                                                            
+                                                td1Product.append(inputtd1Product)
+                                                td2Product.append(inputtd2Product)
+                                                tr.append(tdProduct,td1Product,td2Product,newTdHargaInvoice,td3Product,td4Product,td5Product,td6Product,td7Product,newTd9);
+                                                contentImport.append(tr)
+                        });
+                    }
+                    elementEditLcl()
+                  
                              
-            };     
+                };     
+           
+                window.editPembayaran = function(pembayaranlcl,matauang_all){
+                                // var tabel_pembayaran=$('#tabel-pembayaran')
+                                var simbol_mt=[]
+                                var edit_id=[];
+                                array_data_pembayaran=pembayaranlcl
+                                var tbody_container_pembayaran = $('.container-pembayaran')
+                                // var array_index=[];
+                                console.log('pembayaranlcl',pembayaranlcl)
+                                pembayaranlcl.forEach(function(pembayaran, index_pembayaran){
+                                        matauang_all.forEach(function(matauang_simbol, index_simbol){
+                                            if(pembayaran.id_matauang==matauang_simbol.id){
+                                                simbol_mt[index_pembayaran]= matauang_simbol.simbol
+                                            }
+                                        })
+                                        var tglBayar = new Date(pembayaran.tgl_bayar); // Assuming result.tgl_kirim is in a parseable format
+
+                                        // Array of month names in Indonesian
+                                        var bulan = [
+                                            "Jan", "Feb", "Mar", "Apr", "Mei", "Jun", 
+                                            "Jul", "Agt", "Sep", "Okt", "Nov", "Des"
+                                        ];
+
+                                        // Format the date as 'dd Month yyyy'
+                                        var formattedDate = ('0' + tglBayar.getDate()).slice(-2) + ' ' + 
+                                                            bulan[tglBayar.getMonth()] + ' ' + 
+                                                            tglBayar.getFullYear();
+                                        var tr = $('<tr>')
+                                        var td1Product = $('<td>',{
+                                            id:'tgl_pembayaran_edit-'+index_pembayaran
+                                        }).css({
+                                            'padding': 'auto',
+                                            'width': '10%', 
+                                        }).text(formattedDate);
+                                        var td2Product = $('<td>',{
+                                            id:'kode_pembayaran_edit-'+index_pembayaran
+                                        }).css({
+                                            'padding': 'auto',
+                                            'width': '10%', 
+                                        }).text(pembayaran.kode);
+
+                                        var td3Product = $('<td>',{
+                                            id:'price_pembayaran_edit-'+index_pembayaran
+                                        }).css({
+                                            'padding': 'auto',
+                                            'width': '10%', 
+                                        }).text(simbol_mt[index_pembayaran]+' '+formatPrice(pembayaran.price));
+                                        
+                                        function formatPrice(price) {
+                                            return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                                        }
+                                        var td4Product = $('<td>',{
+                                            id:'keterangan_pembayaran_edit-'+index_pembayaran
+                                        }).css({
+                                            'padding': 'auto',
+                                            'width': '10%', 
+                                        }).text(pembayaran.keterangan);
+                                        var tdActions = $('<td>', {
+                                            id: 'actions_pembayaran_edit-' + index_pembayaran
+                                        }).css({
+                                            'padding': 'auto',
+                                            'width': '15%', // Adjust as needed
+                                            'text-align': 'center' // Center align the buttons
+                                        });
+
+                                        // Create Edit button
+                                        var existingEntry = edit_id.find(function (entry) {
+                                            return entry.id === pembayaran.id;
+                                        });
+
+                                        // Gunakan kondisi `if` untuk memeriksa apakah data ditemukan di edit_id
+                                        var dataSource;
+                                        if (existingEntry) {
+                                            // console.log('Data ditemukan di edit_id:', existingEntry);
+                                            dataSource = existingEntry; // Gunakan data dari edit_id
+                                        } else {
+                                            // console.log('Data tidak ditemukan di edit_id, menggunakan data pembayaran:', pembayaran);
+                                            dataSource = pembayaran; // Gunakan data dari pembayaran
+                                        }
+
+                                        var btnEdit = $('<button>')
+                                            .addClass('btn btn-sm btn-primary')
+                                            .html('<i class="fas fa-edit"></i>') // Render the Font Awesome icon
+                                            .attr('data-id', dataSource.id)
+                                            .attr('data-kode', dataSource.kode)
+                                            .attr('data-tgl_pembayaran', dataSource.tgl_bayar)
+                                            .attr('data-bukti_pembayaran', dataSource.bukti)
+                                            .attr('data-keterangan_pembayaran', dataSource.keterangan)
+                                            .attr('data-nominal_pembayaran', dataSource.price)
+                                            .attr('data-jenis_mt', dataSource.id_matauang)
+                                            .css({
+                                                'margin-left': '5px' // Add spacing between buttons
+                                            })
+                                            .attr('type', 'button') // Set the button type
+                                            .on('click', function () {
+                                                var existingEntry = edit_id.find(function (entry) {
+                                            return entry.id === pembayaran.id;
+                                        });
+
+                                            // Gunakan kondisi `if` untuk memeriksa apakah data ditemukan di edit_id
+                                            var dataSource;
+                                            if (existingEntry) {
+                                                console.log('Data ditemukan di edit_id:', existingEntry);
+                                                dataSource = existingEntry; // Gunakan data dari edit_id
+                                                var id = dataSource.id;
+                                                var kode = dataSource.kode
+                                                var tgl_pembayaran = dataSource.tgl_bayar;
+                                                var nominal_pembayaran =dataSource.price
+                                                var bukti_pembayaran = dataSource.bukti
+                                                var keterangan_pembayaran = dataSource.keterangan
+                                                var jenis_matauang = dataSource.id_matauang
+                                                // Tampilkan modal dan isi field dengan data
+                                                $('#editModalPembayaranLcl').modal('show');
+                                                $('.edit_id_pembayaran_lcl').val(id);
+                                                $('.edit_kode_pembayaran_lcl').val(kode);
+                                                $('.edit_tgl_pembayaran').val(tgl_pembayaran);
+                                                $('.edit_nominal').val(nominal_pembayaran);
+                                                $('.edit_select_nominal').val(jenis_matauang).trigger('change');
+                                                $('.edit_bukti_pembayaran').val(bukti_pembayaran);
+                                                $('.edit_keterangan_pembayaran').val(keterangan_pembayaran);
+
+                                                // Simpan data ke dalam modal
+                                                $('#editModalPembayaranLcl').data({
+                                                    id: id,
+                                                    index_pembayaran: index_pembayaran, // Simpan index
+                                                    kode: kode,
+                                                    tgl_pembayaran: tgl_pembayaran,
+                                                    nominal_pembayaran: nominal_pembayaran,
+                                                    jenis_mt: jenis_matauang,
+                                                    bukti_pembayaran: bukti_pembayaran,
+                                                    keterangan_pembayaran: keterangan_pembayaran,
+                                                });
+
+                                                console.log('Edit clicked for index:', kode);
+                                            } else {
+                                                console.log('Data tidak ditemukan di edit_id, menggunakan data pembayaran:', pembayaran);
+                                                // dataSource = pembayaran; // Gunakan data dari pembayaran
+                                                var id = $(this).data('id');
+                                                var kode = $(this).data('kode');
+                                                var tgl_pembayaran = $(this).data('tgl_pembayaran');
+                                                var nominal_pembayaran = $(this).data('nominal_pembayaran');
+                                                var bukti_pembayaran = $(this).data('bukti_pembayaran');
+                                                var keterangan_pembayaran = $(this).data('keterangan_pembayaran');
+                                                var jenis_matauang = $(this).data('jenis_mt');
+                                                
+                                                // Tampilkan modal dan isi field dengan data
+                                                $('#editModalPembayaranLcl').modal('show');
+                                                $('.edit_id_pembayaran_lcl').val(id);
+                                                $('.edit_kode_pembayaran_lcl').val(kode);
+                                                $('.edit_tgl_pembayaran').val(tgl_pembayaran);
+                                                $('.edit_nominal').val(nominal_pembayaran);
+                                                $('.edit_select_nominal').val(jenis_matauang).trigger('change');
+                                                $('.edit_bukti_pembayaran').val(bukti_pembayaran);
+                                                $('.edit_keterangan_pembayaran').val(keterangan_pembayaran);
+
+                                                // Simpan data ke dalam modal
+                                                $('#editModalPembayaranLcl').data({
+                                                    id: id,
+                                                    index_pembayaran: index_pembayaran, // Simpan index
+                                                    kode: kode,
+                                                    tgl_pembayaran: tgl_pembayaran,
+                                                    nominal_pembayaran: nominal_pembayaran,
+                                                    jenis_mt: jenis_matauang,
+                                                    bukti_pembayaran: bukti_pembayaran,
+                                                    keterangan_pembayaran: keterangan_pembayaran,
+                                                });
+
+                                                console.log('Edit clicked for index:', kode);
+                                            }
+
+
+                                               
+                                            });
+
+
+                                        // Create Delete button
+                                        var btnDelete = $('<button>')
+                                            .addClass('btn btn-sm btn-danger btn-delete')
+                                            .html('<i class="fas fa-trash"></i>') // Render Font Awesome trash icon
+                                            .attr('type', 'button') // Set the button type explicitly
+                                            .attr('data-id', pembayaran.id) // Attach the data-id from pembayaran
+                                            .css({
+                                                'margin-left': '5px' // Add spacing between buttons
+                                            })
+                                            .on('click', function () {
+                                                // Ambil data-id dari tombol yang diklik
+                                                var idToDelete = $(this).data('id');
+
+                                                // Konfirmasi penghapusan (opsional)
+                                                if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
+                                                    // Temukan index baris di array
+                                                    var indexToDelete = array_data_pembayaran.findIndex(function (item) {
+                                                        return item.id === idToDelete;
+                                                    });
+
+                                                    if (indexToDelete !== -1) {
+                                                        // Hapus item dari array
+                                                        array_data_pembayaran.splice(indexToDelete, 1);
+
+                                                        // Hapus elemen <tr> yang sesuai urutan
+                                                        $('table tbody tr').eq(indexToDelete).remove();
+
+                                                        console.log('Item deleted at index:', indexToDelete);
+                                                        console.log('Updated array_data_pembayaran:', array_data_pembayaran);
+                                                    } else {
+                                                        console.error('Item not found in array_data_pembayaran.');
+                                                    }
+                                                }
+                                            });
+
+
+
+                                        tdActions.append(btnEdit, btnDelete);
+                                        tr.append(td1Product,td2Product,td3Product,td4Product,tdActions)
+                                        tbody_container_pembayaran.append(tr)
+                                })
+                            
+                                            $('#update_pembayaran').on('click', function () {
+                                                // Ambil data dari modal
+                                                var modalData = $('#editModalPembayaranLcl').data();
+
+                                                var index_pembayaran = modalData.index_pembayaran; // Ambil index
+                                                var paymentId = $('.edit_id_pembayaran_lcl').val();
+                                                var paymentCode = $('.edit_kode_pembayaran_lcl').val();
+                                                var paymentDate = $('.edit_tgl_pembayaran').val();
+                                                var paymentAmount = $('.edit_nominal').val();
+                                                var currencyType = $('.edit_select_nominal').val();
+                                                var paymentProof = $('.edit_bukti_pembayaran').val();
+                                                var paymentNote = $('.edit_keterangan_pembayaran').val();
+
+                                                // Validasi index dan update array_data_pembayaran
+                                                if (typeof index_pembayaran !== 'undefined' && array_data_pembayaran[index_pembayaran]) {
+                                                    array_data_pembayaran[index_pembayaran].kode = paymentCode;
+                                                    array_data_pembayaran[index_pembayaran].tgl_bayar = paymentDate;
+                                                    array_data_pembayaran[index_pembayaran].price = paymentAmount;
+                                                    array_data_pembayaran[index_pembayaran].id_matauang = currencyType;
+                                                    array_data_pembayaran[index_pembayaran].bukti = paymentProof;
+                                                    array_data_pembayaran[index_pembayaran].keterangan = paymentNote;
+                                                    var tglBayar = new Date(paymentDate); // Assuming result.tgl_kirim is in a parseable format
+
+                                                    var bulan = [
+                                                            "Jan", "Feb", "Mar", "Apr", "Mei", "Jun", 
+                                                            "Jul", "Agt", "Sep", "Okt", "Nov", "Des"
+                                                        ];
+
+                                                        // Format the date as 'dd Month yyyy'
+                                                    var formattedDate = ('0' + tglBayar.getDate()).slice(-2) + ' ' + 
+                                                                            bulan[tglBayar.getMonth()] + ' ' + 
+                                                                            tglBayar.getFullYear();
+                                                    
+                                                    
+                                                    var simbol_edit_mt=0
+                                                    matauang_all.forEach(function(matauang_simbol, index_simbol){
+                                                        if(currencyType==matauang_simbol.id){
+                                                            simbol_edit_mt= matauang_simbol.simbol
+                                                        }
+                                                    })
+                                                    function formatRibuan(amount) {
+                                                        return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                                                    }
+
+                                                    // Format paymentAmount
+                                                    var formattedPaymentAmount = formatRibuan(paymentAmount);
+                                                    // Perbarui elemen tabel
+                                                    $('#keterangan_pembayaran_edit-' + index_pembayaran).text(paymentNote);
+                                                    $('#tgl_pembayaran_edit-' + index_pembayaran).text(formattedDate);
+                                                    $('#kode_pembayaran_edit-' + index_pembayaran).text(paymentCode);
+                                                    $('#price_pembayaran_edit-' + index_pembayaran).text(simbol_edit_mt+ ' '+formattedPaymentAmount);
+
+                                                    
+
+                                                    var existingEntry = edit_id.find(function (entry) {
+                                                        return entry.id === parseFloat(paymentId);
+                                                    });
+
+                                                    if (existingEntry) {
+                                                        // Jika id ditemukan, update field yang relevan
+                                                        existingEntry.kode = paymentCode;
+                                                        existingEntry.tgl_bayar = paymentDate;
+                                                        existingEntry.price = paymentAmount;
+                                                        existingEntry.id_matauang = currencyType;
+                                                        existingEntry.bukti = paymentProof;
+                                                        existingEntry.keterangan = paymentNote;
+                                                    } else {
+                                                        // Jika id tidak ditemukan, tambahkan data baru
+                                                        edit_id.push({
+                                                            id: parseFloat(paymentId),
+                                                            kode: paymentCode,
+                                                            tgl_bayar: paymentDate,
+                                                            price: paymentAmount,
+                                                            id_matauang: currencyType,
+                                                            bukti: paymentProof,
+                                                            keterangan: paymentNote
+                                                        });
+                                                    }
+
+                                                    console.log('edit_id',edit_id)
+                                                    $('.edit_tgl_pembayaran').val(paymentDate);
+                                                    $('.edit_nominal').val(paymentAmount);
+                                                    $('.edit_select_nominal').val(currencyType).trigger('change');
+                                                    $('.edit_bukti_pembayaran').val(paymentProof);
+                                                    $('.edit_keterangan_pembayaran').val(paymentNote);
+
+                                                    
+                                                    
+                                                } else {
+                                                    console.error('Index pembayaran tidak valid.');
+                                                }
+
+                                                // Tutup modal
+                                                $('#editModalPembayaranLcl').modal('hide');
+                                            });
+
+
+
+
+                }
 
                 if(editClick==true){
                 
@@ -4915,15 +5550,27 @@ LCL   | PT. Maxipro Group Indonesia
                                     url: '{{ route('admin.pembelian_tambah_lcl') }}',
                                     data: formDataSendEdit,
                                     success: function(response) {
-                                    Swal.fire({
-                                        icon:'success',
-                                        title:'Success',
-                                        text:'LCL Berhasil Diupdate'
-                                    }).then((result)=>{
-                                    if(result.isConfirmed){
-                                        window.location.reload();
-                                    }
-                                    });
+                                        console.log('response',response)
+                                        if(response.auth==true){
+
+                                            Swal.fire({
+                                                icon:'success',
+                                                title:'Success',
+                                                text:response.msg
+                                            }).then((result)=>{
+                                            if(result.isConfirmed){
+                                                window.location.reload();
+                                            }
+                                            });
+                                        }
+                                        else{
+                                            
+                                            Swal.fire({
+                                                icon:'error',
+                                                title:'error',
+                                                text:response.msg
+                                            })
+                                        }
                                     },error: function(xhr, status, error) {
                                         console.log('Terjadi kesalahan:',error);
                                     }
@@ -4931,10 +5578,75 @@ LCL   | PT. Maxipro Group Indonesia
                     })
                    
                 }
+                
         }
-        // });
+
+        function detailInvoice(element){
+            event.preventDefault();
+            var invoice = $(element).data('id');
+            $.ajax({
+                type: 'GET',
+                url: '{{ route('admin.pembelian_lcl') }}',
+                data: { 
+                    menu:'detail',
+                    invoice: invoice 
+                },
+                success: function(response) {
+                    $('main.main-content').removeClass('wider ps ps--active-y');
+                    $('.btn-tambah').remove();
+                    
+                    if (window.dataTableInstance) {
+                        window.dataTableInstance.destroy();
+                    }
+                    $('#tabe-stok').remove();
+                    $('.radio-button-container').hide();
+                    $('#openModalBtn').hide();
+                    $('#clearFilterBtn').hide();
+                    $('#Formedit').html(response);
+                    $('#div_detail').show();
+                    $('#judulLcl').html('<i class="fas fa-database"></i> &nbsp Detail LCL');
+                    document.title='Detail LCL   | PT. Maxipro Group Indonesia';
+                },
+                    
+            })
+        }
+        $('#simpan-pembayaran').on('click', function(element){
+                        element.preventDefault()
+                        console.log('id',id_pembelian_savelcl)
+                        var dataSendPembayaran = {}
+                        if (array_create_pembayaran.length === 0) {
+                            dataSendPembayaran = {
+                                form:array_data_pembayaran
+                            }
+                        }
+                        else{
+                            dataSendPembayaran = {
+                                form:array_data_pembayaran,
+                                form_create:array_create_pembayaran,
+                                id_pembelian_savelcl:id_pembelian_savelcl,
+                            }
+                        }
+                        console.log(dataSendPembayaran)
+                        $.ajax({
+                            url:'{{ route('admin.pembelian_lcl') }}',
+                            data:{
+                                menu:'created_pembayaran',
+                                dataSendPembayaran:dataSendPembayaran,
+                            },
+                            success:function(response){
+                                // console.log('response',response)
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Berhasil',
+                                    text: response.msg,
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+                            }
+                        })
+        })
         
-       
-    // });
+        
+ 
 </script> 
 @endsection

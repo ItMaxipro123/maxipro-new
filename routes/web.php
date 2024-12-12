@@ -110,7 +110,12 @@ Route::prefix('admin')->group(function () {
     Route::get('tambah_penawaran', [AdminController::class, 'penawaran_tambah_filter'])->name('admin.tambah_penawaran');
     Route::get('hapus_penawaran', [AdminController::class, 'hapus_penawaran_filter'])->name('admin.hapus_penawaran_filter');
 
-
+    //Feature Penjualan
+    Route::get('data_orderpenjualan', [AdminController::class, 'order_penjualan'])->name('admin.order_penjualan');
+    Route::get('tambah_orderpenjualan', [AdminController::class, 'order_penjualan'])->name('admin.tambah_order_penjualan');
+    Route::get('invoice_orderpenjualan', [AdminController::class, 'order_penjualan'])->name('admin.invoice_order_penjualan');
+    //End featur penjualan
+    
     //Feature Pembeliaan Restok
     Route::get('data_restok', [AdminController::class, 'pembeliaan_restok'])->name('admin.pembeliaan_restok');
     Route::get('data_restok_filter', [AdminController::class, 'pembeliaan_restok_filter'])->name('admin.pembeliaan_restok_filter');
@@ -142,6 +147,7 @@ Route::prefix('admin')->group(function () {
     Route::get('data_hapusorderpembelian', [AdminController::class, 'pembelian_hapus_order_pembelian'])->name('admin.pembelian_hapus_order_pembelian');
 
     Route::get('data_editsupplierorderpembelian', [AdminController::class, 'pembelian_select_supplier_order_pembelian'])->name('admin.pembelian_select_supplier_order_pembelian');
+    Route::get('data_editcategoryorderpembelian', [AdminController::class, 'pembelian_select_category_order_pembelian'])->name('admin.pembelian_select_category_order_pembelian');
 
     Route::get('data_detailstokproduk', [AdminController::class, 'pembelian_orderpembelian_stokproduct'])->name('admin.pembelian_orderpembelian_stokproduct');
     
@@ -150,12 +156,19 @@ Route::prefix('admin')->group(function () {
 
     //Feature Pembelian Comercial Invoice
     Route::get('data_comercialinvoice', [AdminController::class, 'pembelian_comercial_invoice'])->name('admin.pembelian_comercial_invoice');
+    
+    Route::get('addcomercialinvoicelcllocal', [AdminController::class, 'pembelian_comercial_invoice'])->name('admin.pembelian_comercial_invoice_add');
+    
+    Route::get('addcomercialinvoicelcllocalnoimport', [AdminController::class, 'pembelian_comercial_invoice'])->name('admin.pembelian_comercial_invoice_add_no_import');
+    
     Route::get('data_editcomercialinvoice', [AdminController::class, 'pembelian_editview_comercial_invoice'])->name('admin.pembelian_editview_comercial_invoice');
     
     Route::get('data_comercialinvoice_filter', [AdminController::class, 'pembelian_comercial_invoice_filter'])->name('admin.pembelian_comercial_invoice_filter');
     Route::get('data_edit_packinglist_comercial_invoice', [AdminController::class, 'pembelian_edit_packinglist_comercial_invoice'])->name('admin.pembelian_edit_packinglist_comercial_invoice');
     
     Route::get('data_editimportcomercialinvoice', [AdminController::class, 'pembelian_importbarang_comercial_invoice'])->name('admin.pembelian_importbarang_comercial_invoice');
+    
+    Route::get('tambahcomercialinvoice', [AdminController::class, 'pembelian_tambah_comercial_invoice_new'])->name('admin.pembelian_tambah_comercial_invoice_new');
     
     Route::get('data_tambahcomercialinvoice', [AdminController::class, 'pembelian_tambah_comercial_invoice'])->name('admin.pembelian_tambah_comercial_invoice');
     
@@ -164,6 +177,8 @@ Route::prefix('admin')->group(function () {
     Route::get('data_updatesaveitems_editcomercialinvoice', [AdminController::class, 'pembelian_update_formatas_comercial_invoice'])->name('admin.pembelian_update_formatas_comercial_invoice');
     
     Route::get('data_addcomercialinvoice', [AdminController::class, 'pembelian_add_comercial_invoice'])->name('admin.pembelian_add_comercial_invoice');
+    
+    Route::get('data_addcomercialinvoice_supplier', [AdminController::class, 'pembelian_add_comercial_invoice_supplier'])->name('admin.pembelian_add_comercial_invoice_supplier');
     
     Route::get('data_selectcategorycomercialinvoice', [AdminController::class, 'pembelian_selectcategory_comercial_invoice'])->name('admin.pembelian_selectcategory_comercial_invoice');
     
@@ -190,18 +205,28 @@ Route::prefix('admin')->group(function () {
 
     //Feature Penerimaan Pembelian
     Route::get('data_pembelian_penerimaan', [AdminController::class, 'penerimaan_pembelian'])->name('admin.penerimaan_pembelian');
+    Route::get('edit_pembelian_penerimaan', [AdminController::class, 'penerimaan_pembelian'])->name('admin.penerimaan_pembelian_edit');
+    Route::get('detail_pembelian_penerimaan', [AdminController::class, 'penerimaan_pembelian'])->name('admin.penerimaan_pembelian_detail');
+    Route::get('tambah_pembelian_penerimaan', [AdminController::class, 'penerimaan_pembelian'])->name('admin.penerimaan_pembelian_tambah');
     Route::get('data_pembelian_penerimaan_filter', [AdminController::class, 'penerimaan_pembelian_filter'])->name('admin.penerimaan_pembelian_filter');
 
     //Feature Penerimaan Pindah Gudang
-    Route::get('data_penerimaan_pindahgudang', [AdminController::class, 'penerimaan_pindahgudang'])->name('admin.penerimaan_pindahgudang');
-    Route::get('data_penerimaan_pindahgudang_filter', [AdminController::class, 'penerimaan_pindahgudang_filter'])->name('admin.penerimaan_pindahgudang_filter');
+    Route::get('penerimaan_pindahgudang', [AdminController::class, 'penerimaan_pindahgudang'])->name('admin.penerimaan_pindahgudang');
+    Route::get('tambah_pindah_gudang', [AdminController::class, 'penerimaan_pindahgudang'])->name('admin.tambah_pindah_gudangbaru');
+    Route::get('edit_pindah_gudang', [AdminController::class, 'penerimaan_pindahgudang'])->name('admin.edit_pindah_gudangbaru');
+    Route::get('penerimaan_pindahgudang_filter', [AdminController::class, 'penerimaan_pindahgudang_filter'])->name('admin.penerimaan_pindahgudang_filter');
     
     //Feature Penerimaan Barang Lain
     Route::get('data_penerimaan_barang_lain', [AdminController::class, 'penerimaan_barang_lain'])->name('admin.penerimaan_barang_lain');
+    Route::get('tambah_penerimaan_barang_lain', [AdminController::class, 'penerimaan_barang_lain'])->name('admin.tambah_barang_lain');
+    Route::get('edit_penerimaan_barang_lain', [AdminController::class, 'penerimaan_barang_lain'])->name('admin.edit_barang_lain');
+    Route::get('print_penerimaan_barang_lain', [AdminController::class, 'penerimaan_barang_lain_pdf'])->name('admin.detail_barang_lain');
     Route::get('data_penerimaan_barang_lain_filter', [AdminController::class, 'penerimaan_barang_lain_filter'])->name('admin.penerimaan_barang_lain_filter');
 
     //Feature Penerimaan Document
     Route::get('data_penerimaan_document', [AdminController::class, 'penerimaan_document'])->name('admin.penerimaan_document');
+    Route::get('tambah_penerimaan_document', [AdminController::class, 'penerimaan_document'])->name('admin.tambah_document');
+    Route::get('edit_penerimaan_document', [AdminController::class, 'penerimaan_document'])->name('admin.edit_document');
     Route::get('data_penerimaan_document_filter', [AdminController::class, 'penerimaan_document_filter'])->name('admin.penerimaan_document_filter');
 
 

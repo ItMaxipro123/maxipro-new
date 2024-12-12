@@ -10,24 +10,7 @@ $(document).ready(function() {
         });
     }
 });
-$(document).ready(function() {
-    // Initialize Choices.js for each select element
-    $('.database-tambah').each(function() {
-        const choices = new Choices(this, {
-            searchEnabled: true,
-            itemSelectText: '',
-        });
-  
-        // Handle change event of select element
-        $(this).on('change', function(event) {
-            const selectedValue = event.target.value;
-            const inputElement = document.getElementById('database_id'); // Ganti dengan ID yang sesuai
-            if (inputElement) {
-                inputElement.value = selectedValue;
-            }
-        });
-    });
-  });
+
 
 $(document).ready(function() {
                     
@@ -40,25 +23,8 @@ $(document).ready(function() {
     });
 });
 
- // Initialize Choices.js on the select element
- $(document).ready(function() {
-    // Initialize Choices.js for each select element
-    $('.incoterms-tambah').each(function() {
-        const choices = new Choices(this, {
-            searchEnabled: true,
-            itemSelectText: '',
-        });
-  
-        // Handle change event of select element
-        $(this).on('change', function(event) {
-            const selectedValue = event.target.value;
-            const inputElement = document.getElementById('incoterms-tambah-id'); // Ganti dengan ID yang sesuai
-            if (inputElement) {
-                inputElement.value = selectedValue;
-            }
-        });
-    });
-  });
+
+
 
     
   $(document).ready(function() {

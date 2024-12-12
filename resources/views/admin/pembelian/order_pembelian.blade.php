@@ -29,11 +29,55 @@ Order Pembeliaan    | PT. Maxipro Group Indonesia
 
 @section('content')
 
-<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg wider">
+<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg wider" style="max-width: 100%; overflow-x: hidden;">
     
     <div class="container-fluid">
-        <h4 id="judul"><i class="fas fa-database"></i> &nbsp Order Pembelian</h4>
-        <small class="display-block subjudul">Order Pembelian {{ $username['data']['teknisi']['name'] }}</small>
+        <div class="row">
+            <div class="col-md-6">
+
+                <h4 id="judul"><i class="fas fa-database"></i> &nbsp Order Pembelian</h4>
+                <small class="display-block subjudul">Order Pembelian {{ $username['data']['teknisi']['name'] }}</small>
+            </div>
+            <div class="col-md-6">
+                <!-- navbar untuk membuka sidebar -->
+                <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" data-scroll="true">
+                    <div class="container-fluid py-1 px-3">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+
+
+                                </ol>
+                                <h6 class="font-weight-bolder mb-0"></h6>
+                            </nav>
+                            <div  id="navbar">
+                                <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+                                
+                                </div>
+                                    <ul class="navbar-nav  justify-content-end">
+                                
+                                
+                                        <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+                                            <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
+                                                <div class="sidenav-toggler-inner">
+                                                <i class="sidenav-toggler-line"></i>
+                                                <i class="sidenav-toggler-line"></i>
+                                                <i class="sidenav-toggler-line"></i>
+                                                </div>
+                                            </a>
+                                        </li>
+
+                                
+                                
+
+                                
+                                
+                                    </ul>
+
+                            </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
         
     </div>
 
@@ -165,92 +209,91 @@ Order Pembeliaan    | PT. Maxipro Group Indonesia
                     <div id="reload-icon">
                         <i class="fas fa-sync-alt"></i> Reloading...
                     </div>
-                      
-                    <table id="tabe-stok" class="tabel_order_pembelian">
+                    <div class="table-responsive">
+
+                    <table id="tabe-stok" class="tabel_order_pembelian" style="width: 100%;">
                         <thead>
-                            <!-- Add table headers if needed -->
+                            <tr>
+                                <th style="width: 3%; border: 1px solid #d7d7d7;">#</th>
+                                <th style="width: 10%; border: 1px solid #d7d7d7;">Tanggal</th>
+                                <th style="width: 7%; border: 1px solid #d7d7d7;">Kode</th>
+                                <th style="width: 15%; border: 1px solid #d7d7d7;">Nama Barang</th>
+                                <th style="width: 5%; border: 1px solid #d7d7d7;">Qty</th>
+                                <th style="width: 5%; border: 1px solid #d7d7d7;">Stok</th>
+                                <th style="width: 7%; border: 1px solid #d7d7d7;">Kubik</th>
+                                <th style="width: 5%; border: 1px solid #d7d7d7;">Teknisi</th>
+                                <th style="width: 12%; border: 1px solid #d7d7d7;">Keterangan</th>
+                                <th style="width: 10%; border: 1px solid #d7d7d7;">Supplier</th>
+                                <th style="width: 10%; border: 1px solid #d7d7d7;">Kategori</th>
+                                <th style="width: 15%; border: 1px solid #d7d7d7;">Actions</th>
+                            </tr>
                         </thead>
                         <tbody>
-                            @php
-                            $num = 1;
-                            @endphp
-                            <!-- Table data will be populated here -->
+                            @php $num = 1; @endphp
                             @foreach($Data['msg']['fullorderpembelian'] as $index => $data)
-                            @php
-                            \Carbon\Carbon::setLocale('id'); // Set locale ke Bahasa Indonesia
-                            $formattedDate = \Carbon\Carbon::parse($data['tgl_request'])->translatedFormat('d F Y');
-                           $rowStyle = '';
-                            if ($data['status'] == 'requested') {
-                                $rowStyle = 'background-color: #fff17a;';
-                            } elseif ($data['status'] == 'process') {
-                                $rowStyle = 'background-color: #97ebfb;';
-                            }
-                            elseif ($data['status'] == 'complete') {
-                                $rowStyle = 'background-color: #6cf670;';
-                            }
-                            elseif ($data['status'] == 'reject') {
-                                $rowStyle = 'background-color: #feb3aa;';
-                            }
-                            $gambar = json_encode($data['image']);                               
-                            
-                            @endphp
-                        <tr style="{{ $rowStyle }}">
-                            
-                                <td id="td-table">{{ $num }}</td>
-                                <td id="td-table">{{ $formattedDate }}</td>
-                                
-                                
-                                <td id="td-table" ><a href="javascript:void(0)" onclick="gambarOrderPembelian(this, '{{ $gambar }}')" data-id="{{ $data['id'] }}" name="gambarButton">{{ $data['new_kode'] }}</a></td>
-                                <td id="td3-table">{{ $data['nama_barang'] }}</td>
-                                <td id="td-table">{{ $data['jml_permintaan'] }}</td>
-                                <td id="td-table"> <a href="javascript:void(0)" onclick="modalOrderPembelian(this)" data-new-code="{{ $data['new_kode'] }}" data-nama-barang="{{ $data['nama_barang'] }}"> {{ $data['last_stok'] }} </a> </td>
-                            @php
-                                $kubik = $data['kubik'] == 0 ? 0 : $data['jml_permintaan'] * $data['kubik'];
-                            @endphp
-                                <td id="td-table">{{ $kubik }}</td>
-                                <td id="td-table">{{ $data['name_teknisi'] }}</td>
-                                <td class="td4-table">{{ $data['keterangan'] }}</td>
-                                <td id="td-table">
-
-
-                                    <select name="supplier_name_select" id="edit_supplier_{{ $index }}" data-id="{{ $data['id'] }}" class="select_supplier form-control" style="background-color: white">
-                                        <option value="0">-</option>
-                                        @foreach($Data['msg']['supplier'] as $index => $supplier)
-                                            <option value="{{ $supplier['id'] }}" {{ $data['supplier_id'] == $supplier['id'] ? 'selected' : ''}}>{{ $supplier['name'] }}</option>
-                                        @endforeach
-                                    </select>
-                                
-                                </td>
-                                <td id="td-table">{{ $data['category'] }}</td>
-                                <td id="td2-table">
-                                    @if($data['status'] == 'requested' || $data['status'] == 'reject')
-                                    <a href="javascript:void(0)" onclick="updateRestok(this)" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-info btn-edit" id="id-edit-button" title="Edit"> <i class="fas fa-edit"></i></a>
-                                    @else
-                                    <a href="javascript:void(0)" onclick="updateRestokFailed(this); return false;" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-info btn-edit"id="id-edit-button" title="Edit"><i class="fas fa-edit"></i></a>
-                                    @endif
-                                    <a href="javascript:void(0)" 
-                                    onclick="rejectOrderPembelian(this)" 
-                                    data-id="{{ $data['id'] }}" 
-                                    name="{{ $data['nama_barang'] }}" 
-                                    class="btn btn-large btn-info btn-danger" 
-                                    id="id-reject-button"
-                                
-                                    title="Reject Order">
-                                    <i class="fas fa-times"></i>
-                                    </a>
-                                    <a href="javascript:void(0)" onclick="deleteOrderPembelian(this)" data-id="{{ $data['id'] }}" name="{{ $data['nama_barang'] }}" class="btn btn-large btn-info btn-danger" id="id-delete-button" 
-                                    title="Delete"><i class="fas fa-trash-alt"></i></a>
-
-                                </td>
-                        </tr>
-
-
-                            @php
-                            $num++;
-                            @endphp
+                                @php
+                                    \Carbon\Carbon::setLocale('id');
+                                    $formattedDate = \Carbon\Carbon::parse($data['tgl_request'])->translatedFormat('d M Y');
+                                    $rowStyle = '';
+                                    if ($data['status'] == 'requested') {
+                                        $rowStyle = 'background-color: #fff17a;';
+                                    } elseif ($data['status'] == 'process') {
+                                        $rowStyle = 'background-color: #97ebfb;';
+                                    } elseif ($data['status'] == 'complete') {
+                                        $rowStyle = 'background-color: #6cf670;';
+                                    } elseif ($data['status'] == 'reject') {
+                                        $rowStyle = 'background-color: #feb3aa;';
+                                    }
+                                    $gambar = json_encode($data['image']);
+                                    $kubik = $data['kubik'] == 0 ? 0 : $data['jml_permintaan'] * $data['kubik'];
+                                @endphp
+                                <tr style="{{ $rowStyle }}">
+                                    <td style="border: 1px solid #d7d7d7; color: black;">{{ $num }}</td>
+                                    <td style="border: 1px solid #d7d7d7; color: black;">{{ $formattedDate }}</td>
+                                    <td style="border: 1px solid #d7d7d7; color: black;">
+                                        <a href="javascript:void(0)" onclick="gambarOrderPembelian(this, '{{ $gambar }}')" data-id="{{ $data['id'] }}" name="gambarButton">{{ $data['new_kode'] }}</a>
+                                    </td>
+                                    <td style="border: 1px solid #d7d7d7; color: black;" id="data-nama-barang">{{ $data['nama_barang'] }}</td>
+                                    <td style="border: 1px solid #d7d7d7; color: black;">{{ $data['jml_permintaan'] }}</td>
+                                    <td id="td-table" style="border: 1px solid #d7d7d7; color: black;">
+                                        <a href="javascript:void(0)" onclick="modalOrderPembelian(this)" data-new-code="{{ $data['new_kode'] }}" data-nama-barang="{{ $data['nama_barang'] }}">{{ $data['last_stok'] }}</a>
+                                    </td>
+                                    <td style="border: 1px solid #d7d7d7; color: black;">{{ $kubik }}</td>
+                                    <td style="border: 1px solid #d7d7d7; color: black;">{{ $data['name_teknisi'] }}</td>
+                                    <td class="td4-table" style="border: 1px solid #d7d7d7; color: black;">{{ $data['keterangan'] }}</td>
+                                    <td style="border: 1px solid #d7d7d7;">
+                                        <select name="supplier_name_select" id="edit_supplier_{{ $index }}" data-id="{{ $data['id'] }}" class="select_supplier form-control" style="background-color: white">
+                                            <option value="0">-</option>
+                                            @foreach($Data['msg']['supplier'] as $index2 => $supplier)
+                                                <option value="{{ $supplier['id'] }}" {{ $data['supplier_id'] == $supplier['id'] ? 'selected' : '' }}>{{ $supplier['name'] }} - {{ $supplier['company'] }}</option>
+                                            @endforeach
+                                        </select>
+                                    </td>
+                                    <td style="border: 1px solid #d7d7d7;">
+                                        <select name="category_name_select" id="edit_kategori_{{ $index }}" data-id="{{ $data['id'] }}" class="select_kategori form-control" style="background-color: white">
+                                            <option value="0">Pilih Kategori</option>
+                                            <option value="import" {{ $data['category'] == 'import' ? 'selected' : '' }}>Import</option>
+                                            <option value="lainnya" {{ $data['category'] == 'lainnya' ? 'selected' : '' }}>Lainnya</option>
+                                            <option value="local" {{ $data['category'] == 'local' ? 'selected' : '' }}>Local</option>
+                                            <option value="produksi_sendiri" {{ $data['category'] == 'produksi_sendiri' ? 'selected' : '' }}>Produksi Sendiri</option>
+                                        </select>    
+                                    </td>
+                                    <td style="border: 1px solid #d7d7d7;">
+                                        @if($data['status'] == 'requested' || $data['status'] == 'reject')
+                                            <a href="javascript:void(0)" onclick="updateRestok(this)" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-info btn-edit" id="id-edit-button" title="Edit"><i class="fas fa-edit"></i></a>
+                                        @else
+                                            <a href="javascript:void(0)" onclick="updateRestokFailed(this); return false;" data-id="{{ $data['id'] }}" name="editButton" class="btn btn-large btn-info btn-edit" id="id-edit-button" title="Edit"><i class="fas fa-edit"></i></a>
+                                        @endif
+                                        <a href="javascript:void(0)" onclick="rejectOrderPembelian(this)" data-id="{{ $data['id'] }}" name="{{ $data['nama_barang'] }}" class="btn btn-large btn-info btn-danger" id="id-reject-button" title="Reject Order"><i class="fas fa-times"></i></a>
+                                        <a href="javascript:void(0)" onclick="deleteOrderPembelian(this)" data-id="{{ $data['id'] }}" name="{{ $data['nama_barang'] }}" class="btn btn-large btn-info btn-danger" id="id-delete-button" title="Delete"><i class="fas fa-trash-alt"></i></a>
+                                    </td>
+                                </tr>
+                                @php $num++; @endphp
                             @endforeach
                         </tbody>
                     </table>
+
+                    </div>
                     
                         <!-- modal menampilkan gambar -->
                         <div class="col-sm-12">
@@ -279,104 +322,119 @@ Order Pembeliaan    | PT. Maxipro Group Indonesia
                     <div class="col-sm-12" id="div-kubikasi">
 
                         <div class="modal fade" id="hitungkubikasiModal" tabindex="-1" role="dialog" aria-labelledby="hitungkubikasiModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-xl" role="document">
+                            <div class="modal-dialog modal-lg" role="document">
                                 <div class="modal-content">
                                     <!-- Header modal, termasuk tombol close -->
                                     <div class="modal-header">
-                                      <h5 class="modal-title" id="exampleModalLabel">Hitung Kubikasi</h5>
-                                      <h5 class="modal-title" >Total Volume/Kubik : <span id="total-kubik">0</span></h5>
-                                      <button type="button" class="close" data-bs-dismiss="modal"  aria-label="Close">   <span aria-hidden="true">&times;</span></button>
-                                   
+                                        <div class="row" style="width:100%;">
+                                            <div class="col-md-4">
+
+                                                <h5 class="modal-title" id="exampleModalLabel">Hitung Kubikasi</h5>
+                                            </div>
+                                            <div class="col-md-4">
+
+                                                <h5>Total Volume/Kubik : <span id="total-kubik">0</span></h5>
+                                            </div>
+                                            <div class="col-md-4" style="text-align:right;">
+
+                                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                                  <span aria-hidden="true">&times;</span>
+                                              </button>
+                                            </div>
+                                        </div>
 
                                     </div>
                                     <!-- Isi modal -->
                                     <div class="modal-body">
 
                                       <form action="" class="form-horizontal" id="hitungkubikasiForm" method="get">
-                                       <table id="tabe-stok-hitung-kubik2">
-                                        <thead>
-                                            <div class="row mb-2">
-                                                <div class="col-md-3">
+                                            <div class="table-responsive">
 
-                                                    <label>
-                                                    <input type="checkbox" id="filterCheckedToggle" style="accent-color: red;"> Filter Barang <span style="color: red;">*</span>
-
-                                                    </label>
-                                                </div>
-                                                <div class="col-md-6" id="id-search">
-                                                    <label>
-                                                        Search:
-                                                    </label>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <input type="text" id="search-box" class="form-control d-inline-block w-round" placeholder="Cari...">
-                                                </div>
-                                           </div>
-                                                <tr>
-                                                    <th scope="col">#</th>
-                                                    <th scope="col">Image</th>
-                                                    <th scope="col">Nama Barang</th>
-                                                    <th scope="col">Jml Permintaan</th>
-                                                    <th scope="col">Sisa Stok</th>
-                                                    <th scope="col">Kubik</th>
-                                                    <th scope="col">Tanggal Request</th>
-                                                    <th scope="col">User</th>
-                                                    <th scope="col">Supplier</th>
-                                                
-                                                </tr>
-                                        </thead>
-                                        <tbody>
-                                              
-                                            @php
-                                            $num = 1;
-                                            @endphp
-                                            <!-- Table data will be populated here -->
-                                            @foreach($Data['msg']['fullorderpembelian'] as $index => $data)
-                                            @php
-                                            \Carbon\Carbon::setLocale('id'); // Set locale ke Bahasa Indonesia
-                                            $formattedDate = \Carbon\Carbon::parse($data['tgl_request'])->translatedFormat('d F Y');
-                                            $rowStyle = '';
-                                            if ($data['status'] == 'requested') {
-                                                            $rowStyle = 'background-color: #fff17a;';
-                                                        } elseif ($data['status'] == 'process') {
-                                                        $rowStyle = 'background-color: #97ebfb;';
-                                                    }
-                                                    elseif ($data['status'] == 'complete') {
-                                                    $rowStyle = 'background-color: #6cf670;';
-                                                }
-                                                elseif ($data['status'] == 'reject') {
-                                                $rowStyle = 'background-color: #feb3aa;';
-                                            }
-                                            $gambar2 = json_encode($data['image']);                                  
-                                            @endphp
-                                            <tr style="{{ $rowStyle }}">
-                                                <td style="border: 1px solid #d7d7d7; color: black; text-align: center;">
-                                                    
-                                                    <input type="checkbox" class="kubik-checkbox" name="checkbox_{{ $num }}" value="{{ $kubik }}" data-new_kode="{{ $data['new_kode'] }}" data-jml_permintaan="{{ $data['jml_permintaan'] }}" data-nama_barang_english="{{ $data['nama_barang_english'] }}" data-nama_barang_china="{{ $data['nama_barang_china'] }}" data-nama_barang="{{ $data['nama_barang'] }}" data-image="{{ $data['image'] }}" data-nama_supplier="{{ $data['name_supplier'] }}"
-                                                    onchange="calculateTotalKubik()">
-                                                </td>
-                                                <td id="td-table"><a href="javascript:void(0)" onclick="gambaFromrOrderPembelian(this, '{{ $gambar2 }}')" data-id="{{ $data['id'] }}" name="gambarButton">{{ $data['new_kode'] }}</a></td>
-                                                <td class="nama_barang" id="td-table">{{ $data['nama_barang'] }}</td>
-                                                <td id="td-table">{{ $data['jml_permintaan'] }}</td>
-                                                <td id="td-table">{{ $data['last_stok'] }}</td>
-                                                @php
-                                                $kubik = $data['kubik'] == 0 ? 0 : $data['jml_permintaan'] * $data['kubik'];
-                                                @endphp
-                                                <td class="kubik-value" id="td-table">{{ $kubik }}</td>
-                                                <td id="td-table">{{ $formattedDate }}</td>
-                                                <td id="td-table">{{ $data['name_teknisi'] }}</td>
-                                                <td id="td-table">{{ $data['name_supplier'] }}</td>
-                                            </tr>
-
-
-
-
-                                                    @php
-                                                    $num++;
-                                                    @endphp
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
+                                                <table id="tabe-stok-hitung-kubik2" style="width:100%;">
+                                                    <thead>
+                                                        <div class="row mb-2">
+                                                            <div class="col-md-3">
+    
+                                                                <label>
+                                                                <input type="checkbox" id="filterCheckedToggle" style="accent-color: red;"> Filter Barang <span style="color: red;">*</span>
+    
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-md-6" id="id-search">
+                                                                <label>
+                                                                    Search:
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <input type="text" id="search-box" class="form-control d-inline-block w-round" placeholder="Cari...">
+                                                            </div>
+                                                        </div>
+                                                            <tr>
+                                                                <th scope="col" style="width:1%;">#</th>
+                                                                <th scope="col" style="width:5%;">Image</th>
+                                                                <th scope="col" style="width:5%;">Nama Barang</th>
+                                                                <th scope="col" style="width:5%;">Qty</th>
+                                                                <th scope="col" style="width:5%;">Sisa Stok</th>
+                                                                <th scope="col" style="width:5%;">Kubik</th>
+                                                                <th scope="col" style="width:5%;">Tanggal Request</th>
+                                                                <th scope="col" style="width:5%;">User</th>
+                                                                <th scope="col" style="width:5%;">Supplier</th>
+                                                            
+                                                            </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                  
+                                                        @php
+                                                        $num = 1;
+                                                        @endphp
+                                                        <!-- Table data will be populated here -->
+                                                        @foreach($Data['msg']['fullorderpembelian'] as $index => $data)
+                                                        @php
+                                                        \Carbon\Carbon::setLocale('id'); // Set locale ke Bahasa Indonesia
+                                                        $formattedDate = \Carbon\Carbon::parse($data['tgl_request'])->translatedFormat('d M Y');
+                                                        $rowStyle = '';
+                                                        if ($data['status'] == 'requested') {
+                                                                        $rowStyle = 'background-color: #fff17a;';
+                                                                    } elseif ($data['status'] == 'process') {
+                                                                    $rowStyle = 'background-color: #97ebfb;';
+                                                                }
+                                                                elseif ($data['status'] == 'complete') {
+                                                                $rowStyle = 'background-color: #6cf670;';
+                                                            }
+                                                            elseif ($data['status'] == 'reject') {
+                                                            $rowStyle = 'background-color: #feb3aa;';
+                                                        }
+                                                        $gambar2 = json_encode($data['image']);                                  
+                                                        @endphp
+                                                        <tr style="{{ $rowStyle }}">
+                                                            <td style="border: 1px solid #d7d7d7; color: black; text-align: center;">
+                                                                
+                                                                <input type="checkbox" class="kubik-checkbox" name="checkbox_{{ $num }}" value="{{ $kubik }}" data-new_kode="{{ $data['new_kode'] }}" data-jml_permintaan="{{ $data['jml_permintaan'] }}" data-nama_barang_english="{{ $data['nama_barang_english'] }}" data-nama_barang_china="{{ $data['nama_barang_china'] }}" data-nama_barang="{{ $data['nama_barang'] }}" data-image="{{ $data['image'] }}" data-nama_supplier="{{ $data['name_supplier'] }}"
+                                                                onchange="calculateTotalKubik()">
+                                                            </td>
+                                                            <td id="td-table"><a href="javascript:void(0)" onclick="gambaFromrOrderPembelian(this, '{{ $gambar2 }}')" data-id="{{ $data['id'] }}" name="gambarButton">{{ $data['new_kode'] }}</a></td>
+                                                            <td class="nama_barang" id="td-table">{{ $data['nama_barang'] }}</td>
+                                                            <td id="td-table">{{ $data['jml_permintaan'] }}</td>
+                                                            <td id="td-table">{{ $data['last_stok'] }}</td>
+                                                            @php
+                                                            $kubik = $data['kubik'] == 0 ? 0 : $data['jml_permintaan'] * $data['kubik'];
+                                                            @endphp
+                                                            <td class="kubik-value" id="td-table">{{ $kubik }}</td>
+                                                            <td id="td-table">{{ $formattedDate }}</td>
+                                                            <td id="td-table">{{ $data['name_teknisi'] }}</td>
+                                                            <td id="td-table">{{ $data['name_supplier'] }}</td>
+                                                        </tr>
+    
+    
+    
+    
+                                                        @php
+                                                        $num++;
+                                                        @endphp
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                             
                                             <div class="form-group" id="div-select">
                                             
@@ -508,7 +566,8 @@ Order Pembeliaan    | PT. Maxipro Group Indonesia
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <!-- DataTables Bootstrap 4 Integration -->
 <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+
+
 <!-- Choices.js JS -->
 <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 
@@ -517,27 +576,27 @@ Order Pembeliaan    | PT. Maxipro Group Indonesia
 
 <!-- untuk load datatable -->
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Initialize Choices.js on the select element
-        const element = document.getElementById('id_jenis');
-        const choices = new Choices(element, {
-            searchEnabled: true,
-            itemSelectText: '',
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Choices.js on the select element
+            const element = document.getElementById('id_jenis');
+            const choices = new Choices(element, {
+                searchEnabled: true,
+                itemSelectText: '',
+            });
+            
         });
-        
-    });
 
         //button clear Filter 
-    $('#clearFilterBtn').on('click', function() {
+        $('#clearFilterBtn').on('click', function() {
 
 
-            window.location.href = '{{ route('admin.pembeliaan_orderpembelian') }}'; 
-    })
+                window.location.href = '{{ route('admin.pembeliaan_orderpembelian') }}'; 
+        })
   
-    //untuk membuat datatable halaman datatable
-    $(document).ready(function() {
-        // Initialize DataTable
-        var table = $('#tabe-stok').DataTable({
+        //untuk membuat datatable halaman datatable
+        $(document).ready(function() {
+                // Initialize DataTable
+                var table = $('#tabe-stok').DataTable({
             "dom": '<"top"lf>rt<"bottom"ip><"clear">', // Positioning of filter/search elements
             "language": {
                 "searchPlaceholder": "Cari...",
@@ -569,11 +628,20 @@ Order Pembeliaan    | PT. Maxipro Group Indonesia
             ],
             "initComplete": function(settings, json) {
                 $('.dataTables_filter input[type="search"]').attr('placeholder', 'Cari ...');
-                initializeSelect2(); // Initialize Select2 after DataTable is fully initialized
+                initializeSelect2(); // Initialize Select2 for supplier
+                initializeSelect1(); // Initialize Select2 for category
             }
         });
 
-        // Function to initialize Select2
+        function initializeSelect1() {
+            // $('.select_kategori').select2({
+            //     placeholder: '-',
+            //     allowClear: true,
+            //     width: 'resolve' // Adjust width as needed
+            // });
+        }
+
+        // Function to initialize Select2 for supplier
         function initializeSelect2() {
             $('.select_supplier').select2({
                 placeholder: '-',
@@ -584,7 +652,8 @@ Order Pembeliaan    | PT. Maxipro Group Indonesia
 
         // Re-initialize Select2 after every DataTable draw event (e.g., page change)
         table.on('draw', function() {
-            initializeSelect2();
+            initializeSelect2(); // Reinitialize supplier Select2
+            initializeSelect1(); // Reinitialize category Select2
         });
 
         // Handle changes with Select2
@@ -612,6 +681,29 @@ Order Pembeliaan    | PT. Maxipro Group Indonesia
                 }
             });
         });
+        $(document).on('change', '.select_kategori', function() {
+            var selectedKategori = $(this).val()
+            var dataId = $(this).data('id');
+            
+            $('#reload-icon').show();
+            $.ajax({
+                url: "{{ route('admin.pembelian_select_category_order_pembelian') }}",
+                type: 'GET',
+                data: {
+                    id: dataId,
+                    category: selectedKategori,
+                    _token: $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    console.log(response);
+                    $('#reload-icon').hide();
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+            
+        })
         
         var currentPage = table.page.info().page; // inisiasi dengan page 1
         var previousPage = currentPage;  //inisiasi halaman sekarang dan sebelumnya sama
@@ -777,9 +869,10 @@ Order Pembeliaan    | PT. Maxipro Group Indonesia
                         image.push($(this).data('image'));
                         nama_supplier.push($(this).data('nama_supplier'));
                     });
-                    console.log('image',image)
+                    
                     // Perform an action with selectedItems, e.g., send them via AJAX
                     if (selectedItems.length > 0) {
+                        
                         function submitForm() {
                             // Create a form element
                             var form = document.createElement('form');
@@ -797,19 +890,30 @@ Order Pembeliaan    | PT. Maxipro Group Indonesia
                                 nama_supplier:nama_supplier
                             };
                             console.log('data',data)
-                            for (var key in data) {
-                                if (data.hasOwnProperty(key)) {
-                                    var input = document.createElement('input');
-                                    input.type = 'hidden';
-                                    input.name = key;
-                                    input.value = data[key];
-                                    form.appendChild(input);
+                            if (data.nama_supplier && data.nama_supplier.every(supplier => supplier === data.nama_supplier[0])) {
+                                for (var key in data) {
+                                    if (data.hasOwnProperty(key)) {
+                                        var input = document.createElement('input');
+                                        input.type = 'hidden';
+                                        input.name = key;
+                                        input.value = data[key];
+                                        form.appendChild(input);
+                                    }
                                 }
-                            }
 
-                            // Append the form to the body and submit
-                            document.body.appendChild(form);
-                            form.submit();
+                                // Append the form to the body and submit
+                                document.body.appendChild(form);
+                                form.submit();
+                            }
+                            else{
+                                Swal.fire({
+                                    icon: 'warning',
+                                    title: 'Warning...',
+                                    text: 'Maaf, nama supplier yang dipilih berbeda',
+                                    confirmButtonText: 'OK'
+                                });
+                                return false;
+                            }
                         }
 
                         // Call the function to submit the form
@@ -1247,16 +1351,6 @@ Order Pembeliaan    | PT. Maxipro Group Indonesia
     });
 </script>
 <script>
-//    $(document).ready(function() {
-    // Initialize the DataTable
-    // var table = $('#tabe-stok').DataTable({
-    //     // Your DataTable options
-    // });
-
-    // Function to initialize Select2
-    
-// });
-
     
      // membuka modal gambar
     function gambarOrderPembelian(element, gambar) {

@@ -137,7 +137,8 @@ Commercial Invoice2    | PT. Maxipro Group Indonesia
                     <div id="reload-icon">
                         <i class="fas fa-sync-alt"></i> Reloading...
                     </div>
-                  
+                    <div class="table-responsive">
+
                         <table id="tabe-stok">
                             <thead>
                             
@@ -171,7 +172,7 @@ Commercial Invoice2    | PT. Maxipro Group Indonesia
                                             <td id="td-2"></td>
                                             <td id="td-2"></td>
                                             <td>
-                                                <a href="{{ route('admin.pembelian_add_comercial_invoice', ['name' => $supplierName]) }}" class="btn btn-info" style="width: 35px; height: 38px; padding: 9px 10px;" title="Add Comercial">+</a>
+                                            <a href="{{ route('admin.pembelian_add_comercial_invoice_supplier', ['name' => $supplierName]) }}" class="btn btn-info" style="width: 35px; height: 38px; padding: 9px 10px;" title="Add Comercial">+</a>
                                             </td>
                                         </tr>
                                         @php
@@ -305,6 +306,7 @@ Commercial Invoice2    | PT. Maxipro Group Indonesia
                             @endif
                             </tbody>
                         </table>
+                    </div>
 
 
                   

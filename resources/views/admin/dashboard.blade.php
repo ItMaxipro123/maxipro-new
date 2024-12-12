@@ -25,7 +25,7 @@ Dashboard | PT. Maxipro Group Indonesia
           </ol>
           <h6 class="font-weight-bolder mb-0">Dashboard</h6>
         </nav>
-      <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+      <div  id="navbar">
           <div class="ms-md-auto pe-md-3 d-flex align-items-center">
         
           </div>
@@ -210,66 +210,58 @@ Dashboard | PT. Maxipro Group Indonesia
   </nav>
   <!-- End Navbar -->
   <div class="container-fluid py-4">
-      <form method="get" action="{{ route('admin.dashboard_filter') }}">
+    <form method="get" action="{{ route('admin.dashboard_filter') }}">
         <div class="row">
-      
-            <div class="col-xl-2 col-sm-6 mb-xl-0 mb-4">
+            <div class="col-xl-2 col-sm-6 mb-4">
+                <!-- Empty column for spacing, if needed -->
             </div>
 
-            <div class="col-xl-2 col-sm-6 mb-xl-0 mb-4">
+            <div class="col-xl-2 col-sm-6 mb-4">
+                <!-- Empty column for spacing, if needed -->
             </div>
 
-
-            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4" >        
-                        <div style="position: relative; width: 60%; margin-left: 90%;">
-                            <select class="select select2 bulan-search form-control" name="bulan" style="border: 1px solid #ced4da; width: 90%; background-color: white; margin-left: 30%;">
-                                
-                                  <option value="01" style="text-align: center;" {{ $Data['tgl_awal']==='01' ? 'selected' : '' }}>Januari</option>
-                                  <option value="02" style="text-align: center;" {{ $Data['tgl_awal']==='02' ? 'selected' : '' }}>Februari</option>
-                                  <option value="03" style="text-align: center;" {{ $Data['tgl_awal']==='03' ? 'selected' : '' }}>Maret</option>
-                                  <option value="04" style="text-align: center;" {{ $Data['tgl_awal']==='04' ? 'selected' : ''  }}>April</option>
-                                  <option value="05" style="text-align: center;" {{ $Data['tgl_awal']==='05' ? 'selected' : '' }}>Mei</option>
-                                  <option value="06" style="text-align: center;" {{ $Data['tgl_awal']==='06' ? 'selected' : '' }}>Juni</option>
-                                  <option value="07" style="text-align: center;" {{ $Data['tgl_awal']==='07' ? 'selected' : '' }}>Juli</option>
-                                  <option value="08" style="text-align: center;" {{ $Data['tgl_awal']==='08' ? 'selected' : '' }}>Agustus</option>
-                                  <option value="09" style="text-align: center;" {{ $Data['tgl_awal']==='09' ? 'selected' : '' }}>September</option>
-                                  <option value="10" style="text-align: center;" {{ $Data['tgl_awal']==='10' ? 'selected' : '' }}>Oktober</option>
-                                  <option value="11" style="text-align: center;" {{ $Data['tgl_awal']==='11' ? 'selected' : '' }}>Novomber</option>
-                                  <option value="12" style="text-align: center;" {{ $Data['tgl_awal']==='12' ? 'selected' : '' }}>Desember</option>
-                            </select>
-                            <i class="fas fa-chevron-down" style="position: absolute; top: 50%; right: 15%; transform: translateY(-50%);">
-                            </i>
-                        </div>
+            <!-- Month Select -->
+            <div class="col-xl-3 col-md-6 col-sm-12 mb-4">
+                <div class="position-relative">
+                    <select class="select select2 bulan-search form-control" name="bulan" style="border: 1px solid #ced4da; background-color: white;">
+                        <option value="01" {{ $Data['tgl_awal'] === '01' ? 'selected' : '' }}>Januari</option>
+                        <option value="02" {{ $Data['tgl_awal'] === '02' ? 'selected' : '' }}>Februari</option>
+                        <option value="03" {{ $Data['tgl_awal'] === '03' ? 'selected' : '' }}>Maret</option>
+                        <option value="04" {{ $Data['tgl_awal'] === '04' ? 'selected' : '' }}>April</option>
+                        <option value="05" {{ $Data['tgl_awal'] === '05' ? 'selected' : '' }}>Mei</option>
+                        <option value="06" {{ $Data['tgl_awal'] === '06' ? 'selected' : '' }}>Juni</option>
+                        <option value="07" {{ $Data['tgl_awal'] === '07' ? 'selected' : '' }}>Juli</option>
+                        <option value="08" {{ $Data['tgl_awal'] === '08' ? 'selected' : '' }}>Agustus</option>
+                        <option value="09" {{ $Data['tgl_awal'] === '09' ? 'selected' : '' }}>September</option>
+                        <option value="10" {{ $Data['tgl_awal'] === '10' ? 'selected' : '' }}>Oktober</option>
+                        <option value="11" {{ $Data['tgl_awal'] === '11' ? 'selected' : '' }}>November</option>
+                        <option value="12" {{ $Data['tgl_awal'] === '12' ? 'selected' : '' }}>Desember</option>
+                    </select>
+                    <i class="fas fa-chevron-down position-absolute" style="top: 50%; right: 15px; transform: translateY(-50%);"></i>
+                </div>
             </div>
 
-            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-
-                                  
-                                    <div style="position: relative; width: 60%;margin-left:40%;">
-                                        <select class="select select2 tahun-search form-control" name="tahun" style="border: 1px solid #ced4da; width: 100%; background-color: white">
-                                              @foreach($tahun_start as $tahun)
-                                                  <option value="{{ $tahun }}" style="text-align: center;"{{$Data['tgl_akhir'] == $tahun ? 'selected' : ''}} >{{ $tahun }}</option>
-                                              @endforeach
-                                        </select>
-                                        <i class="fas fa-chevron-down" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%);"></i>
-                                    </div>
-                                    
-
+            <!-- Year Select -->
+            <div class="col-xl-3 col-md-6 col-sm-12 mb-4">
+                <div class="position-relative">
+                    <select class="select select2 tahun-search form-control" name="tahun" style="border: 1px solid #ced4da; background-color: white;">
+                        @foreach($tahun_start as $tahun)
+                            <option value="{{ $tahun }}" {{ $Data['tgl_akhir'] == $tahun ? 'selected' : '' }}>{{ $tahun }}</option>
+                        @endforeach
+                    </select>
+                    <i class="fas fa-chevron-down position-absolute" style="top: 50%; right: 15px; transform: translateY(-50%);"></i>
+                </div>
             </div>
-            <div class="col-xl-2 col-sm-6 mb-xl-0 mb-4">
-                
-                                    
-                                      <div style="position: relative; width: 70%;">
-                                          <button type="submit" id="searchButton" class="btn btn-primary" style="height: 35px; width: 60%; margin-left: auto; line-height: 27px; padding-top: 5px;">Select</button>
 
-                                  
-                                      </div>
-                                      
-              
+            <!-- Submit Button -->
+            <div class="col-lg-2 ">
+                <button type="submit" id="searchButton" class="btn btn-primary w-100" style="height: 35px; line-height: 17px;">
+                    Select
+                </button>
             </div>
         </div>
-      </form>
-  </div>
+    </form>
+</div>
 <br>
 <div class="row">
       <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
@@ -546,6 +538,8 @@ Dashboard | PT. Maxipro Group Indonesia
 
      
     </div>
+
+    <!-- Berdasarkan Penjualan -->
     <div class="row mt-4">
 
       <div class="col-lg-4 col-md-12 mb-md-0 mb-12">
@@ -692,8 +686,13 @@ Dashboard | PT. Maxipro Group Indonesia
                              
                           </div>
                       </div>
-                      <div class="chart">
+                      <!-- <div class="chart">
                           <canvas id="chart-bars2" style="height: 100%; min-height: 200px;"></canvas>
+                      </div> -->
+                      <div class="d-flex justify-content-center pb-3"> <!-- Center-align the button -->
+                          <button type="button" class="btn btn-primary" onclick="openChartModalJumlahPenjualan()">
+                              View Chart
+                          </button>
                       </div>
                   </div>
               </div>
@@ -713,8 +712,13 @@ Dashboard | PT. Maxipro Group Indonesia
                           
                         </div>
                     </div>
-                      <div class="chart">
+                      <!-- <div class="chart">
                           <canvas id="chart-bars3" style="height: 100%; min-height: 200px;"></canvas>
+                      </div> -->
+                      <div class="d-flex justify-content-center pb-3"> <!-- Center-align the button -->
+                          <button type="button" class="btn btn-primary" onclick="openChartModalOmzetPenjualan()">
+                              View Chart
+                          </button>
                       </div>
                   </div>
               </div>
@@ -870,8 +874,13 @@ Dashboard | PT. Maxipro Group Indonesia
                              
                           </div>
                       </div>
-                      <div class="chart">
+                      <!-- <div class="chart">
                           <canvas id="chart-bars4" style="height: 100%; min-height: 200px;"></canvas>
+                      </div> -->
+                      <div class="d-flex justify-content-center pb-3"> <!-- Center-align the button -->
+                          <button type="button" class="btn btn-primary" onclick="openChartModalJumlahSales()">
+                              View Chart
+                          </button>
                       </div>
                   </div>
               </div>
@@ -892,8 +901,13 @@ Dashboard | PT. Maxipro Group Indonesia
                              
                           </div>
                       </div>
-                      <div class="chart">
+                      <!-- <div class="chart">
                           <canvas id="chart-bars5" style="height: 100%; min-height: 200px;"></canvas>
+                      </div> -->
+                      <div class="d-flex justify-content-center pb-3"> <!-- Center-align the button -->
+                          <button type="button" class="btn btn-primary" onclick="openChartModalOmzetSales()">
+                              View Chart
+                          </button>
                       </div>
                   </div>
               </div>
@@ -1049,8 +1063,11 @@ Dashboard | PT. Maxipro Group Indonesia
                              
                           </div>
                       </div>
-                      <div class="chart">
-                          <canvas id="chart-bars6" style="height: 100%; min-height: 200px;"></canvas>
+                   
+                      <div class="d-flex justify-content-center pb-3"> <!-- Center-align the button -->
+                          <button type="button" class="btn btn-primary" onclick="openChartModalJumlahPerusahaan()">
+                              View Chart
+                          </button>
                       </div>
                   </div>
               </div>
@@ -1071,14 +1088,22 @@ Dashboard | PT. Maxipro Group Indonesia
                              
                           </div>
                       </div>
-                      <div class="chart">
+                      <!-- <div class="chart">
                           <canvas id="chart-bars7" style="height: 100%; min-height: 200px;"></canvas>
+                      </div> -->
+                      <div class="d-flex justify-content-center pb-3"> <!-- Center-align the button -->
+                          <button type="button" class="btn btn-primary" onclick="openChartModal()">
+                              View Chart
+                          </button>
                       </div>
                   </div>
               </div>
               
           </div>
       </div>
+
+
+
 
     </div>
 
@@ -1109,56 +1134,7 @@ Dashboard | PT. Maxipro Group Indonesia
               </div>
               <div class="card-body px-0 pb-2">
                 <div class="table-responsive">
-                <!--   <table class="table align-items-center mb-0" >
-                    <thead>
-                      <tr>
-                               <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 px-3 text-start">Nama</th>
-                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 px-0 text-start">Jabatan</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 px-3 text-start">Nilai</th>
-                   
-                      </tr>
-                    </thead>
-                    <tbody>
-                      @php
-                        array_unshift($Data['allteknisi'], [
-                                "id"=>0,
-                                "id_jabatan"=> 2,
-                                "id_position"=> 2,
-                                "id_bee"=> 0,
-                                "username"=> "elly_teknisi.maxipro",
-                                "password"=> "def50200f804ca32315de6188544e4bd554b2656fb5f5bb8c16be0d52ff1ab27ebac2da3fa2276bfe0f05d167ef3d7d4c1573b7df865f4ccc21ee6c1174d4c8fba5981e501845a3587d0bad423a7928c03fef6f589a73b2db78982335dc8",
-                                "password_name"=> "Maxipro123",
-                                "name"=> "Elly Giatmoko",
-                                "code_name"=> "EL",
-                                "email"=> "ellymaxipro@gmail.com",
-                                "no_tlp"=> "081133330372",
-                                "no_tlp2"=> "087711447364",
-                                "ekstensi"=> "300",
-                                "status"=> "Supervisor",
-                                "status_regis"=> 1,
-                                "status_profile"=> 1,
-                                "image"=> "elly-giatmoko.png",
-                                "status_sales"=> "0",
-                                "statusbar"=> "0",
-                                "created_at"=> "2018-12-11 16:14:49",
-                                "updated_at"=> "2022-08-05 21:18:58",
-                                "urlupdate"=> "https://maxipro.id/administrator/teknisi/update/28/elly-giatmoko",
-                                "urldelete"=> "https://maxipro.id/administrator/teknisi/delete/28",
-                                "imagedir"=> "https://maxipro.id/images/teknisi/elly-giatmoko.png"
-                        ]);
-                      @endphp
-                      @foreach ($Data['allteknisi'] as $teknisi) 
-                        <tr><td>{{ $teknisi['name'] }}</td>
-                        <td>  @if ($teknisi['id_jabatan'] == 4)
-                    Teknisi
-                    @else
-                    {{ $teknisi['status'] }}
-                    @endif
-                     </td>
-                        </tr>                 
-                      @endforeach
-                    </tbody>
-                  </table> -->
+              
                   <table class="table align-items-center mb-0" id="teknisi-table">
                     <thead>
                       <tr>
@@ -1205,19 +1181,6 @@ Dashboard | PT. Maxipro Group Indonesia
               </div>
               <div class="card-body px-0 pb-2">
                 <div class="table-responsive">
-                  <!-- <table class="table align-items-center mb-0">
-                    <thead>
-                      <tr>
-                               <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 px-3 text-start">Nama</th>
-                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 px-0 text-start">Jabatan</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 px-3 text-start">Nilai</th>
-                   
-                      </tr>
-                    </thead>
-                    <tbody>
-                
-                    </tbody>
-                  </table> -->
                
                 </div>
               </div>
@@ -1248,19 +1211,6 @@ Dashboard | PT. Maxipro Group Indonesia
               </div>
               <div class="card-body px-0 pb-2">
                 <div class="table-responsive">
-                  <!-- <table class="table align-items-center mb-0">
-                    <thead>
-                      <tr>
-                               <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 px-3 text-start">Nama</th>
-                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 px-0 text-start">Jabatan</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 px-3 text-start">Nilai</th>
-                   
-                      </tr>
-                    </thead>
-                    <tbody>
-                
-                    </tbody>
-                  </table> -->
                
                 </div>
               </div>
@@ -1291,19 +1241,6 @@ Dashboard | PT. Maxipro Group Indonesia
               </div>
               <div class="card-body px-0 pb-2">
                 <div class="table-responsive">
-                  <!-- <table class="table align-items-center mb-0">
-                    <thead>
-                      <tr>
-                               <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 px-3 text-start">Nama</th>
-                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 px-0 text-start">Jabatan</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 px-3 text-start">Nilai</th>
-                   
-                      </tr>
-                    </thead>
-                    <tbody>
-                
-                    </tbody>
-                  </table> -->
                
                 </div>
               </div>
@@ -1334,19 +1271,6 @@ Dashboard | PT. Maxipro Group Indonesia
               </div>
               <div class="card-body px-0 pb-2">
                 <div class="table-responsive">
-                  <!-- <table class="table align-items-center mb-0">
-                    <thead>
-                      <tr>
-                               <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 px-3 text-start">Nama</th>
-                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 px-0 text-start">Jabatan</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 px-3 text-start">Nilai</th>
-                   
-                      </tr>
-                    </thead>
-                    <tbody>
-                
-                    </tbody>
-                  </table> -->
                
                 </div>
               </div>
@@ -1369,18 +1293,7 @@ Dashboard | PT. Maxipro Group Indonesia
           </div>
           <div class="col-lg-6">
             <ul class="nav nav-footer justify-content-center justify-content-lg-end">
-              <!-- <li class="nav-item">
-                <a href="https://www.creative-tim.com" class="nav-link text-muted" target="_blank">Creative Tim</a>
-              </li>
-              <li class="nav-item">
-                <a href="https://www.creative-tim.com/presentation" class="nav-link text-muted" target="_blank">About Us</a>
-              </li>
-              <li class="nav-item">
-                <a href="https://www.creative-tim.com/blog" class="nav-link text-muted" target="_blank">Blog</a>
-              </li>
-              <li class="nav-item">
-                <a href="https://www.creative-tim.com/license" class="nav-link pe-0 text-muted" target="_blank">License</a>
-              </li> -->
+         
             </ul>
           </div>
         </div>
@@ -1450,17 +1363,218 @@ Dashboard | PT. Maxipro Group Indonesia
    <!--    <a class="btn bg-gradient-info w-100" href="https://www.creative-tim.com/product/material-dashboard-pro">Free Download</a> -->
       <!-- <a class="btn btn-outline-dark w-100" href="https://www.creative-tim.com/learning-lab/bootstrap/overview/material-dashboard">View documentation</a> -->
       <div class="w-100 text-center">
-        <!-- <a class="github-button" href="https://github.com/creativetimofficial/material-dashboard" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star creativetimofficial/material-dashboard on GitHub">Star</a>
-        <h6 class="mt-3">Thank you for sharing!</h6> -->
-        <!-- <a href="https://twitter.com/intent/tweet?text=Check%20Material%20UI%20Dashboard%20made%20by%20%40CreativeTim%20%23webdesign%20%23dashboard%20%23bootstrap5&amp;url=https%3A%2F%2Fwww.creative-tim.com%2Fproduct%2Fsoft-ui-dashboard" class="btn btn-dark mb-0 me-2" target="_blank">
-          <i class="fab fa-twitter me-1" aria-hidden="true"></i> Tweet
-        </a>
-        <a href="https://www.facebook.com/sharer/sharer.php?u=https://www.creative-tim.com/product/material-dashboard" class="btn btn-dark mb-0 me-2" target="_blank">
-          <i class="fab fa-facebook-square me-1" aria-hidden="true"></i> Share
-        </a> -->
+
       </div>
     </div>
   </div>
+</div>
+
+<!-- Bootstrap Modal Jumlah Transaksi Berdasarkan Penjualan -->
+<div class="modal fade" id="chartModalJumlahPenjualan" tabindex="-1" aria-labelledby="chartModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md  modal-dialog-centered modal-fullscreen-sm-down"> <!-- Fullscreen on small screens -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="chartModalLabel">Jumlah Transaksi Berdasarkan Penjualan</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+            </div>
+            <div class="modal-body">
+                <!-- Card Structure -->
+                <div class="col-lg-12 col-md-12">
+                    <div class="card z-index-2">
+                        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
+                            <div class="shadow-primary border-radius-lg py-3 pe-1">
+                                <div class="card-body">
+                                    <h6 class="mb-0">Jumlah Transaksi Berdasarkan Penjualan
+                                    </h6>
+                                    <hr class="dark horizontal">
+                                    <div class="d-flex">
+                                        <!-- Additional content can go here -->
+                                    </div>
+                                </div>
+                                <div class="chart">
+                                    <canvas id="chart-bars2" style="height: 100%; min-height: 200px;"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Bootstrap Modal Omzet Berdasarkan Penjualan -->
+<div class="modal fade" id="chartModalOmzetPenjualan" tabindex="-1" aria-labelledby="chartModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-m  modal-dialog-centered modal-fullscreen-sm-down"> <!-- Fullscreen on small screens -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="chartModalLabel">Omzet Penjualan Berdasarkan Penjualan</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+            </div>
+            <div class="modal-body">
+                <!-- Card Structure -->
+                <div class="col-lg-12 col-md-12">
+                    <div class="card z-index-2">
+                        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
+                            <div class="shadow-primary border-radius-lg py-3 pe-1">
+                                <div class="card-body">
+                                    <h6 class="mb-0">Omzet Penjualan Berdasarkan Penjualan</h6>
+                                    <hr class="dark horizontal">
+                                    <div class="d-flex">
+                                        <!-- Additional content can go here -->
+                                    </div>
+                                </div>
+                                <div class="chart">
+                                    <canvas id="chart-bars3" style="height: 100%; min-height: 200px;"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Bootstrap Modal Jumlah Transaksi Berdasarkan Sales -->
+<div class="modal fade" id="chartModalSales" tabindex="-1" aria-labelledby="chartModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md  modal-dialog-centered modal-fullscreen-sm-down"> <!-- Fullscreen on small screens -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="chartModalLabel">Jumlah Transaksi Berdasarkan Sales</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+            </div>
+            <div class="modal-body">
+                <!-- Card Structure -->
+                <div class="col-lg-12 col-md-12">
+                    <div class="card z-index-2">
+                        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
+                            <div class="shadow-primary border-radius-lg py-3 pe-1">
+                                <div class="card-body">
+                                    <h6 class="mb-0">Jumlah Transaksi Berdasarkan Sales
+                                    </h6>
+                                    <hr class="dark horizontal">
+                                    <div class="d-flex">
+                                        <!-- Additional content can go here -->
+                                    </div>
+                                </div>
+                                <div class="chart">
+                                    <canvas id="chart-bars4" style="height: 100%; min-height: 200px;"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Bootstrap Modal Omzet Berdasarkan Sales -->
+<div class="modal fade" id="chartModalOmzetSales" tabindex="-1" aria-labelledby="chartModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-m  modal-dialog-centered modal-fullscreen-sm-down"> <!-- Fullscreen on small screens -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="chartModalLabel">Omzet Penjualan Berdasarkan Sales</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+            </div>
+            <div class="modal-body">
+                <!-- Card Structure -->
+                <div class="col-lg-12 col-md-12">
+                    <div class="card z-index-2">
+                        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
+                            <div class="shadow-primary border-radius-lg py-3 pe-1">
+                                <div class="card-body">
+                                    <h6 class="mb-0">Omzet Penjualan Berdasarkan Sales</h6>
+                                    <hr class="dark horizontal">
+                                    <div class="d-flex">
+                                        <!-- Additional content can go here -->
+                                    </div>
+                                </div>
+                                <div class="chart">
+                                    <canvas id="chart-bars5" style="height: 100%; min-height: 200px;"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Bootstrap Modal Jumlah Transaksi Berdasarkan Perusahaan -->
+<div class="modal fade" id="chartModalPerusahaan" tabindex="-1" aria-labelledby="chartModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md  modal-dialog-centered modal-fullscreen-sm-down"> <!-- Fullscreen on small screens -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="chartModalLabel">Jumlah Transaksi Berdasarkan Perusahaan</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+            </div>
+            <div class="modal-body">
+                <!-- Card Structure -->
+                <div class="col-lg-12 col-md-12">
+                    <div class="card z-index-2">
+                        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
+                            <div class="shadow-primary border-radius-lg py-3 pe-1">
+                                <div class="card-body">
+                                    <h6 class="mb-0">Jumlah Transaksi Berdasarkan Perusahaan
+                                    </h6>
+                                    <hr class="dark horizontal">
+                                    <div class="d-flex">
+                                        <!-- Additional content can go here -->
+                                    </div>
+                                </div>
+                                <div class="chart">
+                                    <canvas id="chart-bars6" style="height: 100%; min-height: 200px;"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Bootstrap Modal Omzet Berdasarkan Perusahaan -->
+<div class="modal fade" id="chartModal" tabindex="-1" aria-labelledby="chartModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md  modal-dialog-centered modal-fullscreen-sm-down"> <!-- Fullscreen on small screens -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="chartModalLabel">Omzet Penjualan Berdasarkan Perusahaan</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+            </div>
+            <div class="modal-body">
+                <!-- Card Structure -->
+                <div class="col-lg-12 col-md-12">
+                    <div class="card z-index-2">
+                        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
+                            <div class="shadow-primary border-radius-lg py-3 pe-1">
+                                <div class="card-body">
+                                    <h6 class="mb-0">Omzet Penjualan Berdasarkan Perusahaan</h6>
+                                    <hr class="dark horizontal">
+                                    <div class="d-flex">
+                                        <!-- Additional content can go here -->
+                                    </div>
+                                </div>
+                                <div class="chart">
+                                    <canvas id="chart-bars7" style="height: 100%; min-height: 200px;"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection
 @section('script')
@@ -1469,6 +1583,36 @@ Dashboard | PT. Maxipro Group Indonesia
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 
 <script>
+  function openChartModalJumlahPenjualan(){
+    // Show the Bootstrap modal
+    var modal = new bootstrap.Modal(document.getElementById('chartModalJumlahPenjualan'));
+    modal.show();
+  }
+  function openChartModalOmzetPenjualan(){
+    // Show the Bootstrap modal
+    var modal = new bootstrap.Modal(document.getElementById('chartModalOmzetPenjualan'));
+    modal.show();
+  }
+  function openChartModalJumlahSales() {
+    // Show the Bootstrap modal
+    var modal = new bootstrap.Modal(document.getElementById('chartModalSales'));
+    modal.show();
+  }
+  function openChartModalOmzetSales() {
+    // Show the Bootstrap modal
+    var modal = new bootstrap.Modal(document.getElementById('chartModalOmzetSales'));
+    modal.show();
+  }
+  function openChartModalJumlahPerusahaan() {
+    // Show the Bootstrap modal
+    var modal = new bootstrap.Modal(document.getElementById('chartModalPerusahaan'));
+    modal.show();
+  }
+  function openChartModal() {
+    // Show the Bootstrap modal
+    var modal = new bootstrap.Modal(document.getElementById('chartModal'));
+    modal.show();
+  }
 $('.bulan-search').select2({
     theme: "bootstrap" // Ganti tema sesuai kebutuhan Anda, misalnya "bootstrap"
 }).next('.select2-container').find('.select2-selection').css({
@@ -1595,7 +1739,7 @@ $('.tahun-search').select2({
         ],
     @endforeach
     ];
-        //console.log(jumlahTransaksi);
+        
         var judulTransaksi = [
     @foreach($Data['salebygrouptag']['label'] as $data)
             '{{ $Data['salebygrouptag']['label'][$loop->index] }}', // Nama transaksi sebagai label
@@ -2060,15 +2204,15 @@ $('.tahun-search').select2({
         teknisispv.forEach(function(teknisispv) {
 
             spkservice.forEach(function(spkservice) {
-                // //console.log("spkservice",spkservice.id_service);
-                // //console.log("teknisispv",teknisispv.id_service );
+                
+              
                   if (spkservice.id_service == teknisispv.id_service && spkservice.id_teknisi == datateknisi.id
                     ) {
-                           // //console.log("sebelum ditambah 1", countnumber);
+              
                         countnumber = parseFloat(countnumber) + 1;
-                                             // //console.log("setelah ditambah 1", countnumber);
+              
                         sumday = parseFloat(sumday) + parseFloat(teknisispv.time_teknisi);
-                        // //console.log(sumday);
+              
                         
                       }
              });
@@ -2112,102 +2256,5 @@ $('.tahun-search').select2({
       });
 </script>
 
-<!-- <script>
-
-            var html = '';
-
-            var countnumber = 0;
-
-            var sumday = 0;
-
-
-
-            $.each(data.Data.servicespv, function(i, item) {
-
-              countnumber = parseFloat(countnumber) + 1;
-
-              sumday = parseFloat(sumday) + parseFloat(item.time);
-
-            })
-
-
-
-            if (sumday == 0) {
-
-              var sumvalue = 0;
-
-            } else {
-
-              var sumvalue = parseFloat(sumday) / parseFloat(countnumber);
-
-            }
-
-
-
-            html += parseFloat(sumvalue).toFixed(2) +
-
-              '</td>' +
-
-              '</tr>';
-
-
-
-            $.each(data.allteknisi, function(i, datateknisi) {
-
-              var countnumber = 0;
-
-              var sumday = 0;
-
-
-
-              $.each(data.teknisispv, function(i, teknisispv) {
-
-                $.each(data.spkservice, function(i, spkservice) {
-
-
-
-                  if (spkservice.id_service == teknisispv.id_service && spkservice.id_teknisi == datateknisi.id) {
-
-                    countnumber = parseFloat(countnumber) + 1;
-
-                    sumday = parseFloat(sumday) + parseFloat(teknisispv.time_teknisi);
-
-                  }
-
-
-
-                })
-
-              })
-
-
-
-              if (sumday == 0) {
-
-                var sumvalue = 0;
-
-              } else {
-
-                var sumvalue = parseFloat(sumday) / parseFloat(countnumber);
-
-              }
-
-
-
-              html += '<tr>' +
-
-                '<td>' + datateknisi.name + '</td>' +
-
-                '<td>Teknisi</td>' +
-
-                '<td>' + parseFloat(sumvalue).toFixed(2) + '</td>' +
-
-                '</tr>';
-
-
-
-            })
-            $('#teknisi-body').html(html);
-</script> -->
 
 @endsection

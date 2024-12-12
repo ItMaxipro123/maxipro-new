@@ -30,7 +30,7 @@
   <link href="../assets/css/nucleo-icons.css" rel="stylesheet" />
   <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
   <!-- Font Awesome Icons -->
-  <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0-beta3/js/all.min.js" crossorigin="anonymous"></script>
   <!-- Material Icons -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
   <!-- CSS Files -->
@@ -296,15 +296,34 @@
     }
 
     function togglePasswordVisibility(inputId) {
+      // var passwordInput = document.getElementById(inputId);
+      // var togglePasswordIcon = document.getElementById('togglePasswordIcon');
+
+      // togglePasswordIcon.className = 'fa fa-eye';
+      // if (passwordInput.type === 'password') {
+      //   console.log('masuk')
+      //   passwordInput.type = 'text';
+      //   togglePasswordIcon.className = 'fa fa-eye';
+      // } else {
+      //   passwordInput.type = 'password';
+      //   togglePasswordIcon.className = 'fa fa-eye-slash';
+      // }
       var passwordInput = document.getElementById(inputId);
       var togglePasswordIcon = document.getElementById('togglePasswordIcon');
 
+      // Cek apakah input password dalam mode teks atau sandi
       if (passwordInput.type === 'password') {
+        // Ubah ke teks
         passwordInput.type = 'text';
-        togglePasswordIcon.className = 'fa fa-eye';
+        // Ganti ikon menjadi 'fa-eye'
+        togglePasswordIcon.classList.remove('fa-eye-slash');
+        togglePasswordIcon.classList.add('fa-eye');
       } else {
+        // Ubah ke sandi
         passwordInput.type = 'password';
-        togglePasswordIcon.className = 'fa fa-eye-slash';
+        // Ganti ikon menjadi 'fa-eye-slash'
+        togglePasswordIcon.classList.remove('fa-eye');
+        togglePasswordIcon.classList.add('fa-eye-slash');
       }
     }
   </script>
