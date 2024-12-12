@@ -435,6 +435,9 @@
             $('.includeppn').on('change', function() {
                     let include_ppn = $(this).is(':checked') ? 1 : 0; // Nilai 1 jika dicentang, 0 jika tidak
                     include_ppn_global=include_ppn;
+                    let subtotal_sementara = subtotal.map(value => parseInt(value / 1.11));
+
+                    console.log('subtotal_sementara',subtotal_sementara)
             });
             $('.input-harga').on('input', function() {
                 let value = $(this).val(); // Ambil nilai dari input
@@ -815,10 +818,16 @@
                 // Perbarui elemen td_subtotal di DOM
                 $('#td_subtotal').text(formattedSubTotal); // Tampilkan total dengan format dua desimal
                 // return total;    
-                console.log('ppn_row',ppn_row,'ppn_row_import',ppn_row_import)
-                if ((ppn_row.length + ppn_row_import.length) === (subtotal.length + subtotal_import.length)) {
-                    document.getElementById("ppn-checkbox").checked = true;
+                var allPPNValid = 
+                    ppn_row.every(value => value === 1) && 
+                    ppn_row_import.every(value => value === 1) && 
+                    [...ppn_row, ...ppn_row_import].every(value => value === 1);
 
+                var centangBoxPPN = allPPNValid ? 1 : 0;
+                console.log('centangBoxPPN',centangBoxPPN)
+                if (centangBoxPPN ==1) {
+                    // document.getElementById("ppn-checkbox").checked = true;
+                    
                         // Beri nilai 1 (misalnya, simpan dalam variabel)
                         let ppnValueCentang = 1;
                         console.log("Nilai PPN:", ppnValueCentang);
