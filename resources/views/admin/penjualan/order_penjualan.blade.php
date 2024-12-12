@@ -325,6 +325,9 @@ Order Penjualan  | PT. Maxipro Group Indonesia
  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
  <script>
+    document.getElementById('filterBtn').addEventListener('click', function() {
+        $('#exampleModal').modal('show'); // Menampilkan modal Filter
+    });
             $(document).ready(function() {
                 // Initialize DataTable and store its instance in window.dataTableInstance
                 

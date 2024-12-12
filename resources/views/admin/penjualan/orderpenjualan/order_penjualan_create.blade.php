@@ -8,6 +8,58 @@
     width: 100%;
   }
 }
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.form-group {
+    flex: 1 1 calc(33.333% - 1rem);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.form-control,
+.form-checkbox {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.actions {
+    flex: 1 1 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.add-row-btn-container {
+    display: flex;
+    justify-content: flex-start;
+}
+
+@media (max-width: 768px) {
+    .form-group {
+        flex: 1 1 100%;
+    }
+}
+
 </style>
 <link rel="stylesheet" href="{{ asset('css/penjualan/orderpenjualancreate.css') }}">
 <div id="overlay"> <i class="fas fa-spinner fa-spin"></i> </div>
@@ -104,55 +156,51 @@
 
         <!-- Tabel -->
         <div class="col-md-11">
-            <table class="table table-bordered table-responsive">
-                <thead>
-                    <tr>
-                        <th style=" border: 1px solid black;">Nama Barang</th>
-                        <th style=" border: 1px solid black;">Harga Belum PPN</th>
-                        <th style=" border: 1px solid black;">QTY</th>
-                        <th style=" border: 1px solid black;">DISC</th>
-                        <th style=" border: 1px solid black;">Subtotal</th>
-                        <th style=" border: 1px solid black;">PPN</th>
-                        <th style=" border: 1px solid black;">Action</th>
-                    </tr>
-                </thead>
-                <tbody id="tbody">
-                    <tr>
-                    <td style=" border: 1px solid black;">
-                            <select class="form-control select-barang">
-                                    <option value="">Pilih Barang</option>
-                                @foreach($Data['msg']['masterItem'] as $key_masteritem => $result_masteritem)
-                                    <option value="{{ $result_masteritem['new_kode'] }}"data-id="{{ $result_masteritem['id'] }}">{{ $result_masteritem['new_kode'] }} - {{ $result_masteritem['name'] }}</option>
-                                @endforeach
-                            </select>
-                        </td>
-                        <td style="border: 1px solid black;">
-                            <input type="number" class="form-control input-harga" placeholder="Harga Belum PPN" style="padding:10px;border: 1px solid black;">
-                        </td>
-                        <td style="border: 1px solid black;">
-                            <input type="number" class="form-control input-qty" placeholder="QTY" style="padding:10px;border: 1px solid black;">
-                        </td>
-                        <td style="border: 1px solid black;">
-                            <input type="number" class="form-control input-disc" placeholder="DISC" style="padding:10px;border: 1px solid black;">
-                        </td>
-                        <td style="border: 1px solid black;">
-                            <input type="number" class="form-control input-subtotal" placeholder="Subtotal" readonly style="padding:10px;border: 1px solid black;">
-                        </td>
-                        <td style="border: 1px solid black;">
-                            <input type="checkbox" class="form-checkbox input-ppn" style="padding:10px; border: 1px solid black;" >
-                        </td>
+        <div class="form-container">
+            <div class="form-row">
+                    <div class="form-group">
+                        <label for="barang">Nama Barang</label>
+                        <select id="barang" class="form-control select-barang">
+                            <option value="">Pilih Barang</option>
+                            @foreach($Data['msg']['masterItem'] as $key_masteritem => $result_masteritem)
+                                <option value="{{ $result_masteritem['new_kode'] }}" data-id="{{ $result_masteritem['id'] }}">
+                                    {{ $result_masteritem['new_kode'] }} - {{ $result_masteritem['name'] }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="harga">Harga Belum PPN</label>
+                        <input type="number" id="harga" class="form-control input-harga" placeholder="Harga Belum PPN">
+                    </div>
+                    <div class="form-group">
+                        <label for="qty">QTY</label>
+                        <input type="number" id="qty" class="form-control input-qty" placeholder="QTY">
+                    </div>
+                    <div class="form-group">
+                        <label for="disc">DISC</label>
+                        <input type="number" id="disc" class="form-control input-disc" placeholder="DISC">
+                    </div>
+                    <div class="form-group">
+                        <label for="subtotal">Subtotal</label>
+                        <input type="number" id="subtotal" class="form-control input-subtotal" placeholder="Subtotal" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="ppn">PPN</label>
+                        <input type="checkbox" id="ppn" class="form-checkbox input-ppn">
+                    </div>
+                   
+            </div>
 
+    <div id="additional-rows">
+        <!-- Baris tambahan akan ditambahkan di sini -->
+    </div>
+    <div id="addButtonRow">
+        <!-- Baris tambahan akan ditambahkan di sini -->
+    </div>
+    
+</div>
 
-                        <td style=" border: 1px solid black;"></td>
-                    </tr>
-                </tbody>
-                <tbody id="tbody_tambah">
-                    <!-- Baris akan ditambahkan di sini -->
-                </tbody>
-                <tbody id="tbody_btntambah">
-                    <!-- Baris akan ditambahkan di sini -->
-                </tbody>
-            </table>
         </div>
     </div>
 </div>
@@ -166,8 +214,8 @@
                 <div class="col-md-6">
                     <div class="row">
                         <div class="col">
-                            <label for="databaselabel">Keterangan Pembelian <span style="color: red;">*</span></label>
-                            <textarea id="keterangan1" class="form-control" rows="4" placeholder="Masukkan keterangan pembelian" style="border: 1px solid black; padding:10px"></textarea>
+                            <label for="databaselabel">Keterangan Pembayaran <span style="color: red;">*</span></label>
+                            <textarea id="keterangan1" class="form-control" rows="4" placeholder="Masukkan keterangan Pembayaran" style="border: 1px solid black; padding:10px"></textarea>
                         </div>
                         <div class="col">
                             <label for="keterangan2">Keterangan Pengiriman <span style="color: red;">*</span></label>
@@ -537,48 +585,50 @@
             });
 
         // Tambahkan tombol ke dalam DOM sebelum tabel
-        $('#tbody_btntambah').append(addButton);
+        $('#addButtonRow').append(addButton);
 
         // Fungsi untuk menambahkan baris baru ke tabel
         function addRow() {
         
             const newRow = `
                 
-                <tr style=" border: 1px solid black;">
-                    <!-- Nama Barang (Select) -->
-                    <td style=" border: 1px solid black;">
-                        <select class="form-control select-barang-import">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="barang-import">Nama Barang</label>
+                        <select id="barang-import" class="form-control select-barang-import">
                             <option value="">Pilih Barang</option>
                             @foreach($Data['msg']['masterItem'] as $key_masteritem => $result_masteritem)
-                                    <option value="{{ $result_masteritem['new_kode'] }}">{{ $result_masteritem['new_kode'] }} - {{ $result_masteritem['name'] }}</option>
+                                <option value="{{ $result_masteritem['new_kode'] }}">
+                                    {{ $result_masteritem['new_kode'] }} - {{ $result_masteritem['name'] }}
+                                </option>
                             @endforeach
                         </select>
-                    </td>
-                    <!-- Harga Belum PPN -->
-                    <td style=" border: 1px solid black;">
-                        <input type="number" class="form-control input-harga-import" placeholder="Harga Belum PPN" style="padding:10px;border: 1px solid black;">
-                    </td>
-                    <!-- QTY -->
-                    <td style=" border: 1px solid black;">
-                        <input type="number" class="form-control input-qty-import" placeholder="QTY" style="padding:10px;border: 1px solid black;">
-                    </td>
-                    <!-- DISC -->
-                    <td style=" border: 1px solid black;">
-                        <input type="number" class="form-control input-disc-import" placeholder="DISC" style="padding:10px;border: 1px solid black;">
-                    </td>
-                    <!-- Subtotal -->
-                    <td style=" border: 1px solid black;">
-                        <input type="number" class="form-control input-subtotal-import" placeholder="Subtotal" readonly style="padding:10px;border: 1px solid black;">
-                    </td>
-                    <!-- PPN -->
-                    <td style=" border: 1px solid black;">
-                       <input type="checkbox" class="form-checkbox input-ppn-import" style="padding:10px; border: 1px solid black;" >
-                    </td>
-                    <!-- Action -->
-                    <td style=" border: 1px solid black;">
-                        <button class="btn btn-danger btn-delete">Hapus</button>
-                    </td>
-                </tr>
+                    </div>
+                    <div class="form-group">
+                        <label for="harga-import">Harga Belum PPN</label>
+                        <input type="number" id="harga-import" class="form-control input-harga-import" placeholder="Harga Belum PPN">
+                    </div>
+                    <div class="form-group">
+                        <label for="qty-import">QTY</label>
+                        <input type="number" id="qty-import" class="form-control input-qty-import" placeholder="QTY">
+                    </div>
+                    <div class="form-group">
+                        <label for="disc-import">DISC</label>
+                        <input type="number" id="disc-import" class="form-control input-disc-import" placeholder="DISC">
+                    </div>
+                    <div class="form-group">
+                        <label for="subtotal-import">Subtotal</label>
+                        <input type="number" id="subtotal-import" class="form-control input-subtotal-import" placeholder="Subtotal" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="ppn-import">PPN</label>
+                        <input type="checkbox" id="ppn-import" class="form-checkbox input-ppn-import">
+                    </div>
+                    <div class="form-group actions">
+                        <button type="button" class="btn btn-danger btn-delete">Hapus</button>
+                    </div>
+                </div>
+
             `;
 
             $(document).on('change', '.select-barang-import', function () {
@@ -625,7 +675,7 @@
                         }
             })
                         // Tambahkan baris ke dalam tbody
-                        $('#tbody_tambah').append(newRow);
+                        $('#additional-rows').append(newRow);
                         $('.select-barang-import').last().select2({
                             placeholder: 'Pilih Barang',
                             allowClear: true
