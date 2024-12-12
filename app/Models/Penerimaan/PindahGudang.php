@@ -5,7 +5,7 @@ namespace App\Models\Penerimaan;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use GuzzleHttp\Client;
-class Pindahgudang extends Model
+class PindahGudang extends Model
 {
     use HasFactory;
     public static function createdPindahGudang($teknisi_cookie, $form){

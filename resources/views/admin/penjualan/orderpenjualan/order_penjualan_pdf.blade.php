@@ -269,7 +269,7 @@
 
         </td>
         <td colspan="1" style="text-align: center; border: 1px solid black; height: 20px;">
-        <strong>{{ $Data['msg']['customer_new'][0]['name'] }}</strong>
+        <strong><i>{{ $Data['msg']['customer_new'][0]['name'] }}</i></strong>
         </td>
     </tr>
 </table>
