@@ -219,7 +219,7 @@
                 @php
                 $total_jumlah = $total+$ppn;
                 @endphp
-                <td class="right" style="width: 14%;">{{ 'Rp ' . number_format($total_jumlah, 0, ',', ',') }}</td>
+                <td class="right" style="width: 14%;">{{ 'Rp ' . number_format($Data['msg']['penawaran']['subtotal'], 0, ',', ',') }}</td>
             </tr>
             
         </tbody>
