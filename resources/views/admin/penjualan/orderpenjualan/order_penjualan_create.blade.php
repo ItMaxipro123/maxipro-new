@@ -170,7 +170,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="harga">Harga Belum PPN</label>
+                        <label for="">Harga Belum PPN</label>
                         <input type="number" id="harga" class="form-control input-harga" placeholder="Harga Belum PPN">
                     </div>
                     <div class="form-group">
@@ -393,9 +393,12 @@
   var total_ppn_global=0;
   var subtotal_notinclude=[]
   var subtotal_import_notinclude=[]
+
+  var ppn_global_new =1;
+
     $(document).ready(function() {
         var json_harga = {!! json_encode($Data) !!};
-
+        
       
 
         $(document).on('change', '.select-barang', function () {
@@ -412,63 +415,67 @@
             purc_name.push(name_item)
             
            // Periksa apakah json_harga.msg dan json_harga.msg.hargaItem adalah objek
-            if (json_harga && json_harga.msg && typeof json_harga.msg.hargaItem === 'object') {
-                Object.entries(json_harga.msg.hargaItem).forEach(([key, itemHarga]) => {
-                    if (itemHarga.itemid == selectedValue) {
-                        let harga = itemHarga.price1 > 0 ? itemHarga.price1 : 1; // Jika harga 0, gunakan nilai 1
-                        harga = parseFloat(harga); // Menghilangkan angka nol di belakang titik
-                        console.log('masuk', harga);
-                        $('.input-harga').val(harga); // Set nilai ke elemen dengan class `input-harga`
-                        $('.input-qty').val(1); // Set nilai ke elemen dengan class `input-qty`
-                        $('.input-disc').val(0); // Set nilai ke elemen dengan class `input-qty`
-                        $('.input-subtotal').val(harga); // Set nilai ke elemen dengan class `input-qty`
-                        price.push(harga);
-                        subtotal.push(harga);
-                        subtotal_notinclude.push(harga);
-                        
-                        qty.push($('.input-qty').val());
-                        disc.push($('.input-disc').val());
-                        ppn_row_import.push(0)
-                        calculateSubtotal(subtotal,subtotal_import,ppn_row,ppn_row_import)
-                    }
+           if (json_harga && json_harga.msg && typeof json_harga.msg.hargaItem === 'object') {
+                let found = Object.entries(json_harga.msg.hargaItem).find(([key, itemHarga]) => {
+                    return itemHarga.itemid == selectedValue && itemHarga.price1 !== 0;
                 });
-                
 
-            } else {
+                if (found) {
+                    let itemHarga = found[1];
+                    let harga = itemHarga.price1;
+
+                    console.log('itemHarga.itemid', itemHarga.itemid);
+                    console.log('selectedValue', selectedValue);
+                    console.log('masuk', parseInt(harga));
+
+                    // Set nilai ke elemen input
+                    $('.input-harga').val(parseInt(harga));
+                    $('.input-qty').val(1);
+                    $('.input-disc').val(0);
+                    $('.input-subtotal').val(parseInt(harga));
+
+                    // Push nilai ke array hanya sekali
+                    price.push(harga);
+                    subtotal.push(harga);
+                    subtotal_notinclude.push(parseInt(harga));
+                    console.log('subtotal_notinclude', subtotal_notinclude);
+
+                    qty.push($('.input-qty').val());
+                    disc.push($('.input-disc').val());
+                    ppn_row_import.push(0);
+
+                    // Hitung subtotal
+                    calculateSubtotal(subtotal, subtotal_import, ppn_row, ppn_row_import, ppn_global_new);
+                }
+            }
+ 
+            else {
                 console.error("hargaItem bukan objek atau data tidak valid:", json_harga);
             }
             
             $('.includeppn').on('change', function() {
                     let include_ppn = $(this).is(':checked') ? 1 : 0; // Nilai 1 jika dicentang, 0 jika tidak
                     include_ppn_global = include_ppn;
-
+                    
                     if (include_ppn === 1) {
-                        let subtotal_sementara = subtotal.map(value => parseInt(value / 1.11));
-                        let subtotal_import_sementara = subtotal_import.map(value => parseInt(value / 1.11));
+                        ppn_global_new=0.11;
+                        let subtotal_sementara = subtotal.map(value => parseInt(value / ppn_global_new));
+                        let subtotal_import_sementara = subtotal_import.map(value => parseInt(value / ppn_global_new));
 
                         console.log('include ppn 1')
-
-                        // console.log('ppn 11%', total_ppn_includeppn);
-                        // total_ppn_global=total_ppn_includeppn
-                        // console.log('total_includeppn', total_includeppn);
-                        includeppn(subtotal_sementara,subtotal_import_sementara)
-                        // subtotal = subtotal_sementara;
-                        // subtotal_import = subtotal_import_sementara;
-                        // td_subtotal_global=parseFloat(subtotal)+parseFloat(subtotal_import)
-                        // td_total_global=total_includeppn+1
+                        console.log('subtotal_sementara',subtotal_sementara)
+                        console.log('subtotal_import_sementara',subtotal_import_sementara)
+                        subtotal=subtotal_sementara
+                        subtotal_import=subtotal_import_sementara
+                        calculateSubtotal(subtotal,subtotal_import,ppn_row,ppn_row_import,ppn_global_new)
+                        // includeppn(subtotal_sementara,subtotal_import_sementara)
+                        
                         
                     } else {
-                        // let harga = itemHarga.price1 > 0 ? itemHarga.price1 : 1; // Jika harga 0, gunakan nilai 1
-                        // harga = parseFloat(harga); // Menghilangkan angka nol di belakang titik
-                        // console.log('masuk', harga);
-                        // $('.input-harga').val(harga); // Set nilai ke elemen dengan class `input-harga`
-                        // $('.input-qty').val(1); // Set nilai ke elemen dengan class `input-qty`
-                        // $('.input-disc').val(0); // Set nilai ke elemen dengan class `input-qty`
-                        // $('.input-subtotal').val(harga); // Set nilai ke elemen dengan class `input-qty`
+                        ppn_global_new=1;
                         
-                        // subtotal[]=harga;
-                        
-                        calculateSubtotal(subtotal_notinclude,subtotal_import_notinclude,ppn_row,ppn_row_import)
+                        // console.log('subtotal_notinclude',subtotal_notinclude)
+                        calculateSubtotal(subtotal_notinclude,subtotal_notinclude_import,ppn_row,ppn_row_import,ppn_global_new)
                     }
             });
          
@@ -514,7 +521,7 @@
                     ppn_row =result
                 }
              
-                calculateSubtotal(subtotal,subtotal_import,ppn_row,ppn_row_import)
+                calculateSubtotal(subtotal,subtotal_import,ppn_row,ppn_row_import,ppn_global_new)
             }
             function updateData(index,value){
                 // price[index]=value
@@ -530,7 +537,7 @@
                 console.log('qty',qty)
                 console.log('disc',disc)
                 $('.input-subtotal').val(subtotal);
-                calculateSubtotal(subtotal,subtotal_import,ppn_row,ppn_row_import)
+                calculateSubtotal(subtotal,subtotal_import,ppn_row,ppn_row_import,ppn_global_new)
             }
             function updateDataQty(index,value){
                 qty=[value]
@@ -546,7 +553,7 @@
                 console.log('qty',qty)
                 console.log('disc',disc)
                 $('.input-subtotal').val(subtotal);
-                calculateSubtotal(subtotal,subtotal_import,ppn_row,ppn_row_import)
+                calculateSubtotal(subtotal,subtotal_import,ppn_row,ppn_row_import,ppn_global_new)
             }
             
             function updateDataDisc(index,value){
@@ -564,7 +571,7 @@
                 console.log('qty',qty)
                 console.log('disc',disc)
                 $('.input-subtotal').val(subtotal);
-                calculateSubtotal(subtotal,subtotal_import,ppn_row,ppn_row_import)
+                calculateSubtotal(subtotal,subtotal_import,ppn_row,ppn_row_import,ppn_global_new)
             }
          
         });
@@ -706,7 +713,7 @@
                             console.log('qty import:', qty_import);
                             console.log('disc import:', disc_import);
 
-                            calculateSubtotal(subtotal, subtotal_import, ppn_row, ppn_row_import);
+                            calculateSubtotal(subtotal, subtotal_import, ppn_row, ppn_row_import,ppn_global_new);
                         }
                     });
                 } else {
@@ -767,7 +774,7 @@
                                 console.log('result import',result)
                             }
                         
-                            calculateSubtotal(subtotal,subtotal_import,ppn_row,ppn_row_import)
+                            calculateSubtotal(subtotal,subtotal_import,ppn_row,ppn_row_import,ppn_global_new)
                         }
 
                         function updateDataImport(index,value){
@@ -784,7 +791,7 @@
                             console.log('qty',qty_import)
                             console.log('disc',disc_import)
                             $('.input-subtotal-import').val(subtotal_import);
-                            calculateSubtotal(subtotal,subtotal_import,ppn_row,ppn_row_import)
+                            calculateSubtotal(subtotal,subtotal_import,ppn_row,ppn_row_import,ppn_global_new)
                         }
                         function updateDataQtyImport(index,value){
                             qty_import=[value]
@@ -800,7 +807,7 @@
                             console.log('qty',qty_import)
                             console.log('disc',disc_import)
                             $('.input-subtotal-import').val(subtotal_import);
-                            calculateSubtotal(subtotal,subtotal_import,ppn_row,ppn_row_import)
+                            calculateSubtotal(subtotal,subtotal_import,ppn_row,ppn_row_import,ppn_global_new)
                             
                         }
                         
@@ -819,7 +826,7 @@
                             // console.log('qty',qty_import)
                             // console.log('disc',disc_import)
                             $('.input-subtotal-import').val(subtotal_import);
-                            calculateSubtotal(subtotal,subtotal_import,ppn_row,ppn_row_import)
+                            calculateSubtotal(subtotal,subtotal_import,ppn_row,ppn_row_import,ppn_global_new)
                         }
            
 
@@ -874,18 +881,74 @@
                         // Perbarui elemen td_subtotal di DOM
                         $('#td_subtotal').text(formattedSubTotal); // Tampilkan total dengan format dua desimal
         }
-        function calculateSubtotal(subtotal, subtotal_import,ppn_row,ppn_row_import) {
-            
+        function calculateSubtotal(subtotal, subtotal_import,ppn_row,ppn_row_import,ppn_global_new) {
+            // if (!Array.isArray(subtotal) || !Array.isArray(subtotal_import)) {
+            //     console.error('Subtotal dan subtotal_import harus berupa array');
+            //     return;
+            }
                 // Validasi input sebagai array
-                if (!Array.isArray(subtotal) || !Array.isArray(subtotal_import)) {
-                    console.error('Input harus berupa array.');
-                    return 0;
-                }
+            //     if (!Array.isArray(subtotal) || !Array.isArray(subtotal_import)) {
+            //         console.error('Input harus berupa array.');
+            //         return 0;
+            //     }
                 
         
-                $('.input-subtotal').val(subtotal);
+            //     $('.input-subtotal').val(subtotal);
                 
 
+                
+            //     td_subtotal_global=total
+            //     let formattedSubTotal = total.toLocaleString('id-ID', { style: 'decimal', minimumFractionDigits: 0 });
+            //     // Perbarui elemen td_subtotal di DOM
+            //     $('#td_subtotal').text(formattedSubTotal); // Tampilkan total dengan format dua desimal
+            //     // return total;    
+            //    console.log('ppn',ppn)
+            //     // var allPPNValid = 
+            //     //     ppn.every(value => value === 1) 
+                    
+                    
+
+            //     // Mengecek apakah kondisi ppn dan ppn_import terpenuhi
+            //     // var centangBoxPPN = (ppn === 1 && ppn_import.length === 0) ? 1 : 0;
+
+
+            //     console.log('ppn ',ppn)
+            //     console.log('ppn length ',ppn.length)
+            //     console.log('ppn_import',ppn_import.length)
+            //     console.log('centangBoxPPN',centangBoxPPN)
+
+            //     var centangBoxPPN = (ppn === 1 || ppn_import === 1) ? 1 : 0;
+
+            //     if (ppn == 1 || ppn_import == 1) {
+            //         document.getElementById("ppn-checkbox").checked = true;
+                    
+            //             // Beri nilai 1 (misalnya, simpan dalam variabel)
+            //             let ppnValueCentang = 1;
+            //             console.log("Nilai PPN:", ppnValueCentang);
+            //             ppn_centang_global=ppnValueCentang;
+            //             // Opsional: Simpan nilai dalam atribut data
+            //             document.getElementById("ppn-checkbox").dataset.value = ppnValueCentang;
+            //     }
+            //     else{
+            //         document.getElementById("ppn-checkbox").checked = false;
+
+            //             // Beri nilai 1 (misalnya, simpan dalam variabel)
+            //             let ppnValueCentang = 0;
+            //             console.log("Nilai PPN:", ppnValueCentang);
+            //             ppn_centang_global=ppnValueCentang;
+            //             // Opsional: Simpan nilai dalam atribut data
+            //             document.getElementById("ppn-checkbox").dataset.value = ppnValueCentang;
+            //     }
+                    
+
+            //             console.log('Total PPN:', total_ppn);
+
+
+            //     // console.log('total_ppn',total_ppn)
+            //     // console.log('ppn_row',ppn_row)
+            //     total_ppn_global=total_ppn
+            //     $('#td_ppn').text(total_ppn)
+                
                 let total = 0; // Inisialisasi total
                 // Iterasi untuk menjumlahkan semua data dari kedua array
                 for (let i = 0; i < Math.max(subtotal.length, subtotal_import.length); i++) {
@@ -897,75 +960,27 @@
 
                     total += td_subtotal; // Tambahkan td_subtotal ke total
                 }
-                td_subtotal_global=total
-                let formattedSubTotal = total.toLocaleString('id-ID', { style: 'decimal', minimumFractionDigits: 0 });
-                // Perbarui elemen td_subtotal di DOM
-                $('#td_subtotal').text(formattedSubTotal); // Tampilkan total dengan format dua desimal
-                // return total;    
-               console.log('ppn',ppn)
-                // var allPPNValid = 
-                //     ppn.every(value => value === 1) 
-                    
-                    
-
-                // Mengecek apakah kondisi ppn dan ppn_import terpenuhi
-                // var centangBoxPPN = (ppn === 1 && ppn_import.length === 0) ? 1 : 0;
-
-
-                console.log('ppn ',ppn)
-                console.log('ppn length ',ppn.length)
-                console.log('ppn_import',ppn_import.length)
-                console.log('centangBoxPPN',centangBoxPPN)
-
-                var centangBoxPPN = (ppn === 1 || ppn_import === 1) ? 1 : 0;
-
-                if (ppn == 1 || ppn_import == 1) {
-                    document.getElementById("ppn-checkbox").checked = true;
-                    
-                        // Beri nilai 1 (misalnya, simpan dalam variabel)
-                        let ppnValueCentang = 1;
-                        console.log("Nilai PPN:", ppnValueCentang);
-                        ppn_centang_global=ppnValueCentang;
-                        // Opsional: Simpan nilai dalam atribut data
-                        document.getElementById("ppn-checkbox").dataset.value = ppnValueCentang;
-                }
-                else{
-                    document.getElementById("ppn-checkbox").checked = false;
-
-                        // Beri nilai 1 (misalnya, simpan dalam variabel)
-                        let ppnValueCentang = 0;
-                        console.log("Nilai PPN:", ppnValueCentang);
-                        ppn_centang_global=ppnValueCentang;
-                        // Opsional: Simpan nilai dalam atribut data
-                        document.getElementById("ppn-checkbox").dataset.value = ppnValueCentang;
-                }
                 let total_ppn = 0;
 
-                        // Menjumlahkan nilai dari ppn_row
-                        for (let i = 0; i < ppn_row.length; i++) {
-                            total_ppn += parseFloat(ppn_row[i]) || 0; // Pastikan setiap nilai adalah angka
-                        }
+                // Menjumlahkan nilai dari ppn_row
+                for (let i = 0; i < ppn_row.length; i++) {
+                    total_ppn += parseFloat(ppn_row[i]) || 0; // Pastikan setiap nilai adalah angka
+                }
 
-                        // Jika ppn_row_import memiliki lebih dari 1 elemen, tambahkan nilainya
-                        if (ppn_row_import.length > 0) {
-                            console.log('ppn_row_import lebih 0')
-                            for (let i = 0; i < ppn_row_import.length; i++) {
-                                total_ppn += parseFloat(ppn_row_import[i]) || 0; // Pastikan setiap nilai adalah angka
-                            }
-                        }
-
-                        console.log('Total PPN:', total_ppn);
-
-
-                // console.log('total_ppn',total_ppn)
-                // console.log('ppn_row',ppn_row)
-                total_ppn_global=total_ppn
-                $('#td_ppn').text(total_ppn)
-
+                // Jika ppn_row_import memiliki lebih dari 1 elemen, tambahkan nilainya
+                if (ppn_row_import.length > 0) {
+                    console.log('ppn_row_import lebih 0')
+                    for (let i = 0; i < ppn_row_import.length; i++) {
+                        total_ppn += parseFloat(ppn_row_import[i]) || 0; // Pastikan setiap nilai adalah angka
+                    }
+                }
+                total_ppn_global=total*ppn_global_new
+                $('#td_ppn').text(total_ppn_global)
                 let total_total_td =parseFloat(total_ppn+total)
-                td_total_global=total_total_td  
-                let formattedTotal = total_total_td.toLocaleString('id-ID', { style: 'decimal', minimumFractionDigits: 0 });
-                $('#td_total').text(formattedTotal)
+           
+                // let formattedTotal = total_total_td.toLocaleString('id-ID', { style: 'decimal', minimumFractionDigits: 0 });
+                $('#td_total').text(total_total_td)
+
         }
 
 
