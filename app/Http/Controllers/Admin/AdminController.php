@@ -1147,7 +1147,7 @@ class AdminController extends Controller
                 // dd($Data);
                 return response()->json($Data);
             }
-            elseif($menu=='invoice_pdf'){
+            elseif ($menu == 'invoice_pdf') {
                 $data = [
                     'nama' => 'John Doe',
                     'tanggal' => '2024-12-10',
@@ -1180,14 +1180,16 @@ class AdminController extends Controller
                     'pembeli' => '<Nama Customer>',
                 ];
                 $code = $request->input('code');
-                // dd($code);
-                $Data = $orderPenjualanModel->pdfprintOrderPenjualan($teknisi_cookie,$code);                
+            
+                $Data = $orderPenjualanModel->pdfprintOrderPenjualan($teknisi_cookie, $code);
                 // dd($Data);
-                $pdf = Pdf::loadView('admin.penjualan.orderpenjualan.order_penjualan_pdf', compact('data','Data'))
-                ->setPaper('a4', 'portrait');
-        
-            // Stream the PDF to the browser
-            return $pdf->stream('order_penjualan.pdf');
+                $Data_customer = $Data['msg']['customer_new'][0]['name'];
+                
+                $pdf = Pdf::loadView('admin.penjualan.orderpenjualan.order_penjualan_pdf', compact('data', 'Data'))
+                    ->setPaper('a4', 'portrait');
+            
+                // Stream the PDF to the browser with dynamic filename
+                return $pdf->stream("{$code}-{$Data_customer}.pdf");
             }
             else{
 

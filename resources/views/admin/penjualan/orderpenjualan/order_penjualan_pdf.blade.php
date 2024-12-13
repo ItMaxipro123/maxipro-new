@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order Penjualan</title>
+    <title>Invoice Order Penjualan {{ $Data['msg']['penawaran']['no_transaksi'] }}-{{ $Data['msg']['customer_new'][0]['name'] }}</title>
     <style>
         body {
             font-family: Arial, sans-serif;

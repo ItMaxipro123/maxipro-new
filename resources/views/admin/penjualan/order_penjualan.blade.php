@@ -108,7 +108,7 @@ Order Penjualan  | PT. Maxipro Group Indonesia
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Filter Transaksi Penerimaan Pindah Gudang</h5>
+                                    <h5 class="modal-title" id="exampleModalLabel">Filter Order Penjualan</h5>
                                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -117,20 +117,17 @@ Order Penjualan  | PT. Maxipro Group Indonesia
                                     <form id="dateForm">
                                         <div class="form-group">
                                             <label for="enableDatepicker">Centang untuk Aktifkan Tanggal:</label>
-                                            <input type="checkbox" id="checkdatevalue">
+                                            <input type="checkbox" id="checkdatevalue" >
                                         </div>
                                         <div class="form-group">
                                             <label for="startDatepicker">Pilih Periode Awal:</label>
-                                            <input type="text" value="" class="form-control" id="tgl_awal" disabled>
+                                            <input type="text" value="{{ $Data['msg']['tgl_awal'] }}" class="form-control" id="tgl_awal" disabled>
                                         </div>
                                         <div class="form-group">
                                             <label for="endDatepicker">Pilih Periode Akhir:</label>
-                                            <input type="text" value="" class="form-control" id="tgl_akhir" disabled>
+                                            <input type="text" value="{{ $Data['msg']['tgl_akhir'] }}" class="form-control" id="tgl_akhir" disabled>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="kode">Kode</label>
-                                            <input style="border: 1px solid #ced4da; width: 100%; padding-left:22px;" type="text" placeholder="Kode" class="form-control" id="id_kode" name="kode">
-                                        </div>
+                                        
                                        
                                     </form>
                                 </div>
