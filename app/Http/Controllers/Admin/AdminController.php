@@ -1139,7 +1139,7 @@ class AdminController extends Controller
             $teknisi_cookie = $responseData['cookie'];
             if($menu=='create_orderpenjualan'){
                 $Data = $orderPenjualanModel->viewtambahOrderPenjualan($teknisi_cookie);
-                
+                // dd($Data);
                 return view('admin.penjualan.orderpenjualan.order_penjualan_create', compact('username', 'data', 'Data')); 
             }
             elseif($menu=='created'){
