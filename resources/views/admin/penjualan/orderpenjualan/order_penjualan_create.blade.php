@@ -170,26 +170,39 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="">Harga Belum PPN</label>
-                        <input type="number" id="harga" class="form-control input-harga" placeholder="Harga Belum PPN">
+                        <label for="">Harga Normal</label>
+                        <input type="number" id="harga_nromal" class="form-control input-harga-normal" placeholder="Harga Normal">
                     </div>
+                    <div class="form-group">
+                        <label for="">Harga Deal</label>
+                        <input type="number" id="harga_deal" class="form-control input-harga-deal" placeholder="Harga Deal">
+                    </div>
+                   
                     <div class="form-group">
                         <label for="qty">QTY</label>
                         <input type="number" id="qty" class="form-control input-qty" placeholder="QTY">
                     </div>
                     <div class="form-group">
                         <label for="disc">DISC</label>
-                        <input type="number" id="disc" class="form-control input-disc" placeholder="DISC">
+                        <input type="number" id="disc" class="input-disc" style="border:none;" disabled>
                     </div>
+                    <div class="form-group">
+                        <label for="belumppn">Harga Belum PPN</label>
+                        <input type="number" id="harga" class="input-harga" style="border:none;" disabled>
+                    </div>
+                    
                     <div class="form-group">
                         <label for="subtotal">Subtotal</label>
                         <input type="number" id="subtotal" class="form-control input-subtotal" placeholder="Subtotal" readonly>
                     </div>
+                   
+                   
+            </div>
+            <div class="form-row">
                     <div class="form-group">
                         <label for="ppn">PPN</label>
                         <input type="checkbox" id="ppn" class="form-checkbox input-ppn">
                     </div>
-                   
             </div>
 
     <div id="additional-rows">
@@ -372,6 +385,8 @@
         var subtotal_import_notinclude=[]
         var subtotal=[];
         var price=[];
+        var price_normal=[];
+        var price_deal=[]
         var qty=[];
         var disc=[];
         var subtotal_import=[];
@@ -424,27 +439,35 @@
                     let itemHarga = found[1];
                     let harga = itemHarga.price1;
 
-                    console.log('itemHarga.itemid', itemHarga.itemid);
-                    console.log('selectedValue', selectedValue);
-                    console.log('masuk', parseInt(harga));
+   
 
                     // Set nilai ke elemen input
+                    $('.input-harga-normal').val(parseInt(harga));
+                    $('.input-harga-deal').val(parseInt(harga));
                     $('.input-harga').val(parseInt(harga));
                     $('.input-qty').val(1);
                     $('.input-disc').val(0);
+                    $('.belumppn').val(parseInt(harga));
                     $('.input-subtotal').val(parseInt(harga));
-
+                    $('.input-ppn').prop('checked',true)
                     // Push nilai ke array hanya sekali
-                    price.push(harga);
+                    price.push(parseInt(harga));
                     subtotal.push(harga);
                     subtotal_notinclude.push(parseInt(harga));
                     console.log('subtotal_notinclude', subtotal_notinclude);
 
                     qty.push($('.input-qty').val());
-                    disc.push($('.input-disc').val());
+                    disc.push(0);
                     ppn_row_import.push(0);
-
-                    // Hitung subtotal
+                    ppn.push(1);
+                    ppn_centang_global =1
+                    document.getElementById("ppn-checkbox").checked = true;
+                 
+                    var ppn_subtotal_sementara = subtotal.map(value => parseInt(value / ppn_global_new));
+                        var ppn_subtotal_import_sementara = subtotal_import.map(value => parseInt(value / ppn_global_new));
+                        let sub=ppn_subtotal_sementara
+                        let subtot_import=ppn_subtotal_import_sementara
+                        // Hitung subtotal
                     calculateSubtotal(subtotal, subtotal_import, ppn_row, ppn_row_import, ppn_global_new,qty,qty_import,disc,disc_import);
                 }
             }
@@ -456,29 +479,29 @@
                 var ppn_chekbox = $(this).is(':checked') ? 1 : 0; // Nilai 1 jika dicentang, 0 jika tidak
                 ppn_centang_global = ppn_chekbox;
                 if (ppn_centang_global === 1) {
-                        ppn_global_new=1.11;
                         var ppn_subtotal_sementara = subtotal.map(value => parseInt(value / ppn_global_new));
                         var ppn_subtotal_import_sementara = subtotal_import.map(value => parseInt(value / ppn_global_new));
-
-                        console.log('ppn after subtotatal include',ppn_subtotal_sementara)
-                        console.log('ppn after subtotatal_import include',ppn_subtotal_import_sementara)
-                        console.log('subtotal',subtotal)
-                        
-                        let ppnValueCentang = 1;
-                                console.log("Nilai PPN:", ppnValueCentang);
-                                ppn_centang_global=ppnValueCentang;
-                                document.getElementById("ppn-checkbox").checked = true;
                         let sub=ppn_subtotal_sementara
                         let subtot_import=ppn_subtotal_import_sementara
-
-
-                        calculateSubtotal(sub,subtot_import,ppn_row,ppn_row_import,ppn_global_new,qty,qty_import,disc,disc_import)
-                      
+                        // Hitung subtotal
+                        $('.input-ppn').prop('checked', true); // Nilai 1 jika dicentang, 0 jika tidak
+                        // console.log('value_ppn',value_ppn)
+                        // let index = $(this).data('index');
+                        // updatePPN(index,value_ppn)
+                        ppn =[1]
+                        calculateSubtotal(subtotal, subtotal_import, ppn_row, ppn_row_import, ppn_global_new,qty,qty_import,disc,disc_import);
                         
                     } else {
                         ppn_global_new=1;
-  
-                        calculateSubtotal(subtotal_notinclude,subtotal_import_notinclude,ppn_row,ppn_row_import,ppn_global_new,qty,qty_import,disc,disc_import)
+                       
+                        let value_ppn = 0; // Langsung tetapkan nilai 0
+                        $('.input-ppn').prop('checked', false); // Pastikan checkbox tidak dicentang
+                        console.log('value_ppn', value_ppn);
+
+                        let index = $(this).data('index');
+                        updatePPN(index, value_ppn);
+
+                       
                     }
             })
             $('.includeppn').on('change', function() {
@@ -486,7 +509,7 @@
                     include_ppn_global = include_ppn;
                     
                     if (include_ppn === 1) {
-                        ppn_global_new=(json_harga.msg.master_ppn.ppn/10)+0.01;
+                        ppn_global_new=(json_harga.msg.master_ppn.ppn/100)+0.01;
                         // console.log('masuk ppn global',ppn_global_new)
                         var ppn_subtotal_sementara = subtotal.map(value => parseInt(value / ppn_global_new));
                         var ppn_subtotal_import_sementara = subtotal_import.map(value => parseInt(value / ppn_global_new));
@@ -513,11 +536,57 @@
                     }
             });
          
+            $('.input-harga-normal').on('input', function() {
+                let value = $(this).val(); // Ambil nilai dari input
+                let index = $(this).data('index');
+                console.log('Nilai berubah:', value);
+              
+                let harga_normal = parseFloat($(this).val()) || 0; // Pastikan nilainya angka
+                let harga_deal = parseFloat($('.input-harga-deal').val()) || 0; // Pastikan nilainya angka
+                price_normal =[harga_normal]
+                price_deal =[harga_deal]
+                // Hitung diskon
+                let harga_disc = harga_normal - harga_deal;
+                disc =[harga_disc]
+                console.log('price_normal',price_normal)
+                console.log('harga_deal',price_deal)
+                console.log('harga_disc',disc)
+                $('.input-disc').val(harga_disc)
+                subtotal= price_deal
+                // subtotal_notinclude= [$(this).val()]
+                // console.log('subtotal_notinclude',subtotal_notinclude)
+                calculateSubtotal(subtotal, subtotal_import, ppn_row, ppn_row_import, ppn_global_new,qty,qty_import,disc,disc_import);
+            });
+            $('.input-harga-deal').on('input', function() {
+                let value = $(this).val(); // Ambil nilai dari input
+                let index = $(this).data('index');
+                console.log('Nilai berubah:', value);
+              
+                let harga_deal = parseFloat($(this).val()) || 0; // Pastikan nilainya angka
+                let harga_normal = parseFloat($('.input-harga-normal').val()) || 0; // Pastikan nilainya angka
+                price_normal =[harga_normal]
+                price_deal =[harga_deal]
+                // Hitung diskon
+                let harga_disc = harga_normal - harga_deal;
+                disc =[harga_disc]
+                console.log('price_normal',price_normal)
+                console.log('harga_deal',price_deal)
+                console.log('harga_disc',disc)
+                $('.input-disc').val(harga_disc)
+                $('.input-harga').val(harga_deal)
+                subtotal= price_deal
+                // subtotal_notinclude= [$(this).val()]
+                // console.log('subtotal_notinclude',subtotal_notinclude)
+                calculateSubtotal(subtotal, subtotal_import, ppn_row, ppn_row_import, ppn_global_new,qty,qty_import,disc,disc_import);
+            });
             $('.input-harga').on('input', function() {
                 let value = $(this).val(); // Ambil nilai dari input
                 let index = $(this).data('index');
                 console.log('Nilai berubah:', value);
-                updateData(index,value)
+                subtotal= [$(this).val()]
+                subtotal_notinclude= [$(this).val()]
+                console.log('subtotal_notinclude',subtotal_notinclude)
+                calculateSubtotal(subtotal, subtotal_import, ppn_row, ppn_row_import, ppn_global_new,qty,qty_import,disc,disc_import);
             });
             $('.input-ppn').on('change', function() {
                     let value_ppn = $(this).is(':checked') ? 1 : 0; // Nilai 1 jika dicentang, 0 jika tidak
@@ -529,13 +598,16 @@
                 let value = $(this).val(); // Ambil nilai dari input
                 let index = $(this).data('index');
                 console.log('Nilai berubah:', value);
-                updateDataQty(index,value)
+                qty= [$(this).val()]
+                calculateSubtotal(subtotal, subtotal_import, ppn_row, ppn_row_import, ppn_global_new,qty,qty_import,disc,disc_import);
             });
             $('.input-disc').on('input', function() {
                 let value = $(this).val(); // Ambil nilai dari input
                 let index = $(this).data('index');
                 console.log('Nilai disc berubah:', value);
-                updateDataDisc(index,value)
+                disc= [$(this).val()]
+                calculateSubtotal(subtotal, subtotal_import, ppn_row, ppn_row_import, ppn_global_new,qty,qty_import,disc,disc_import);
+                
             });
             function updatePPN(index,value){
                 ppn =[value]
@@ -855,10 +927,7 @@
                             });
 
                             subtotal_import=[result]
-                            // console.log('subtotal',subtotal_import)
-                            // console.log('price',price_import)
-                            // console.log('qty',qty_import)
-                            // console.log('disc',disc_import)
+                
                             $('.input-subtotal-import').val(subtotal_import);
                             calculateSubtotal(subtotal,subtotal_import,ppn_row,ppn_row_import,ppn_global_new,qty,qty_import,disc,disc_import)
                         }
@@ -875,17 +944,7 @@
         function calculateSubtotal(subtotal_func, subtotal_import_func,ppn_row,ppn_row_import,ppn_global_new,qty,qty_import,disc,disc_import) {
         
                 
-                let total = 0; // Inisialisasi total
-                // Iterasi untuk menjumlahkan semua data dari kedua array
-                for (let i = 0; i < Math.max(subtotal_func.length, subtotal_import_func.length); i++) {
-                    let value = subtotal_func[i] || 0; // Ambil nilai dari subtotal, default 0 jika undefined
-                    let importValue = subtotal_import_func[i] || 0; // Ambil nilai dari subtotal_import, default 0 jika undefined
-
-                    let td_subtotal = parseFloat(value) + parseFloat(importValue); // Hitung jumlah kedua elemen
-                    console.log(`Index ${i}: ${value} + ${importValue} = ${td_subtotal}`);
-
-                    total += td_subtotal; // Tambahkan td_subtotal ke total
-                }
+                
                 for (let i = 0; i < Math.max(subtotal_func.length, subtotal_import_func.length); i++) {
                     subtotal[i] = parseFloat(subtotal_func[i])
                     $('.input-subtotal').val(parseFloat(subtotal[i]) || 0);
@@ -905,12 +964,13 @@
                                  total_qty_sementara_import.reduce((acc, value) => acc + value, 0);
                 
                 var total_disc_sementara = disc.map(value => parseInt(value));
+                // console.log('total_disc_sementara',total_disc_sementara)
                 var total_disc_sementara_import = disc_import.map(value => parseInt(value));
 
                 // Menjumlahkan kedua array langsung dalam satu langkah
                 var total_disc_akhir = total_disc_sementara.reduce((acc, value) => acc + value, 0) + 
                                       total_disc_sementara_import.reduce((acc, value) => acc + value, 0);
-
+                console.log('ppn_row',ppn_row)
                 let total_ppn = 0;
 
                 // Menjumlahkan nilai dari ppn_row
@@ -926,11 +986,11 @@
                     }
                 }
                 
-                console.log('total',total)
+                
                 // subtotal_notinclude,subtotal_notinclude_import
                 
-                console.log('subtotal not include',subtotal_notinclude)
-                console.log('subtotal not include',subtotal_import_notinclude)
+                console.log('total_ppn',total_ppn)
+                // console.log('subtotal not include',subtotal_import_notinclude)
              
                 // Menghitung total_lama_subtotal dan total_lama_subtotal_import
                 var total_lama_subtotal = subtotal_notinclude.map(value => parseInt(value));
@@ -939,41 +999,85 @@
                 // Menjumlahkan kedua array langsung dalam satu langkah
                 var total_lama = total_lama_subtotal.reduce((acc, value) => acc + value, 0) + 
                                 total_lama_subtotal_import.reduce((acc, value) => acc + value, 0);
-                if(include_ppn_global==0 && ppn_centang_global==1){
+                
+                let total = 0; // Inisialisasi total
 
-                    total_ppn_global=parseFloat(total_lama)-parseFloat(total)
-              
-                    console.log('total_ppn_global',total_ppn_global)
-                    $('#td_ppn').text(total_ppn_global)
+                // Iterasi untuk menjumlahkan semua data dari kedua array
+                for (let i = 0; i < Math.max(subtotal_func.length, subtotal_import_func.length); i++) {
+                    let value = subtotal_func[i] || 0; // Ambil nilai dari subtotal, default 0 jika undefined
+                    let importValue = subtotal_import_func[i] || 0; // Ambil nilai dari subtotal_import, default 0 jika undefined
+
+                    let td_subtotal = parseFloat(value) + parseFloat(importValue); // Hitung jumlah kedua elemen
+                    console.log(`Index ${i}: ${value} + ${importValue} = ${td_subtotal}`);
+
+                    total += td_subtotal; // Tambahkan td_subtotal ke total
+                    total =(total*total_qty_akhir)-(total_disc_akhir*total_qty_akhir)
                 }
-                else if(include_ppn_global==1 && ppn_centang_global==1){
-                    total_ppn_global=parseFloat(total_lama)-parseFloat(total)-1
-                    
-                    console.log('total_ppn_global',total_ppn_global)
-                    $('#td_ppn').text(total_ppn_global)
-                    console.log('total_disc_akhir',total_disc_akhir)
-                    console.log('total_qty_akhir',total_qty_akhir)
-                    console.log('total_akhir',total_qty_akhir*total_disc_akhir)
-                    // subtotal=parseFloat(total_lama)-parseFloat(total_ppn_global)
-                    // total=(total*total_qty_akhir)
-                    console.log('jumlah akhir',total)
+                
+
+                //includeppn tidak centang, ppn centang
+                if(include_ppn_global==0 && ppn_centang_global==1){
+                    td_subtotal_global=total
+
+                    $('.input-subtotal').val(total)
                     $('#td_subtotal').text(total)
+
+                    ppn_global_new =  Math.ceil(total * (json_harga.msg.master_ppn.ppn / 100));
+
+                    total_ppn_global=ppn_global_new
+              
+                
+                    $('#td_ppn').text(total_ppn_global)
+                    // td_total_global = Math.ceil(((total + total_ppn_global)/10)*10);    
+                    td_total_global = Math.ceil((total + total_ppn_global) / 10) * 10;
+
+
+                    // Membulatkan ke atas ke kelipatan 10
+                    // td_total_global = td_total_global);
+                    $('#td_total').text(td_total_global)
+                }
+                 //includeppn centang, ppn centang
+                else if(include_ppn_global==1 && ppn_centang_global==1){
+                  // Hitung subtotal termasuk PPN
+                let subtotal_include_ppnss = ((total_lama * total_qty_akhir) - (total_disc_akhir * total_qty_akhir)) * 100 / (100 + json_harga.msg.master_ppn.ppn);
+                
+
+                // Simpan hasil ke variabel global
+                td_subtotal_global = parseInt(subtotal_include_ppnss);
+                $('.input-subtotal').val(td_subtotal_global)
+
+                // Perbarui elemen HTML dengan hasil
+                $('#td_subtotal').text(td_subtotal_global); // Gunakan toFixed(2) untuk format angka desimal 2 digit
+                total_ppn_global = ((total_lama * total_qty_akhir) - (total_disc_akhir * total_qty_akhir))-(td_subtotal_global);
+                console.log('total_ppn_global',total_ppn_global)
+                // total_ppn_global = total_ppn_global*total_qty_akhir;
+                $('#td_ppn').text(total_ppn_global)
+                td_total_global=(total_lama * total_qty_akhir) - (total_disc_akhir * total_qty_akhir)
+                $('#td_total').text(td_total_global)
+
                 }
                 else if(include_ppn_global==1 && ppn_centang_global==0){
+                    td_total_global=total
                     total_ppn_global=0
                     console.log('total_ppn_global',total_ppn_global)
+                    
                     $('#td_ppn').text(total_ppn_global)
+                    $('#td_total').text(td_total_global)
 
                 }
                 else{
-                    td_subtotal_global=total_lama
-                    $('#td_subtotal').text(total_lama)
+                    td_total_global=total
+                    total_ppn_global=0
+                    td_subtotal_global=total
+                    $('#td_subtotal').text(total)
+                    $('#td_ppn').text(total_ppn_global)
+                    $('#td_total').text(td_total_global)
                 }
                 // console.log('total lama',total_lama)
                 
             
-                $('#td_total').text(total_lama)
-                td_total_global=total_lama
+               
+                
         }
 
 
@@ -1034,7 +1138,7 @@
                 disc_disc: disc_disc,
                 ppn:ppn,
                 ppn_import:ppn_row_import,
-                subtotal:subtotal,
+                subtotal:     [$('.input-subtotal').val()],
                 harga_belumppn_import: harga_belumppn_import,
                 qty_qty_import: qty_qty_import,
                 disc_disc_import: disc_disc_import,
