@@ -7,14 +7,9 @@ Order Penjualan  | PT. Maxipro Group Indonesia
 @section('link')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+
 <link rel="stylesheet" href="{{ asset('css/penjualan/orderpenjualan.css') }}">
-<style>
 
-    
-
-   
-</style>
 
 @endsection
 
@@ -32,7 +27,7 @@ Order Penjualan  | PT. Maxipro Group Indonesia
             </div>
         </div>
         <div class="col-md-6">
-        <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" data-scroll="true">
+                <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" data-scroll="true">
                     <div class="container-fluid py-1 px-3">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
@@ -317,7 +312,7 @@ Order Penjualan  | PT. Maxipro Group Indonesia
 <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
 
 <!-- Choices.js JS -->
-<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 

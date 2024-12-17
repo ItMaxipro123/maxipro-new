@@ -18,3 +18,50 @@ table tr, table td, table th {
 table {
     border-collapse: collapse;
 }
+
+.select2-container--custom .select2-selection--single {
+    height: calc(2.25rem + 2px);
+    padding: .375rem .75rem;
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    width: 100%;
+}
+
+.empty-row {
+    border: none;
+}
+
+.select2-container--custom .select2-selection--single .select2-selection__arrow {
+    right: 10px;
+}
+
+.select2-container--custom .select2-selection--single .select2-selection__rendered {
+    color: #495057;
+    line-height: 1.5;
+    text-align: center;
+    font-size: 14px;
+}
+
+.select2-container--custom .select2-selection--single .select2-selection__placeholder {
+    color: #6c757d;
+}
+
+.select2-container--custom .select2-selection--single:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.select2-container--custom .select2-results__options {
+    overflow-y: auto;
+
+    max-height: 200px;
+
+}
+.select2-results__option:hover {
+    background-color: #f0f0f0;
+    /* Warna latar belakang yang diinginkan saat kursor digerakkan */
+    cursor: pointer;
+    /* Ubah ikon kursor saat diarahkan ke opsi */
+}
