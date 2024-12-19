@@ -509,8 +509,8 @@
                         var ppn_subtotal_import_sementara = subtotal_import.map(value => parseInt(value / ppn_global_new));
                         let sub=ppn_subtotal_sementara
                         let subtot_import=ppn_subtotal_import_sementara
-                        // Hitung subtotal
-                    calculateSubtotal(subtotal, subtotal_import, ppn_row, ppn_row_import, ppn_global_new,qty,qty_import,disc,disc_import);
+                        
+                    calculateSubtotal(subtotal, subtotal_import, ppn, ppn_row_import, ppn_global_new,qty,qty_import,disc,disc_import);
                 }
             }
  
@@ -536,10 +536,19 @@
                        
                         let value_ppn = 0; // Langsung tetapkan nilai 0
                         $('.input-ppn').prop('checked', false); // Pastikan checkbox tidak dicentang
-                        console.log('value_ppn', value_ppn);
+                        // console.log('value_ppn', value_ppn);
 
-                        let index = $(this).data('index');
-                        updatePPN(index, value_ppn);
+                        // let index = $(this).data('index');
+                        // updatePPN(index, value_ppn);
+                        var ppn_subtotal_sementara = subtotal.map(value => parseInt(value / ppn_global_new));
+                        var ppn_subtotal_import_sementara = subtotal_import.map(value => parseInt(value / ppn_global_new));
+                        let sub=ppn_subtotal_sementara
+                        let subtot_import=ppn_subtotal_import_sementara
+                        // Hitung subtotal
+                        $('.input-ppn').prop('checked', true); // Nilai 1 jika dicentang, 0 jika tidak
+                        
+                        ppn =[value_ppn]
+                        calculateSubtotal(subtotal, subtotal_import, ppn_row, ppn_row_import, ppn_global_new,qty,qty_import,disc,disc_import);
 
                        
                     }
@@ -566,6 +575,8 @@
                         $('.input-ppn').prop('checked', true); // Nilai 1 jika dicentang, 0 jika tidak
                         
                         ppn =[1]
+                        console.log('ppn_subtotal_sementara',ppn_subtotal_sementara)
+                        console.log('ppn_subtotal_import_sementara',ppn_subtotal_import_sementara)
                         calculateSubtotal(sub,subtot_import,ppn_row,ppn_row_import,ppn_global_new,qty,qty_import,disc,disc_import)
                       
                         
@@ -575,7 +586,7 @@
                         calculateSubtotal(subtotal_notinclude,subtotal_import_notinclude,ppn_row,ppn_row_import,ppn_global_new,qty,qty_import,disc,disc_import)
                     }
             });
-         
+            
             $('.input-harga-normal').on('input', function() {
                 let value = $(this).val(); // Ambil nilai dari input
                 let index = $(this).data('index');
@@ -628,7 +639,7 @@
             $('.input-ppn').on('change', function() {
                     let value_ppn = $(this).is(':checked') ? 1 : 0; // Nilai 1 jika dicentang, 0 jika tidak
                     
-                    ppn_centang_global=value_ppn
+                    
                     if(ppn_centang_global===1){
                         // console.log('value_ppn',value_ppn)
                         $('.ppncentang').prop('checked', true);
@@ -638,16 +649,20 @@
                         console.log('ppn_subtotal_import_sementara',ppn_subtotal_import_sementara)
                         ppn =[value_ppn]
                         
-                        calculateSubtotal(subtotal, subtotal_import, ppn_row, ppn_row_import, ppn_global_new,qty,qty_import,disc,disc_import);
+                        calculateSubtotal(subtotal, subtotal_import, ppn, ppn_row_import, ppn_global_new,qty,qty_import,disc,disc_import);
                     }else {
-                        ppn_global_new=1;
+                        
                        
                         let value_ppn = 0; // Langsung tetapkan nilai 0
                         $('.input-ppn').prop('checked', false); // Pastikan checkbox tidak dicentang
-                        console.log('value_ppn', value_ppn);
+                        var ppn_subtotal_sementara = subtotal.map(value => parseInt(value / ppn_global_new));
+                        var ppn_subtotal_import_sementara = subtotal_import.map(value => parseInt(value / ppn_global_new));
+                        console.log('ppn_subtotal_sementara',ppn_subtotal_sementara)
+                        console.log('ppn_subtotal_import_sementara',ppn_subtotal_import_sementara)
 
-                        let index = $(this).data('index');
-                        updatePPN(index, value_ppn);
+                        ppn =[value_ppn]
+
+                        calculateSubtotal(subtotal, subtotal_import, ppn, ppn_row_import, ppn_global_new,qty,qty_import,disc,disc_import);
 
                        
                     }
@@ -668,78 +683,7 @@
                 
             });
 
-            function updatePPN(index,value){
-                ppn =[value]
-                console.log('masuk ppn',ppn)
-                // console.log('masuk subtotal',subtotal)
-                let result = subtotal.map((priceValue, index) => {
-                    
-                   
-                    return (parseFloat(priceValue) * 0.11); // Perkalian harga * qty, lalu kurangi diskon
-                    // ppn_row.push(parseFloat(priceValue) * 0.11)
-                  
-                });
-                if(ppn==0){
-                    ppn_row=0;
-                }else{
-
-                    ppn_row =result
-                }
-             
-                calculateSubtotal(subtotal,subtotal_import,ppn_row,ppn_row_import,ppn_global_new,qty,qty_import,disc,disc_import)
-            }
-
-            function updateData(index,value){
-                
-                price =[value]
-                let result = price.map((priceValue, index) => {
-                    let qtyValue = parseFloat(qty[index]) || 0; // Pastikan qty adalah angka
-                    let discValue = parseFloat(disc[index]) || 0;
-                    return (parseFloat(priceValue) * qtyValue) - discValue; // Perkalian harga * qty, lalu kurangi diskon
-                });
-                subtotal=[result]
-                console.log('subtotal',subtotal)
-                console.log('price',price)
-                console.log('qty',qty)
-                console.log('disc',disc)
-                $('.input-subtotal').val(subtotal);
-                calculateSubtotal(subtotal,subtotal_import,ppn_row,ppn_row_import,ppn_global_new,qty,qty_import,disc,disc_import)
-            }
-
-            function updateDataQty(index,value){
-                qty=[value]
-                
-                let result = price.map((priceValue, index) => {
-                    let qtyValue = parseFloat(qty[index]) || 0; // Pastikan qty adalah angka
-                    let discValue = parseFloat(disc[index]) || 0;
-                    return (parseFloat(priceValue) * qtyValue) - discValue; // Perkalian harga * qty, lalu kurangi diskon
-                });
-                subtotal=[result]
-                console.log('subtotal',subtotal)
-                console.log('price',price)
-                console.log('qty',qty)
-                console.log('disc',disc)
-                $('.input-subtotal').val(subtotal);
-                calculateSubtotal(subtotal,subtotal_import,ppn_row,ppn_row_import,ppn_global_new,qty,qty_import,disc,disc_import)
-            }
-            
-            function updateDataDisc(index,value){
-                 // price[index]=value
-                 disc =[value]
-                 let result = price.map((priceValue, index) => {
-                    let qtyValue = parseFloat(qty[index]) || 0; // Pastikan qty adalah angka
-                    let discValue = parseFloat(disc[index]) || 0; // Pastikan disc adalah angka
-                    return (parseFloat(priceValue) * qtyValue) - discValue; // Perkalian harga * qty, lalu kurangi diskon
-                });
-                console.log('discValue',result)
-                // subtotal=[result]
-                console.log('subtotal',subtotal)
-                console.log('price',price)
-                console.log('qty',qty)
-                console.log('disc',disc)
-                $('.input-subtotal').val(subtotal);
-                calculateSubtotal(subtotal,subtotal_import,ppn_row,ppn_row_import,ppn_global_new,qty,qty_import,disc,disc_import)
-            }
+          
          
         });
 
@@ -906,6 +850,7 @@
                             currentRow.find('.input-disc-import').val(0);
                             currentRow.find('.input-subtotal-import').val(harga_import);
                             currentRow.find('#ppn-import').prop('checked', true);
+                            $('.includeppn').prop('checked', false);
                             // Inisialisasi array berdasarkan indeks baris
                             purc_unit_import[rowIndex] = selectedValue;
                             purc_name_import[rowIndex] = nameItem;
@@ -915,14 +860,14 @@
                             disc_import[rowIndex] = 0;
                             subtotal_import[rowIndex] = harga_import; // Mengupdate nilai subtotal_import pada indeks tertentu
                             subtotal_import_notinclude = [...subtotal_import]; // Menyalin array subtotal_import ke subtotal_import_notinclude
-                       
+                            include_ppn_global=0;
                             ppn_row_import[rowIndex] = 1;
                             let newSubtotal = 0;
                             for (let i = 0; i < 1; i++) {
                                 newSubtotal = [subtotal[i]];
                             }
                             console.log('newSubtotal',newSubtotal)
-                            calculateSubtotal(newSubtotal, subtotal_import, ppn_row, ppn_row_import,ppn_global_new,qty,qty_import,disc,disc_import);
+                            calculateSubtotal(newSubtotal, subtotal_import, ppn, ppn_row_import,ppn_global_new,qty,qty_import,disc,disc_import);
                         }
                     });
                 } else {
@@ -942,9 +887,44 @@
                         });
 
                         $('.input-ppn-import').on('input', function() {
+                            // let value_ppn = $(this).is(':checked') ? 1 : 0; // Nilai 1 jika dicentang, 0 jika tidak
+                            // console.log('value_ppn_import',value_ppn)
+                            // let index = $(this).data('index');
+
+                            // calculateSubtotal(subtotal, subtotal_import, ppn_row, ppn_row_import, ppn_global_new, qty, qty_import, disc, disc_import);
+
+                            // let value = $(this).val(); // Ambil nilai dari input
+                            let index = $(this).data('id'); // Ambil data-id dari parent .form-row
+
                             let value_ppn = $(this).is(':checked') ? 1 : 0; // Nilai 1 jika dicentang, 0 jika tidak
-                            console.log('value_ppn_import',value_ppn)
-                            let index = $(this).data('index');
+                    
+                            // ppn_centang_global=value_ppn
+                            if(ppn_centang_global===1){
+                                // console.log('value_ppn',value_ppn)
+                                $('.ppncentang').prop('checked', true);
+                                var ppn_subtotal_sementara = subtotal.map(value => parseInt(value / ppn_global_new));
+                                var ppn_subtotal_import_sementara = subtotal_import.map(value => parseInt(value / ppn_global_new));
+                                console.log('ppn_subtotal_sementara',ppn_subtotal_sementara)
+                                console.log('ppn_subtotal_import_sementara',ppn_subtotal_import_sementara)
+                                ppn_row_import[index] =value_ppn
+                                
+                                calculateSubtotal(subtotal, subtotal_import, ppn, ppn_row_import, ppn_global_new,qty,qty_import,disc,disc_import);
+                            }else {
+                                
+                            
+                                let value_ppn = 0; // Langsung tetapkan nilai 0
+                                $(`.input-ppn-import[data-id=${index}]`).prop('checked', false); // Pastikan checkbox tidak dicentang
+                                var ppn_subtotal_sementara = subtotal.map(value => parseInt(value / ppn_global_new));
+                                var ppn_subtotal_import_sementara = subtotal_import.map(value => parseInt(value / ppn_global_new));
+                                console.log('ppn_subtotal_sementara',ppn_subtotal_sementara)
+                                console.log('ppn_subtotal_import_sementara',ppn_subtotal_import_sementara)
+
+                                ppn_row_import[index] =value_ppn
+
+                                calculateSubtotal(subtotal, subtotal_import, ppn, ppn_row_import, ppn_global_new,qty,qty_import,disc,disc_import);
+
+                            
+                            }
                             
                         });
                         $('.input-harga-normal-import').on('input', function() {
@@ -958,6 +938,7 @@
                             let input_qty = parseFloat($(`.input-qty-import[data-id=${index}]`).val()) || 0; // Pastikan nilainya angka
                             price_normal_import[index] = harga_normal;
                             price_deal_import[index] = harga_deal;
+                            price_import[index] =harga_deal
                             qty_import[index]=input_qty
                             // Hitung diskon
                             let harga_disc = harga_normal - harga_deal;
@@ -966,7 +947,7 @@
 
                             // Set the value of the discount input field
                             $(`.input-disc-import[data-id=${index}]`).val(harga_disc);
-                            subtotal_import = (harga_deal*input_qty)-(harga_disc*input_qty);
+                            subtotal_import[index] = (harga_deal*input_qty)-(harga_disc*input_qty);
                             $(`.input-subtotal-import[data-id=${index}]`).val(subtotal_import[index]);
 
 
@@ -978,18 +959,24 @@
                             let index = $(this).data('id');
                             console.log('Nilai berubah:', value);
                         
+                            
+                            let harga_normal = parseFloat($(`.input-harga-normal-import[data-id=${index}]`).val()) || 0; // Pastikan nilainya angka
+                           
+                            // let harga_normal = parseFloat($(`.input-harga-normal-import[data-id=${index}]`).val()) || 0;
                             let harga_deal = parseFloat($(this).val()) || 0; // Pastikan nilainya angka
-                            let harga_normal = parseFloat($('.input-harga-normal-import').val()) || 0; // Pastikan nilainya angka
-                            price_normal_import =[harga_normal]
-                            price_deal_import =[harga_deal]
+                            let input_qty = parseFloat($(`.input-qty-import[data-id=${index}]`).val()) || 0; // Pastikan nilainya angka
+                            price_normal_import[index] =harga_normal
+                            price_deal_import[index] =harga_deal
+                            price_import[index] =harga_deal
+                            qty_import[index]=input_qty
                             // Hitung diskon
                             let harga_disc = harga_normal - harga_deal;
-                            disc_import =[harga_disc]
+                            disc_import[index] =harga_disc
 
-                            $('.input-disc-import').val(harga_disc)
-                            $('.input-harga-import').val(price_deal_import)
-                            subtotal_import= price_deal_import
-                        
+                            $(`.input-disc-import[data-id=${index}]`).val(harga_disc)
+                            $(`.input-harga-import[data-id=${index}]`).val(harga_deal)
+                            subtotal_import[index]=  (harga_deal*input_qty)-(harga_disc*input_qty);
+                           
                             calculateSubtotal(subtotal, subtotal_import, ppn_row, ppn_row_import, ppn_global_new,qty,qty_import,disc,disc_import);
                         });
                       
@@ -1003,6 +990,7 @@
                             let input_qty = value; // Pastikan nilainya angka
                             price_normal_import[index] = parseFloat(harga_normal);
                             price_deal_import[index] = parseFloat(harga_deal);
+                            price_import[index] =harga_deal
                             qty_import[index]=parseFloat(input_qty)
                             // Hitung diskon
                             let harga_disc = harga_normal - harga_deal;
@@ -1018,86 +1006,6 @@
                             calculateSubtotal(subtotal, subtotal_import, ppn_row, ppn_row_import, ppn_global_new, qty, qty_import, disc, disc_import);
                             
                         });
-
-                        // $('.input-disc-import').on('input', function() {
-                        //     let value = $(this).val(); // Ambil nilai dari input
-                        //     let index = $(this).data('index');
-                        //     console.log('Nilai berubah:', value);
-                        //     updateDataDiscImport(index,value)
-                        // });
-
-                        function updateDataPPNImport(index,value){
-                            ppn_import =[value]
-                            console.log('masuk ppn import',ppn_import)
-                            console.log('masuk subtotal',subtotal_import)
-                            let result = subtotal_import.map((priceValue, index) => {
-                                
-                            
-                                return (parseFloat(priceValue) * 0.11); // Perkalian harga * qty, lalu kurangi diskon
-                                // ppn_row.push(parseFloat(priceValue) * 0.11)
-                            
-                            });
-                            console.log('result import 0',result)
-                            if(ppn_import==0){
-                                ppn_row_import=0;
-                                // console.log('result import 0',ppn_row_import)
-                            }else{
-
-                                ppn_row_import =result
-                                console.log('result import',result)
-                            }
-                        
-                            calculateSubtotal(subtotal,subtotal_import,ppn_row,ppn_row_import,ppn_global_new,qty,qty_import,disc,disc_import)
-                        }
-
-                        function updateDataImport(index,value){
-                        
-                            price_import =[value]
-                            let result = price_import.map((priceValue, index) => {
-                                let qtyValue = parseFloat(qty_import[index]) || 0; // Pastikan qty adalah angka
-                                let discValue = parseFloat(disc_import[index]) || 0;
-                                return (parseFloat(priceValue) * qtyValue) - discValue; // Perkalian harga * qty, lalu kurangi diskon
-                            });
-                            subtotal_import=[result]
-                            console.log('subtotal',subtotal_import)
-                            console.log('price',price_import)
-                            console.log('qty',qty_import)
-                            console.log('disc',disc_import)
-                            $('.input-subtotal-import').val(subtotal_import);
-                            calculateSubtotal(subtotal,subtotal_import,ppn_row,ppn_row_import,ppn_global_new,qty,qty_import,disc,disc_import)
-                        }
-                        function updateDataQtyImport(index,value){
-                            qty_import=[value]
-                            
-                            let result = price_import.map((priceValue, index) => {
-                                let qtyValue = parseFloat(qty_import[index]) || 0; // Pastikan qty adalah angka
-                                let discValue = parseFloat(disc_import[index]) || 0;
-                                return (parseFloat(priceValue) * qtyValue) - discValue; // Perkalian harga * qty, lalu kurangi diskon
-                            });
-                            subtotal_import=[result]
-                            console.log('subtotal',subtotal_import)
-                            console.log('price',price_import)
-                            console.log('qty',qty_import)
-                            console.log('disc',disc_import)
-                            $('.input-subtotal-import').val(subtotal_import);
-                            calculateSubtotal(subtotal,subtotal_import,ppn_row,ppn_row_import,ppn_global_new,qty,qty_import,disc,disc_import)
-                            
-                        }
-                        
-                        function updateDataDiscImport(index,value){
-                            
-                            disc_import =[value]
-                            let result = price_import.map((priceValue, index) => {
-                                let qtyValue = parseFloat(qty_import[index]) || 0; // Pastikan qty adalah angka
-                                let discValue = parseFloat(disc_import[index]) || 0; // Pastikan disc adalah angka
-                                return (parseFloat(priceValue) * qtyValue) - discValue; // Perkalian harga * qty, lalu kurangi diskon
-                            });
-
-                            subtotal_import=[result]
-                
-                            $('.input-subtotal-import').val(subtotal_import);
-                            calculateSubtotal(subtotal,subtotal_import,ppn_row,ppn_row_import,ppn_global_new,qty,qty_import,disc,disc_import)
-                        }
            
                         rowrowIndex++;
         }
@@ -1115,17 +1023,7 @@
                         }
                         console.log('subtotal_func',subtotal_func)
                         console.log('subtotal_import_func',subtotal_import_func)
-                for (let i = 0; i < Math.max(subtotal_func.length, subtotal_import_func.length); i++) {
-                    subtotal[i] = parseFloat(subtotal_func[i])
-                    $('.input-subtotal').val(parseFloat(subtotal[i]) || 0);
-
-                    subtotal_import[i] = subtotal_import_func[i];
-
-                    // Periksa apakah nilainya NaN, jika iya ganti dengan 0
-                    if (isNaN(subtotal_import[i])) {
-                        subtotal_import[i] = 0;
-                    }
-                }
+                
                 var total_qty_sementara = qty.map(value => parseInt(value));
                 var total_qty_sementara_import = qty_import.map(value => parseInt(value));
 
@@ -1141,6 +1039,7 @@
                 var total_disc_akhir = total_disc_sementara.reduce((acc, value) => acc + value, 0) + 
                                       total_disc_sementara_import.reduce((acc, value) => acc + value, 0);
                 console.log('ppn_row',ppn_row)
+                console.log('ppn_row_import',ppn_row_import)
                 let total_ppn = 0;
 
                 // Menjumlahkan nilai dari ppn_row
@@ -1150,17 +1049,14 @@
 
                 // Jika ppn_row_import memiliki lebih dari 1 elemen, tambahkan nilainya
                 if (ppn_row_import.length > 0) {
-                    console.log('ppn_row_import lebih 0')
+                    // console.log('ppn_row_import lebih 0')
                     for (let i = 0; i < ppn_row_import.length; i++) {
                         total_ppn += parseFloat(ppn_row_import[i]) || 0; // Pastikan setiap nilai adalah angka
                     }
                 }
                 
                 
-                // subtotal_notinclude,subtotal_notinclude_import
-                
-                console.log('total_ppn',total_ppn)
-                // console.log('subtotal not include',subtotal_import_notinclude)
+            
              
                 // Menghitung total_lama_subtotal dan total_lama_subtotal_import
                 var total_lama_subtotal = subtotal_notinclude.map(value => parseInt(value));
@@ -1171,33 +1067,8 @@
                 var total_lama = total_lama_subtotal.reduce((acc, value) => acc + value, 0) + 
                                 total_lama_subtotal_import.reduce((acc, value) => acc + value, 0);
                 
-                // let total = 0; // Inisialisasi total
-
-                // // (masih belum fix tgl 17-12-2024)
-                // console.log('subtotal_import',subtotal_import)
-                // console.log('Math.max(subtotal_func.length, subtotal_import_func.length)',Math.max(subtotal_func.length, subtotal_import_func.length))
-                // // Iterasi untuk menjumlahkan semua data dari kedua array
-                // for (let i = 0; i < Math.max(subtotal_func.length, subtotal_import_func.length); i++) {
-                //     // Ambil nilai dari subtotal_func, jika undefined atau NaN ganti dengan 0
-                //     let value = isNaN(subtotal_func[i]) ? 0 : parseFloat(subtotal_func[i]);
-
-                //     // Ambil nilai dari subtotal_import_func, default 0 jika undefined atau NaN
-                //     let importValue = isNaN(subtotal_import_func[i]) ? 0 : parseFloat(subtotal_import_func[i]);
-
-                //     // Perhitungan td_subtotal
-                //     let td_subtotal = parseFloat((value * total_qty_sementara) - (total_disc_sementara * total_qty_sementara)) + 
-                //                     parseFloat((importValue * total_qty_sementara_import) - (total_disc_sementara_import * total_qty_sementara_import));
-
-                //     console.log(`Index ${i}: ${value} + ${importValue} = ${td_subtotal}`);
-
-                //     // Tambahkan td_subtotal ke total
-                //     total += td_subtotal;
-                //     console.log('Total:', total);
-
-                //     // Ambil nilai importValueSubtot dan set input field
-                //     let importValueSubtot = price_deal_import[i] || 0; // Ganti dengan 0 jika undefined atau NaN
-                //     $('.input-subtotal-import').val(importValueSubtot);
-                // }
+                
+            
 
                 let total = 0; // Inisialisasi total
 
@@ -1205,7 +1076,7 @@
                 var maxLength = Math.max(subtotal_func.length, subtotal_import_func.length);
 
                 // Loop untuk memproses kedua array
-             // Initialize total sums for value and importValue separately
+                // Initialize total sums for value and importValue separately
                 var totalValue = 0;
                 var totalImportValue = 0;
                 let td_subtotal=0
@@ -1229,27 +1100,19 @@
                     var discImportValue = (i < disc_import.length && !isNaN(disc_import[i])) 
                                         ? parseFloat(disc_import[i]) 
                                         : 0;
-
+                    // console.log('subtotalImportValue',subtotalImportValue)
                     // Calculate the subtotal for the current index using the formula
-                    var currentSubtotal = (subtotalImportValue * qtyImportValue) - (discImportValue * qtyImportValue);
+                    var currentSubtotal = (subtotalImportValue) - (discImportValue * qtyImportValue);
                     
                     // Add the calculated subtotal to the overall td_subtotal
                     td_subtotal += currentSubtotal;
                     // var td_subtotal=0
                     let td_subtotal_akhir = value+td_subtotal;
-                    // Log the value and importValue separately for debugging
-                    console.log('currentSubtotal:', currentSubtotal);
-                    console.log('Value:', value[i]);
-                    console.log('Import Value:', subtotal_import_func[i]);
-                    console.log('qty_import:', qty_import[i]);
-                    console.log('Import Value:', subtotal_import_func[i]);
-                    console.log('Subtotal for this iteration (td_subtotal):', td_subtotal_akhir);
-
 
                     // Pastikan td_subtotal bukan NaN sebelum menambahkannya ke total
                     total = !isNaN(td_subtotal_akhir) ? td_subtotal_akhir : 0; // Hanya tambah jika td_subtotal valid
 
-                    console.log('Total Subtotal:', total);
+                    // console.log('Total Subtotal:', total);
                     
                     // Ambil nilai importValueSubtot dan set input field (asumsi hanya mengambil nilai pertama dari price_deal_import)
                 
@@ -1266,7 +1129,15 @@
                     
                     // Get the value from the input field with class 'input-harga' and convert it to a float
                     let harga_sub_noimport = parseFloat($('.input-harga').val()) || 0;
-
+                    let harga_sub_import = [];
+                    $('.input-harga-import').each(function() {
+                        let value = parseFloat($(this).val()) || 0; // Get the value and convert to float, default to 0 if NaN
+                        harga_sub_import.push(value); // Add the value to the array
+                    });
+                    harga_sub_import.forEach(function(itemSubImport,keyitemSubImport){
+                        subtotal_import[keyitemSubImport] = (harga_sub_import[keyitemSubImport] *qty_import[keyitemSubImport])-(disc_import[keyitemSubImport] * qty_import[keyitemSubImport]);
+                        $(`.input-subtotal-import[data-id=${keyitemSubImport}]`).val(subtotal_import[keyitemSubImport]);
+                    })
                     // Calculate the subtotal for no import
                     let td_sub_noimport = (harga_sub_noimport * total_qty_sementara) - (total_disc_sementara * total_qty_sementara);
 
@@ -1278,9 +1149,27 @@
                     
 
                     $('#td_subtotal').text(td_subtotal_global)
+                    let sum_ppn_subtotal_import=0;
+                    let sum_ppn_subtotal_noimport=0;
+                    subtotal_import.forEach(function(itemImport,itemImportIndex){
+                        if(ppn_row_import[itemImportIndex]==1){
 
-                    ppn_global_new =  Math.ceil(total * (json_harga.msg.master_ppn.ppn / 100));
+                            sum_ppn_subtotal_import+= subtotal_import[itemImportIndex] * (json_harga.msg.master_ppn.ppn / 100);
+                        }else{
+                            sum_ppn_subtotal_import+= 0;
+                        }
+                    })
+                    subtotal.forEach(function(itemNoImport,itemNoImportIndex){
+                        if(ppn_row[itemNoImportIndex]==1){
 
+                            sum_ppn_subtotal_noimport+= subtotal[itemNoImportIndex] * (json_harga.msg.master_ppn.ppn / 100);
+                        }else{
+                            sum_ppn_subtotal_noimport+= 0;
+                        }
+                    })
+                    console.log('total sum_ppn_subtotal_import',sum_ppn_subtotal_import)
+                    console.log('total sum_ppn_subtotal_noimport',sum_ppn_subtotal_noimport)
+                    ppn_global_new =  sum_ppn_subtotal_noimport+sum_ppn_subtotal_import;
                     total_ppn_global=ppn_global_new
               
                 
@@ -1296,21 +1185,29 @@
                  //includeppn centang, ppn centang
                 else if(include_ppn_global==1 && ppn_centang_global==1){
                     // Hitung subtotal termasuk PPN
-                    let subtotal_include_ppnss = ((total_lama * total_qty_akhir) - (total_disc_akhir * total_qty_akhir)) * 100 / (100 + json_harga.msg.master_ppn.ppn);
+                    let subtotal_include_ppnss = ((total_lama_subtotal * total_qty_sementara) - (total_disc_sementara * total_qty_sementara)) * 100 / (100 + json_harga.msg.master_ppn.ppn);
+                    $('.input-subtotal').val(parseInt(subtotal_include_ppnss))
+                    let subtotal_include_ppnss_import = 0
+                    let total_include_import=0;
                     
-
-                    // Simpan hasil ke variabel global
-                    td_subtotal_global = parseInt(subtotal_include_ppnss);
-                    $('.input-subtotal').val(td_subtotal_global)
-
+                    subtotal_import.forEach(function(itemsub,keySubtotalImport){
+                        subtotal_import[keySubtotalImport]=parseInt(((subtotal_import[keySubtotalImport] * qty_import[keySubtotalImport]) - (disc_import[keySubtotalImport] * qty_import[keySubtotalImport])) * 100 / (100 + json_harga.msg.master_ppn.ppn));
+                        $(`.input-subtotal-import[data-id=${keySubtotalImport}]`).val(subtotal_import[keySubtotalImport]);
+                        subtotal_include_ppnss_import += subtotal_import[keySubtotalImport];
+                        let totalWithoutPPN = parseInt(((subtotal_import_notinclude[keySubtotalImport] * qty_import[keySubtotalImport]) - (disc_import[keySubtotalImport] * qty_import[keySubtotalImport])));
+                        total_include_import +=totalWithoutPPN
+                    })
+                    td_subtotal_global = parseInt(subtotal_include_ppnss+subtotal_include_ppnss_import);
+                    console.log('total_include_import',total_include_import)
                     // Perbarui elemen HTML dengan hasil
                     $('#td_subtotal').text(td_subtotal_global); // Gunakan toFixed(2) untuk format angka desimal 2 digit
-                    total_ppn_global = ((total_lama * total_qty_akhir) - (total_disc_akhir * total_qty_akhir))-(td_subtotal_global);
-                    console.log('total_ppn_global',total_ppn_global)
+                    
+                    td_total_global=(total_lama_subtotal * total_qty_sementara) - (total_disc_sementara * total_qty_sementara) +(total_include_import);
+                    $('#td_total').text(td_total_global)
+                    total_ppn_global = parseInt((td_subtotal_global * json_harga.msg.master_ppn.ppn)/100)
+                    
                     
                     $('#td_ppn').text(total_ppn_global)
-                    td_total_global=(total_lama * total_qty_akhir) - (total_disc_akhir * total_qty_akhir)
-                    $('#td_total').text(td_total_global)
 
                 }
                 else if(include_ppn_global==1 && ppn_centang_global==0){
