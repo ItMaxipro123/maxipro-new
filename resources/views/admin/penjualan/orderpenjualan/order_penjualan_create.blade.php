@@ -529,10 +529,15 @@
                         $('.input-ppn').prop('checked', true); // Nilai 1 jika dicentang, 0 jika tidak
                         
                         ppn =[1]
-                        calculateSubtotal(subtotal, subtotal_import, ppn_row, ppn_row_import, ppn_global_new,qty,qty_import,disc,disc_import);
+                        subtotal_import.forEach(function(ppnrowimport,ppnrowimportIndex){
+
+                            ppn_row_import[ppnrowimportIndex] =1
+                            $(`.input-ppn-import[data-id=${ppnrowimportIndex}]`).prop('checked',true);
+                        })
+                        calculateSubtotal(subtotal, subtotal_import, ppn, ppn_row_import, ppn_global_new,qty,qty_import,disc,disc_import);
                         
                     } else {
-                        ppn_global_new=1;
+                        // ppn_global_new=1;
                        
                         let value_ppn = 0; // Langsung tetapkan nilai 0
                         $('.input-ppn').prop('checked', false); // Pastikan checkbox tidak dicentang
@@ -545,9 +550,14 @@
                         let sub=ppn_subtotal_sementara
                         let subtot_import=ppn_subtotal_import_sementara
                         // Hitung subtotal
-                        $('.input-ppn').prop('checked', true); // Nilai 1 jika dicentang, 0 jika tidak
+                        $('.input-ppn').prop('checked', false); // Nilai 1 jika dicentang, 0 jika tidak
                         
                         ppn =[value_ppn]
+                        subtotal_import.forEach(function(ppnrowimport,ppnrowimportIndex){
+
+                            ppn_row_import[ppnrowimportIndex] =0
+                            $(`.input-ppn-import[data-id=${ppnrowimportIndex}]`).prop('checked',false);
+                        })
                         calculateSubtotal(subtotal, subtotal_import, ppn_row, ppn_row_import, ppn_global_new,qty,qty_import,disc,disc_import);
 
                        
