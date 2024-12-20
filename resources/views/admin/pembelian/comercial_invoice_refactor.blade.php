@@ -2131,18 +2131,33 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                 id_commercial: idCommercial
                             },
                             success: function(response) {
-                                
+                                console.log('response', response);
                                 $('#reload-icon').hide();
-                                if (response.msg === 'Lcl berhasil ditambahkan') {
-                                    console.log('Response from server lcl:', response);
-                                    $currentRow.remove();
-                                }
+                                $currentRow.remove();
+
+                                // Show success alert
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success!',
+                                    text: response.msg,
+                                    confirmButtonText: 'OK'
+                                });
                             },
                             error: function(error) {
+                                console.log('response', response);
                                 console.error('Error:', error);
+
+                                // Show error alert
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: 'Something went wrong! Please try again.',
+                                    confirmButtonText: 'OK'
+                                });
                             }
                         });
                     }
+
                 });
             }
             tableInitialized = true;
@@ -3584,10 +3599,10 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                                     invoice_no:$('#invoice_no_tambah').val()||"",
                                                     packing_no:$('#packing_no_tambah').val()||"",
                                                     contract_no:$('#contract_no_tambah').val()||"",
-                                                    address_company:$('#address_company').val()||"",
-                                                    city:$('#city').val()||"",
-                                                    name:$('#company-name').val()||"",
-                                                    telp:$('#telp').val()||"",
+                                                    address_company:$('#address_company').val()||0,
+                                                    city:$('#city').val()||0,
+                                                    name:$('#company-name').val()||0,
+                                                    telp:$('#telp').val()||0,
                                                     no_referensi:$('.no-referensi').val()||"",
                                                     tgl_transaksi:$('#tgl_request').val(),
                                                     matauang:$('.pilih-matauang').val(),
@@ -3603,7 +3618,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                                     discount_nominal:$('#discount_nominal').val(),
                                                     ppn_11:$('.ppn_element').text(),
                                                     total:$('.total_element').text(),
-                                                    bank_supplier:$('#banksupplier-tambah-id').val(),
+                                                    bank_supplier:$('#banksupplier-tambah-id').val() ||0,
                                                     id_item:iditem_select,
                                                     
                                                     harga_asal:harga_asal_select,
@@ -3636,7 +3651,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                                     unit_price_without_taxt_usd:priceusd_import,
                                                     gudang:gudang_import,
                                                     use_name:use_name_import,
-                                                    supplierbank:$('#banksupplier-tambah-id').val(),
+                                                    supplierbank:$('#banksupplier-tambah-id').val() || 0,
                                                     freight_cost:freight_cost_import,
                                                     insurance:insurance_import,
                                                     
@@ -3651,7 +3666,7 @@ Commercial Invoice    | PT. Maxipro Group Indonesia
                                                 // comercial invoice
                                                 $.ajax({
                                                     type: 'GET',
-                                                    url: '{{ route('admin.pembelian_tambah_comercial_invoice_new') }}',
+                                                    // url: '{{ route('admin.pembelian_tambah_comercial_invoice_new') }}',
                                                     data: {
                                                         menu:'tambah_lcl_local',
                                                         form:formDataSend

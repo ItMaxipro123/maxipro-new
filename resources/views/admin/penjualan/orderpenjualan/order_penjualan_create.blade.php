@@ -539,26 +539,26 @@
                     } else {
                         // ppn_global_new=1;
                        
-                        let value_ppn = 0; // Langsung tetapkan nilai 0
+                        // let value_ppn = 0; // Langsung tetapkan nilai 0
                         $('.input-ppn').prop('checked', false); // Pastikan checkbox tidak dicentang
                         // console.log('value_ppn', value_ppn);
 
                         // let index = $(this).data('index');
                         // updatePPN(index, value_ppn);
-                        var ppn_subtotal_sementara = subtotal.map(value => parseInt(value / ppn_global_new));
-                        var ppn_subtotal_import_sementara = subtotal_import.map(value => parseInt(value / ppn_global_new));
-                        let sub=ppn_subtotal_sementara
-                        let subtot_import=ppn_subtotal_import_sementara
+                        // var ppn_subtotal_sementara = subtotal.map(value => parseInt(value / ppn_global_new));
+                        // var ppn_subtotal_import_sementara = subtotal_import.map(value => parseInt(value / ppn_global_new));
+                        // let sub=ppn_subtotal_sementara
+                        // let subtot_import=ppn_subtotal_import_sementara
                         // Hitung subtotal
                         $('.input-ppn').prop('checked', false); // Nilai 1 jika dicentang, 0 jika tidak
                         
-                        ppn =[value_ppn]
+                        ppn =[0]
                         subtotal_import.forEach(function(ppnrowimport,ppnrowimportIndex){
 
                             ppn_row_import[ppnrowimportIndex] =0
                             $(`.input-ppn-import[data-id=${ppnrowimportIndex}]`).prop('checked',false);
                         })
-                        calculateSubtotal(subtotal, subtotal_import, ppn_row, ppn_row_import, ppn_global_new,qty,qty_import,disc,disc_import);
+                        calculateSubtotal(subtotal, subtotal_import, ppn, ppn_row_import, ppn_global_new,qty,qty_import,disc,disc_import);
 
                        
                     }
@@ -587,13 +587,23 @@
                         ppn =[1]
                         console.log('ppn_subtotal_sementara',ppn_subtotal_sementara)
                         console.log('ppn_subtotal_import_sementara',ppn_subtotal_import_sementara)
-                        calculateSubtotal(sub,subtot_import,ppn_row,ppn_row_import,ppn_global_new,qty,qty_import,disc,disc_import)
+                        subtotal_import.forEach(function(ppnrowimport,ppnrowimportIndex){
+
+                            ppn_row_import[ppnrowimportIndex] =1
+
+                        })
+                        calculateSubtotal(sub,subtot_import,ppn,ppn_row_import,ppn_global_new,qty,qty_import,disc,disc_import)
                       
                         
                     } else {
                         ppn_global_new=1;
-  
-                        calculateSubtotal(subtotal_notinclude,subtotal_import_notinclude,ppn_row,ppn_row_import,ppn_global_new,qty,qty_import,disc,disc_import)
+                        ppn =[1];
+                        subtotal_import.forEach(function(ppnrowimport,ppnrowimportIndex){
+
+                            ppn_row_import[ppnrowimportIndex] =1
+                            
+                        })
+                        calculateSubtotal(subtotal_notinclude,subtotal_import_notinclude,ppn,ppn_row_import,ppn_global_new,qty,qty_import,disc,disc_import)
                     }
             });
             
@@ -897,12 +907,7 @@
                         });
 
                         $('.input-ppn-import').on('input', function() {
-                            // let value_ppn = $(this).is(':checked') ? 1 : 0; // Nilai 1 jika dicentang, 0 jika tidak
-                            // console.log('value_ppn_import',value_ppn)
-                            // let index = $(this).data('index');
-
-                            // calculateSubtotal(subtotal, subtotal_import, ppn_row, ppn_row_import, ppn_global_new, qty, qty_import, disc, disc_import);
-
+                         
                             // let value = $(this).val(); // Ambil nilai dari input
                             let index = $(this).data('id'); // Ambil data-id dari parent .form-row
 
@@ -1221,12 +1226,23 @@
 
                 }
                 else if(include_ppn_global==1 && ppn_centang_global==0){
-                    td_total_global=total
-                    total_ppn_global=0
+                    // td_total_global=total
+                    // total_ppn_global=0
+                    let subtotal_include_ppnss = ((total_lama_subtotal * total_qty_sementara) - (total_disc_sementara * total_qty_sementara));
+                    console.log('subtotal_include_ppnss',subtotal_include_ppnss)
+                    let subtotal_include_ppnss_import=0;
                     
-                    
-                    $('#td_ppn').text(total_ppn_global)
-                    $('#td_total').text(td_total_global)
+                    subtotal_import.forEach(function(itemsub,keySubtotalImport){
+                        subtotal_import[keySubtotalImport]=parseInt(((subtotal_import[keySubtotalImport] * qty_import[keySubtotalImport]) - (disc_import[keySubtotalImport] * qty_import[keySubtotalImport])));
+                        $(`.input-subtotal-import[data-id=${keySubtotalImport}]`).val(subtotal_import[keySubtotalImport]);
+                        subtotal_include_ppnss_import += subtotal_import[keySubtotalImport];
+                        // let totalWithoutPPN = parseInt(((subtotal_import_notinclude[keySubtotalImport] * qty_import[keySubtotalImport]) - (disc_import[keySubtotalImport] * qty_import[keySubtotalImport])));
+                        // total_include_import +=totalWithoutPPN
+                    })
+                    td_subtotal_global=subtotal_include_ppnss+subtotal_include_ppnss_import
+                    $('#td_subtotal').text(td_subtotal_global); // Gunakan toFixed(2) untuk format angka desimal 2 digit
+                    $('#td_ppn').text(1)
+                    $('#td_total').text(1)
 
                 }
                 else{
